@@ -1,0 +1,169 @@
+<div id="report-contents" class="clsSlidebar report-content-area d-flex align-items-start ">
+  <!-- <div id="slidebarmenu">
+    <div style="position: static;" class="ps ps--active-y" ng-reflect-disabled="false">
+      <div class="ps-content">
+        <ul>
+          <li *ngFor="let menu of reqMenuList">
+            <a [ngClass]="{'active': (selectedMenu === menu.menuId)}" (click)="getDetail(menu)">
+              <div class="d-flex" >
+                <span class="card-title-length">{{ menu.menuName }}</span>
+                <span class="m-l-5"></span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div> -->
+  <div class="container col-lg-12">
+  <div id="reportscontent" class="content-text w-100">
+    <div class="form-group row">
+      <div class="col-lg-4">
+        <p-multiSelect [options]="filteredStatusList" [(ngModel)]="selectedStatus" defaultLabel="Select a status" optionLabel="key" display="chip"></p-multiSelect>
+        </div>
+      <div class="col-lg-5" >
+        <input pinput [(ngModel)]="fromDate" class="datetypeDateinput" type="text" autocomplete="off" name="fromDate"
+        id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+          <input pinput [(ngModel)]="toDate" class="datetypeDateinput" type="text" autocomplete="off" name="toDate"
+          id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+      
+      </div>
+      <div class="col-lg-3">
+        <button pButton type="button" id="GetData" label="Get Data" Class="p-button-text p-button-sm p-button-primary"
+        (click)="getData()"></button>
+        <button pButton type="button" *ngIf="addNewBtn" label="Add New" class="p-button-success ml-2"  (click)="addNew()"></button>
+        </div>
+    </div>
+    
+    
+    <app-grid-renderer [gridRowData]="rowData" [gridColData]="columnDefs"
+      (onCellClickEvent)="onCellClicked($event)"></app-grid-renderer>
+  </div>
+</div>
+</div>
+<!-- Update Remark -->
+<p-dialog [header]="headerdialogName" [(visible)]="remarkDisplay" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '50vw'}">
+  <form #remarkForm="ngForm" (submit)="SaveRemarkData(remarkForm)" >
+    <div class="form-group row">
+      <input pinput [(ngModel)]="selectRequestInfo.transactionID" class="form-control" type="text" autocomplete="off"
+        name="transactionID" id="transactionID " hidden="true">
+      <div class="col-lg-10">
+        <label class="labelfont">Remarks <span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="reqRemarks" class="form-control" type="text"
+          autocomplete="off" required name="remarks" id="remarks" >
+      </div>
+
+    </div>
+    <div class="float-right">
+      <p-button icon="pi pi-check" [label]="labelName" Class="p-button-text p-button-sm p-button-success mr-2" type="submit"
+        [disabled]="!remarkForm.valid"></p-button>
+      <!-- <p-button icon="pi pi-times" class="p-button-sm ml-2" #closebutton data-dismiss="modal" label="Cancel"
+        (click)="CancelRemarkData()" styleClass="p-button-secondary"></p-button> -->
+    </div>
+  </form>
+</p-dialog>
+
+<!-- Flow popUp -->
+<p-dialog [header]="flowHeaderName" *ngIf="displayflow" [(visible)]="displayflow" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '90vw'}" (hide)="closePopup()">
+  <div id="divmyRequestFlowDetail">
+    <ul class="timeline timeline-inverse">
+      <!-- <span  *ngFor="workFlow ofworkFlowList">ll</span> -->
+      <li *ngFor="let workFlow of workFlowList">
+        <div class="time-label">
+          <div class="time-label">
+            <button  *ngIf="workFlow.actionDate" pButton type="button" [label]="workFlow.actionDate" [ngClass]="{'p-button-success': workFlow.requestStatus && workFlow.requestStatus === 'Approved'}" ></button>
+            <button  *ngIf="!workFlow.actionDate && workFlow.requestStatus === 'Pending'" pButton type="button" [label]="workFlow.requestStatus" [ngClass]="{'p-button-warning': workFlow.requestStatus && workFlow.requestStatus === 'Pending'}" ></button>
+            <button  *ngIf="!workFlow.actionDate && workFlow.requestStatus === 'Cancel'" pButton type="button" [label]="workFlow.requestStatus" [ngClass]="{'p-button-danger': workFlow.requestStatus && workFlow.requestStatus === 'Cancel'}" ></button>
+            <button  *ngIf="!workFlow.actionDate && workFlow.requestStatus !== 'Pending' && workFlow.requestStatus !== 'Cancel'" pButton type="button" [label]="workFlow.requestStatus" ></button>
+          </div>
+        </div>
+        
+        <!-- <li> -->
+          <i class="fa fa-user bg-aqua"></i>
+          <div class="timeline-item">
+            <span class="time"><i class="fa fa-line-chart"></i> {{ workFlow.requestStatus }}</span>
+            <h3 class="timeline-header">
+              {{ workFlow.employeeName }} [{{ workFlow.employeeCode }}]
+            </h3>
+            <div class="timeline-footer">
+              <span class="time"><i class="fa fa-comments"></i></span>{{ workFlow.requestRemark }}
+            </div>
+          </div>
+        </li>
+    </ul>
+
+
+  </div>
+</p-dialog>
+<!-- info popUp -->
+<!-- <p-dialog [header]="flowHeaderName" [(visible)]="displayInfo" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw'}">
+    <form #remarkForm="ngForm" (submit)="SaveRemarkData(remarkForm)">
+      <div class="form-group row">
+        <input pinput [(ngModel)]="selectRequestInfo.transactionID" class="form-control" type="text" autocomplete="off"
+          name="transactionID" id="transactionID " hidden="true">
+        <div class="col-lg-3">
+          <label class="labelfont">From Date <span class="text-danger">*</span></label>
+          <input pinput [(ngModel)]="leaveRequest.fromDate" class="form-control" type="text" autocomplete="off" name="fromDate"
+            id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+            
+            <div class="p-btn">
+              <p-radioButton name="fromDateType" value="f" class="mr-2" label="Full" [(ngModel)]="leaveRequest.fromDateType"></p-radioButton>
+  <p-radioButton name="fromDateType" value="h" label="Half" class="mr-2" [(ngModel)]="leaveRequest.fromDateType"></p-radioButton>
+  <p-radioButton name="fromDateType" value="s" label="Second" [(ngModel)]="leaveRequest.fromDateType"></p-radioButton>
+            </div>
+        </div>
+  
+            <div class="col-lg-3">
+            <label class="labelfont">To Date <span class="text-danger">*</span></label>
+  
+              <input pinput [(ngModel)]="leaveRequest.toDate" class="form-control" type="text" autocomplete="off" name="fromDate"
+            id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+            <div class="p-btn">
+              <p-radioButton name="toDateType" value="full" class="mr-2" label="Full" [(ngModel)]="leaveRequest.toDateType"></p-radioButton>
+  <p-radioButton name="toDateType" value="half" label="Half" class="mr-2" [(ngModel)]="leaveRequest.toDateType"></p-radioButton>
+  <p-radioButton name="toDateType" value="second" label="Second" [(ngModel)]="leaveRequest.toDateType"></p-radioButton>
+            </div>
+            </div>
+        
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <p-dropdown [options]="leaveTypeList" [(ngModel)]="leaveRequest.leaveType" optionLabel="key"
+            optionValue="value" class="" #leaveType="ngModel"
+            [ngClass]="{'is-invalid': leaveType.invalid && (leaveType.dirty || leaveType.touched)}"
+            name="leaveType" id="leaveType">
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="float-right">
+        <p-button icon="pi pi-check" [label]="labelName" Class=" mr1 p-button-text p-button-sm p-button-success " type="submit"
+          [disabled]="!remarkForm.valid" ></p-button>
+        <p-button icon="pi pi-times" class="p-button-sm " #closebutton data-dismiss="modal" label="Cancel"
+          (click)="CancelRemarkData()" styleClass="p-button-secondary"></p-button>
+      </div>
+    </form>
+</p-dialog> -->
+
+<!-- GatePass popUp -->
+<p-dialog [header]="flowHeaderName" [(visible)]="displayGatePass" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw'}" (onHide)="closePopups(false)">
+    <app-request-approval-flow *ngIf="displayGatePass" [workflowID]="workflowID" [employeeID]="employeeID" ></app-request-approval-flow>
+    <app-gatepass-dialog  [employeeID]="employeeID" [PostButton]="PostButton" [disabledTxt]="disabledTxt" *ngIf="gatepassRequestDiv && displayGatePass" [requestID]="requestID" [requestStatus]="requestStatus" [workflowID]="workflowID" [transactionID]="transactionID" (closePopup)="closePopups($event)" (gatePassLeaveRefresh)="recallAllLeaveRefreshDeatil()"></app-gatepass-dialog>
+
+</p-dialog>
+<!-- leave request popUp -->
+<p-dialog [header]="flowHeaderName" [(visible)]="displayLeaveRequest" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw'}" (onHide)="CancelleavePost(false)">
+    <app-request-approval-flow  *ngIf="displayLeaveRequest" [workflowID]="workflowID" [employeeID]="employeeID"></app-request-approval-flow>
+    <app-leave-request-dailog  [employeeID]="employeeID" [PostButton]="PostButton" [disabledTxt]="disabledTxt" *ngIf="leaveRequestDiv && displayLeaveRequest" [requestID]="requestID" [requestStatus]="requestStatus" [workflowID]="workflowID" [transactionID]="transactionID" (LeaveSinglediv)="CancelleavePost($event)" (leaveRefresh)="recallAllLeaveRefreshDeatil()"></app-leave-request-dailog>
+</p-dialog>
+
+<!-- punch regularization request popup -->
+<p-dialog [header]="flowHeaderName" [(visible)]="displayPunchRequest" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw'}" (onHide)="closePopup()">
+    <app-request-approval-flow  *ngIf="displayPunchRequest" [workflowID]="workflowID" [employeeID]="employeeID"></app-request-approval-flow>
+    <app-punch-regularization  [employeeID]="employeeID" [PostButton]="PostButton" [disabledTxt]="disabledTxt" *ngIf="displayPunchRequest" [requestID]="requestID" [requestStatus]="requestStatus" [workflowID]="workflowID" [transactionID]="transactionID" (closePopup)="closePopups($event)" (punchRegularizationLeaveRefresh)="recallAllLeaveRefreshDeatil()"></app-punch-regularization>
+</p-dialog>

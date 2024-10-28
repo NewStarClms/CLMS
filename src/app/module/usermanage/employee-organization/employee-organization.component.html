@@ -1,0 +1,24 @@
+<section class="card">
+    <header class="card-header">
+        <h2>Map Employee's Organization Unit</h2>
+    </header>
+
+    <div class="card-body word-wrap">
+   
+        <app-grid-renderer
+        [gridRowData]="rowData"
+        [gridColData]="columnDefs"
+        [totalRecords]="totalRecordCount"
+        [isLazyLoadingEnabled]="true"
+        (onCellClickEvent)="onCellClicked($event)"
+        (onLazyLoadGridData)="onLazyLoadGridData($event)">
+        </app-grid-renderer>
+     
+    </div>
+  </section>
+  
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}"  rejectButtonStyleClass="p-button-text">
+  
+  </p-confirmDialog>
+  <!-- page end-->
+  

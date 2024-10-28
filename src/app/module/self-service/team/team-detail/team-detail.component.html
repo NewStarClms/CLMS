@@ -1,0 +1,15 @@
+
+<section class="card">
+    <header class="card-header">
+    <h2>Team Detail</h2>
+    </header>
+    
+   <div class="card-body">
+    <app-grid-renderer
+    [gridRowData]="rowData"
+    [gridColData]="columnDefs"
+    (onCellClickEvent)="onCellClicked($event)"
+    ></app-grid-renderer>
+    
+   </div>
+  </section>

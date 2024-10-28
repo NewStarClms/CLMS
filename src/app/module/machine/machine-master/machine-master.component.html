@@ -1,0 +1,24 @@
+<section class="card">
+    <header class="card-header">
+      <div class="group-left col-lg-6" style="float: left;">
+        <h2>Machine Master</h2>
+      </div>
+      <div class="group-right col-lg-6">
+        <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+        <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNewMachine()"class="p-button-rounded p-button-success"></button>
+    </div>
+  </header>
+  <div class="card-body word-wrap">
+   
+    <app-grid-renderer
+    [gridRowData]="rowData"
+    [gridColData]="columnDefs"
+    (onCellClickEvent)="onCellClicked($event)">
+    </app-grid-renderer>
+ 
+</div>
+</section>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+</p-confirmDialog>
+
+

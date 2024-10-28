@@ -1,0 +1,122 @@
+<section class="card">
+    <header class="card-header">
+      <h3 *ngIf="!allDisabledField">Calendar Setting</h3>
+      <h3 *ngIf="allDisabledField">Time Office Policy Setup for <b>{{holidayCalenderPolicyInfo.policyName}}</b></h3>
+  </header>
+    <div class="card-body">
+        <div class="form-group row" *ngIf="!allDisabledField">
+            <div class="col-lg-2">
+              <label class="labelfont">Policy Name </label>
+             <p>{{holidayCalenderPolicyInfo.policyName}}</p>
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont">Restricted Holiday Applicable</label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="holidayCalenderPolicyInfo.restrictedHolidayApplicable" 
+              optionLabel="label" optionValue="value" #restrictedHolidayApplicable="ngModel"
+              [ngClass]="{'is-invalid': restrictedHolidayApplicable.invalid && (restrictedHolidayApplicable.dirty || restrictedHolidayApplicable.touched)}" 
+              name="restrictedHolidayApplicable" [disabled]="true" id="restrictedHolidayApplicable" [required]="true"></p-selectButton>
+              <div *ngIf="restrictedHolidayApplicable.invalid && (restrictedHolidayApplicable.dirty || restrictedHolidayApplicable.touched)" class="labelfont">
+                
+                <div class="p-error" *ngIf="restrictedHolidayApplicable.errors?.['required']">
+                  Restricted Holiday Applicable is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-1">
+                <label class="labelfont">Prodata</label>
+                <p>{{holidayCalenderPolicyInfo.prodataDate}}</p>
+            </div>
+            <div class="col-lg-3">
+                <label class="labelfont">Max Restricted Holiday Request</label>
+                <p>{{holidayCalenderPolicyInfo.maximumRestrictedHolidayRequest}}</p>    
+            </div>
+            <div class="col-lg-3">
+                <label class="labelfont">Restricted Holiday Prodata</label>
+                <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="holidayCalenderPolicyInfo.restrictedHolidayProdata" 
+                optionLabel="label" optionValue="value" #restrictedHolidayProdata="ngModel"
+                [ngClass]="{'is-invalid': restrictedHolidayProdata.invalid && (restrictedHolidayProdata.dirty || restrictedHolidayProdata.touched)}" 
+                name="restrictedHolidayProdata" id="restrictedHolidayProdata" [disabled]="true"></p-selectButton>
+              </div>
+          </div> 
+    </div>
+    <div class="card-body">
+        <h3 *ngIf="!allDisabledField">Map Holiday with Calendar</h3>
+        <div class="form-group row" *ngIf="!allDisabledField">
+            <div class="col-lg-4">
+                <label class="labelfont">Calendar Year</label>
+                <input pinput
+                    [disabled]="allDisabledField" [(ngModel)]= "holidayCalenderPolicyMappingInfo.policyID"
+                    class="form-control" type="hidden" name="policyID" id="policyID" #policyID="ngModel">
+                    <input pinput
+                    [disabled]="allDisabledField" [(ngModel)]= "holidayCalenderPolicyMappingInfo.calendarYear"
+                    class="form-control"
+                    type="text"
+                    required
+                    (keypress)="keyPressNumeric($event)"
+                    name="calendarYear"
+                    id="calendarYear" #calendarYear="ngModel"
+                    [ngClass]="{'is-invalid': calendarYear.invalid && (calendarYear.dirty || calendarYear.touched)}">
+                    <div *ngIf="calendarYear.invalid && (calendarYear.dirty || calendarYear.touched)"
+                    class="labelfont">
+                    <div  class="p-error" *ngIf="calendarYear.errors?.['required']">
+                    Calendar Year is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2" style="text-align: right;">
+                <label class="labelfont"></label>
+                <div style="padding-left:0px;">
+                  <p-button type="button" id="GetData" label="Get Data" (click)="getHolidayData()"
+                    Class="p-button-text p-button-sm p-button-primary"></p-button>
+                </div>
+              </div>
+              <div class="col-lg-2 float-right" style="text-align: right;">
+                <label class="labelfont"></label>
+                <div style="padding-left:0px;">
+                  <p-button type="button" id="save" label="Save" (click)="saveHolidayCalenderMappingPolicy()"
+                    Class="p-button-text p-button-sm p-button-primary"></p-button>
+                </div>
+              </div>
+        </div>
+        <p-table [columns]="holidayListCol" [value]="holidaysListUI" [scrollable]="true" scrollHeight="400px">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowholiday let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <div *ngIf="col.text; then textfield else changefield"></div>
+                        <ng-template #textfield>
+                            {{rowholiday[col.field]}}
+                        </ng-template>
+                        <ng-template #changefield>
+                            <div *ngIf="col.date; then shoedate"></div>
+                        <ng-template #shoedate>
+                            {{rowholiday.holidayDate | date:'dd-MMM-YYYY'}}
+                        </ng-template>
+                            <div *ngIf="col.checkbox; then check"></div>
+                        <ng-template #check>
+                            <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="rowholiday.selected" 
+      optionLabel="label" optionValue="value" #selected="ngModel" class="tableselectbutton"
+      name="rowholiday.holidayID" id="rowholiday.holidayID"></p-selectButton>
+                         
+                    </ng-template>
+                        <div *ngIf="col.type; then type "></div>
+                        <ng-template #type>
+                            <span *ngIf="rowholiday.holidayType == 'D'"><span class="bg-success text-white">Normal</span></span>
+                            <span *ngIf="rowholiday.holidayType == 'N'"><span class="bg-danger text-white">National</span></span>
+                            <span *ngIf="rowholiday.holidayType == 'R'"><span class="bg-warning text-white">Optional</span></span>
+                        </ng-template>
+                        </ng-template>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+  </section>
+   
+  

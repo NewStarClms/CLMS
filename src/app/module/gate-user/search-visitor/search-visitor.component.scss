@@ -1,0 +1,22 @@
+.auto-serch{
+  display: flex;
+  // flex-direction: row-reverse;
+  //margin-left: 11rem;
+}
+.search-label{
+  display: flex;
+  flex-direction: column-reverse;
+  width: 195px;
+  margin-bottom: -37px;
+  font-weight: 700;
+  font-size: larger;
+}
+.Visitorsearch{
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 0;
+  left: 38rem;
+  margin-bottom: -36px;
+  position: relative;
+  line-height: 2.5;
+}

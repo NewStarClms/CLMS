@@ -1,0 +1,946 @@
+<header class="card-header">
+  <h2>{{headerdialogName}}</h2>
+</header>
+<form #employeeForm="ngForm" (submit)="SaveEmployeeData(employeeForm)">
+<div class="card-body">
+ 
+    <p-tabView>
+      <p-tabPanel header="Official" tooltip="official">
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <input pinput [(ngModel)]="employeeInfo.employeeID" class="form-control" type="text" name="employeeID"
+              id="employeeID" hidden="true">
+            <label class="labelfont">Profile Image</label>
+            <div *ngIf="filePath && filePath !== ''">
+              <img [src]="filePath" style="width: 120px; height: 120px;margin-bottom: 10px;"><br />
+            </div>
+            <input name="profileImagePath" id="profileImagePath" type="file" id="profileImagePath" class="form-control"
+              (change)="handleFileInput($event,'profile')" style="display: none;" />
+            <label class="btn btn-primary" for="profileImagePath"
+              style="margin-left: 7px !important;margin-top: 6px !important;" title="Select Profile Image"><i
+                class="pi pi-upload" style="font-size: 1rem"></i></label> OR
+            <label class="btn btn-success" style="margin-left: 7px !important;margin-top: 6px !important;"
+              (click)="fnOpenCameraPhoto()" title="Take Profile Photo From Camera"><i class="pi pi-camera"
+                style="font-size: 1rem"></i></label>
+            <br /> <br /> <br />
+            <label class="labelfont">Signature Image</label>
+            <div *ngIf="signfilePath && signfilePath !== ''">
+              <img [src]="signfilePath" style="width: 120px; height: 120px;margin-bottom: 10px;"><br />
+            </div>
+            <input name="signatureImagePath" id="signatureImagePath" type="file" id="signatureImagePath"
+              class="form-control" (change)="handleFileInput($event, 'signature')" style="display: none;" />
+            <label class="btn btn-primary" for="signatureImagePath" style="margin-left: 7px !important;"
+              title="Select Signature Image"><i class="pi pi-upload" style="font-size: 1rem"></i></label>
+          </div>
+          <div class="col-lg-9">
+            <div class="form-group row">
+              <div class="col-md-3" style="float: left !important;">
+                <label class="labelfont lableMargin"> User Login</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="employeeInfo.userLogin" optionLabel="label"
+                  optionValue="value" name="userLogin"></p-selectButton>
+              </div>
+              <div class="col-md-3" style="float: left !important;">
+                <label class="labelfont lableMargin"> Mobile Login</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="employeeInfo.mobileLogin" optionLabel="label"
+                  optionValue="value" name="userLogin"></p-selectButton>
+              </div>
+              <div class="col-md-3" *ngIf="this.employeeInfo.employeeStatusID===3">
+                <label class="lableMargin label">InActive Employee</label>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-4" style="float: left !important;">
+                <label class="labelfont lableMargin"> Reporting Manager</label>
+                <p-autoComplete
+                [(ngModel)]="reportingManagers"
+                [suggestions]="ReportingManageremployeeSerchList"
+                (completeMethod)="reportingsearchData($event)"
+                [forceSelection]="true"
+                field="key"
+                [minLength]="2"
+                class="auto-serch"
+                placeholder="Search Employee" [multiple]="false"
+                name="reportingManager"
+                id="reportingManager"
+                (onSelect)="filterEmployeeDetail($event)"
+                (onUnselect)="reportingunSelectEmployee($event)"
+                >
+              </p-autoComplete>
+                <!-- <app-search-autocomplete  (onSearchEvent)="filterEmployeeDetail($event)"></app-search-autocomplete> -->
+              </div>
+              <div class="col-md-4" style="float: left !important;">
+                <label class="labelfont lableMargin"> Functional Manager</label>
+                <p-autoComplete
+                [(ngModel)]="funtionalManagers"
+                [suggestions]="functionalManageremployeeSerchList"
+                (completeMethod)="functionalsearchData($event)"
+                [forceSelection]="true"
+                field="key"
+                [minLength]="2"
+                class="auto-serch"
+                placeholder="Search Employee" [multiple]="false"
+                name="funtionalManager"
+                id="funtionalManager"
+                (onSelect)="filterFunctionManagerDetail($event)"
+                (onUnselect)="functinalunSelectEmployee($event)"
+                >
+              </p-autoComplete>
+                <!-- <app-search-autocomplete  (onSearchEvent)="filterFunctionManagerDetail($event)"></app-search-autocomplete> -->
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">SNR Number<span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="employeeInfo.snrNumber" class="form-control" type="text"
+                  name="snrNumber" id="snrNumber" #snrNumber="ngModel"
+                  [ngClass]="{'is-invalid': snrNumber.invalid && (snrNumber.dirty || snrNumber.touched)}">
+                <div *ngIf="snrNumber.invalid && (snrNumber.dirty || snrNumber.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="snrNumber.errors?.['required']">
+                    SNR Number is required.
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            <div class="form-group row">
+              <div class="col-md-4">
+                <label class="labelfont">Employee Name <span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="employeeInfo.employeeName" class="form-control" type="text" [style.color]="color"  [style.border-bottom]="border" 
+                  name="employeeName" id="employeeName" #employeeName="ngModel"
+                  [ngClass]="{'is-invalid': employeeName.invalid && (employeeName.dirty || employeeName.touched)}"
+                  (keypress)="keyPressAlphanumeric($event)">
+                <div *ngIf="employeeName.invalid && (employeeName.dirty || employeeName.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="employeeName.errors?.['required']">
+                    Employee Name is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Employee Code</label>
+                <input pinput [(ngModel)]="employeeInfo.employeeCode" class="form-control text-uppercase" type="text"
+                  name="employeeCode" id="employeeCode" #employeeCode="ngModel" [readonly]="readonlyCondition"
+                  [ngClass]="{'is-invalid': employeeCode.invalid && (employeeCode.dirty || employeeCode.touched)}"
+                  (keypress)="keyPressAlphanumeric($event)">
+
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Punch ID</label>
+                <input pinput [(ngModel)]="employeeInfo.punchID" class="form-control" type="text" name="punchID" [style.color]="color"  [style.border-bottom]="border"
+                  id="punchID" #punchID="ngModel" [disabled]="isFromBiometricData"
+                  [ngClass]="{'is-invalid': punchID.invalid && (punchID.dirty || punchID.touched)}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-4">
+                <label class="labelfont">Date Of Joining <span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="employeeInfo.joiningDate" class="form-control" type="text" name="joiningDate"
+                  autocomplete="off" id="joiningDate" #joiningDate="ngModel" [bsConfig]="datepickerConfig"
+                  placeholder="DD-MM-YYYY" bsDatepicker
+                  [ngClass]="{'is-invalid': joiningDate.invalid && (joiningDate.dirty || joiningDate.touched)}">
+                <div *ngIf="joiningDate.invalid && (joiningDate.dirty || joiningDate.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="joiningDate.errors?.['required']">
+                    Joining Date is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Employee Status<span class="text-danger">*</span></label>
+                <p-dropdown [options]="empStatusList" [(ngModel)]="employeeInfo.employeeStatusID"
+                  optionLabel="empStatusName" optionValue="empStatusID" class="" #employeeStatusID="ngModel"
+                  (ngModelChange)="fngetEmployeestatus($event)"
+                  [ngClass]="{'is-invalid': employeeStatusID.invalid && (employeeStatusID.dirty || employeeStatusID.touched)}"
+                  name="employeeStatusID" id="employeeStatusID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="employeeStatusID.invalid && (employeeStatusID.dirty || employeeStatusID.touched)"
+                  class="labelfont">
+
+                  <div class="p-error" *ngIf="employeeStatusID.errors?.['required']">
+                    Employee Status is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Employee Type<span class="text-danger">*</span></label>
+                <p-dropdown [options]="empTypeList" [(ngModel)]="employeeInfo.employeeTypeID" optionLabel="empTypeName"
+                  optionValue="empTypeID" class="" #employeeTypeID="ngModel"
+                  [ngClass]="{'is-invalid': employeeTypeID.invalid && (employeeTypeID.dirty || employeeTypeID.touched)}"
+                  name="employeeTypeID" id="employeeTypeID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="employeeTypeID.invalid && (employeeTypeID.dirty || employeeTypeID.touched)"
+                  class="labelfont">
+                  <div class="p-error" *ngIf="employeeTypeID.errors?.['required']">
+                    Employee Type is required.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+
+
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-4">
+                <label class="labelfont">Company<span class="text-danger">*</span></label>
+                <p-dropdown [options]="companyList" [(ngModel)]="employeeInfo.companyID" optionLabel="companyName"
+                  optionValue="companyID" class="" #companyID="ngModel"
+                  [ngClass]="{'is-invalid': companyID.invalid && (companyID.dirty || companyID.touched)}"
+                  name="companyID" id="companyID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="companyID.invalid && (companyID.dirty || companyID.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="companyID.errors?.['required']">
+                    Company is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Contractor<span class="text-danger">*</span></label>
+                <p-dropdown [options]="contList" [(ngModel)]="employeeInfo.contractorID" optionLabel="contName"
+                  optionValue="contID" class="" #contractorID="ngModel"
+                  [ngClass]="{'is-invalid': contractorID.invalid && (contractorID.dirty || contractorID.touched)}"
+                  name="contractorID" id="contractorID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="contractorID.invalid && (contractorID.dirty || contractorID.touched)" class="labelfont">
+
+                  <div class="p-error" *ngIf="contractorID.errors?.['required']">
+                    Contractor is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Department<span class="text-danger">*</span></label>
+                <p-dropdown [options]="deptList" [(ngModel)]="employeeInfo.departmentID" optionLabel="deptName"
+                  optionValue="deptID" (ngModelChange)="fillSubDeptDDL()" #departmentID="ngModel"
+                  [ngClass]="{'is-invalid': departmentID.invalid && (departmentID.dirty || departmentID.touched)}"
+                  name="departmentID" id="departmentID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="departmentID.invalid && (departmentID.dirty || departmentID.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="departmentID.errors?.['required']">
+                    Department is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              
+              <div class="col-md-4">
+                <label class="labelfont">Sub Department<span class="text-danger">*</span></label>
+                <p-dropdown [options]="subdeptList" [(ngModel)]="employeeInfo.subDepartmentID" optionLabel="subdeptName"
+                  optionValue="subdeptID" [disabled]="getSubDeptState()" #subDepartmentID="ngModel"
+                  [ngClass]="{'is-invalid': subDepartmentID.invalid && (subDepartmentID.dirty || subDepartmentID.touched)}"
+                  name="subDepartmentID" id="subDepartmentID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="subDepartmentID.invalid && (subDepartmentID.dirty || subDepartmentID.touched)"
+                  class="labelfont">
+
+                  <div class="p-error" *ngIf="subDepartmentID.errors?.['required']">
+                    Sub Department is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Designation<span class="text-danger">*</span></label>
+                <p-dropdown [options]="desList" [(ngModel)]="employeeInfo.designationID" optionLabel="desName"
+                  optionValue="desID" class="" #designationID="ngModel"
+                  [ngClass]="{'is-invalid': designationID.invalid && (designationID.dirty || designationID.touched)}"
+                  name="designationID" id="designationID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="designationID.invalid && (designationID.dirty || designationID.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="designationID.errors?.['required']">
+                    Designation is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Grade<span class="text-danger">*</span></label>
+                <p-dropdown [options]="gradeList" [(ngModel)]="employeeInfo.gradeID" optionLabel="gradeName"
+                  optionValue="gradeID" class="" #gradeID="ngModel"
+                  [ngClass]="{'is-invalid': gradeID.invalid && (gradeID.dirty || gradeID.touched)}" name="gradeID"
+                  id="gradeID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="gradeID.invalid && (gradeID.dirty || gradeID.touched)" class="labelfont">
+
+                  <div class="p-error" *ngIf="gradeID.errors?.['required']">
+                    Grade is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group row">
+              <div class="col-md-4">
+                <label class="labelfont">Level<span class="text-danger">*</span></label>
+                <p-dropdown [options]="levelList" [(ngModel)]="employeeInfo.levelID" optionLabel="levelName"
+                  optionValue="levelID" class="" #levelID="ngModel"
+                  [ngClass]="{'is-invalid': levelID.invalid && (levelID.dirty || levelID.touched)}" name="levelID"
+                  id="levelID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="levelID.invalid && (levelID.dirty || levelID.touched)" class="labelfont">
+
+                  <div class="p-error" *ngIf="levelID.errors?.['required']">
+                    Level is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Category<span class="text-danger">*</span></label>
+                <p-dropdown [options]="catList" [(ngModel)]="employeeInfo.categoryID" optionLabel="catName"
+                  optionValue="catID" class="" #categoryID="ngModel"
+                  [ngClass]="{'is-invalid': categoryID.invalid && (categoryID.dirty || categoryID.touched)}"
+                  name="categoryID" id="categoryID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="categoryID.invalid && (categoryID.dirty || categoryID.touched)" class="labelfont">
+
+                  <div class="p-error" *ngIf="categoryID.errors?.['required']">
+                    Category is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Branch<span class="text-danger">*</span></label>
+                <p-dropdown [options]="branchList" [(ngModel)]="employeeInfo.branchID" optionLabel="branchName"
+                  optionValue="branchID" class="" #branchID="ngModel"
+                  [ngClass]="{'is-invalid': branchID.invalid && (branchID.dirty || branchID.touched)}" name="branchID"
+                  id="branchID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="branchID.invalid && (branchID.dirty || branchID.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="branchID.errors?.['required']">
+                    Branch is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group row">
+              <div class="col-md-4">
+                <label class="labelfont">Employee Skill Type<span class="text-danger">*</span></label>
+                <p-dropdown [options]="empSkillList" [(ngModel)]="employeeInfo.employeeSkillTypeID"
+                  optionLabel="empskillName" optionValue="empskillID" class="" #employeeSkillTypeID="ngModel"
+                  [ngClass]="{'is-invalid': employeeSkillTypeID.invalid && (employeeSkillTypeID.dirty || employeeSkillTypeID.touched)}"
+                  name="employeeSkillTypeID" id="employeeSkillTypeID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="employeeSkillTypeID.invalid && (employeeSkillTypeID.dirty || employeeSkillTypeID.touched)"
+                  class="labelfont">
+
+                  <div class="p-error" *ngIf="employeeSkillTypeID.errors?.['required']">
+                    Employee Skill Type is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Organization<span class="text-danger">*</span></label>
+                <p-dropdown [options]="orgList" [(ngModel)]="employeeInfo.organizationID" optionLabel="orgName"
+                  optionValue="orgID" class="" #organizationID="ngModel"
+                  [ngClass]="{'is-invalid': organizationID.invalid && (organizationID.dirty || organizationID.touched)}"
+                  name="organizationID" id="organizationID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="organizationID.invalid && (organizationID.dirty || organizationID.touched)"
+                  class="labelfont">
+
+                  <div class="p-error" *ngIf="organizationID.errors?.['required']">
+                    Organization is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="labelfont">Section</label>
+                <p-dropdown [options]="secionList" [(ngModel)]="employeeInfo.sectionID" optionLabel="sectionName"
+                  optionValue="sectionID" class="" #sectionID="ngModel"
+                  [ngClass]="{'is-invalid': sectionID.invalid && (sectionID.dirty || sectionID.touched)}"
+                  name="sectionID" id="sectionID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="sectionID.invalid && (sectionID.dirty || sectionID.touched)" class="labelfont">
+
+                  <div class="p-error" *ngIf="sectionID.errors?.['required']">
+                    Section is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-4">
+                <label class="labelfont">Confirmation Date</label>
+                <input pinput [(ngModel)]="employeeInfo.confirmationDate" class="form-control" type="text"
+                  name="confirmationDate" id="confirmationDate" autocomplete="off" [bsConfig]="datepickerConfig"
+                  placeholder="DD-MM-YYYY" bsDatepicker>
+              </div>
+              <div class="col-md-4" *ngIf="divResignationDetail">
+                <label class="labelfont">Resignation Date</label>
+                <input pinput [(ngModel)]="employeeInfo.resignationDate" class="form-control" type="text"
+                name="resignationDate" id="resignationDate" autocomplete="off" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker>
+              </div>
+              <div class="col-md-4" *ngIf="divResignationDetail">
+                <label class="labelfont">Notice Period</label>
+                <input pinput [(ngModel)]="employeeInfo.noticePeriod" class="form-control" type="text"
+                  name="noticePeriod" id="noticePeriod" #noticePeriod="ngModel"
+                  [ngClass]="{'is-invalid': noticePeriod.invalid && (noticePeriod.dirty || noticePeriod.touched)}"
+                  (keypress)="keyPressNumeric($event)">
+              </div>
+              <div class="col-md-4" *ngIf="divResignationDetail">
+                <label class="labelfont">Leaving Date</label>
+                <input pinput [(ngModel)]="employeeInfo.leavingDate" class="form-control" type="text"
+                  name="leavingDate" id="leavingDate" autocomplete="off" [bsConfig]="datepickerConfig"
+                  placeholder="DD-MM-YYYY" bsDatepicker>
+              </div>
+            
+              <div class="col-md-4" *ngIf="divResignationDetail">
+                <label class="labelfont">Leaving Reason</label>
+                <input pinput [(ngModel)]="employeeInfo.leavingReason" class="form-control" type="text"
+                  name="leavingReason" id="leavingReason" #leavingReason="ngModel"
+                  [ngClass]="{'is-invalid': leavingReason.invalid && (leavingReason.dirty || leavingReason.touched)}">
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Black Listed</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="employeeInfo.blacklisted" optionLabel="label"
+                  optionValue="value" name="blacklisted"
+                  id="blacklisted"
+                  #blacklisted="ngModel" (click)="showHideBlackListDetail()"
+                  [ngClass]="{'is-invalid': blacklisted.invalid && (blacklisted.dirty || blacklisted.touched)}"></p-selectButton>
+                <!-- <input [(ngModel)]="employeeInfo.blacklisted" type="checkbox" name="blacklisted" id="blacklisted"
+                  #blacklisted="ngModel"
+                  [ngClass]="{'is-invalid': blacklisted.invalid && (blacklisted.dirty || blacklisted.touched)}"> -->
+              </div>
+              <div class="col-md-4" *ngIf="divBlackListed">
+                <label class="labelfont">Blacklist Date</label>
+                <input pinput [(ngModel)]="employeeInfo.blacklistDate" class="form-control" type="text"
+                  name="blacklistDate" id="blacklistDate" autocomplete="off" [bsConfig]="datepickerConfig"
+                  placeholder="DD-MM-YYYY" bsDatepicker>
+              </div>
+              <div class="col-md-4" *ngIf="divBlackListed">
+                <label class="labelfont">Blacklist Reason</label>
+                <input pinput [(ngModel)]="employeeInfo.blacklistReason" class="form-control" type="text"
+                  name="blacklistReason" id="blacklistReason" #blacklistReason="ngModel"
+                  [ngClass]="{'is-invalid': blacklistReason.invalid && (blacklistReason.dirty || blacklistReason.touched)}">
+              </div>                
+            </div>
+          </div>
+        </div>
+
+      </p-tabPanel>
+      <p-tabPanel header="Basic" tooltip="Basic">
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">Aadhar No.</label>
+            <input pinput [(ngModel)]="employeeInfo.aadharNumber" class="form-control" type="text" name="aadharNumber"
+              id="aadharNumber" #aadharNumber="ngModel"
+              [ngClass]="{'is-invalid': aadharNumber.invalid && (aadharNumber.dirty || aadharNumber.touched)}"
+              (keypress)="keyPressNumeric($event)">
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Pan No.</label>
+            <input pinput [(ngModel)]="employeeInfo.panNo" class="form-control" type="text" name="panNo" id="panNo"
+              #panNo="ngModel" [ngClass]="{'is-invalid': panNo.invalid && (panNo.dirty || panNo.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">UAN No.</label>
+            <input pinput [(ngModel)]="employeeInfo.uanNumber" class="form-control" type="text" name="uanNumber"
+              id="uanNumber" #uanNumber="ngModel"
+              [ngClass]="{'is-invalid': uanNumber.invalid && (uanNumber.dirty || uanNumber.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">PF No.</label>
+            <input pinput [(ngModel)]="employeeInfo.pfNumber" class="form-control" type="text" name="pfNumber"
+              id="pfNumber" #pfNumber="ngModel"
+              [ngClass]="{'is-invalid': pfNumber.invalid && (pfNumber.dirty || pfNumber.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">ESI No.</label>
+            <input pinput [(ngModel)]="employeeInfo.esiNumber" class="form-control" type="text" name="esiNumber"
+              id="esiNumber" #esiNumber="ngModel"
+              [ngClass]="{'is-invalid': esiNumber.invalid && (esiNumber.dirty || esiNumber.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Gender</label>
+            <p-dropdown [options]="genderList" [(ngModel)]="employeeInfo.genderID" optionLabel="genderName"
+              optionValue="genderID" class="" #genderID="ngModel"
+              [ngClass]="{'is-invalid': genderID.invalid && (genderID.dirty || genderID.touched)}" name="genderID"
+              id="genderID">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">Blood Group</label>
+            <p-dropdown [options]="bloodgroupList" [(ngModel)]="employeeInfo.bloodGroupID" optionLabel="bloodName"
+              optionValue="bloodID" class="" #bloodGroupID="ngModel"
+              [ngClass]="{'is-invalid': bloodGroupID.invalid && (bloodGroupID.dirty || bloodGroupID.touched)}"
+              name="bloodGroupID" id="bloodGroupID">
+            </p-dropdown>
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Religion</label>
+            <p-dropdown [options]="religionList" [(ngModel)]="employeeInfo.religionID" optionLabel="religionName"
+              optionValue="religionID" class="" #religionID="ngModel"
+              [ngClass]="{'is-invalid': religionID.invalid && (religionID.dirty || religionID.touched)}"
+              name="religionID" id="religionID">
+            </p-dropdown>
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Nationality</label>
+            <p-dropdown [options]="nationalityList" [(ngModel)]="employeeInfo.nationalityID" optionLabel="nationalName"
+              optionValue="nationalID" class="" #nationalityID="ngModel"
+              [ngClass]="{'is-invalid': nationalityID.invalid && (nationalityID.dirty || nationalityID.touched)}"
+              name="nationalityID" id="nationalityID">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">Vehical Detail</label>
+            <input pinput [(ngModel)]="employeeInfo.vehicalDetail" class="form-control" type="text" name="vehicalDetail"
+              id="vehicalDetail" #vehicalDetail="ngModel"
+              [ngClass]="{'is-invalid': vehicalDetail.invalid && (vehicalDetail.dirty || vehicalDetail.touched)}">
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Vehical No.</label>
+            <input pinput [(ngModel)]="employeeInfo.vehicalNo" class="form-control" type="text" name="vehicalNo"
+              id="vehicalNo" #vehicalNo="ngModel"
+              [ngClass]="{'is-invalid': vehicalNo.invalid && (vehicalNo.dirty || vehicalNo.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Personal" tooltip="Personal">
+        <div class="form-group row">
+          <div class="col-md-6">
+            <label class="labelfont">Email</label>
+            <input pinput [(ngModel)]="employeeInfo.emailID" class="form-control" type="text" name="emailID"
+              id="emailID" #emailID="ngModel"
+              [ngClass]="{'is-invalid': emailID.invalid && (emailID.dirty || emailID.touched)}"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+            <div *ngIf="emailID.invalid" class="labelfont">
+              <div class="p-error" *ngIf="emailID.errors?.pattern">
+                This is not a valid Email!!!
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="labelfont">Contact No.</label>
+            <input pinput [(ngModel)]="employeeInfo.mobileNo" class="form-control" type="text" name="mobileNo"
+              id="mobileNo" #mobileNo="ngModel"
+              [ngClass]="{'is-invalid': mobileNo.invalid && (mobileNo.dirty || mobileNo.touched)}"
+               maxlength="15">
+              <div *ngIf="mobileNo.invalid" class="labelfont">
+                <div class="p-error" *ngIf="mobileNo.errors">
+                  Invalid Mobile Number
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6">
+            <label class="labelfont">Date Of Birth<span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="employeeInfo.dateOfBirth" class="form-control" type="text" name="dateOfBirth"
+              id="dateOfBirth" autocomplete="off" required [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY"
+              bsDatepicker #dateOfBirth="ngModel"
+              [ngClass]="{'is-invalid': dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)}">
+            <div *ngIf="dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)" class="labelfont">
+              <div class="p-error" *ngIf="dateOfBirth.errors?.['required']">
+                Date Of Birth is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="labelfont">Domicile</label>
+            <input pinput [(ngModel)]="employeeInfo.domicile" class="form-control" type="text" name="domicile"
+              id="domicile" #domicile="ngModel"
+              [ngClass]="{'is-invalid': domicile.invalid && (domicile.dirty || domicile.touched)}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6">
+            <h4>Current Address</h4>
+          </div>
+          <div class="col-md-6">
+            <h4>Permanent Address</h4>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6">
+            <label class="labelfont">Current Address</label>
+            <input pinput [(ngModel)]="employeeInfo.currentAddress" class="form-control" type="text"
+              name="currentAddress" id="currentAddress" #currentAddress="ngModel"
+              [ngClass]="{'is-invalid': currentAddress.invalid && (currentAddress.dirty || currentAddress.touched)}">
+          </div>
+          <div class="col-lg-6">
+            <label class="labelfont">Permanent Address</label>
+            <input pinput [(ngModel)]="employeeInfo.permanentAddress" class="form-control" type="text"
+              name="permanentAddress" id="permanentAddress" #permanentAddress="ngModel"
+              [ngClass]="{'is-invalid': permanentAddress.invalid && (permanentAddress.dirty || permanentAddress.touched)}">
+          </div>
+
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6">
+            <label class="labelfont">Current Country <span class="text-danger">*</span></label>
+            <p-dropdown [options]="countryList" [(ngModel)]="employeeInfo.currentCountryID" optionLabel="countryName"
+              optionValue="countryID" class="" #currentCountryID="ngModel"
+              [ngClass]="{'is-invalid': currentCountryID.invalid && (currentCountryID.dirty || currentCountryID.touched)}"
+              name="currentCountryID" id="currentCountryID" [required]="true">
+            </p-dropdown>
+            <div *ngIf="currentCountryID.invalid && (currentCountryID.dirty || currentCountryID.touched)"
+              class="labelfont">
+              <div class="p-error" *ngIf="currentCountryID.errors?.['required']">
+                Current Country is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="labelfont">Permanent Country <span class="text-danger">*</span></label>
+            <p-dropdown [options]="countryList" [(ngModel)]="employeeInfo.permanentCountryID" optionLabel="countryName"
+              optionValue="countryID" class="" #permanentCountryID="ngModel"
+              [ngClass]="{'is-invalid': permanentCountryID.invalid && (permanentCountryID.dirty || permanentCountryID.touched)}"
+              name="permanentCountryID" id="permanentCountryID" [required]="true">
+            </p-dropdown>
+            <div *ngIf="permanentCountryID.invalid && (permanentCountryID.dirty || permanentCountryID.touched)"
+              class="labelfont">
+              <div class="p-error" *ngIf="permanentCountryID.errors?.['required']">
+                Permanent Country is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6">
+            <label class="labelfont">Current State <span class="text-danger">*</span></label>
+            <p-dropdown [options]="stateList" [(ngModel)]="employeeInfo.currentStateID" optionLabel="stateName"
+              optionValue="stateID" (ngModelChange)="fillCurrentCityDDL()" class="" #currentStateID="ngModel"
+              [ngClass]="{'is-invalid': currentStateID.invalid && (currentStateID.dirty || currentStateID.touched)}"
+              name="currentStateID" id="currentStateID" [required]="true">
+            </p-dropdown>
+            <div *ngIf="currentStateID.invalid && (currentStateID.dirty || currentStateID.touched)" class="labelfont">
+              <div class="p-error" *ngIf="currentStateID.errors?.['required']">
+                Current State is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="labelfont">Permanent State <span class="text-danger">*</span></label>
+            <p-dropdown [options]="stateList" [(ngModel)]="employeeInfo.permanentStateID" optionLabel="stateName"
+              optionValue="stateID" (ngModelChange)="fillPermanentCityDDL()" class="" #permanentStateID="ngModel"
+              [ngClass]="{'is-invalid': permanentStateID.invalid && (permanentStateID.dirty || permanentStateID.touched)}"
+              name="permanentStateID" id="permanentStateID" [required]="true">
+            </p-dropdown>
+            <div *ngIf="permanentStateID.invalid && (permanentStateID.dirty || permanentStateID.touched)"
+              class="labelfont">
+              <div class="p-error" *ngIf="permanentStateID.errors?.['required']">
+                Permanent State is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6">
+            <label class="labelfont">Current City <span class="text-danger">*</span></label>
+            <p-dropdown [options]="currentcityList" [(ngModel)]="employeeInfo.currentCityID" optionLabel="cityName"
+              optionValue="cityID" class="" #currentCityID="ngModel"
+              [ngClass]="{'is-invalid': currentCityID.invalid && (currentCityID.dirty || currentCityID.touched)}"
+              [disabled]="getCurrentState()" name="currentCityID" id="currentCityID" [required]="true">
+            </p-dropdown>
+            <div *ngIf="currentCityID.invalid && (currentCityID.dirty || currentCityID.touched)" class="labelfont">
+              <div class="p-error" *ngIf="currentCityID.errors?.['required']">
+                Current City is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="labelfont">Permanent City <span class="text-danger">*</span></label>
+            <p-dropdown [options]="percityList" [(ngModel)]="employeeInfo.permanentCityID" optionLabel="cityName"
+              optionValue="cityID" class="" #permanentCityID="ngModel"
+              [ngClass]="{'is-invalid': permanentCityID.invalid && (permanentCityID.dirty || permanentCityID.touched)}"
+              [disabled]="getPermanentState()" name="permanentCityID" id="permanentCityID" [required]="true">
+            </p-dropdown>
+            <div *ngIf="permanentCityID.invalid && (permanentCityID.dirty || permanentCityID.touched)"
+              class="labelfont">
+              <div class="p-error" *ngIf="permanentCityID.errors?.['required']">
+                Permanent City is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6">
+            <label class="labelfont">Current Pincode</label>
+            <input pinput [(ngModel)]="employeeInfo.currentZip" class="form-control text-uppercase"
+              (keypress)="keyPressNumeric($event)" type="text" autocomplete="off" maxlength="6" minlength="6"
+              name="currentZip" id="currentZip" #currentZip="ngModel"
+              [ngClass]="{'is-invalid': currentZip.invalid && (currentZip.dirty || currentZip.touched)}">
+            <div *ngIf="currentZip.invalid && (currentZip.dirty || currentZip.touched)" class="labelfont">
+              <!-- <div  class="p-error" *ngIf="currentZip.errors?.['required']">
+                    Company Code is required.
+                  </div> -->
+              <div class="p-error" *ngIf="currentZip.errors?.['minlength']">
+                Pincode must be at least 6 characters long.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="labelfont">Permanent Pincode</label>
+            <input pinput [(ngModel)]="employeeInfo.permanentZip" class="form-control text-uppercase"
+              (keypress)="keyPressNumeric($event)" type="text" autocomplete="off" maxlength="6" minlength="6"
+              name="permanentZip" id="permanentZip" #permanentZip="ngModel"
+              [ngClass]="{'is-invalid': permanentZip.invalid && (permanentZip.dirty || permanentZip.touched)}">
+            <div *ngIf="permanentZip.invalid && (permanentZip.dirty || permanentZip.touched)" class="labelfont">
+              <!-- <div  class="p-error" *ngIf="permanentZip.errors?.['required']">
+                    Company Code is required.
+                  </div> -->
+              <div class="p-error" *ngIf="permanentZip.errors?.['minlength']">
+                Pincode must be at least 6 characters long.
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Family" tooltip="Family">
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">Father Name</label>
+            <input pinput [(ngModel)]="employeeInfo.fatherName" class="form-control" type="text" name="fatherName"
+              id="fatherName" #fatherName="ngModel"
+              [ngClass]="{'is-invalid': fatherName.invalid && (fatherName.dirty || fatherName.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Mother Name</label>
+            <input pinput [(ngModel)]="employeeInfo.motherName" class="form-control" type="text" name="motherName"
+              id="motherName" #motherName="ngModel"
+              [ngClass]="{'is-invalid': motherName.invalid && (motherName.dirty || motherName.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Guardian Name</label>
+            <input pinput [(ngModel)]="employeeInfo.guardianName" class="form-control" type="text" name="guardianName"
+              id="guardianName" #guardianName="ngModel"
+              [ngClass]="{'is-invalid': guardianName.invalid && (guardianName.dirty || guardianName.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">Marital Status <span class="text-danger">*</span></label>
+            <p-dropdown [options]="maritalList" [(ngModel)]="employeeInfo.maritalStatusID" optionLabel="maritalName"
+              optionValue="maritalID" class="" #maritalStatusID="ngModel"
+              [ngClass]="{'is-invalid': maritalStatusID.invalid && (maritalStatusID.dirty || maritalStatusID.touched)}"
+              name="maritalStatusID" id="maritalStatusID" (ngModelChange)="fngetMaritalstatus($event)">
+            </p-dropdown>
+            <div *ngIf="maritalStatusID.invalid && (maritalStatusID.dirty || maritalStatusID.touched)"
+              class="labelfont">
+              <div class="p-error" *ngIf="maritalStatusID.errors?.['required']">
+                Marital Status is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" *ngIf="maritalstatus">
+            <label class="labelfont">Spouse Name</label>
+            <input pinput [(ngModel)]="employeeInfo.spouseName" class="form-control" type="text" name="spouseName"
+              id="spouseName" #spouseName="ngModel"
+              [ngClass]="{'is-invalid': spouseName.invalid && (spouseName.dirty || spouseName.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+          </div>
+          <div class="col-md-4" *ngIf="maritalstatus">
+            <label class="labelfont">Marriage Date</label>
+            <input pinput [(ngModel)]="employeeInfo.marriageDate" class="form-control" type="text"
+              name="marriageDate" id="marriageDate" #marriageDate="ngModel" autocomplete="off"
+              [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" bsDatepicker>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Bank Detail" rightIcon="pi pi-star-fill" tooltip="Bank Detail">
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">Payment Mode <span class="text-danger">*</span></label>
+            <p-dropdown [options]="paymodeList" [(ngModel)]="employeeInfo.paymentModeID" optionLabel="key"
+              optionValue="value" #paymentModeID="ngModel"
+              [ngClass]="{'is-invalid': paymentModeID.invalid && (paymentModeID.dirty || paymentModeID.touched)}"
+              name="paymentModeID" id="paymentModeID" (ngModelChange)="fngetpaymentmode($event)">
+            </p-dropdown>
+          </div>
+
+          <div class="col-md-4" *ngIf="bankDetailformode">
+            <label class="labelfont">Payment Bank <span class="text-danger">*</span></label>
+            <p-dropdown [options]="bankbranchList" [(ngModel)]="employeeInfo.paymentBankID" optionLabel="bankBranchName"
+              optionValue="bankBranchID" #paymentBankID="ngModel"
+              [ngClass]="{'is-invalid': paymentBankID.invalid && (paymentBankID.dirty || paymentBankID.touched)}"
+              name="paymentBankID" id="paymentBankID">
+            </p-dropdown>
+          </div>
+          <div class="col-md-4" *ngIf="bankDetailformode">
+            <label class="labelfont">Bank Name<span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="employeeInfo.bankName" class="form-control" type="text" name="bankName"
+              id="bankName" #bankName="ngModel"
+              [ngClass]="{'is-invalid': bankName.invalid && (bankName.dirty || bankName.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+            <div *ngIf="bankName.invalid && (bankName.dirty || bankName.touched)" class="labelfont">
+              <div class="p-error" *ngIf="bankName.errors?.['required']">
+                Bank is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" *ngIf="bankDetailformode">
+            <label class="labelfont">Branch Name<span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="employeeInfo.branchName" class="form-control" type="text" name="branchName"
+              id="branchName" #branchName="ngModel"
+              [ngClass]="{'is-invalid': branchName.invalid && (branchName.dirty || branchName.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+            <div *ngIf="branchName.invalid && (branchName.dirty || branchName.touched)" class="labelfont">
+              <div class="p-error" *ngIf="branchName.errors?.['required']">
+                Branch is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" *ngIf="bankDetailformode">
+            <label class="labelfont">Account No. <span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="employeeInfo.bankAccountNo" class="form-control" type="text" name="bankAccountNo"
+              id="bankAccountNo" #bankAccountNo="ngModel"
+              [ngClass]="{'is-invalid': bankAccountNo.invalid && (bankAccountNo.dirty || bankAccountNo.touched)}"
+              (keypress)="keyPressAlphanumeric($event)" [required]="true">
+            <div *ngIf="bankAccountNo.invalid && (bankAccountNo.dirty || bankAccountNo.touched)" class="labelfont">
+              <div class="p-error" *ngIf="bankAccountNo.errors?.['required']">
+                Account No. is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" *ngIf="bankDetailformode">
+            <label class="labelfont">IFSC Code <span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="employeeInfo.ifscCode" class="form-control" type="text" name="ifscCode"
+              id="ifscCode" #ifscCode="ngModel"
+              [ngClass]="{'is-invalid': ifscCode.invalid && (ifscCode.dirty || ifscCode.touched)}"
+              (keypress)="keyPressAlphanumeric($event)" [required]="true">
+            <div *ngIf="ifscCode.invalid && (ifscCode.dirty || ifscCode.touched)" class="labelfont">
+              <div class="p-error" *ngIf="ifscCode.errors?.['required']">
+                IFSC Code is required.
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Miscellaneous" rightIcon="pi pi-star-fill" tooltip="Miscellaneous">
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">Emergency Contact Person</label>
+            <input pinput [(ngModel)]="employeeInfo.emergencyContectPerson" class="form-control" type="text"
+              name="emergencyContectPerson" id="emergencyContectPerson" #emergencyContectPerson="ngModel"
+              [ngClass]="{'is-invalid': emergencyContectPerson.invalid && (emergencyContectPerson.dirty || emergencyContectPerson.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Emergency Contact Number</label>
+            <input pinput [(ngModel)]="employeeInfo.contactNumberEmergency" class="form-control" type="text"
+              name="contactNumberEmergency" id="contactNumberEmergency" #contactNumberEmergency="ngModel"
+              [ngClass]="{'is-invalid': contactNumberEmergency.invalid && (contactNumberEmergency.dirty || contactNumberEmergency.touched)}"
+              (keypress)="keyPressNumeric($event)">
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Relationship</label>
+            <p-dropdown [options]="relationshipList" [(ngModel)]="employeeInfo.emergencyContectRelationshipID"
+              optionLabel="relationshipName" optionValue="relationshipID" class=""
+              #emergencyContectRelationshipID="ngModel"
+              [ngClass]="{'is-invalid': emergencyContectRelationshipID.invalid && (emergencyContectRelationshipID.dirty || emergencyContectRelationshipID.touched)}"
+              name="emergencyContectRelationshipID" id="emergencyContectRelationshipID">
+            </p-dropdown>
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Dispensary</label>
+            <p-dropdown [options]="dispensaryList" [(ngModel)]="employeeInfo.dispensaryID" optionLabel="dispensaryName"
+              optionValue="dispensaryID" class="" #dispensaryID="ngModel"
+              [ngClass]="{'is-invalid': dispensaryID.invalid && (dispensaryID.dirty || dispensaryID.touched)}"
+              name="dispensaryID" id="dispensaryID">
+            </p-dropdown>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Other Detail" tooltip="Other Detail">
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">Probation Period</label>
+            <input pinput [(ngModel)]="employeeInfo.probationPeriod" class="form-control" type="text" maxlength="5"
+              name="probationPeriod" id="probationPeriod" #probationPeriod="ngModel"
+              [ngClass]="{'is-invalid': probationPeriod.invalid && (probationPeriod.dirty || probationPeriod.touched)}"
+              (keypress)="keyPressNumeric($event)">
+          </div>
+          <!-- <div class="col-md-4">
+            <label class="labelfont">Probation Period Type</label>
+            <input pinput
+            [(ngModel)]= "employeeInfo.probationPeriodType"
+            class="form-control"
+            type="text"
+            name="probationPeriodType"
+            id="probationPeriodType" #probationPeriodType="ngModel"
+            [ngClass]="{'is-invalid': probationPeriodType.invalid && (probationPeriodType.dirty || probationPeriodType.touched)}" (keypress)="keyPressAlphanumeric($event)">
+          </div> -->
+
+          <div class="col-md-4">
+            <label class="labelfont">Retirement Year</label>
+            <input pinput [(ngModel)]="employeeInfo.retirementYear" class="form-control" type="text" maxlength="5"
+              name="retirementYear" id="retirementYear" #retirementYear="ngModel"
+              [ngClass]="{'is-invalid': retirementYear.invalid && (retirementYear.dirty || retirementYear.touched)}"
+              (keypress)="keyPressNumeric($event)">
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Retirement Date</label>
+            <input pinput [(ngModel)]="employeeInfo.retirementDate" class="form-control" type="text"
+              name="retirementDate" id="retirementDate" autocomplete="off" [bsConfig]="datepickerConfig"
+              placeholder="DD-MM-YYYY" bsDatepicker>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">Bond Year</label>
+            <input pinput [(ngModel)]="employeeInfo.bondYear" class="form-control" type="text" name="bondYear"
+              id="bondYear" #bondYear="ngModel"
+              [ngClass]="{'is-invalid': bondYear.invalid && (bondYear.dirty || bondYear.touched)}">
+          </div>
+
+
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Biometric Detail" rightIcon="pi pi-star-fill" tooltip="Biometric Detail">
+        <div class="form-group row">
+          <div class="col-md-4" style="float: left !important;">
+            <label class="labelfont lableMargin"> Device Punch</label>
+            <p-selectButton [options]="stateOptions" [(ngModel)]="employeeInfo.allowDevicePunch" optionLabel="label"
+              optionValue="value" name="allowDevicePunch"></p-selectButton>
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Device Access Valid Upto</label>
+            <input pinput [(ngModel)]="employeeInfo.deviceAccessValidUpto" class="form-control" type="text" name="deviceAccessValidUpto"
+              autocomplete="off" id="deviceAccessValidUpto" #deviceAccessValidUpto="ngModel" [bsConfig]="datepickerConfig"
+              placeholder="DD-MM-YYYY" bsDatepicker>
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Punch Type</label>
+            <p-dropdown [options]="employeePunchTypes" [(ngModel)]="employeeInfo.employeePunchTypeID"
+              optionLabel="employeePunchTypeName" optionValue="employeePunchTypeID" 
+              class="" #employeePunchTypeID="ngModel" id="employeePunchTypeID" name="employeePunchTypeID"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+</div>
+<div class="sticky  col-lg-12 col-md-9 col-sm-6"> <p-button icon="pi pi-check" [label]="labelName" Class="p-button-text p-button-sm p-button-success" type="submit"
+  [disabled]="!employeeForm.valid"></p-button>
+<p-button icon="pi pi-times" class="p-button-sm " label="Cancel" (click)="CancelEmployeeData()"
+  styleClass="p-button-secondary"></p-button>
+</div>
+</form>
+<p-dialog header="Take a Photo" [(visible)]="openTakeAphoto" [modal]="true" *ngIf="openTakeAphoto" [draggable]="false"
+  [resizable]="false" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '40vw'}">
+  <p class="takephototimer">{{seconds}}</p>
+  <webcam [height]="500" [width]="500" *ngIf="showWebcam" [trigger]="triggerObservable"
+    [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions"
+    [imageQuality]="1" (imageCapture)="handleImage($event)"></webcam>
+  <!-- Button Takes Photo -->
+  <button class="actionBtn" (click)="triggerSnapshot();">Take A Snapshot</button>
+  <!-- Snapshot Div where image will be shown -->
+  <!-- <div class="snapshot" *ngIf="webcamImage">
+<h2>Take your image or get another</h2>
+<img [src]="webcamImage.imageAsDataUrl"/>
+</div> -->
+</p-dialog>

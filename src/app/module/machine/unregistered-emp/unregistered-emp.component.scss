@@ -1,0 +1,30 @@
+//input[type=checkbox]{
+//     width: 50px !important;
+// }
+// :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+//     line-height: 1.5 !important;
+//     white-space: initial !important;
+//     padding: .5em !important;
+// }
+
+.f-right{
+    text-align: right !important;
+}
+.mg-bottom0{
+  margin-bottom: 0px !important;
+}
+.mg-top50{
+    margin-top: 50px !important;
+  }
+  :host ::ng-deep .selected-item-container{
+  white-space: nowrap !important;
+  word-wrap: break-word !important;
+}
+:host ::ng-deep .selected-item{
+  max-width: 200px !important;
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  line-height: 1.5 !important;
+  white-space: initial !important;
+  // padding: .5em !important;
+}

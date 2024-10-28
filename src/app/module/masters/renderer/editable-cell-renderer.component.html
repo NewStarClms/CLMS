@@ -1,0 +1,8 @@
+<div class="pull-right ">
+  <button *ngIf="isCurrentRowEditing == false"  data-action="edit" data-set="edit"  class="action-button edit p-button-rounded p-button-primary p-button-text" type="button" icon="pi pi-pencil" pButton ></button>
+  <button *ngIf="isCurrentRowEditing == true"  data-action="update" class="action-button update p-button-rounded p-button-success p-button-text p-mr-2" type="button" icon="pi pi-check" pButton  ></button>
+  <button *ngIf="isCurrentRowEditing == true"  data-action="cancel" class="action-button cancel p-button-rounded p-button-danger p-button-text" type="button" icon="pi pi-times" pButton  ></button>
+  <button *ngIf="isCurrentRowEditing == false" data-action="delete" class=" action-button delete p-button-rounded p-button-danger p-button-text" type="button" icon="pi pi-trash" pButton  ></button>
+</div>
+ <!-- <button type="button" class="btn btn-success btn-rounded btn-sm my-0" (click)="onToggleEditable($event)">Edit</button>
+  <button type="button" class="btn btn-danger btn-rounded btn-sm my-0" (click)="onDeleteRow($event)">Remove</button> -->

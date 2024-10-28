@@ -1,0 +1,95 @@
+// @import '~@fullcalendar/common/main.css';
+// @import '~@fullcalendar/daygrid/main.css';
+// @import '~@fullcalendar/timegrid/main.css';
+.tile-card
+{
+    margin-top: 5px;
+    padding-bottom: 10px;
+    box-shadow: 0 1px 6px rgb(0 0 0 / 12%), 0 1px 4px rgb(0 0 0 / 24%);
+}
+.tile-card .card-body
+{
+    min-height: 260px;
+}
+.tile-card .card-header{
+    border-bottom: 1px solid #f4f4f4 !important;
+    padding-bottom: 5px !important;
+    margin-bottom: 0px !important;
+}
+.fc-basic-view .fc-body .fc-row { min-height: 1em; }
+.fc .fc-daygrid-day-top{
+   width:40%;
+   float:left;
+}
+.fc .fc-daygrid-day-events{
+    width:60%;
+    float:left;
+   // padding-top: 12px;
+    margin-left: -5px;
+}
+.fc .fc-daygrid-day-number{
+  margin-top:-10px !important;
+}
+.tippy-content{
+  text-align: left;
+  font-size: 9px;
+}
+.tippy-hdrText{
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+}
+.fc-scrollgrid-sync-table{
+  height: 255px !important;
+}
+.tippy-tooltip.light-theme {
+  padding: 0;
+  word-break: keep-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  width: 100%;
+  min-width: 1px;
+}
+.tile-card .p-dropdown{
+  width:33% !important;
+  margin-right: 5px;
+  border:1px solid #adadad !important;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  padding-right: 5px;
+}
+
+.tile-card .p-button {
+  padding: 0.5rem 1rem !important;
+}
+.attendance-header{
+  color: white;
+}
+.attendance-header .badge{
+  padding: 7px;
+  margin-right: 5px;
+}
+.attendance-header .badge b{
+  padding-right: 7px !important;
+}
+.bg-present{
+  background-color: #008000 !important;
+}
+.bg-absent{
+  background-color: #FF0000 !important;
+}
+.bg-leave{
+  background-color: #68EE53  !important;
+}
+.bg-weekoff{
+  background-color: #383E57 !important;
+}
+.bg-holiday{
+  background-color: #2CE5D3 !important;
+}
+.bg-overtime{
+  background-color: #777 !important;
+}

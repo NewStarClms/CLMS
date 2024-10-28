@@ -1,0 +1,56 @@
+<!-- [readonly]="disabledTxt"  -->
+   
+<form #requestByEss="ngForm" name="form" (submit)="SaveReuestEss(requestByEss)">
+    <div class="form-group row col-lg-12">
+    <div class="col-lg-6 p-field">
+    <label class="labelfont">Punch Time</label>
+    <!-- <input pInputText [(ngModel)]="requestByEssInfo.punchTime" class="form-control shadow-none" maxlength="50"
+    type="text" autocomplete="off" required  name="punchTime" id="punchTime"> -->
+    <input pinput [(ngModel)]="expInDate" class="form-control"  type="text" autocomplete="off"
+    name="expInDate" id="expInDate" [disabled]="isDisabled" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker style="margin-left: -11px;">
+    </div>
+    <div class="col-lg-6 p-field">
+      <label class="labelfont">&nbsp;</label>
+    <input [(ngModel)]="otherPunchInfo.punchTime" name="punchTime" autocomplete="off" class="form-control"
+    [popover]="punchTime" [disabled]="isDisabled" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+  <ng-template #punchTime>
+    <timepicker [(ngModel)]="otherPunchInfo.punchTime" name="punchTime" [showMeridian]="false"
+     (ngModelChange)="updateStateLocaly($event,UICONSTANT.PUNCH_TIME.PUNCHTIME)"></timepicker>
+  </ng-template>
+</div>
+       <!-- <div class="col-lg-3 p-field">
+        <label class="labelfont">Latitude</label>
+        <input pInputText [(ngModel)]="latituded" class="form-control shadow-none" maxlength="50"
+        type="text" autocomplete="off" name="latituded" id="latituded">        
+        </div> -->
+
+        <!-- <div class="col-lg-4 p-field">
+        <label class="labelfont">Longitude</label>
+        <input pInputText [(ngModel)]="longituded" class="form-control shadow-none" maxlength="50"
+        type="text" autocomplete="off" name="longituded" id="longituded">        
+        </div> -->
+      
+        </div>
+        <div class="form-group row col-lg-12">
+    
+          <label class="labelfont">Request Remark</label>
+          <input pInputText [(ngModel)]="otherPunchInfo.requestRemark" class="form-control shadow-none" maxlength="50"
+          type="text" autocomplete="off" name="requestRemark" required="true" id="requestRemark" #requestRemark="ngModel"
+          [ngClass]="{'is-invalid': requestRemark.invalid && (requestRemark.dirty || requestRemark.touched)}">       
+          <div *ngIf="requestByEss.submitted && (requestRemark.invalid || requestRemark.dirty || requestRemark.touched)"
+          class="labelfont">
+          <div  class="p-error" *ngIf="requestRemark.errors?.['required']">
+          Request Remark is required.
+          </div>
+          </div>
+        </div>
+    <div class="float-right">
+    <p-button icon="pi pi-check" type="submit" [label]="labelName" Class="p-button-text p-button-sm p-button-success" styleClass="mr1"></p-button>
+    <p-button icon="pi pi-times" class="p-button-sm " #closebutton data-dismiss="modal" label="Cancel"
+    (click)="CancelRequestEss()" styleClass="p-button-secondary"></p-button>
+    </div>
+</form>
+   <ng-template pTemplate="footer">
+   </ng-template>
+
+

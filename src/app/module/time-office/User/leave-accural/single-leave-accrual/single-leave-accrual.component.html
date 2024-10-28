@@ -1,0 +1,116 @@
+<div class="form-group row" >
+    <div class="col-lg-12">
+      <form #leaveaccrualPostForm = "ngForm" name="form" (submit)="SaveleaveaacrualPostData()">
+        <div class="form-group row">
+            <div class="col-lg-4">
+                <label class="labelfont">Month Year<span class="text-danger">*</span></label>
+                <br/>
+                <p-dropdown  [options]="monthList" [(ngModel)]= "leaveaccrualmonth"  [required]="true" optionLabel="Text" optionValue="Value" 
+                name="leaveaccrualmonth" id="leaveaccrualmonth" class="dropdwonPadding">
+               </p-dropdown>
+                <p-dropdown  [options]="yearList" [(ngModel)]= "leaveaccrualYear"  [required]="true" optionLabel="year" optionValue="year" 
+                name="leaveaccrualYear" id="leaveaccrualYear" class="dropdwonPadding">
+               </p-dropdown>
+            </div>
+            <div class="col-lg-2">
+                <label class="labelfont">Accrual Type</label>
+                <p-dropdown  [options]="accrualTypeList" [(ngModel)]= "accrualType"  (ngModelChange)="accrualTypeListed($event)" [required]="true" optionLabel="key" optionValue="value" 
+            name="accrualType" id="accrualType">
+           </p-dropdown>
+            </div>
+            <div class="col-lg-3">
+                <label class="labelfont"><br/></label>
+                <p-radioButton name="accuralAutoManual1" value="Auto" [(ngModel)]="accuralAutoManual" inputId="accuralAutoManual1" (ngModelChange)="autoChanges($event)"></p-radioButton>
+              <label class="radiolabelfont">Auto </label>
+              <p-radioButton name="accuralAutoManual2"  value="Manual" [(ngModel)]="accuralAutoManual" inputId="accuralAutoManual2" (ngModelChange)="manualChanges($event)"></p-radioButton>
+              <label class="radiolabelfont">Manual</label>
+            </div>
+            <div class="col-lg-1">
+                <label class="labelfont"><br/></label>
+                <p-button  type="submit"   label="Accrual" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" [disabled]="!leaveaccrualPostForm.valid"></p-button>
+            </div>
+            <div class="col-lg-1">
+                <label class="labelfont"><br/></label>
+                <p-button icon="pi pi-times" class="p-button-sm "  label="Cancel" styleClass="p-button-secondary" (click)="Cancelleaveaccrual()"></p-button> 
+             </div>
+        </div>
+      </form>
+    </div>
+</div>
+<div class="form-group row" *ngIf="isVisible">
+    <div class="form-group row col-lg-12" >
+        <p-table [columns]="leaveaccrualListcol" [value]="leaveaccrualListUI" [(selection)]="selectedleaveAccrual" [scrollable]="true" scrollHeight="350px" style="width:100%;height:40%;">
+            <ng-template pTemplate="header" [disabled]="allDisabledField">
+                <tr style="font-size:12px;">
+                    <th> <p-tableHeaderCheckbox></p-tableHeaderCheckbox> </th>
+                  <th>leave Code</th>
+                  <th>accrualMonth</th>
+                  <th>accrualYear</th>
+                  <th>accrualValue</th>
+                  <th>daysOnAccrual</th>
+                  <th>accrualType</th>
+                  <th>leaveYear</th>
+                  <th>accrualOn</th>
+                  <th>actionSource</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-mapping>
+                <tr style="font-size:12px;">
+                    <td pEditableColumn> <p-tableCheckbox [value]="mapping"></p-tableCheckbox> </td>
+                    <td pEditableColumn>
+                     {{mapping.leaveCode}}
+                    </td>
+                    <td pEditableColumn>
+                     {{mapping.accrualMonth}}
+                    </td>
+                    <td pEditableColumn>
+                     {{mapping.accrualYear}}
+                    </td>
+
+                    <td pEditableColumn>
+                    <input pinput [(ngModel)]="mapping.accrualValue" class="form-control p-inputtext" type="text" name="accrualValue"
+                    id="accrualValue" #accrualValue="ngModel" [ngModelOptions]="{standalone: true}"> 
+                    </td>
+                    <!-- <td pEditableColumn>
+                     {{mapping.accrualValue}}
+                    </td> -->
+                    <td pEditableColumn>
+                     {{mapping.daysOnAccrual}}
+                    </td>
+                    <td pEditableColumn>
+                     {{mapping.accrualType}}
+                   </td>
+                   <td pEditableColumn>
+                      {{mapping.leaveYear}}
+                     </td>
+                    <td pEditableColumn>
+                     {{mapping.accrualOn}}
+                    </td>
+                    <td pEditableColumn>
+                    {{mapping.actionSource}}
+                  </td>
+                 </tr>
+            </ng-template>
+         </p-table>
+   </div>
+    <!-- <div class="col-lg-12">
+        <p-table [columns]="leaveaccrualListcol" [value]="leaveaccrualListUI" [scrollable]="true" scrollHeight="200px">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-attDetail let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        {{attDetail[col.field]}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div> -->
+   
+</div>
+    

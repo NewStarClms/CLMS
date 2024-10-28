@@ -1,0 +1,129 @@
+.labelfontStatus{
+  font-weight: bold !important;
+}
+input:focus, textarea:focus, select:focus{border-top:none;border-left:none;border-right:none;}
+:host ::ng-deep .p-button {
+  margin: 0 .5rem 0 0;
+}
+
+p {
+  margin: 0;
+}
+
+.confirmation-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:host ::ng-deep .p-dialog .p-button {
+  min-width: 6rem;
+}
+:host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  padding: 0.7rem;
+  font-weight: 600;
+  margin: 0 0 -2px 0;
+  //background-color: #19B698 !important;
+  width: auto !important;
+  text-decoration: none;
+  border:none;
+  font-size: 1.2rem;
+}
+:host ::ng-deep .p-tabview .p-tabview-panels {
+width:100%;
+}
+:host ::ng-deep .p-tabview li{
+margin-right: 5px;
+}
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight > a[aria-selected=true]{
+ // background: #353538 !important;
+  color: black;
+  width: auto !important;
+  box-shadow: none !important;
+  border-top:2px solid #19b698;
+  border-left:2px solid #19b698;
+  border-right:2px solid #19b698;
+}
+:host ::ng-deep .p-element{
+  margin-bottom: 0px !important;
+}
+
+:host ::ng-deep .p-fileupload-buttonbar{
+  padding:0.5rem !important;
+}
+:host ::ng-deep .p-fileupload-content{
+  padding:0rem !important;
+}
+:host ::ng-deep  .p-fileupload-filename{
+  padding:0.5rem !important;
+}
+:host ::ng-deep  .p-fileupload-row > div{
+  flex:none !important;
+}
+.datetypeinput{
+  width: 50%;
+  margin-right: 10px;
+  border: none;
+  border-bottom: 1px solid #d1d3e2;
+}
+.timetypeinput{
+  width: 40%;
+  margin-right: 2px;
+  border: none;
+  border-bottom: 1px solid #d1d3e2;
+}
+.takephototimer{
+  position:absolute;
+ top:93px;
+  left:245px;
+  font-size: 120px;
+  font-weight: bold;
+  z-index:10;
+}
+:host ::ng-deep .ng-tns-c99-33 > .p-inputtext{
+  border:none !important;
+}
+:host ::ng-deep .ng-tns-c99-33 > .p-inputtext:focus-visible{
+  border:none !important;
+  border-color: #ced4da !important;
+}
+:host ::ng-deep .ng-tns-c99-33 > .p-calendar{
+  width:100% !important;
+}
+:host ::ng-deep .ng-tns-c99-33 > .p-calendar:focus{
+  width:100% !important;
+}
+
+.btn-right h5{
+  font-size: 0.7rem;
+    font-weight: 600;
+    display: flex;
+    flex-direction: row-reverse;
+    cursor: pointer;
+}
+.addIcon{
+  font-size: .6rem !important;
+    font-weight: 800 !important;
+    padding: 3px !important;
+}
+.pull-right {
+  display: flex;
+  flex-direction: row-reverse;
+  float: right;
+  margin: 11px -18px 1px 0;
+}
+:host ::ng-deep .input-icon-right {
+  display: flex !important;
+  position: relative !important;
+}
+div.sticky {
+  position: fixed;
+  bottom: 0px;
+  display: flex;
+  width: 85%;
+  flex-direction: row-reverse;
+  background-color: lightgray;
+  padding-right: 4vh;
+  padding-bottom: 10px;
+  padding-top:10px;
+}

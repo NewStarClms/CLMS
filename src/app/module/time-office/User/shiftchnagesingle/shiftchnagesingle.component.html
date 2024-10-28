@@ -1,0 +1,127 @@
+
+      <form #shiftChangeForm="ngForm" *ngIf="singleshift" name="form" (submit)="SaveShiftChangesingleData()">
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">Action<span class="text-danger">*</span></label>
+            <p-dropdown [options]="shiftChangeactionList" [(ngModel)]="shiftChangeInfo.action" optionLabel="key" optionValue="value"
+               #action="ngModel"  (ngModelChange)="getShiftAction($event)" [required]="true"
+              [ngClass]="{'is-invalid': action.invalid && (action.dirty || action.touched)}" name="action" id="action"></p-dropdown>
+              <div *ngIf="action.invalid && (action.dirty || action.touched)" class="labelfont">
+                <div class="p-error" *ngIf="action.errors?.['required']">
+                    Action is required.
+                </div>
+           </div>
+        </div>
+        <div class="col-md-4" [ngClass]="shiftcodedropdowndiv">
+          <p-selectButton [options]="stateOptions" [(ngModel)]="shiftChangeInfo.punchProcess"
+           optionLabel="label" optionValue="value"  [ngClass]="{'is-invalid': punchProcess.invalid && (punchProcess.dirty || punchProcess.touched)}" 
+           name="punchProcess" id="punchProcess" hidden="true" value="false"  #punchProcess="ngModel"></p-selectButton>
+           <label class="labelfont">Shift Code<span class="text-danger">*</span></label>
+           <p-dropdown [options]="shiftcodesLists" [(ngModel)]="shiftChangeInfo.shiftCode" optionLabel="key" optionValue="value"
+              #shiftCode="ngModel" [required]="true"
+             [ngClass]="{'is-invalid': shiftCode.invalid && (shiftCode.dirty || shiftCode.touched)}" name="shiftCode" id="shiftCode"></p-dropdown>
+             <div *ngIf="shiftCode.invalid && (shiftCode.dirty || shiftCode.touched)" class="labelfont">
+               <div class="p-error" *ngIf="shiftCode.errors?.['required']">
+                   shift Code is required.
+               </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="labelfont">From Date </label>
+              <input pinput class="form-control" type="text" autocomplete="off" name="fromDate" [(ngModel)]="shiftChangeInfo.fromDate"
+ id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker
+ [ngClass]="{'is-invalid': fromDate.invalid && (fromDate.dirty || fromDate.touched)}" #fromDate="ngModel">
+
+      </div>
+      <div class="col-md-4">
+          <label class="labelfont">To Date </label>
+          <input pinput class="form-control" type="text" autocomplete="off" name="toDate" [(ngModel)]="shiftChangeInfo.toDate"
+          id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker
+          [ngClass]="{'is-invalid': toDate.invalid && (toDate.dirty || toDate.touched)}" #toDate="ngModel">
+         
+      </div>
+         
+          <div class="col-md-4">
+            <label class="labelfont">Replace Holiday </label>
+          <p-selectButton [options]="stateOptions" [(ngModel)]="shiftChangeInfo.replaceHoliday"
+           optionLabel="label" optionValue="value"  [ngClass]="{'is-invalid': replaceHoliday.invalid && (replaceHoliday.dirty || replaceHoliday.touched)}" 
+           name="replaceHoliday" id="replaceHoliday"  #replaceHoliday="ngModel"></p-selectButton>
+        </div>
+        <div class="col-md-4">
+          <label class="labelfont">Replace Weekly Off </label>
+        <p-selectButton [options]="stateOptions" [(ngModel)]="shiftChangeInfo.replaceWeeklyOff"
+         optionLabel="label" optionValue="value"  [ngClass]="{'is-invalid': replaceWeeklyOff.invalid && (replaceWeeklyOff.dirty || replaceWeeklyOff.touched)}" 
+         name="replaceWeeklyOff" id="replaceWeeklyOff"  #replaceWeeklyOff="ngModel"></p-selectButton>
+      </div>
+          
+          </div>
+      <div class="float-right">
+        <p-button  type="submit"   label="Shift Change" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" [disabled]="!shiftChangeForm.valid"></p-button>
+            <p-button  class="p-button-sm "  label="Cancel" styleClass="p-button-secondary" (click)="CancelShiftChange()"></p-button>
+    
+      </div>
+      </form>
+      <form #shiftChangeForm="ngForm" *ngIf="multishift" name="form" (submit)="SaveShiftChangeMultiData()">
+        <div class="form-group row">
+          <div class="col-md-4">
+            <label class="labelfont">Action<span class="text-danger">*</span></label>
+            <p-dropdown [options]="shiftChangeactionList" [(ngModel)]="shiftChangeInfo.action" optionLabel="key" optionValue="value"
+               #action="ngModel"  (ngModelChange)="getShiftAction($event)" [required]="true"
+              [ngClass]="{'is-invalid': action.invalid && (action.dirty || action.touched)}" name="action" id="action"></p-dropdown>
+              <div *ngIf="action.invalid && (action.dirty || action.touched)" class="labelfont">
+                <div class="p-error" *ngIf="action.errors?.['required']">
+                    Action is required.
+                </div>
+           </div>
+        </div>
+        <div class="col-md-4" [ngClass]="shiftcodedropdowndiv">
+          <p-selectButton [options]="stateOptions" [(ngModel)]="shiftChangeInfo.punchProcess"
+           optionLabel="label" optionValue="value"  [ngClass]="{'is-invalid': punchProcess.invalid && (punchProcess.dirty || punchProcess.touched)}" 
+           name="punchProcess" id="punchProcess" hidden="true" value="false"  #punchProcess="ngModel"></p-selectButton>
+           <label class="labelfont">Shift Code<span class="text-danger">*</span></label>
+           <p-dropdown [options]="shiftcodesLists" [(ngModel)]="shiftChangeInfo.shiftCode" optionLabel="key" optionValue="value"
+              #shiftCode="ngModel" [required]="true"
+             [ngClass]="{'is-invalid': shiftCode.invalid && (shiftCode.dirty || shiftCode.touched)}" name="shiftCode" id="shiftCode"></p-dropdown>
+             <div *ngIf="shiftCode.invalid && (shiftCode.dirty || shiftCode.touched)" class="labelfont">
+               <div class="p-error" *ngIf="shiftCode.errors?.['required']">
+                   shift Code is required.
+               </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="labelfont">From Date </label>
+              <input pinput class="form-control" type="text" autocomplete="off" name="fromDate" [(ngModel)]="shiftChangeInfo.fromDate"
+ id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker
+ [ngClass]="{'is-invalid': fromDate.invalid && (fromDate.dirty || fromDate.touched)}" #fromDate="ngModel">
+
+      </div>
+      <div class="col-md-4">
+          <label class="labelfont">To Date </label>
+          <input pinput class="form-control" type="text" autocomplete="off" name="toDate" [(ngModel)]="shiftChangeInfo.toDate"
+          id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker
+          [ngClass]="{'is-invalid': toDate.invalid && (toDate.dirty || toDate.touched)}" #toDate="ngModel">
+         
+      </div>
+         
+          <div class="col-md-4">
+            <label class="labelfont">Replace Holiday </label>
+          <p-selectButton [options]="stateOptions" [(ngModel)]="shiftChangeInfo.replaceHoliday"
+           optionLabel="label" optionValue="value"  [ngClass]="{'is-invalid': replaceHoliday.invalid && (replaceHoliday.dirty || replaceHoliday.touched)}" 
+           name="replaceHoliday" id="replaceHoliday"  #replaceHoliday="ngModel"></p-selectButton>
+        </div>
+        <div class="col-md-4">
+          <label class="labelfont">Replace Weekly Off </label>
+        <p-selectButton [options]="stateOptions" [(ngModel)]="shiftChangeInfo.replaceWeeklyOff"
+         optionLabel="label" optionValue="value"  [ngClass]="{'is-invalid': replaceWeeklyOff.invalid && (replaceWeeklyOff.dirty || replaceWeeklyOff.touched)}" 
+         name="replaceWeeklyOff" id="replaceWeeklyOff"  #replaceWeeklyOff="ngModel"></p-selectButton>
+      </div>
+          
+          </div>
+      <div class="float-right">
+       
+            <p-button  type="submit" label="Shift Change" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" [disabled]="!shiftChangeForm.valid"></p-button>
+            <p-button  class="p-button-sm "  label="Cancel" styleClass="p-button-secondary" (click)="CancelShiftChange()"></p-button>
+    
+      </div>
+      </form>
+  

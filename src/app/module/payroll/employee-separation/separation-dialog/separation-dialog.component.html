@@ -1,0 +1,96 @@
+<section class="card">
+    <div class="card-body">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label class="labelfont lableMargin">Note : if You do not provide the date of Resignation then it will be the same as leaving the Date.</label>
+            </div>
+        </div>
+
+      <form #separationForm= "ngForm" (submit)="saveEmployeeSeparationDetail()">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <input pinput [(ngModel)]="employeeSeparationDetail.displayName" class="form-control" type="text" name="displayName"
+                  id="displayName" #ctc="ngModel" disabled="true">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">Date of Joining</label>
+                <input pinput [(ngModel)]="employeeSeparationDetail.joiningDate" class="form-control" type="text" name="joiningDate"
+                autocomplete="off" id="joiningDate" #joiningDate="ngModel" disabled="true" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker>
+            </div>
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">Settlement Date</label>
+                <input pinput [(ngModel)]="employeeSeparationDetail.leavingDate" class="form-control" type="text" name="leavingDate"
+                autocomplete="off" id="leavingDate" #leavingDate="ngModel" disabled="true" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">Date of Resignation</label>
+                <input pinput [(ngModel)]="employeeSeparationDetail.resignationDate" class="form-control" type="text" name="resignationDate"
+                autocomplete="off" id="resignationDate" #resignationDate="ngModel" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker
+                [ngClass]="{'is-invalid': resignationDate.invalid && (resignationDate.dirty || resignationDate.touched)}">
+                <div *ngIf="resignationDate.invalid && (resignationDate.dirty || resignationDate.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="resignationDate.errors?.['required']">
+                    Resignation Date is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">Date of Leaving</label>
+                <input pinput [(ngModel)]="employeeSeparationDetail.leavingDate" class="form-control" type="text" name="leavingDate"
+                autocomplete="off" id="leavingDate" #leavingDate="ngModel" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker
+                [ngClass]="{'is-invalid': leavingDate.invalid && (leavingDate.dirty || leavingDate.touched)}">
+                <div *ngIf="leavingDate.invalid && (leavingDate.dirty || leavingDate.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="leavingDate.errors?.['required']">
+                    Date of Leaving is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">Notice Period Type</label>
+                <p-dropdown  [options]="noticePeridTypeList" [(ngModel)]= "employeeSeparationDetail.noticePeriodType" optionLabel="key" optionValue="value"
+                    name="noticePeriodType" id="noticePeriodType" #noticePeriodType="ngModel">
+                </p-dropdown>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Notice Period</label>
+                <input pinput [(ngModel)]="employeeSeparationDetail.noticePeriod" class="form-control" type="text" name="noticePeriod"
+                id="noticePeriod" #noticePeriod="ngModel"  [ngClass]="{'is-invalid': noticePeriod.invalid && (noticePeriod.dirty || noticePeriod.touched)}"
+                (keypress)="keyPressNumeric($event)">
+               
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Pay Type</label>
+                <p-dropdown  [options]="noticePayTypeList" [(ngModel)]= "employeeSeparationDetail.noticePayType" optionLabel="key" optionValue="value" 
+                name="noticePayType" id="noticePayType" #noticePayType="ngModel">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">Employee Status</label>
+                <p-dropdown  [options]="empStatusList" [(ngModel)]= "employeeSeparationDetail.employeeStatusID" optionLabel="key" optionValue="value" 
+                name="employeeStatusID" id="employeeStatusID" #employeeStatusID="ngModel">
+                </p-dropdown>
+            </div>
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">Remarks</label>
+                <input pinput [(ngModel)]="employeeSeparationDetail.separationRemark" class="form-control" type="text" name="separationRemark"
+                autocomplete="off" id="separationRemark" #separationRemark="ngModel">
+            </div>
+        </div>
+        <div class="form-group row float-right">
+            <p-button icon="pi pi-check"  label="Save"  Class="p-button-text p-button-sm p-button-success" styleClass="mr1"   type="submit" [disabled]="!separationForm.valid"></p-button>
+            <p-button icon="pi pi-times" class="p-button-sm " data-dismiss="modal" label="Cancel"  (click)="closeDialog()" styleClass="p-button-secondary"></p-button>
+        </div>
+      </form>
+    </div>
+</section>

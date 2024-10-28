@@ -1,0 +1,178 @@
+<section class="card">
+    <header class="card-header">
+        <h2>{{headerdialogName}} </h2>
+        <!-- <span>Note : * Fields are not change after Component Mapping.</span> -->
+    </header>
+</section>
+<div class="card">
+    <div class="card-body">
+        <!-- New Changes and payForm.valid remove  -->
+        <form #payForm="ngForm" (submit)="savePayComponent(payForm)">
+            <p-tabView (onChange)="handleChange($event)">
+                <p-tabPanel header="Statutory">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label class="labelfont"> Policy Name<span class="text-danger">*</span></label>
+                            <input pinput [(ngModel)]="payGroupInfo.policyName" class="form-control " type="text" autocomplete="off"
+                                required name="policyName" id="policyName"  #policyName="ngModel"
+                                [ngClass]="{'is-invalid': policyName.invalid && (policyName.dirty || policyName.touched)}">
+                                <div *ngIf="payForm.submitted && (policyName.invalid || policyName.dirty || policyName.touched)" class="labelfont">
+                                    <div class="p-error" *ngIf="policyName.errors?.['required']">
+                                        Policy Name is required.
+                                    </div>
+                                    
+                                </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="labelfont"> Description<span class="text-danger">*</span></label>
+                            <input pinput [(ngModel)]="payGroupInfo.description" class="form-control" type="text" autocomplete="off"
+                                required name="description" id="description" maxlength="100" 
+                                [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}"
+                                #description="ngModel">
+                                <div *ngIf="payForm.submitted && (description.invalid || description.dirty || description.touched)" class="labelfont">
+                                    <div class="p-error" *ngIf="description.errors?.['required']">
+                                        Policy Description is required.
+                                    </div>
+                                    
+                                </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="labelfont"> PF Applicable</label>
+                            <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)"
+                                [(ngModel)]="payGroupInfo.pfApplicable" optionLabel="label" optionValue="value"
+                                name="pfApplicable"></p-selectButton>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="labelfont"> LWF Applicable</label>
+                            <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)"
+                                [(ngModel)]="payGroupInfo.lwfApplicable" optionLabel="label" optionValue="value"
+                                name="lwfApplicable"></p-selectButton>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="labelfont"> ESI Applicable</label>
+                            <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)"
+                                [(ngModel)]="payGroupInfo.esiApplicable" optionLabel="label" optionValue="value"
+                                name="esiApplicable"></p-selectButton>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="labelfont"> PT Applicable</label>
+                            <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)"
+                                [(ngModel)]="payGroupInfo.ptApplicable" optionLabel="label" optionValue="value"
+                                name="ptApplicable"></p-selectButton>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="labelfont"> Leave Encashment Applicable</label>
+                            <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)"
+                                [(ngModel)]="payGroupInfo.leaveEncashmentApplicable" optionLabel="label"
+                                optionValue="value" name="leaveEncashmentApplicable"></p-selectButton>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="labelfont"> VPF Applicable </label>
+                            <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)"
+                                [(ngModel)]="payGroupInfo.vpfApplicable" optionLabel="label" optionValue="value"
+                                name="vpfApplicable"></p-selectButton>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="labelfont"> Bonus Applicable </label>
+                            <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)"
+                                [(ngModel)]="payGroupInfo.bonusApplicable" optionLabel="label" optionValue="value"
+                                name="bonusApplicable"></p-selectButton>
+                        </div>
+                        <div class="col-md-3" *ngIf="payGroupInfo.bonusApplicable">
+                            <p-dropdown [options]="bonusLists"  [(ngModel)]="payGroupInfo.bonusSettingID"
+                            optionLabel="bonusSettingName" optionValue="bonusSettingID" class="" [filter]="false" filterBy="value"
+                            #bonusSettingID="ngModel" name="bonusSettingID" id="bonusSettingID" [required]="true"
+                            [ngClass]="{'is-invalid': bonusSettingID.invalid && (bonusSettingID.dirty || bonusSettingID.touched)}">
+                           </p-dropdown>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="labelfont"> Gratuity Applicable </label>
+                            <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)"
+                                [(ngModel)]="payGroupInfo.gratuityApplicable" optionLabel="label" optionValue="value"
+                                name="gratuityApplicable"></p-selectButton>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <span style="color:blue;">Present=>PRE, Absent=>ABS, NationalHoliday=>NHLD, Holiday=>HLD, Leave=>LEAVE, WeeklyOff=>WO, Month Days=>MONTH_DAY</span>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label class="labelfont"> Minimum PaidDays For Salary Process</label>
+                            <input pinput [(ngModel)]="payGroupInfo.minimumPaidDaysForSalaryProcess" class="form-control text-uppercase"
+                            type="number" autocomplete="off" required name="minimumPaidDaysForSalaryProcess" id="minimumPaidDaysForSalaryProcess" maxlength="5" #minimumPaidDays="ngModel">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="labelfont"> Paid Days Formula</label>
+                            <input pinput [(ngModel)]="payGroupInfo.paidDaysFormula" class="form-control"
+                            type="text" autocomplete="off" required name="paidDaysFormula" id="paidDaysFormula" maxlength="5" #paidDaysFormula="ngModel">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="labelfont"> Salary Dividing Factor</label>
+                            <input pinput [(ngModel)]="payGroupInfo.salaryDaysFormula" class="form-control"
+                            type="text" autocomplete="off" required name="salaryDaysFormula" id="salaryDaysFormula" maxlength="5" #salaryDaysFormula="ngModel">
+                        </div>
+                        
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label class="labelfont"> Salary Slip Template<span class="text-danger">*</span></label>
+                            <p-dropdown [options]="salSlipTemplateList"  [(ngModel)]="payGroupInfo.salarySlipTemplateID"
+                                optionLabel="key" optionValue="value" class="" [filter]="false" filterBy="value"
+                                #salarySlipTemplateID="ngModel" name="salarySlipTemplateID" id="salarySlipTemplateID" [required]="true"
+                                [ngClass]="{'is-invalid': salarySlipTemplateID.invalid && (salarySlipTemplateID.dirty || salarySlipTemplateID.touched)}">
+                            </p-dropdown>
+                            <div *ngIf="payForm.submitted && (salarySlipTemplateID.invalid || salarySlipTemplateID.dirty || salarySlipTemplateID.touched)" class="labelfont">
+                                <div class="p-error" *ngIf="salarySlipTemplateID.errors?.['required']">
+                                    Salary Slip Template is required.
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labelfont">Settlement Salary Slip Template<span class="text-danger">*</span></label>
+                            <p-dropdown [options]="settelSlipTemplateList"  [(ngModel)]="payGroupInfo.settlementSlipTemplateID"
+                                optionLabel="key" optionValue="value" class="" [filter]="true" filterBy="value"
+                                #settlementSlipTemplateID="ngModel" name="settlementSlipTemplateID" id="settlementSlipTemplateID" [required]="true"
+                                [ngClass]="{'is-invalid': settlementSlipTemplateID.invalid && (settlementSlipTemplateID.dirty || settlementSlipTemplateID.touched)}">
+                            </p-dropdown>
+                            <div *ngIf="payForm.submitted && (settlementSlipTemplateID.invalid || settlementSlipTemplateID.dirty || settlementSlipTemplateID.touched)" class="labelfont">
+                                <div class="p-error" *ngIf="settlementSlipTemplateID.errors?.['required']">
+                                    Settlement Salary Slip Template is required.
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </p-tabPanel>
+                <p-tabPanel header="Pay Component">
+                    <div cdkDropList  *ngIf="availableItems" #availables="cdkDropList" 
+               [cdkDropListData] ="availableItems" 
+               class="drag-drop-list"  (cdkDropListDropped)="drop($event)">
+              <div nbButton outline status='primary' 
+                   class="drag-drop-box" 
+                   *ngFor="let item of availableItems; let i= index " cdkDrag>
+                    {{ i+1 }}.   {{item.text}}
+                    <p-checkbox name="payComponent" [value]="item.value" [(ngModel)]="selectedComponent" ></p-checkbox>
+              </div>
+          </div>
+           </p-tabPanel>
+                <p-tabPanel header="Update Pay Component">
+                    <app-update-pay-component *ngIf="payGroupInfo.policyID" [policyID]="payGroupInfo.policyID"></app-update-pay-component>
+                </p-tabPanel>
+
+            </p-tabView>
+            <div class="float-right" *ngIf="tabIndex===0 || tabIndex===1">
+                <p-button class="p-button-sm" type="submit" [label]="labelName" Class="p-button-text p-button-sm p-button-success mr-2 ml-2"
+                    styleClass="p-button-success" ></p-button>
+                <p-button class="p-button-sm" #closebutton data-dismiss="modal" (click)="cancelEdit()" label="Cancel"
+                    styleClass=" mr-2 ml-2 p-button-secondary"></p-button>
+            </div>
+        </form>
+    </div>
+</div>

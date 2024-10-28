@@ -1,0 +1,233 @@
+        <section class="card">
+          <header class="card-header">
+            <h2>Branch</h2>
+        </header>
+        <div class="group-right">
+          <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+          <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"class="p-button-rounded p-button-success"></button>
+          <button pButton pRipple type="button" icon="pi pi-filter" class="p-button-rounded p-button-warning"></button>
+        </div>
+        
+            <div class="card-body">
+                        <app-grid-renderer
+                        [gridRowData]="rowData"
+                        [gridColData]="columnDefs"
+                        (onCellClickEvent)="onCellClicked($event)"
+                        ></app-grid-renderer>
+            </div>
+        </section>
+  <!--add / update / delete modal  -->
+  <p-dialog [header]="headerdialogName" (onHide)="CancelBranchData()" [(visible)]="display" [modal]="true"
+  [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '65vw',height:'75vw'}" >
+                      <form #branchForm = "ngForm" (submit)="SaveBranchData(branchForm)">
+                          <div class="form-group row">
+                              <input pinput
+                              [(ngModel)]= "branchInfo.branchID"
+                              class="form-control"
+                              type="text" autocomplete="off"
+                              name="branchID"
+                              id="branchID"
+                              hidden="true">
+                              <div class="col-lg-4">
+                                <label class="labelfont">Company <span class="text-danger">*</span></label>
+                                <p-dropdown  [options]="compList" [(ngModel)]= "branchInfo.companyID" optionLabel="companyName" optionValue="companyID" class="" #companyID="ngModel"
+                              [ngClass]="{'is-invalid': companyID.invalid && (companyID.dirty || companyID.touched)}"  name="companyID" id="companyID" [required]="true">
+                              </p-dropdown>
+                              <div *ngIf="companyID.invalid && (companyID.dirty || companyID.touched)"
+                                  class="labelfont">
+
+                                  <div  class="p-error" *ngIf="companyID.errors?.['required']">
+                                      Company is required.
+                                  </div>
+                              </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <label class="labelfont">Branch Code <span class="text-danger">*</span></label>
+                                <input pinput
+                                [(ngModel)]= "branchInfo.branchCode"
+                                class="form-control text-uppercase"
+                                type="text" autocomplete="off"
+                                required
+                                (keypress)="keyPressAlphanumeric($event)"
+                                maxlength ="5"
+                                name="branchCode"
+                                id="branchCode" #branchCode="ngModel"
+                                [ngClass]="{'is-invalid': branchCode.invalid && (branchCode.dirty || branchCode.touched)}">
+                                <div *ngIf="branchCode.invalid && (branchCode.dirty || branchCode.touched)"
+                                  class="labelfont">
+
+                                  <div  class="p-error" *ngIf="branchCode.errors?.['required']">
+                                      Branch Code is required.
+                                  </div>
+                                  <div  class="p-error" *ngIf="branchCode.errors?.['minlength']">
+                                    Branch Code must be at least 5 characters long.
+                                  </div>
+                              </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <label class="labelfont">Branch Name <span class="text-danger">*</span></label>
+                                  <input pinput
+                                  [(ngModel)]= "branchInfo.branchName"
+                                  class="form-control"
+                                  type="text" autocomplete="off"
+                                  required
+                                  maxlength="50"
+                                  name="branchName"
+                                  id="branchName" #branchName="ngModel"
+                                  [ngClass]="{'is-invalid': branchName.invalid && (branchName.dirty || branchName.touched)}">
+                                  <div *ngIf="branchName.invalid && (branchName.dirty || branchName.touched)"
+                                  class="labelfont">
+
+                                  <div  class="p-error" *ngIf="branchName.errors?.['required']">
+                                      Branch Name is required.
+                                  </div>
+                              </div>
+                              </div>
+
+                          </div>
+                          
+                          <div class="form-group row">
+                              <div class="col-lg-4">
+                                <label class="labelfont">Address</label>
+                                <textarea pinput
+                                [(ngModel)]= "branchInfo.address"
+                                class="form-control"
+                                type="text" autocomplete="off"
+                                name="address"
+                                id="address" #address="ngModel"
+                                [ngClass]="{'is-invalid': address.invalid && (address.dirty || address.touched)}"></textarea>
+                              </div>
+                              <div class="col-lg-4">
+                                <label class="labelfont">Country <span class="text-danger">*</span></label>
+                                <p-dropdown  [options]="countryList" [(ngModel)]= "branchInfo.countryID" optionLabel="countryName" optionValue="countryID" class="" #countryID="ngModel"
+                              [ngClass]="{'is-invalid': countryID.invalid && (countryID.dirty || countryID.touched)}"  name="countryID" id="countryID" [required]="true">
+                              </p-dropdown>
+                                <div *ngIf="countryID.invalid && (countryID.dirty || countryID.touched)"
+                                          class="labelfont">
+                                    <div  class="p-error" *ngIf="countryID.errors?.['required']">
+                                      Country is required.
+                                    </div>
+                                  </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <label class="labelfont">State <span class="text-danger">*</span></label>
+                                <p-dropdown  [options]="stateList" [(ngModel)]= "branchInfo.stateID" optionLabel="stateName" optionValue="stateID" class="" #stateID="ngModel"
+                                [ngClass]="{'is-invalid': stateID.invalid && (stateID.dirty || stateID.touched)}"  name="stateID" id="cityID" [required]="true" (ngModelChange)="fillCityDDL()">
+                                </p-dropdown>
+                                  <div *ngIf="stateID.invalid && (stateID.dirty || stateID.touched)"
+                                            class="labelfont">
+                                      <div  class="p-error" *ngIf="stateID.errors?.['required']">
+                                        State is required.
+                                      </div>
+                                    </div>
+                              </div>
+                          </div>
+                        <div class="form-group row">
+                          <div class="col-lg-4">
+                            <label class="labelfont">City <span class="text-danger">*</span></label>
+                            <p-dropdown  [options]="cityList" [(ngModel)]= "branchInfo.cityID" optionLabel="cityName" optionValue="cityID" class="" #cityID="ngModel"
+                              [ngClass]="{'is-invalid': cityID.invalid && (cityID.dirty || cityID.touched)}"  name="cityID" id="cityID" [required]="true" [disabled]="getState()">
+                              </p-dropdown>
+                            <div *ngIf="cityID.invalid && (cityID.dirty || cityID.touched)"
+                                      class="labelfont">
+                                <div  class="p-error" *ngIf="cityID.errors?.['required']">
+                                  City is required.
+                                </div>
+                              </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <label class="labelfont">Nature Of Work <span class="text-danger">*</span></label>
+                            <p-dropdown  [options]="natList" [(ngModel)]= "branchInfo.natureOfWorkID" optionLabel="natureName" optionValue="natureID" class="" #natureOfWorkID="ngModel"
+                                [ngClass]="{'is-invalid': natureOfWorkID.invalid && (natureOfWorkID.dirty || natureOfWorkID.touched)}"  name="natureOfWorkID" id="natureOfWorkID" [required]="true">
+                                </p-dropdown>
+                          <div *ngIf="natureOfWorkID.invalid && (natureOfWorkID.dirty || natureOfWorkID.touched)"
+                            class="labelfont">
+  
+                            <div  class="p-error" *ngIf="natureOfWorkID.errors?.['required']">
+                                Nature Of Work required.
+                            </div>
+                        </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <label class="labelfont">Email</label>
+                            <input pinput
+                            [(ngModel)]= "branchInfo.email"
+                            class="form-control"
+                            type="text" autocomplete="off"
+                            name="email"
+                            id="email" #email="ngModel"
+                            [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="email.errors?.pattern">
+                    This is not a valid Email!!!
+                  </div>
+                </div>
+                          </div>
+                          
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-lg-12">
+                          <p class="labelfont" style="color:red;margin-left:-12px;">Note:- Google Map To Point Exact Latitude and Longitude</p>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                         <div class="col-lg-4">
+                          <label class="labelfont">Latitude</label>
+                          <input pinput
+                          [(ngModel)]= "branchInfo.latitude"
+                          class="form-control"
+                          type="text" autocomplete="off"
+                          required
+                          maxlength="30"
+                          name="latitude"
+                          id="latitude" #latitude="ngModel">
+                         </div>
+                         <div class="col-lg-4">
+                 
+                          <label class="labelfont">Longitude</label>
+                          <input pinput
+                          [(ngModel)]= "branchInfo.longitude"
+                          class="form-control"
+                          type="text" autocomplete="off"
+                          required
+                          maxlength="30"
+                          name="longitude"
+                          id="longitude" #longitude="ngModel">
+                         </div>
+                          <div class="col-lg-4">
+                          <label class="labelfont">Pincode</label>
+                          <input pinput [(ngModel)]= "branchInfo.pinCode" class="form-control text-uppercase" (keypress)="keyPressNumbers($event)" type="text" autocomplete="off" maxlength ="6" minlength="6" name="pinCode" id="pinCode"  #pinCode="ngModel"
+                          [ngClass]="{'is-invalid': pinCode.invalid && (pinCode.dirty || pinCode.touched)}">
+                          <div *ngIf="pinCode.invalid && (pinCode.dirty || pinCode.touched)"
+                                class="labelfont">
+                                <!-- <div  class="p-error" *ngIf="pinCode.errors?.['required']">
+                                  Company Code is required.
+                                </div> -->
+                                <div  class="p-error" *ngIf="pinCode.errors?.['minlength']">
+                                  Pincode must be at least 6 characters long.
+                              </div>
+                          </div>
+                         </div>
+                
+                    </div>
+                       <div class="form-group row">
+                        <div class="col-lg-8">
+                          <label class="labelfont">Branch Head</label>
+                         <p>{{branchHeadDisplayName}}</p>
+                          <app-employee-search (onSearchEvent)="onGetEmployeeDetail($event)"></app-employee-search>
+                         </div>
+                       </div>
+                    <div class="float-right">
+                      <p-button icon="pi pi-check"  [label]="labelName" type="submit" Class="p-button-text p-button-sm p-button-success"  [disabled]="!branchForm.valid"></p-button>
+                      <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancelBranchData()" styleClass="p-button-secondary"></p-button>
+                       
+                    </div>
+                      
+                    </form>
+  </p-dialog>
+            <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+
+            </p-confirmDialog>
+<!-- page end-->

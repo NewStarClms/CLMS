@@ -1,0 +1,22 @@
+<div *ngIf="!showMachineStatus">
+    <div *ngFor="let job of jobs" style="margin-top: 10px;">
+        <div (click)="employeeProcessStatus(job.processRequestID)" style="cursor: pointer;">
+        <label style="line-height: 1.5em;">{{job.remarks}}(From {{job.startDate?job.startDate:'NA'}} <b>To</b> {{job.endDate?job.endDate:'NA'}})</label>
+        
+        <p-progressBar [value]="job.processPercent.replace('%','')"
+        [ngClass]="job.processStatus==0?'job-pending':
+        job.processStatus==1?'job-completed':
+        job.processStatus==2?'job-running':
+        job.processStatus==11?'job-errored':
+        'job-pending'"></p-progressBar>
+        </div>
+    </div>
+</div>
+<div *ngIf="showMachineStatus">
+    <p-button icon="pi pi-times" class="p-button-sm " style="float:right"  label="Back" styleClass="p-button-secondary" (click)="goBack()"></p-button>
+    <br/>
+    <app-grid-renderer
+    [gridRowData]="rowData"
+    [gridColData]="columnDefs">
+    </app-grid-renderer>
+</div>

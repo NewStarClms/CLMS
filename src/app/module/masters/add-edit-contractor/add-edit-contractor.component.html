@@ -1,0 +1,327 @@
+<section class="card">
+  <header class="card-header">
+    <h2>{{headerdialogName}} </h2>
+  </header>
+</section>
+<div class="card">
+  <div class="card-body">
+    <form #contractorForm="ngForm" (submit)="SaveContractorData(contractorForm)">
+      <p-accordion>
+        <p-accordionTab header="Contractor Information" [selected]="true">
+          <div class="form-group row">
+            <input pinput [(ngModel)]="contractorInfo.contractorID" class="form-control" type="text" autocomplete="off" name="contractorID"
+              id="contractorID" hidden="true">
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">Contractor Code <span class="text-danger">*</span></label>
+              <input pinput [(ngModel)]="contractorInfo.contractorCode" class="form-control text-uppercase" type="text" autocomplete="off" required
+                (keypress)="keyPressAlphanumeric($event)" name="contractorCode" id="contractorCode" maxlength="5"
+                #contractorCode="ngModel"
+                [ngClass]="{'is-invalid': contractorCode.invalid && (contractorCode.dirty || contractorCode.touched)}">
+              <div *ngIf="contractorCode.invalid && (contractorCode.dirty || contractorCode.touched)" class="labelfont">
+                <div class="p-error" *ngIf="contractorCode.errors?.['required']">
+                  Contractor Code is required.
+                </div>
+                <div class="p-error" *ngIf="contractorCode.errors?.['minlength']">
+                  Contractor Code must be at least 5 characters long.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Contractor Name <span class="text-danger">*</span></label>
+              <input pinput [(ngModel)]="contractorInfo.contractorName" class="form-control" type="text" autocomplete="off" required
+                name="contractorName" id="contractorName" maxlength="100" #contractorName="ngModel"
+                [ngClass]="{'is-invalid': contractorName.invalid && (contractorName.dirty || contractorName.touched)}"
+                (keypress)="keyPressAlphanumeric($event)">
+              <div *ngIf="contractorName.invalid && (contractorName.dirty || contractorName.touched)" class="labelfont">
+                <div class="p-error" *ngIf="contractorName.errors?.['required']">
+                  Contractor Name is required.
+                </div>
+                <div class="p-error" *ngIf="contractorName.errors?.['minlength']">
+                  Contractor Name must be at least 5 characters long.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Short Name</label>
+              <input pinput [(ngModel)]="contractorInfo.shortName" class="form-control" type="text" autocomplete="off" name="shortName"
+                id="shortName">
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Communication Detail" [selected]="true">
+          <div class="form-group row">
+            <div class="col-lg-8">
+              <label class="labelfont">Contractor Address</label>
+              <input pinput [(ngModel)]="contractorInfo.contractorAddress" class="form-control" type="text" autocomplete="off"
+                name="contractorAddress" id="contractorAddress">
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Country <span class="text-danger">*</span></label>
+              <p-dropdown [options]="countryList" [(ngModel)]="contractorInfo.countryID" optionLabel="countryName"
+                optionValue="countryID" class="" #countryID="ngModel"
+                [ngClass]="{'is-invalid': countryID.invalid && (countryID.dirty || countryID.touched)}" name="countryID"
+                id="countryID" [required]="true">
+              </p-dropdown>
+              <div *ngIf="countryID.invalid && (countryID.dirty || countryID.touched)" class="labelfont">
+                <div class="p-error" *ngIf="countryID.errors?.['required']">
+                  Country is required.
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">State <span class="text-danger">*</span></label>
+              <p-dropdown [options]="stateList" [(ngModel)]="contractorInfo.stateID" optionLabel="stateName"
+                optionValue="stateID" (ngModelChange)="fillCityDDL();" class="" #stateID="ngModel"
+                [ngClass]="{'is-invalid': stateID.invalid && (stateID.dirty || stateID.touched)}" name="stateID"
+                id="cityID" [required]="true">
+              </p-dropdown>
+              <div *ngIf="stateID.invalid && (stateID.dirty || stateID.touched)" class="labelfont">
+                <div class="p-error" *ngIf="stateID.errors?.['required']">
+                  State is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">City <span class="text-danger">*</span></label>
+              <p-dropdown [options]="cityList" [(ngModel)]="contractorInfo.cityID" optionLabel="cityName"
+                optionValue="cityID" class="" #cityID="ngModel"
+                [ngClass]="{'is-invalid': cityID.invalid && (cityID.dirty || cityID.touched)}" [disabled]="isCityActive"
+                name="cityID" id="cityID" [required]="true">
+              </p-dropdown>
+              <div *ngIf="cityID.invalid && (cityID.dirty || cityID.touched)" class="labelfont">
+                <div class="p-error" *ngIf="cityID.errors?.['required']">
+                  City is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Pincode</label>
+              <input pinput [(ngModel)]= "contractorInfo.pinCode" class="form-control text-uppercase" (keypress)="keyPressNumbers($event)" type="text" autocomplete="off" maxlength ="6" minlength="6" name="pinCode" id="pinCode"  #pinCode="ngModel"
+              [ngClass]="{'is-invalid': pinCode.invalid && (pinCode.dirty || pinCode.touched)}">
+              <div *ngIf="pinCode.invalid && (pinCode.dirty || pinCode.touched)"
+                    class="labelfont">
+                    <!-- <div  class="p-error" *ngIf="pinCode.errors?.['required']">
+                      Company Code is required.
+                    </div> -->
+                    <div  class="p-error" *ngIf="pinCode.errors?.['minlength']">
+                      Pincode must be at least 6 characters long.
+                  </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">Phone</label>
+              <input pinput [(ngModel)]="contractorInfo.phone" class="form-control" type="text" autocomplete="off" name="phone" id="phone"
+                maxlength="12" (keypress)="keyPressNumbers($event)">
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Email</label>
+              <input pinput [(ngModel)]="contractorInfo.email" class="form-control" type="text" autocomplete="off" #email="ngModel" name="email" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}">
+              <div *ngIf="email.invalid && (email.dirty || email.touched)" class="labelfont">
+                <div class="p-error" *ngIf="email.errors?.pattern">
+                  This is not a valid Email!!!
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Fax</label>
+              <input pinput [(ngModel)]="contractorInfo.fax" class="form-control" type="text" autocomplete="off" name="fax" id="fax"
+                (keypress)="keyPressNumbers($event)">
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Logo and Website" [selected]="true">
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">Website</label>
+              <input pinput [(ngModel)]="contractorInfo.webSite" class="form-control" type="text" autocomplete="off" name="webSite"
+                id="webSite">
+            </div>
+            <div class="col-lg-3">
+              <img [src]="filePath" style="width:120px">
+                <input name="contractorLogo"
+                id="contractorLogo"  type="file" id="contractorLogo"  class="form-control" (change)="handleFileInput($event)" style="display: none;"/>
+                <br/>
+            <label class="btn btn-primary" for="contractorLogo" style="margin-left: 7px !important;">Select Logo</label>
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Additional Detail" [selected]="true">
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">Pan No</label>
+              <input pinput [(ngModel)]="contractorInfo.panNo" class="form-control" type="text" autocomplete="off" name="panNo" id="panNo"
+                (keypress)="keyPressAlphanumeric($event)">
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Tan No.</label>
+              <input pinput [(ngModel)]="contractorInfo.tanNo" class="form-control" type="text" autocomplete="off" name="tanNo" id="tanNo"
+                (keypress)="keyPressAlphanumeric($event)">
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">GST No.</label>
+              <input pinput [(ngModel)]="contractorInfo.gstNo" class="form-control" type="text" autocomplete="off" name="gstNo" id="gstNo"
+                (keypress)="keyPressAlphanumeric($event)">
+            </div>
+          </div>
+          <div class="form-group row">
+
+            <div class="col-lg-4">
+              <label class="labelfont">PF No.</label>
+              <input pinput [(ngModel)]="contractorInfo.pfNo" class="form-control" type="text" autocomplete="off" name="pfNo" id="pfNo"
+                (keypress)="keyPressAlphanumeric($event)">
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">ESI No.</label>
+              <input pinput [(ngModel)]="contractorInfo.esiNo" class="form-control" type="text" autocomplete="off" name="esiNo" id="esiNo"
+                (keypress)="keyPressAlphanumeric($event)">
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">License No</label>
+              <input pinput [(ngModel)]="contractorInfo.licenseNo" class="form-control" type="text" autocomplete="off" name="licenseNo"
+                id="licenseNo" (keypress)="keyPressAlphanumeric($event)">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">Registration No</label>
+              <input pinput [(ngModel)]="contractorInfo.registrationNo" class="form-control" type="text" autocomplete="off"
+                name="registrationNo" id="registrationNo" (keypress)="keyPressAlphanumeric($event)">
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Contractor Licenses Detail" [selected]="true">
+          <div class="group-right">
+            <i (click)="addNewContractorLic()" class="pi pi-plus" style="font-size: 1.5rem; font-weight: bold;"></i>
+          </div>
+          <br/>
+          <div *ngIf="contractorInfo.contractorLicenses">
+            <p-table *ngIf="contractorInfo.contractorLicenses.length > 0"  [lazy]="true" [value]="contractorInfo.contractorLicenses"
+              responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>License No</th>
+                  <th>ValidityFromDate</th>
+                  <th>ValidityToDate</th>
+                  <th>Coverage</th>
+                  <th></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-contractorLics let-rowIndex="rowIndex">
+                <tr>
+                  <td>{{contractorLics.licenseNo}}</td>
+                  <td>{{contractorLics.validityFromDate}}</td>
+                  <td>{{contractorLics.validityToDate}}</td>
+                  <td>{{contractorLics.coverage}}</td>
+                  <td>
+                    <button data-action="delete" (click)="onCellClicked(rowIndex, 'delete')" class=" action-button delete p-button-rounded p-button-danger p-button-text" type="button" icon="pi pi-trash" pButton  ></button>
+                    <button data-action="edit" data-set="edit" (click)="onCellClicked(rowIndex, 'edit')" class="action-button edit p-button-rounded p-button-primary p-button-text" type="button" icon="pi pi-pencil" pButton ></button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </p-accordionTab>
+      </p-accordion>
+<br/>
+      <div class="form-group row pull-right">
+        <div class="col-lg-12">
+          <p-button icon="pi pi-check" type="submit" [label]="labelName" Class="p-button-text p-button-sm p-button-success"
+            [disabled]="!contractorForm.valid"></p-button>
+          <p-button icon="pi pi-times" class="p-button-sm " label="Cancel" styleClass="p-button-secondary"
+            (click)="CancelContractorForm()"></p-button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-dialog header="Add Contractor License Detail" [(visible)]="displayLic" [modal]="true" [draggable]="false"
+  [resizable]="false" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '70vw'}">
+  <form #licsForm="ngForm" (submit)="saveContractorLics()">
+    <div class="form-group row">
+      <div class="col-lg-4">
+        <label class="labelfont">License No</label>
+        <input pinput [(ngModel)]="contractorLicInfo.licenseNo" class="form-control" type="text" autocomplete="off" name="licenseNo"
+          id="licenseNo" (keypress)="keyPressAlphanumeric($event)" autocomplete="off">
+      </div>
+      <div class="col-lg-4">
+        <label class="labelfont">Validity From Date</label>
+        <!-- <p-calendar [(ngModel)]="validityFromDate"  name="validityFromDate" dateFormat="yyyy-MM-dd" class="form-control" inputId="validityFromDate"></p-calendar> -->
+        <input pinput [(ngModel)]="contractorLicInfo.validityFromDate" class="form-control" type="text" autocomplete="off"
+          name="validityFromDate" id="validityFromDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+      </div>
+      <div class="col-lg-4">
+        <label class="labelfont">Validity To Date</label>
+        <input pinput [(ngModel)]="contractorLicInfo.validityToDate" class="form-control" type="text" autocomplete="off"
+          name="validityToDate" id="validityToDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-lg-4">
+        <label class="labelfont">Coverage</label>
+        <input pinput [(ngModel)]="contractorLicInfo.coverage" class="form-control" type="text" autocomplete="off" name="coverage"
+          id="coverage" (keypress)="keyPressNumbers($event)" autocomplete="off">
+      </div>
+      <div class="col-lg-4">
+        <label class="labelfont">Work Start Date</label>
+        <input pinput [(ngModel)]="contractorLicInfo.workStartDate" class="form-control" type="text" autocomplete="off"
+          name="workStartDate" id="workStartDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+      </div>
+      <div class="col-lg-4">
+        <label class="labelfont">Work End Date</label>
+        <input pinput [(ngModel)]="contractorLicInfo.workEndDate" class="form-control" type="text" autocomplete="off" name="workEndDate"
+          id="workEndDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-lg-4">
+        <label class="labelfont">Total Strength</label>
+        <input pinput [(ngModel)]="contractorLicInfo.totalStrength" class="form-control" type="number" autocomplete="off"
+          name="totalStrength" id="totalStrength" autocomplete="off">
+      </div>
+
+      <div class="col-lg-4">
+        <label class="labelfont">Nature of Work<span class="text-danger" *ngIf="reqcondition">*</span></label>
+        <p-dropdown [options]="natureList" [(ngModel)]="contractorLicInfo.natureofWorkID" optionLabel="natureofWorkName"
+          optionValue="natureofWorkID" class="" #natureofWorkID="ngModel" [required]="reqcondition"
+          [ngClass]="{'is-invalid': natureofWorkID.invalid && (natureofWorkID.dirty || natureofWorkID.touched)}"
+          name="natureofWorkID" id="natureofWorkID">
+        </p-dropdown>
+      </div>
+      <div class="col-lg-4">
+        <label class="labelfont">Location of Work<span class="text-danger" *ngIf="reqcondition">*</span></label>
+        <p-dropdown [options]="stateList" [(ngModel)]="contractorLicInfo.locationofWorkID" optionLabel="stateName"
+          optionValue="stateID" class="" #locationofWorkID="ngModel" [required]="reqcondition"
+          [ngClass]="{'is-invalid': locationofWorkID.invalid && (locationofWorkID.dirty || locationofWorkID.touched)}"
+          name="locationofWorkID" id="locationofWorkID" >
+        </p-dropdown>
+      </div>
+      <div class="col-lg-4">
+        <label class="labelfont">Max No of Employees</label>
+        <input pinput [(ngModel)]="contractorLicInfo.maxNoofEmployees" class="form-control" type="number" autocomplete="off"
+          name="maxNoofEmployees" id="maxNoofEmployees" placeholder=" Max No of Employees" autocomplete="off">
+      </div>
+    </div>
+<br/><br/>
+    <div class="float-right">
+
+      <p-button icon="pi pi-check" type="submit" label="Save" Class="p-button-text p-button-sm p-button-success"
+        [disabled]="!licsForm.valid"></p-button>
+      <p-button icon="pi pi-times" class="p-button-sm " #closebutton data-dismiss="modal" label="Cancel"
+        (click)="CancelconLicrmData()" styleClass="p-button-secondary"></p-button>
+    </div>
+  </form>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+
+</p-confirmDialog>
+
+<!-- page end-->

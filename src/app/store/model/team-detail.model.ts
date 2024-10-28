@@ -1,0 +1,52 @@
+export interface TeamDetail {
+  employeeID: number,
+  employeeCode: string | null,
+  employeeName: string | null,
+  company: string | null,
+  department: string | null,
+  designation: string | null,
+  branch: string | null,
+  displayName: string | null
+}
+export interface AttendanceDetailReport{
+  attendanceDate: string,
+  shiftAttended: string,
+  workingHours: string,
+  extraWork: string,
+  shiftView: string,
+  status: string,
+  inTime: string,
+  outTime: string,
+  lateArrival: string,
+  earlyDeparture: string,
+  shiftChangeStage: string,
+  punchChangeStage: string,
+  attendanceLocked: boolean,
+  colorCode: string,
+  viewData: boolean,
+  employeeCode: string,
+  fullName: string,
+  designation: string,
+  department: string,
+  branch: string,
+  attendanceValue: number
+}
+export interface AttendanceSummaryReport {
+  employeeID: number,
+  employeeCode: string,
+  employeeName: string,
+  company: string,
+  department: string,
+  designation: string,
+  branch: string,
+  displayName: string,
+  present: number,
+  absent: number,
+  leave: number,
+  weeklyoff: number,
+  holiday: number,
+  lateArrival: string,
+  earlyDeparture: string,
+  extraWork: string,
+  otosFlag: string
+}

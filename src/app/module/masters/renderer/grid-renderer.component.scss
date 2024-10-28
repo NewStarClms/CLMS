@@ -1,0 +1,29 @@
+// .p-button.p-button-icon-only.p-button-rounded{
+//     height: 0rem !important;
+// }
+button {
+    margin: 2px;
+  }
+  .actions-container {
+    width: 100%;
+
+  }
+  .pull-right{
+    float:right;
+  }
+  .searchtxtinput{
+    padding-left: 35px !important;
+    margin-bottom: 3px !important;
+    border: 1px solid lightgray;
+    height: 2rem;
+  }
+  :host ::ng-deep .p-paginator {
+    justify-content: right !important;
+  }
+  .heightOnly{
+    height: 2.1vh !important;
+  }
+  .data1{
+    width:120px;
+  }
+

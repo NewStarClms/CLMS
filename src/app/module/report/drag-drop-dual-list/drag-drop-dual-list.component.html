@@ -1,0 +1,66 @@
+
+ <section class="card">
+  <div class="card-body">
+    <div class="row" [formGroup]="listBoxForm">
+
+      <div class="col-md-6 col-lg-6 col-sm-12 dualListLeft">
+        <div class="primary-container drag-drop-container">
+          <h6 class="vertical-spacing-5 listbox-title">{{availableText}}</h6>
+          <!-- <input type="text"  
+                  class="form-control vertical-spacing-5" 
+                  placeholder="{{availableFilterPlaceholder}}"     
+                  formControlName="availableSearchInput" 
+                  #availableSearchInput /> -->
+          <div cdkDropList #availables="cdkDropList" 
+               [cdkDropListData] ="availableItems" 
+               [cdkDropListConnectedTo] ="[selects]"
+               (cdkDropListDropped)="drop($event)" 
+               class="drag-drop-list">
+              <div nbButton outline status='primary' 
+                   class="drag-drop-box" 
+                   *ngFor="let item of availableItems " cdkDrag>
+                    {{item.text}}
+              </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col-md-6 col-lg-6 col-sm-12 dualListRight">
+        <div class="primary-container drag-drop-container">
+          <h6 class="vertical-spacing-5 listbox-title">{{selectedText}}</h6>
+          
+            <div cdkDropList #selects="cdkDropList" 
+                [cdkDropListData] ="selectedItems" 
+                [cdkDropListConnectedTo]="[availables]"
+                (cdkDropListDropped)="drop($event)" 
+                class="drag-drop-list">
+              <div nbButton outline status='primary' 
+                  class="drag-drop-box"    
+                  *ngFor="let item of selectedItems" cdkDrag>
+              {{item.text}}
+              <i class="fas fa-edit my-2" style="cursor:pointer" (click)="updateAction(item,$event)" ></i>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<p-dialog header="Update Column Name" [(visible)]="displayRename" [modal]="true" id="divGatePass" [draggable]="false"
+[resizable]="false" [transitionOptions]="'0ms'" [style]="{width: '30vw',height:'auto'}" (close)="cancelPopup()">
+  <form #reportDForm="ngForm">
+      <div class="mb-5" *ngIf="colEntity"> 
+        <label class="labelfont">Column Name <span class="text-danger">*</span></label>
+  <input type="text" 
+            class="form-control" 
+            placeholder="Name"
+            [(ngModel)]="colEntity.text"
+            name="columnName" />
+            </div>
+                  <div class="float-right">
+                    <p-button icon="pi pi-check" type="submit"  label="Save"  class=" mx-2 p-button-text p-button-sm p-button-success" (click)="updateName()" ></p-button>
+                    <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="cancelPopup()" styleClass="p-button-secondary"></p-button>
+                  </div>  
+                </form>    
+</p-dialog>
+

@@ -1,0 +1,108 @@
+
+<section class="card">
+  <header class="card-header">
+  <h2>PT Setting</h2>
+  </header>
+  <div class="group-right">
+  <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"class="p-button-rounded p-button-success"></button>
+  </div>
+ <div class="card-body">
+   <app-payroll-grid-rendere
+   [gridRowData]="rowData"
+   [gridColData]="columnDefs"
+   (onCellClickEvent)="onCellClicked($event)"
+   ></app-payroll-grid-rendere>
+ </div>
+</section>
+  <p-dialog header="{{dialogHeaderName}}" [(visible)]="displayPT" [modal]="true"
+  [draggable]="false" [resizable]="false" (onHide)="CancelPTSettingData()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '50vw',height:'35vw'}" >
+  <form #PTSettingForm = "ngForm" (submit)="savePTSetting()">
+  <div class="form-group row">
+
+  <div class="col-lg-4">
+    <label class="labelfont">State<span class="text-danger">*</span></label>
+    <p-dropdown [options]="stateList" [(ngModel)]="ptSettingInfo.stateID" optionLabel="stateName" optionValue="stateID"
+    class="" #stateID="ngModel" [required]="true" (ngModelChange)="getstateID($event)"
+    [ngClass]="{'is-invalid': stateID.invalid && (stateID.dirty || stateID.touched)}" name="stateID" id="stateID"></p-dropdown>
+    <div *ngIf="stateID.invalid && (stateID.dirty || stateID.touched)" class="labelfont">
+    <div class="p-error" *ngIf="stateID.errors?.['required']">
+    State is required.
+    </div>
+    </div>
+  </div>
+
+
+<div class="col-lg-3">
+  <label class="labelfont">PT On Arrear<span class="text-danger">*</span></label>
+  <p-selectButton [options]="stateOptions"  [(ngModel)]="ptSettingInfo.ptOnArrear" 
+  optionLabel="label" optionValue="value" required #ptOnArrear="ngModel"
+  name="ptOnArrear" id="ptOnArrear" 
+  [ngClass]="{'is-invalid':ptOnArrear.invalid && (ptOnArrear.dirty || ptOnArrear.touched)}"></p-selectButton>
+  <div *ngIf="ptOnArrear.invalid && (ptOnArrear.dirty || ptOnArrear.touched)">
+    <div class="p-error" *ngIf="ptOnArrear.errors?.['required']">
+      PT On Arrear is required.
+    </div>
+    </div>
+</div>
+
+   <input id="hdnPTSlabCount" type="hidden" [(ngModel)]="hdnPTSlabCount" name="hdnPTSlabCount" value="{{hdnPTSlabCount - 1}}" />
+   </div>
+   <div class="form-group row">
+   <div class="col-lg-12 float-right">
+   <div class="float-right">
+   <p-button icon="pi pi-plus"  [disabled]="addbtndisabled" Class="p-button-success" (click)="addFiledData()" styleClass="mr1 p-button-success"  type="button" ></p-button>
+   <p-button icon="pi pi-minus" [disabled]="removebtndisabled" class="p-button-sm "  (click)="removeFiledData()" styleClass="p-button-danger" ></p-button>
+   </div>
+   </div>
+   </div>
+   <div class="form-group row" id="divSlabMain">
+   <div class="col-lg-12 form-group row" *ngFor="let ptslab of ptslabList; let i = index" id="divPTSlab_{{i}}_Q">
+
+
+   <div class="col-lg-4">
+   <label class="labelfont">Minimum Limit<span class="text-danger">*</span></label>
+   <input pinput [(ngModel)]="ptslab.minimumLimit" class="form-control" type="text"
+   autocomplete="off" required  name="{{ptslab.minimumLimit+i}}" id="{{ptslab.minimumLimit+i}}" 
+   #minimumLimit="ngModel" 
+   [ngClass]="{'is-invalid':minimumLimit.invalid && (minimumLimit.dirty || minimumLimit.touched)}">
+   <div *ngIf="minimumLimit.invalid && (minimumLimit.dirty || minimumLimit.touched)">
+   <div class="p-error" *ngIf="minimumLimit.errors?.['required']">
+     Min Limit is required.
+   </div>
+   </div>
+   </div>
+
+ <div class="col-lg-4">
+   <label class="labelfont">Max Limit<span class="text-danger">*</span></label>
+   <input pinput [(ngModel)]="ptslab.maximumLimit" class="form-control" type="text"
+   autocomplete="off" required name="{{ptslab.maximumLimit+i}}" id="{{ptslab.maximumLimit+i}}" 
+   #maximumLimit="ngModel"
+   [ngClass]="{'is-invalid' :maximumLimit.invalid && (maximumLimit.dirty || maximumLimit.touched)}">
+   <div *ngIf="maximumLimit.invalid && (maximumLimit.dirty || maximumLimit.touched)">
+   <div class="p-error" *ngIf="maximumLimit.errors?.['required']">
+     Max Limit is required.
+   </div>
+   </div>
+   </div>
+
+ <div class="col-lg-4">
+   <label class="labelfont">Tax Amount<span class="text-danger">*</span></label>
+   <input pinput [(ngModel)]="ptslab.taxAmount" class="form-control" type="text"
+   autocomplete="off" required name="{{ptslab.taxAmount+i}}" id="{{ptslab.taxAmount+i}}" 
+   #taxAmount="ngModel"
+   [ngClass]="{'is-invalid': taxAmount.invalid && (taxAmount.dirty || taxAmount.touched)}">
+   <div *ngIf="taxAmount.invalid && (taxAmount.dirty || taxAmount.touched)" class="labelfont">
+   <div class="p-error" *ngIf="taxAmount.errors?.['required']">
+   Tax Amount is required.
+   </div>
+   </div>
+   </div>
+ </div>
+</div>
+
+<div class="float-right">
+<p-button icon="pi pi-check"  label="{{savebuttonHeaderName}}"  Class="p-button-text p-button-sm p-button-success" styleClass="mr1"  type="submit" [disabled]="!PTSettingForm.valid"></p-button>
+<p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancelPTSettingData()" styleClass="p-button-secondary"></p-button>
+</div>        
+</form>
+</p-dialog>

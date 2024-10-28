@@ -1,0 +1,186 @@
+<h3>Loan Detail</h3>
+<p-table [value]="loanSummaryDetail"  [scrollable]="true"  [tableStyle]="{'min-width': '80rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Loan Code</th>
+            <th>Loan Amt.</th>
+            <th>Loan Type</th>
+            <th>Total interest</th>
+            <th>Paid</th>
+            <th>To Pay</th>
+            <th>No Of EMI</th>
+            <th>Loan Month</th>
+            <th>Approved Date </th>
+            <th>Loan Remark</th>
+            <th>Status</th>
+            <th>Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-summary>
+        <tr>
+          <td>{{summary.loanCode}}</td>
+          <td>{{summary.totalLoanAmount}}</td>
+            <td>{{summary.loanType}}</td>
+            <td>{{summary.totalInterestPaid}}</td>
+            <td>{{summary.paid}}</td>
+            <td>{{summary.unpaid}}</td>
+            <td>{{summary.numberOfEMI}}</td>
+            <td>{{summary.requestDate}}</td>
+            <td>{{summary.approvedDate}}</td>
+            <td>{{ summary.requestRemark}}</td>
+            <td *ngIf="summary.loanStatus === 0">Closed</td>
+            <td *ngIf="summary.loanStatus === 1">Open</td>
+            <td>
+                
+                <button data-action="delete" (click)="onCellClicked(summary)"
+                class=" action-button p-button-rounded p-button-primary p-button-text" type="button"
+                icon="pi pi-eye" pButton></button>
+                <!-- <button data-action="delete" (click)="onCellClicked(summary, 'delete')"
+                class=" action-button delete p-button-rounded p-button-danger p-button-text" type="button"
+                icon="pi pi-trash" pButton></button>
+                <button data-action="delete" (click)="onCellClicked(summary, 'delete')"
+                class=" action-button delete p-button-rounded p-button-secondary p-button-text" type="button"
+                icon="pi pi-spinner" pButton></button> -->
+            </td>
+
+        </tr>
+    </ng-template>
+</p-table>
+<div class="float-right">
+<p-button label="close" (click)="closeSummary()"></p-button>
+</div>
+<p-dialog header="Loan Emi Details" [(visible)]="displayEmi" [modal]="true" id="displayLoanEmi" [draggable]="false"
+    [resizable]="false" (onHide)="closeDailog()" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '73vw',height:'40vw'}">
+    <p-table [value]="loanEmiDetails" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>PayDate</th>
+                <th>Principal</th>
+                <th>Interest</th>
+                <th>EMI</th>
+                <th>Amt To be Paid</th>
+                <th>Amount deducted</th>
+                <th>Outstanding Balance</th>
+                <th>Remaining Balance</th>
+                <th>Interest penalty</th>
+                <th>Status</th>
+                <th>Adjustment</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-emi let-rowNumber="rowIndex">
+            <tr>
+                <td>{{emi.payDate}}</td>
+                <td>{{emi.principal}}</td>
+                <td>{{emi.interest}}</td>
+                <td>{{emi.emi}}</td>
+                <td>{{emi.amountToBePaid}}</td>
+                <td>{{emi.amountDeducted}}</td>
+                <td>{{emi.outstandingBalance}}</td>
+                <td>{{emi.remainingBalance}}</td>
+                <td>{{emi.interestPenalty}}</td>
+                <td>{{emi.processed===0?"Running":"Closed"}}</td>
+                <td>  
+                    <button data-action="edit" (click)="openAdjustEMI(rowNumber,emi)"
+                    class=" action-button p-button-rounded p-button-primary p-button-text" type="button"
+                    icon="pi pi-pencil" pButton [disabled]="emi.processed===1"></button>
+                </td>
+            </tr>
+            <tr *ngIf="editEMI && rowNumber===expandRowNumber" style="border-top:none">
+                <td colspan="11"  style="border-top:none"> 
+                    <div class="card-body">
+                        <div class="form-group  row">
+                            <div class="col-md-4">
+                               
+                                <p-radioButton name="adjustmentType"  value="1" [(ngModel)]="adjustmentType"></p-radioButton>
+                                <label class="radiolabelfont">Reduce this month's EMI</label>
+                            </div>
+                            <div class="col-md-4">
+                                <p-radioButton name="adjustmentType" value="2" [(ngModel)]="adjustmentType"></p-radioButton>
+                                <label class="radiolabelfont">Settle loan out of system</label>
+                            </div>
+                            <div class="col-md-4">
+                                <p-radioButton name="adjustmentType" value="3" [(ngModel)]="adjustmentType"></p-radioButton>
+                                <label class="radiolabelfont">Restructure loan</label>
+                            </div>
+                        </div>
+                        <div class="form-group  row" *ngIf="adjustmentType==3">
+                            <div class="col-md-3">
+                                <br>
+                                <label class="labelfont">Total Outstanding Loan Amount-</label>
+                            </div>
+                            <div class="col-md-1">
+                                <br>
+                                <label class="labelfont">{{emi.outstandingBalance}}</label>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="labelfont">Amount to be Calculated out of system</label>
+                                <input pinput [(ngModel)]="adjustedAmount" class="form-control" required autocomplete="off" name="adjustedAmount" id="adjustedAmount" type="number">
+                            </div>
+                        </div>
+                        <div class="form-group  row" *ngIf="adjustmentType==3">
+                            <div class="col-md-3">
+                                <br>
+                                <label class="labelfont">No. of EMI's left-</label>
+                            </div>
+                            <div class="col-md-1">
+                                <br>
+                                <label class="labelfont">{{emi.outstandingEMI}}</label>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="labelfont">New No. of EMI's</label>
+                                <input pinput [(ngModel)]="adjustedEMI" class="form-control" required autocomplete="off" name="adjustedEMI" id="adjustedEMI" type="number">
+                            </div>
+                        </div>
+                        <div class="form-group  row"  *ngIf="adjustmentType==1">
+                            <div class="col-md-1">
+                                <br>
+                                <label class="labelfont">EMI-</label>
+                            </div>
+                            <div class="col-md-4">
+                                <br>
+                                <label class="labelfont">{{emi.emi}}</label>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="labelfont">Adjustment Amount</label>
+                                <input pinput [(ngModel)]="adjustedAmount" class="form-control" required autocomplete="off" name="adjustedAmount" id="adjustedAmount" type="number">
+                            </div>
+                       </div>
+                       <div class="form-group  row"  *ngIf="adjustmentType==3">
+                            <div class="col-md-3">
+                                <br>
+                                <label class="labelfont">New Loan Amount -</label>
+                            </div>
+                            <div class="col-md-3">
+                                <br>
+                                <label class="labelfont">{{emi.remainingBalance}}</label>
+                            </div>
+                       </div>
+                       <div class="form-group  row"  *ngIf="adjustmentType==2">
+                        <div class="col-md-4">
+                            <br>
+                            <label class="labelfont">Total Outstanding Loan Amount-</label>
+                        </div>
+                        <div class="col-md-8">
+                            <br>
+                            <label class="labelfont">{{emi.outstandingBalance}}</label>
+                        </div>
+                      </div>
+                       <div class="form-group row">
+                            <div class="col-md-5">
+                                <label class="labelfont">Remarks</label>
+                                <input pinput [(ngModel)]="adjustmentRemark" class="form-control" required type="text" autocomplete="off" name="adjustmentRemark" id="adjustmentRemark">
+                            </div>
+                            <div class="col-md-7">
+                                <br>
+                                <p-button icon="pi pi-check" type="submit"   label="Save" Class="p-button-text p-button-sm p-button-success"  (click)="submitEMIAdjustment(emi)"></p-button>
+                            </div>
+                       </div>
+                    </div>                      
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <div class="float-right ">
+        <p-button label="Close" class="mr-2 mt-2" (click)="closeDailog()"></p-button>
+        </div>
+</p-dialog>

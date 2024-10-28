@@ -1,0 +1,398 @@
+<section class="card">
+  <!-- <header>
+    <div id="card-header-inner">
+      <p class="alignleft">Shift Master</p>
+      <p class="alignright">
+        <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+        <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"class="p-button-rounded p-button-success"></button>
+      </p>
+      <div style="clear: both;"></div>
+
+    </div>
+  </header> -->
+  <header class="card-header">
+    <h2>Shift Master
+    </h2>
+</header>
+  <div class="group-right">
+    <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+    <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"class="p-button-rounded p-button-success"></button>
+    <!-- <button pButton pRipple type="button" icon="pi pi-filter" class="p-button-rounded p-button-warning"></button> -->
+</div>
+  <div class="card-body">
+    <div>
+      <app-grid-renderer 
+      [gridRowData]="rowData"
+       [gridColData]="columnDefs" 
+       (onCellClickEvent)="onCellClicked($event)">
+      </app-grid-renderer>
+    </div>
+  </div>
+</section>
+<!--add / update / delete modal  -->
+<p-dialog [header]="headerdialogName" (onHide)="cancelShiftmappingdiv()" [(visible)]="display" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '60vw'}">
+  <form #shiftForm="ngForm" (submit)="SaveShiftnData(shiftForm)">
+  <div class="card">
+    <p-tabView>
+        <p-tabPanel header="Shift Detail">
+            <div class="form-group row">
+              <input pinput [(ngModel)]="shiftInfo.shiftID" class="form-control" type="text" autocomplete="off" name="shiftID"
+                id="shiftID " hidden="true">
+              <div class="col-md-4">
+                <label class="labelfont">Shift Code <span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="shiftInfo.shiftCode" class="form-control text-uppercase" type="text"
+                  autocomplete="off" required name="shiftCode" (keypress)="keyPressAlphanumeric($event)" id="shiftCode"
+                  maxlength="5" #shiftCode="ngModel"
+                  [ngClass]="{'is-invalid': shiftCode.invalid && (shiftCode.dirty || shiftCode.touched)}">
+                <div *ngIf="shiftCode.invalid && (shiftCode.dirty || shiftCode.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="shiftCode.errors?.['required']">
+                    Shift Code is required.
+                  </div>
+                  <div class="p-error" *ngIf="shiftCode.errors?.['minlength']">
+                    Shift Code must be at least 5 characters long.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont">Name <span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="shiftInfo.shiftName" class="form-control" maxlength="30" type="text"
+                  autocomplete="off" required name="shiftName" id="shiftName" #shiftName="ngModel"
+                  [ngClass]="{'is-invalid': shiftName.invalid && (shiftName.dirty || shiftName.touched)}">
+                <div *ngIf="shiftName.invalid && (shiftName.dirty || shiftName.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="shiftName.errors?.['required']">
+                    Shift Name is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="labelfont"> Shift Type</label>
+                <p-dropdown [options]="shiftTypeOption" [(ngModel)]="shiftInfo.shiftType" optionLabel="value" optionValue="key"
+                  class="" [filter]="true" filterBy="value" #shiftType="ngModel"
+                  [ngClass]="{'is-invalid': shiftType.invalid && (shiftType.dirty || shiftType.touched)}" name="shiftType"
+                  id="shiftType">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="form-grpup row">
+              <div class="col-md-4" style="float: left !important;">
+                <label class="labelfont"> Shift Start Time</label>
+                <input [(ngModel)]="shiftInfo.shiftStartTime" name="startTime" autocomplete="off" class="form-control"
+                  [popover]="shiftStartTime" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+                <ng-template #shiftStartTime>
+                  <timepicker [(ngModel)]="shiftInfo.shiftStartTime" name="startTime" [showMeridian]="false"
+                    (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.SHIFT_START_TIME)"></timepicker>
+                </ng-template>
+              </div>
+              <div class="col-md-4" style="float: left !important;">
+                <label class="labelfont"> Shift End Time</label>
+                <input [(ngModel)]="shiftInfo.shiftEndTime" name="endTime" autocomplete="off" class="form-control"
+                  [popover]="shiftEndTime" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+                <ng-template #shiftEndTime>
+                  <timepicker [(ngModel)]="shiftInfo.shiftEndTime" name="endTime" [showMeridian]="false"
+                    (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.SHIFT_END_TIME)"></timepicker>
+                </ng-template>
+              </div>
+              <div class="col-md-4" style="float: left !important;">
+                <label class="labelfont"> Shift Duration</label>
+                <input [(ngModel)]="shiftInfo.shiftDuration" name="shiftDuration" autocomplete="off" class="form-control"
+                  [popover]="shiftDuration" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+                <ng-template #shiftDuration>
+                  <timepicker [(ngModel)]="shiftInfo.shiftDuration" name="shiftDuration" [showMeridian]="false"
+                    (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Shift_Duration)"></timepicker>
+                </ng-template>
+              </div>
+            </div>
+            <div class="form-grpup row">
+              <div class="col-md-4" style="float: left !important;">
+                <label class="labelfont"> Lunch Start Time</label>
+                <input [(ngModel)]="shiftInfo.lunchStartTime" name="lunchStartTime" autocomplete="off" class="form-control"
+                  [popover]="lunchStartTime" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+                <ng-template #lunchStartTime>
+                  <timepicker [(ngModel)]="shiftInfo.lunchStartTime" name="lunchStartTime" [showMeridian]="false"
+                    (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Lunch_Start_Time)"></timepicker>
+                </ng-template>
+              </div>
+              <div class="col-md-4" style="float: left !important;">
+                <label class="labelfont"> Lunch End Time</label>
+                <input [(ngModel)]="shiftInfo.lunchEndTime" name="lunchEndTime" autocomplete="off" class="form-control"
+                  [popover]="lunchEndTime" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+                <ng-template #lunchEndTime>
+                  <timepicker [(ngModel)]="shiftInfo.lunchEndTime" name="lunchEndTime" [showMeridian]="false"
+                    (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Lunch_End_Time)"></timepicker>
+                </ng-template>
+              </div>
+              <div class="col-md-4" style="float: left !important;">
+                <label class="labelfont"> Lunch Duration</label>
+                <input [(ngModel)]="shiftInfo.lunchDuration" name="lunchDuration" autocomplete="off" class="form-control"
+                  [popover]="lunchDuration" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+                <ng-template #lunchDuration>
+                  <timepicker [(ngModel)]="shiftInfo.lunchDuration" name="lunchDuration" [showMeridian]="false"
+                    (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Lunch_Duration)"></timepicker>
+                </ng-template>
+              </div>
+            </div>
+            <div class="form-grpup row">
+              <div class="col-md-12" style="float: left !important;">
+                <label class="labelfont lableMargin"> Lunch Include In Shift Duration </label>
+                 <p-selectButton [options]="stateOptions" [(ngModel)]="shiftInfo.lunchIncludeInShiftDuration" optionLabel="label" optionValue="value" name="lunchIncludeInShiftDuration"></p-selectButton>
+              </div>
+            </div>
+        </p-tabPanel>
+        
+        <p-tabPanel header="Attendance">
+          <div class="form-grpup row">
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Min Hours To Full Day Present</label>
+              <input [(ngModel)]="shiftInfo.minHoursToPresent" name="minHoursToPresent" autocomplete="off" class="form-control"
+                [popover]="minHoursToPresent" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #minHoursToPresent>
+                <timepicker [(ngModel)]="shiftInfo.minHoursToPresent" name="minHoursToPresent" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Min_Hours_To_Full_Day_Present)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Min Hours To Half Day Present</label>
+              <input [(ngModel)]="shiftInfo.minHoursToHalfDay" name="minHoursToHalfDay" autocomplete="off" class="form-control"
+                [popover]="minHoursToHalfDay" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #minHoursToHalfDay>
+                <timepicker [(ngModel)]="shiftInfo.minHoursToHalfDay" name="minHoursToHalfDay" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Min_Hours_To_Half_Day_Present)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Max Absent Hours For SRT</label>
+              <input [(ngModel)]="shiftInfo.maxHoursForSRT" name="maxHoursForSRT" autocomplete="off" class="form-control"
+                [popover]="maxHoursForSRT" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #maxHoursForSRT>
+                <timepicker [(ngModel)]="shiftInfo.maxHoursForSRT" name="maxHoursForSRT" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Max_Absent_Hours_For_SRT)"></timepicker>
+              </ng-template>
+            </div>
+          </div>
+          <div class="form-grpup row">
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> First Half Consider Up to</label>
+              <input [(ngModel)]="shiftInfo.firstHalfConsiderUpto" name="firstHalfConsiderUpto" autocomplete="off" class="form-control"
+                [popover]="firstHalfConsiderUpto" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #firstHalfConsiderUpto>
+                <timepicker [(ngModel)]="shiftInfo.firstHalfConsiderUpto" name="firstHalfConsiderUpto" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.First_Half_Consider_Up_to)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Max Working Hours</label>
+              <input [(ngModel)]="shiftInfo.maxWorkingHour" name="maxWorkingHour" autocomplete="off" class="form-control"
+                [popover]="maxWorkingHour" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #maxWorkingHour>
+                <timepicker [(ngModel)]="shiftInfo.maxWorkingHour" name="maxWorkingHour" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Max_Working_Hours)"></timepicker>
+              </ng-template>
+            </div>
+            
+          </div>
+          <div class="form-grpup row">
+            
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Permissible Late</label>
+              <input [(ngModel)]="shiftInfo.permissibleLate" name="permissibleLate" autocomplete="off" class="form-control"
+                [popover]="permissibleLate" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #permissibleLate>
+                <timepicker [(ngModel)]="shiftInfo.permissibleLate" name="permissibleLate" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Permissible_Late)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Absent After Late</label>
+              <input [(ngModel)]="shiftInfo.absentAfterLate" name="absentAfterLate" autocomplete="off" class="form-control"
+                [popover]="absentAfterLate" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #absentAfterLate>
+                <timepicker [(ngModel)]="shiftInfo.absentAfterLate" name="absentAfterLate" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Absent_After_Late)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Absent Before Early
+              </label>
+              <input [(ngModel)]="shiftInfo.absentBeforeEarly" name="absentBeforeEarly" autocomplete="off" class="form-control"
+                [popover]="absentBeforeEarly" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #absentBeforeEarly>
+                <timepicker [(ngModel)]="shiftInfo.absentBeforeEarly" name="absentBeforeEarly" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Absent_Before_Early)"></timepicker>
+              </ng-template>
+            </div>
+          </div>
+          <div class="form-grpup row">
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Permissible Early</label>
+              <input [(ngModel)]="shiftInfo.permissibleEarly" name="permissibleEarly" autocomplete="off" class="form-control"
+                [popover]="permissibleEarly" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #permissibleEarly>
+                <timepicker [(ngModel)]="shiftInfo.permissibleEarly" name="permissibleEarly" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Permissible_Early)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> HalfDay After Late</label>
+              <input [(ngModel)]="shiftInfo.halfDayAfterLate" name="halfDayAfterLate" autocomplete="off" class="form-control"
+                [popover]="halfDayAfterLate" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #halfDayAfterLate>
+                <timepicker [(ngModel)]="shiftInfo.halfDayAfterLate" name="halfDayAfterLate" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.HalfDay_After_Late)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> HalfDay Before Early
+              </label>
+              <input [(ngModel)]="shiftInfo.halfDayBeforeEarly" name="halfDayBeforeEarly" autocomplete="off" class="form-control"
+                [popover]="halfDayBeforeEarly" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #halfDayBeforeEarly>
+                <timepicker [(ngModel)]="shiftInfo.halfDayBeforeEarly" name="halfDayBeforeEarly" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.HalfDay_Before_Early)"></timepicker>
+              </ng-template>
+            </div>
+          </div>
+          <div class="form-grpup row">
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> HalfDay if Late and Early</label>
+              <p-selectButton [options]="stateOptions" [(ngModel)]="shiftInfo.halfDayLateEarly" optionLabel="label" optionValue="value" name="halfDayLateEarly"></p-selectButton>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Absent if Late and Early</label>
+              <p-selectButton [options]="stateOptions" [(ngModel)]="shiftInfo.absentLateEarly" optionLabel="label" optionValue="value" name="absentLateEarly"></p-selectButton>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="OT Setup">
+            
+          <div class="form-grpup row">
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Maximum OT</label>
+              <input [(ngModel)]="shiftInfo.otMax" name="otMax" autocomplete="off" class="form-control"
+                [popover]="otMax" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #otMax>
+                <timepicker [(ngModel)]="shiftInfo.otMax" name="otMax" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Maximum_OT)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Minimum OT</label>
+              <input [(ngModel)]="shiftInfo.otMin" name="otMin" autocomplete="off" class="form-control"
+                [popover]="otMin" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #otMin>
+                <timepicker [(ngModel)]="shiftInfo.otMin" name="otMin" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Minimum_OT)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> OT Start After</label>
+              <input [(ngModel)]="shiftInfo.otStartAfter" name="otStartAfter" autocomplete="off" class="form-control"
+                [popover]="otStartAfter" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #otStartAfter>
+                <timepicker [(ngModel)]="shiftInfo.otStartAfter" name="otStartAfter" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.OT_Start_After)"></timepicker>
+              </ng-template>
+            </div>
+          </div>
+          <div class="form-grpup row">
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> OT Deduction</label>
+              <input [(ngModel)]="shiftInfo.otDeduction" name="otDeduction" autocomplete="off" class="form-control"
+                [popover]="otDeduction" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #otDeduction>
+                <timepicker [(ngModel)]="shiftInfo.otDeduction" name="otDeduction" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.OT_Deduction)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> OT Remove After Late</label>
+              <input [(ngModel)]="shiftInfo.otRemoveAfterLate" name="otRemoveAfterLate" autocomplete="off" class="form-control"
+                [popover]="otRemoveAfterLate" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #otRemoveAfterLate>
+                <timepicker [(ngModel)]="shiftInfo.otRemoveAfterLate" name="otRemoveAfterLate" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.OT_Remove_After_Late)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> OT Duration for Dinner Deduction</label>
+              <input [(ngModel)]="shiftInfo.otDutationForDinnerDeduction" name="otDutationForDinnerDeduction" autocomplete="off" class="form-control"
+                [popover]="otDutationForDinnerDeduction" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #otDutationForDinnerDeduction>
+                <timepicker [(ngModel)]="shiftInfo.otDutationForDinnerDeduction" name="otDutationForDinnerDeduction" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.OT_Duration_for_Dinner_Deduction)"></timepicker>
+              </ng-template>
+            </div>
+          </div>
+          <div class="form-grpup row">
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> OT Dinner Deduction</label>
+              <input [(ngModel)]="shiftInfo.otDinnerDeduction" name="otDinnerDeduction" autocomplete="off" class="form-control"
+                [popover]="otDinnerDeduction" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #otDinnerDeduction>
+                <timepicker [(ngModel)]="shiftInfo.otDinnerDeduction" name="otDinnerDeduction" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.OT_Dinner_Deduction)"></timepicker>
+              </ng-template>
+            </div>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Shift Allowance">
+          <div class="form-grpup row">
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Shift Allowance Applicable  {{ shiftInfo.shiftAllowanceApplicable }}</label>
+              <p-selectButton [options]="stateOptions" [(ngModel)]="shiftInfo.shiftAllowanceApplicable" optionLabel="label" optionValue="value" name="shiftAllowanceApplicable"></p-selectButton>
+             
+            </div>
+            <div class="col-md-4" style="float: left !important;" *ngIf="shiftInfo.shiftAllowanceApplicable">
+              <label class="labelfont"> Minimum Work For Shift Allowance</label>
+              <input [(ngModel)]="shiftInfo.minWorkingHourForShiftAllowance" name="minWorkingHourForShiftAllowance" autocomplete="off" class="form-control"
+                [popover]="minWorkingHourForShiftAllowance" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #minWorkingHourForShiftAllowance>
+                <timepicker [(ngModel)]="shiftInfo.minWorkingHourForShiftAllowance" name="minWorkingHourForShiftAllowance" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Minimum_Work_For_Shift_Allowance)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;" *ngIf="shiftInfo.shiftAllowanceApplicable">
+              <label class="labelfont">Late For Shift Allowance</label>
+              <input [(ngModel)]="shiftInfo.lateMinuteForShiftAllowance" name="lateMinuteForShiftAllowance" autocomplete="off" class="form-control"
+                [popover]="lateMinuteForShiftAllowance" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #lateMinuteForShiftAllowance>
+                <timepicker [(ngModel)]="shiftInfo.lateMinuteForShiftAllowance" name="lateMinuteForShiftAllowance" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Late_For_Shift_Allowance)"></timepicker>
+              </ng-template>
+            </div>
+          </div>
+          <div class="form-grpup row" *ngIf="shiftInfo.shiftAllowanceApplicable">
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont">Early For Shift Allowance</label>
+              <input [(ngModel)]="shiftInfo.earlyMinuteForShiftAllowance" name="earlyMinuteForShiftAllowance" autocomplete="off" class="form-control"
+                [popover]="earlyMinuteForShiftAllowance" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+              <ng-template #earlyMinuteForShiftAllowance>
+                <timepicker [(ngModel)]="shiftInfo.earlyMinuteForShiftAllowance" name="earlyMinuteForShiftAllowance" [showMeridian]="false"
+                  (ngModelChange)="updateStateLocaly($event,UICONSTANT.SHIFT_MASTER_FIELD.Early_For_Shift_Allowance)"></timepicker>
+              </ng-template>
+            </div>
+            <div class="col-md-4" style="float: left !important;">
+              <label class="labelfont"> Shift Allowance Amount</label>
+                <input pinput [(ngModel)]="shiftInfo.shiftAllowanceAmount" class="form-control" maxlength="30" type="text"
+                autocomplete="off"  name="shiftAllowanceAmount" id="shiftAllowanceAmount" #shiftAllowanceAmount="ngModel">
+            </div>
+          </div>
+        </p-tabPanel>
+    </p-tabView>
+    <div class="float-right">
+      <p-button icon="pi pi-times" class="p-button-sm mr1" #closebutton data-dismiss="modal" label="Cancel"
+      styleClass="p-button-secondary" (click)="cancelShiftmappingdiv()"></p-button>
+      <p-button icon="pi pi-check" [label]="labelName" Class="p-button-sm p-button-success" style="margin-right: 1rem;"  type="submit"
+        [disabled]="!shiftForm.valid"></p-button>
+    </div>
+</div>
+  <ng-template pTemplate="footer">
+    Note:- If You Change the shift you must update Roster
+  </ng-template>
+</form>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text">
+  </p-confirmDialog>

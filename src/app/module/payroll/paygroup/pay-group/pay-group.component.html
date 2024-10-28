@@ -1,0 +1,50 @@
+<section class="card">
+    <header>
+        <div id="card-header-inner">
+            <p class="alignleft">Pay Group</p>
+            <p class="alignright">
+                <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+                <button pButton pRipple type="button" icon="pi pi-plus" (click)="addnew()" 
+                    class="p-button-rounded p-button-success"></button>
+            </p>
+            <div style="clear: both;"></div>
+        </div>
+    </header>
+    <div class="card-body">
+        <div>
+            <app-payroll-grid-rendere [gridRowData]="rowData" [gridColData]="columnDefs"
+                (onCellClickEvent)="onCellClicked($event)">
+            </app-payroll-grid-rendere>
+        </div>
+    </div>
+</section>
+<!-- Policy Name update -->
+<!-- <p-dialog header="Organization Mapping" [(visible)]="displayPolicy" [modal]="true" id="divOUMap"
+  [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '50vw',height:'38vw'}" >
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label class="labelfont"> Policy Name<span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="payGroupInfo.policyName" class="form-control " type="text" autocomplete="off"
+                required name="policyName" id="policyName" maxlength="5" #policyName="ngModel">
+        </div>
+        <div class="col-md-6">
+            <label class="labelfont"> Description<span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="payGroupInfo.description" class="form-control" type="text" autocomplete="off"
+                required name="description" id="description" maxlength="5" #description="ngModel">
+        </div>
+        
+    </div>
+    <div class="float-right">
+        <p-button class="p-button-sm"   label="Save"  Class="p-button-text p-button-sm p-button-success mr-2 ml-2" styleClass="p-button-success" (click)="savePaygroup()"></p-button>
+        <p-button class="p-button-sm"   label="Cancel"  Class="p-button-text p-button-sm p-button-secondary mr-2 ml-2" styleClass="p-button-secondary" (click)="closePopup()"></p-button>
+    </div>
+  </p-dialog> -->
+<!-- Update OU mapping -->
+<p-dialog header="Organization Mapping" [(visible)]="display" [modal]="true" id="divOUMap" [draggable]="false"
+    [resizable]="false" (onHide)="closeDailog()" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '50vw',height:'28vw'}">
+    <app-organization-maping *ngIf="policyID" [policyID]="policyID"
+        [requestPath]="OUMAPING_PATH_PAYGROUP" (closeDialog)="closeDailog()" (refreshPage)="refreshPages()"></app-organization-maping>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+
+</p-confirmDialog>

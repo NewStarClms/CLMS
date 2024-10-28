@@ -1,0 +1,219 @@
+<p-tabView>
+    <p-tabPanel header="Summary">
+        <p class="title-slary mt-2">Paid Days</p>
+        <p-divider></p-divider>
+        <!-- <p-table [value]="monthlySalaryDetails" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="header">  -->
+        <table class="atttable table table-bordered table-hover headerfix">
+            <thead>
+                <tr>
+                    <th>Pay Group</th>
+                    <th>Dividing Factor</th>
+                    <th>Paid Days</th>
+                    <th>Arrear Days</th>
+                    <th>Actual Paid Days</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of monthlySalaryDetails">
+                    <td>{{data.payGroup}}</td>
+                    <td>{{data.dividingFactor}}</td>
+                    <td>{{data.paidDays}}</td>
+                    <td>{{data.arrearDays}}</td>
+                    <td>{{data.actulaPaidDays}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- </p-table> -->
+        <p class="title-slary mt-2">Salary Payment</p>
+        <p-divider></p-divider>
+        <table class="atttable table table-bordered table-hover headerfix">
+            <thead>
+                <tr>
+                    <th>CTC</th>
+                    <th>Gross Rate</th>
+                    <th>Salary Earning</th>
+                    <th>Salary Deduction</th>
+                    <th>Salary Pay</th>
+                    <th>Arrear Deduction</th>
+                    <th>Arrear Pay</th>
+                    <th>Net Earning</th>
+                    <th>Net Deduction</th>
+                    <th>Net Pay</th>
+                    <th>Net Pay Words</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pdata of monthlySalaryDetails">
+                    <td>{{pdata.ctc}}</td>
+                    <td>{{pdata.grossRate}}</td>
+                    <td>{{pdata.salaryEaring}}</td>
+                    <td>{{pdata.salaryDeduction}}</td>
+                    <td>{{pdata.salaryPay}}</td>
+                    <td>{{pdata.arrearDeduction}}</td>
+                    <td>{{pdata.arrearPay}}</td>
+                    <td>{{pdata.netEaring}}</td>
+                    <td>{{pdata.netDeduction}}</td>
+                    <td>{{pdata.netPay}}</td>
+                    <td>{{pdata.netPayWords}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </p-tabPanel>
+    <p-tabPanel header="Detail">
+        <p class="title-slary mt-2">Addition</p>
+        <p-divider></p-divider>
+        <table class="atttable table table-bordered table-hover headerfix">
+            <thead>
+                <tr>
+                    <th>Pay Component Name</th>
+                    <th>Pay Rate</th>
+                    <th>Pay Amount</th>
+                    <th>Arrear Amount</th>
+                    <th>Total Paid Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pdata of monthlySalaryPaidDetailsAddition">
+                    <!-- <ng-template > -->
+                    <td>{{pdata.payComponentName}}</td>
+                    <td>{{pdata.payRate}}</td>
+                    <td>{{pdata.payAmount}}</td>
+                    <td>{{pdata.arrearAmount}}</td>
+                    <td>{{pdata.totalPaidAmount}}</td>
+                    <!-- </ng-template> -->
+
+                </tr>
+                <tr *ngIf="monthlySalaryPaidDetailsAddition?.length>0">
+                    <td><b>Grand Total</b></td>
+                    <td><b>{{ montylySalaryTotalDetails.payRateTotal}}</b></td>
+                    <td><b>{{ montylySalaryTotalDetails.payAmountTotal}}</b></td>
+                    <td><b>{{ montylySalaryTotalDetails.arrearAmountTotal}}</b></td>
+                    <td><b>{{ montylySalaryTotalDetails.paidAmountTotal}}</b></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="title-slary mt-2">Deduction</p>
+        <p-divider></p-divider>
+        <table class="atttable table table-bordered table-hover headerfix">
+            <thead>
+                <tr>
+                    <th>Pay Component Name</th>
+                    <th>Pay Rate</th>
+                    <th>Pay Amount</th>
+                    <th>Arrear Amount</th>
+                    <th>Total Paid Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pdata of monthlySalaryPaidDetailsDeduction">
+                    <td>{{pdata.payComponentName}}</td>
+                    <td>{{pdata.payRate}}</td>
+                    <td>{{pdata.payAmount}}</td>
+                    <td>{{pdata.arrearAmount}}</td>
+                    <td>{{pdata.totalPaidAmount}}</td>
+                </tr>
+                <tr *ngIf="monthlySalaryPaidDetailsDeduction?.length>0">
+                    <td><b>Grand Total</b></td>
+                    <td><b>{{ montylySalaryTotalDetails_1.payRateTotal}}</b></td>
+                    <td><b>{{ montylySalaryTotalDetails_1.payAmountTotal}}</b></td>
+                    <td><b>{{ montylySalaryTotalDetails_1.arrearAmountTotal}}</b></td>
+                    <td><b>{{ montylySalaryTotalDetails_1.paidAmountTotal}}</b></td>
+                </tr>
+                <tr *ngIf="monthlySalaryPaidDetailsDeduction?.length === 0"><td colspan="5" style="text-align: ce;">No Deduction Available</td></tr>
+            </tbody>
+            
+        </table>
+
+    </p-tabPanel>
+    <p-tabPanel header="Statutory">
+        <p></p>
+        <table class="atttable table table-bordered table-hover headerfix" *ngIf="monthlySalaryDetails.length>0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Amount On</th>
+                    <th>Employee</th>
+                    <th>Employer</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PF</td>
+                    <td>{{ monthlySalaryDetails[0]?.pfGross}}</td>
+                    <td>{{ monthlySalaryDetails[0]?.pf}}</td>
+                    <td>{{ monthlySalaryDetails[0]?.epsAcc10 + monthlySalaryDetails[0]?.epfAcc1}}</td>
+                </tr>
+                <tr>
+                    <td>ESI</td>
+                    <td>{{ monthlySalaryDetails[0]?.esiGross}}</td>
+                    <td>{{ monthlySalaryDetails[0]?.esi}}</td>
+                    <td>{{ monthlySalaryDetails[0]?.esiEmployer}}</td>
+                </tr>
+                <tr>
+                    <td>LWF</td>
+                    <td>{{ monthlySalaryDetails[0]?.lwfGross}}</td>
+                    <td>{{ monthlySalaryDetails[0]?.lwf}}</td>
+                    <td>{{ monthlySalaryDetails[0]?.lwfEmployer}}</td>
+                </tr>
+                <tr>
+                    <td>PT</td>
+                    <td>{{ monthlySalaryDetails[0]?.ptGross}}</td>
+                    <td>{{ monthlySalaryDetails[0]?.pt}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Grand Total</b></td>
+                    <td>{{ monthlySalaryDetails[0]?.pfGross + monthlySalaryDetails[0]?.esiGross +
+                        monthlySalaryDetails[0]?.lwfGross + monthlySalaryDetails[0]?.ptGross}}</td>
+                    <td><b>{{ monthlySalaryDetails[0]?.pf + monthlySalaryDetails[0]?.esi + monthlySalaryDetails[0]?.lwf
+                            + monthlySalaryDetails[0]?.pt}}</b></td>
+                    <td><b>{{ monthlySalaryDetails[0]?.epsAcc10 + monthlySalaryDetails[0]?.epfAcc1 +
+                            monthlySalaryDetails[0]?.esiEmployer + monthlySalaryDetails[0]?.lwfEmployer}}</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </p-tabPanel>
+    <p-tabPanel header="PF Detail">
+        <p></p>
+        <table class="atttable table table-bordered table-hover headerfix">
+            <thead>
+                <tr>
+                    <th>PF Account</th>
+                    <th>Gross</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>EPSAcc10</td>
+                    <td>{{monthlySalaryDetails[0]?.pfGross}}</td>
+                    <td>{{ monthlySalaryDetails[0]?.epsAcc10}}</td>
+                </tr>
+                <tr>
+                    <td>EPFAcc1</td>
+                    <td></td>
+                    <td>{{ monthlySalaryDetails[0]?.epfAcc1}}</td>
+                </tr>
+                <tr>
+                    <td>EDLIAcc21</td>
+                    <td>{{ monthlySalaryDetails[0]?.edliAcc21}}</td>
+                    <td>{{ monthlySalaryDetails[0]?.edliAcc21}}</td>
+                </tr>
+                <tr>
+                    <td>PFAdminChargesAcc2</td>
+                    <td></td>
+                    <td>{{ monthlySalaryDetails[0]?.pfAdminChargesAcc2}}</td>
+                </tr>
+                <tr>
+                    <td>EDLIAdminChargesAcc22</td>
+                    <td></td>
+                    <td>{{ monthlySalaryDetails[0]?.edliAdminChargesAcc22}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </p-tabPanel>
+</p-tabView>
+<div class="float-right mt-2">
+    <p-button label="Close" class="mr-2 p-button-secondary" (click)="closeSalary()"></p-button>
+</div>

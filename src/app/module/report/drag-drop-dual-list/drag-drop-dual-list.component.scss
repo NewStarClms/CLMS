@@ -1,0 +1,116 @@
+.drag-drop-container {
+  width: 90%;
+  margin: auto;
+  vertical-align: top;
+}
+
+.drag-drop-list {
+  border: solid 1px;
+//   min-height: 60px;
+  overflow: hidden;
+  display: block;
+  margin-top: 10px;
+  background: #F0F8FF;
+  color: #fff;
+  border-radius: 10px;
+  overflow-y: scroll;
+  height: 30rem;
+}
+.ps-content{
+    // overflow-y: scroll;
+    height: 30rem;
+}
+::-webkit-scrollbar-corner { background: rgba(0,0,0,0.5); }
+
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: #c5c5c5 #f6f6f6;
+    }
+
+    /* Works on Chrome, Edge, and Safari */
+    *::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: #f6f6f6;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: #c5c5c5 ;
+        border-radius: 20px;
+        border: 3px solid #f6f6f6;
+    }
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12),
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drag-drop-box:last-child {
+  border: none;
+}
+
+.drag-drop-list.cdk-drop-list-dragging .drag-drop-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drag-drop-box {
+  padding: 7px;
+  margin: 7px;
+  font-size: 12px;
+  background: rgb(30, 81, 97);
+  border-radius: 10px;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  box-shadow: 0 8px 6px -6px #000;
+}
+
+@media (min-width: 768px) {
+  .drag-drop-container {
+    margin: 0;
+  }
+  .dualListLeft, .dualListRight {
+    display: flex;
+  }
+
+  .listboxform-wrap {
+    padding-top: 3em;
+    padding-bottom: 3em;
+  }
+}
+
+@media (min-width: 480px) {
+
+}
+ 
+@media (max-width: 768px) {
+  .listbox-title {
+    font-size: 1.3rem;
+  }
+}
+.edit{
+  position: absolute;
+    top: 43px;
+    left: 27rem;
+    color: #fff;
+}
+// .row{
+//   margin-right: -3.75rem !important;
+// }

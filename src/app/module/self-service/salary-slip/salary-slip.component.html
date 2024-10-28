@@ -1,0 +1,29 @@
+<section class="card" *ngIf="maindetailDiv">
+    <div class="card-body">
+        <div class="form-group row">
+            <div class="col-lg-12">
+                <section class="card border">
+                    <div class="card-body">
+                        <h5>Salary Detail</h5>
+                        <div class="form-group row">
+                            <div class="col-lg-9">
+                                <label class="labelfont">Month Year<span class="text-danger">*</span></label>
+                                <br/>
+                                <p-dropdown  [options]="monthList" [(ngModel)]= "months"  [required]="true" optionLabel="key" optionValue="value" 
+                                name="month" id="month" class="dropdwonPadding">
+                                </p-dropdown>
+                                <p-dropdown  [options]="yearList" [(ngModel)]= "year"  [required]="true" optionLabel="key" optionValue="value" 
+                                name="year" id="year" class="dropdwonPadding">
+                                </p-dropdown>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="labelfont"><br/></label><br/>
+                                <p-button  type="button" (click)="fngetData()"   label="Get Data" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+                            </div>
+                        </div>         
+                    </div>
+                </section>
+                </div>
+                </div>
+                </div>
+                </section>

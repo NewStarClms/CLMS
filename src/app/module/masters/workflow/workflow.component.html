@@ -1,0 +1,108 @@
+<section class="card">
+  <header class="card-header">
+      <div class="col-lg-6 float-left">
+        <h2>WorkFlow</h2>
+      </div>
+      <div class="group-right col-lg-6">
+        <!-- <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button> -->
+        <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"class="p-button-rounded p-button-success"></button>
+      </div>
+  </header>
+  <!-- <header class="card-header">
+    <h2>WorkFlow</h2>
+    <div class="group-right">
+      <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+      <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"class="p-button-rounded p-button-success"></button>
+      <button pButton pRipple type="button" icon="pi pi-filter" class="p-button-rounded p-button-warning"></button>
+  </div>
+</header> -->
+  
+  <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-4" *ngIf="workflowOptionList.length >0">
+          <label class="labelfont" >WorkFlow</label> 
+          <p-dropdown  [options]="workflowOptionList" [(ngModel)]= "workflowObj.workFlowModuleID"  (ngModelChange)="getRequesTypeList($event)" optionLabel="key" optionValue="value"  #workFlowModuleID="ngModel"
+          [ngClass]="{'is-invalid': workFlowModuleID.invalid && (workFlowModuleID.dirty || workFlowModuleID.touched)}"  name="workFlowModuleID" id="workFlowModuleID" >
+          </p-dropdown>
+          </div>
+        <div class="col-lg-4">
+          <label class="labelfont">Request Type</label>
+              <p-dropdown [options]="requestTypeList" [required]="true" [(ngModel)]="workflowObj.workFlowID"
+            name="workFlowID" id="workFlowID" optionLabel="requestType" optionValue="workFlowID" class="" #workFlowID="ngModel">
+            <ng-template let-item pTemplate="item">
+              <div *ngIf="(item.requestType === 'N');">
+                New Request
+              </div>
+              <div *ngIf="(item.requestType === 'C');">
+                Cancel
+              </div>
+          </ng-template>
+          <ng-template let-item pTemplate="selectedItem">
+            <div *ngIf="(item.requestType === 'N');">
+              New Request
+            </div>
+            <div *ngIf="(item.requestType === 'C');">
+              Cancel
+            </div>
+        </ng-template>
+        </p-dropdown>
+        </div>
+        <div class="col-lg-2" style="text-align: right;">
+          <label class="labelfont"></label>
+          <div style="padding-left:0px;">
+          <p-button type="button" label="Get Data" (click)="getWorkflowData()" Class="p-button-text p-button-sm p-button-success"
+          ></p-button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" style="float:right">
+       
+      </div>
+        <div *ngIf="rowData.length >= 0">
+           
+        </div>
+        <app-grid-renderer
+    [gridRowData]="rowData"
+    [gridColData]="columnDefs"
+    (onCellClickEvent)="onCellClicked($event)"
+    ></app-grid-renderer>
+  </div>
+  </section>
+ 
+  <!-- page end-->
+  <p-dialog header="Organization Mapping" [(visible)]="displayOUMap" [modal]="true" id="divOUMap"
+  [draggable]="false" [resizable]="false" (onHide)="CancelOrgnaizationMapping()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '50vw',height:'38vw'}"  >
+  <div class="form-group row">
+    <div class="col-lg-6">
+      <label class="labelfont">Organization</label>
+      <p-dropdown [options]="orgUnitList" [(ngModel)]="orgnaizationMappingInfo.organizationKeyID" optionLabel="key"
+        optionValue="value" class="" #organizationKeyID="ngModel" name="organizationKeyID" id="organizationKeyID"
+        (ngModelChange)="prepareOrgListByOU(orgnaizationMappingInfo.organizationKeyID)">
+      </p-dropdown>
+    </div>
+    <div class="col-lg-6">
+      <label class="labelfont"><br/></label><br/>
+      <p-multiSelect [options]="orgDataUnitList" placeholder="Please Select" [(ngModel)]="selectedOrganiztion" name="organization" optionLabel="key" optionValue="value"></p-multiSelect>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-lg-6">
+      <label class="labelfont">Location</label>
+      <p-dropdown [options]="locationList" [(ngModel)]="orgnaizationMappingInfo.locationKeyID" optionLabel="key"
+        optionValue="value" class="" #locationKeyID="ngModel" name="locationKeyID" id="locationKeyID"
+        (ngModelChange)="preparelocationDataByOU(orgnaizationMappingInfo.locationKeyID)">
+      </p-dropdown>
+    </div>
+    <div class="col-lg-6">
+      <label class="labelfont"><br/></label><br/>
+      <p-multiSelect [options]="locationDataList" placeholder="Please Select" [(ngModel)]="selectedLocation" name="location" optionLabel="key" optionValue="value"></p-multiSelect>
+    </div>
+  </div>
+  <div class="float-right">
+      <p-button icon="pi pi-check" label="Save"  Class="p-button-text p-button-sm p-button-success" (click)="SaveOrgnaizationMapping()"></p-button>
+    <p-button icon="pi pi-times" class="p-button-sm ml-2 "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancelOrgnaizationMapping()" styleClass="p-button-secondary"></p-button>
+  </div>
+  </p-dialog>
+    <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+
+    </p-confirmDialog>

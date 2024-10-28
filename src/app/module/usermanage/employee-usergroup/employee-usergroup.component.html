@@ -1,0 +1,121 @@
+<section class="card">
+    <header class="card-header" style="padding-bottom: 0px;">
+        <h2>Employee User Group</h2>
+    </header>
+
+    <div class="card-body" style="padding-top: 0px;">
+
+      <div class="form-group row">
+        <div class="col-lg-4">
+           User Group    <ng-multiselect-dropdown
+           name="selectedUserGroups"
+           [placeholder]="'Select Groups'"
+           [settings]="dropdownSettings"
+           [(ngModel)]="selectedUserGroups"
+           [data]="userGroups"></ng-multiselect-dropdown>
+           <!-- (onDeSelect)="onItemSelect($event)"
+           (onSelectAll)="onItemSelect($event)"
+           (onDeSelectAll)="onItemSelect($event)"
+           (onSelect)="onItemSelect($event)">-->
+    
+        </div>
+       
+        <div class="col-lg-4">
+          Action Type  
+          <select aria-placeholder="Select Action" class="custom-select" [(ngModel)]="userActionType.actionTypeID" name="actionTypeID">
+            <option  [value]="'0'" [selected]="userActionType.actionTypeID=='0'">Filter</option>
+            <option  [value]="'I'" [selected]="userActionType.actionTypeID=='I'">Assign</option>
+            <option  [value]="'R'" [selected]="userActionType.actionTypeID=='R'">Remove</option>
+          </select>
+        </div>
+    
+
+      <div class="col-lg-3 divload-list">
+        <br/>
+        <p-button label="Get Data" styleClass="p-button-info" (click)="loadFilteredEmployeeList();"></p-button> &nbsp;&nbsp;
+        <p-button label="Submit"  iconPos="right" [disabled]="selectedEmployees==null || selectedEmployees.length==0
+       || selectedUserGroups==null || selectedUserGroups.length==0
+       || userActionType.actionTypeID =='0'" class="p-button-sm" (click)="submitRequest();" ></p-button> &nbsp;&nbsp;
+       <p-button class="p-button-sm " label="Reset"   styleClass="p-button-secondary" (click)="reset();"></p-button>
+       </div>
+      </div>
+      
+        <app-grid-renderer
+        [gridRowData]="rowData"
+        [gridColData]="columnDefs"
+        [totalRecords]="totalRecordCount"
+        [isLazyLoadingEnabled]="true"
+        (onCheckAllClicked)="checkUnCheckAllClicked($event)"
+        (onCheckRowClicked)="checkUnCheckRowClicked($event)"
+        (onLazyLoadGridData)="onLazyLoadGridData($event)"
+        (onCellClickEvent)="onCellClicked($event)">
+        </app-grid-renderer>
+     
+    </div>
+  </section>
+  
+  <p-dialog header="Update Employee Geo Location" [(visible)]="employeeGeoLocationdiv" [modal]="true"
+    [draggable]="false" [resizable]="false" (manualPunchmultidiv)="CancelmanualPunchMultidiv()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '70vw',height:'30vw'}" >
+  <div class="form-group row" *ngIf="this.showHideField===true">
+    <div class="col-lg-12 float-right">
+      <div class="float-right">
+      <p-button icon="pi pi-plus" Class="p-button-success" (click)="addFiledData()" styleClass="mr1 p-button-success"  type="button" ></p-button>
+      <p-button icon="pi pi-minus" class="p-button-sm "  (click)="removeFiledData()" styleClass="p-button-danger" ></p-button>
+    </div>
+    </div> 
+  </div>
+<form #employeeGeoLocation="ngForm" name="form" (submit)="updateEmployeeGeoLocation()"> 
+<div id="divSlabMain" *ngIf="this.showHideField===true">
+  <!-- <form #employeeGeoLocation="ngForm" name="form" (submit)="updateEmployeeGeoLocation()"> -->
+    <div class="form-group row" *ngFor="let employeeGeoLocationModel of employeeGeoLocationModeList; let i=index">
+      <!-- <div class="col-lg-12 p-field">{{i+1}} <hr></div> -->
+      <div class="form-group row col-lg-12">
+    <div class="col-lg-4 p-field">
+    <label class="labelfont">Latitude</label>
+    <input pInputText [(ngModel)]="employeeGeoLocationModel.latitude" class="form-control shadow-none" maxlength="50" type="text" autocomplete="off" name="latitude{{i}}" id="latitude{{i}}">        
+       </div>
+       <div class="col-lg-4 p-field">
+        <label class="labelfont">Longitude</label>
+        <input pInputText [(ngModel)]="employeeGeoLocationModel.longitude" class="form-control shadow-none" maxlength="50"
+        type="text" autocomplete="off" name="longitude{{i}}" id="longitude{{i}}">        
+        </div>
+        <div class="col-lg-4 p-field">
+        <label class="labelfont">Location Address</label>
+        <input pInputText [(ngModel)]="employeeGeoLocationModel.locationAddress" class="form-control shadow-none" maxlength="50"
+        type="text" autocomplete="off" name="locationAddress{{i}}" id="locationAddress{{i}}">        
+        </div>
+        </div>
+        <div class="form-group row col-lg-12">
+        <div class="col-lg-4 p-field">
+        <label class="labelfont">Start Date</label>
+        <input pinput class="form-control" type="text" position="top-right"  autocomplete="off"  [(ngModel)]="employeeGeoLocationModel.starDate"
+        [bsConfig]="datepickerConfig"  [required]="true" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker  #starDate="ngModel" name="starDate{{i}}" id="starDate{{i}}">
+        </div>
+        <div class="col-lg-4 p-field">
+        <label class="labelfont">End Date</label>
+        <input pinput class="form-control" position="top-right"  type="text" autocomplete="off" name="endDate{{i}}" [(ngModel)]="employeeGeoLocationModel.endDate"
+        [bsConfig]="datepickerConfig"  id="endDate{{i}}" [required]="true" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker  #endDate="ngModel">
+        </div>
+        <div class="col-lg-4 p-field">
+        <label class="labelfont">Geo Redius</label>
+        <input pInputText [(ngModel)]="employeeGeoLocationModel.geoRadius" class="form-control shadow-none" maxlength="50"
+        type="text" autocomplete="off" name="geoRadius{{i}}" id="geoRadius{{i}}">    
+        </div>
+        </div>
+</div>
+
+<div class="float-right">
+  <p-button icon="pi pi-check" type="submit" [label]="labelName" Class="p-button-text p-button-sm p-button-success" styleClass="mr1"></p-button>
+  <p-button icon="pi pi-times" class="p-button-sm " #closebutton data-dismiss="modal" label="Cancel" (click)="cancel()"
+  styleClass="p-button-secondary"></p-button>
+  </div>
+
+</div>
+</form>
+</p-dialog>
+
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}"  rejectButtonStyleClass="p-button-text">
+  
+  </p-confirmDialog>
+  <!-- page end-->
+  

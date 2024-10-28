@@ -1,0 +1,18 @@
+.dropdwonPadding{
+    float: left !important;width:100px !important
+  }
+  .pay-header{
+    text-align: left;
+    padding: 1rem 1rem;
+    border: 1px solid #e9ecef;
+    border-width: 0 0 1px 0;
+    font-weight: 600;
+    background: #e9ecef;
+    color: #495057;
+    transition: box-shadow 0.2s;
+    line-height: 1rem !important;
+}
+.pay-line{
+    border-bottom: 1px solid lightgray;
+    line-height: 1.1rem;
+}

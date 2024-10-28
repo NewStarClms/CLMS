@@ -1,0 +1,21 @@
+<div class="card-body" style="padding-top: 0px !important;padding-right: 0px !important;">
+  <div class="form-group row">
+    <div class="col-lg-10 setmargin">
+      <p-autoComplete
+      [(ngModel)]="searchedvisitor"
+      [suggestions]="visitorSerchList"
+      (completeMethod)="searchvisitorData($event)"
+      [forceSelection]="true"
+      field="key"
+      [minLength]="2"
+      class="auto-serch"
+      placeholder="Search Visitor Through  Visitor Name |Company Name | Mobile No "
+      [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+      ></p-autoComplete>
+    </div>
+    <!--(ngModelChange)="loadDetails(4)"-->
+     <div class="col-lg-2">
+      <p-button label="Search" icon="pi pi-search" iconPos="right" class="p-button-sm" [loading]="loading[1]" (onClick)="loadDetails(4)" ></p-button>
+    </div>
+</div>
+</div>

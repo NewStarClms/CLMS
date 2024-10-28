@@ -1,0 +1,222 @@
+<section class="card">
+    <div class="card-body">
+      <form #salaryForm = "ngForm" (submit)="saveSalaryStructure()">
+        <p-accordion>
+          <p-accordionTab header="(A) Salary Detail()" [selected]="true">
+          <div class="form-group row">
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">Salary Revision Date</label>
+                <input pinput [(ngModel)]="empSalary.salaryRevisionDate" class="form-control" type="text" name="salaryRevisionDate"
+                autocomplete="off" id="salaryRevisionDate" #salaryRevisionDate="ngModel" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker
+                [ngClass]="{'is-invalid': salaryRevisionDate.invalid && (salaryRevisionDate.dirty || salaryRevisionDate.touched)}">
+                <div *ngIf="salaryRevisionDate.invalid && (salaryRevisionDate.dirty || salaryRevisionDate.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="salaryRevisionDate.errors?.['required']">
+                    Salary Revision Date is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">Arrear Effective Date</label>
+                <input pinput [(ngModel)]="empSalary.arrearEffectiveDate" class="form-control" type="text" name="arrearEffectiveDate"
+                autocomplete="off" id="arrearEffectiveDate" #arrearEffectiveDate="ngModel" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker
+                [ngClass]="{'is-invalid': arrearEffectiveDate.invalid && (arrearEffectiveDate.dirty || arrearEffectiveDate.touched)}">
+                <div *ngIf="arrearEffectiveDate.invalid && (arrearEffectiveDate.dirty || arrearEffectiveDate.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="arrearEffectiveDate.errors?.['required']">
+                    Arrear Effective Date is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+              <div class="col-md-6">
+                  <label class="labelfont">Pay Group</label>
+                  <p-dropdown [options]="paygroups" [(ngModel)]="empSalary.policyID"  optionLabel="policyName"
+                  optionValue="policyID"  class="" #policyID="ngModel"
+                    [ngClass]="{'is-invalid': policyID.invalid && (policyID.dirty || policyID.touched)}" name="policyID"
+                    id="policyID" (onChange)="loadPayStructure($event)">
+                  </p-dropdown> 
+              </div>
+              <div class="col-md-6">
+                  <label class="labelfont">CTC</label>
+                  <input pinput [(ngModel)]="empSalary.ctc" class="form-control" type="text" name="ctc"
+                  id="ctc" #ctc="ngModel"
+                  [ngClass]="{'is-invalid': ctc.invalid && (ctc.dirty || ctc.touched)}"
+                  (keypress)="keyPressNumeric($event)">
+              </div>
+          </div>
+         
+          </p-accordionTab>
+         <p-accordionTab header="(B) Gross Benefits" [selected]="true">
+                <div class="form-group row pay-header">
+                    <div class="col-md-4">
+                        <label>Component Name</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Formula</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Monthly Remuneration</label>
+                    </div>
+                </div>
+                <div class="form-group row pay-line" *ngFor="let payCom of empSalary.grossBenefitComponents;let index = index;">
+                    <div class="col-md-4">
+                        {{payCom.payComponentName}}
+                    </div>
+                    <div class="col-md-4">
+                        {{payCom.formula}}
+                    </div>
+                    <div class="col-md-4">
+                        
+                        <input pinput [(ngModel)]="payCom.amount" class="form-control" type="text" name="salaryAnnexureID"
+                        id="salaryAnnexureID" #salaryAnnexureID="ngModel"
+                        [ngClass]="{'is-invalid': salaryAnnexureID.invalid && (salaryAnnexureID.dirty || salaryAnnexureID.touched)}"
+                        (keypress)="keyPressNumeric($event)" [ngModelOptions]="{standalone: true}"  (ngModelChange)="calculateGrossSalary($event)">
+                    </div>
+                </div>
+         </p-accordionTab>
+         
+        <p-accordionTab header="(C) - Contributions / Retirals" [selected]="true">
+          <div class="form-group row">
+              <div class="col-md-6">
+                  <label class="labelfont lableMargin">Employer PF</label>
+                  <input pinput [(ngModel)]="empSalary.employerPF" class="form-control" type="text" name="employerPF"
+                  id="employerPF" #employerPF="ngModel"
+                  [ngClass]="{'is-invalid': employerPF.invalid && (employerPF.dirty || employerPF.touched)}"
+                  (keypress)="keyPressNumeric($event)">
+              </div>
+              <div class="col-md-6">
+                  <label class="labelfont lableMargin">Employer ESI</label>
+                  <input pinput [(ngModel)]="empSalary.employerESI" class="form-control" type="text" name="employerESI"
+                  id="employerESI" #employerESI="ngModel"
+                  [ngClass]="{'is-invalid': employerESI.invalid && (employerESI.dirty || employerESI.touched)}"
+                  (keypress)="keyPressNumeric($event)">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                  <label class="labelfont lableMargin">Employer LWF</label>
+                  <input pinput [(ngModel)]="empSalary.employerLWF" class="form-control" type="text" name="employerLWF"
+                  id="employerLWF" #employerLWF="ngModel"
+                  [ngClass]="{'is-invalid': employerLWF.invalid && (employerLWF.dirty || employerLWF.touched)}"
+                  (keypress)="keyPressNumeric($event)">
+              </div>
+              <div class="col-md-6">
+                  <label class="labelfont lableMargin">Gratuity Amount</label>
+                  <input pinput [(ngModel)]="empSalary.gratuityAmount" class="form-control" type="text" name="gratuityAmount"
+                  id="gratuityAmount" #gratuityAmount="ngModel"
+                  [ngClass]="{'is-invalid': gratuityAmount.invalid && (gratuityAmount.dirty || gratuityAmount.touched)}"
+                  (keypress)="keyPressNumeric($event)">
+              </div>
+          </div>
+          </p-accordionTab>
+          <p-accordionTab header="(D) - Recurring Deductions" [selected]="true">
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label class="labelfont lableMargin">Employee PF</label>
+                    <input pinput [(ngModel)]="empSalary.employeePF" class="form-control" type="text" name="employeePF"
+                    id="employeePF" #employeePF="ngModel"
+                    [ngClass]="{'is-invalid': employeePF.invalid && (employeePF.dirty || employeePF.touched)}"
+                    (keypress)="keyPressNumeric($event)" (ngModelChange)="calculateNetInHandSalary($event)">
+                </div>
+                <div class="col-md-4">
+                    <label class="labelfont lableMargin">Employee ESI</label>
+                    <input pinput [(ngModel)]="empSalary.employeeESI" class="form-control" type="text" name="employeeESI"
+                    id="employeeESI" #employeeESI="ngModel"
+                    [ngClass]="{'is-invalid': employeeESI.invalid && (employeeESI.dirty || employeeESI.touched)}"
+                    (keypress)="keyPressNumeric($event)" (ngModelChange)="calculateNetInHandSalary($event)">
+                </div>
+                <div class="col-md-4">
+                    <label class="labelfont lableMargin">Employee LWF</label>
+                    <input pinput [(ngModel)]="empSalary.employeeLWF" class="form-control" type="text" name="employeeLWF"
+                    id="employeeLWF" #employeeLWF="ngModel"
+                    [ngClass]="{'is-invalid': employeeLWF.invalid && (employeeLWF.dirty || employeeLWF.touched)}"
+                    (keypress)="keyPressNumeric($event)" (ngModelChange)="calculateNetInHandSalary($event)">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="form-group row pay-header">
+                        <div class="col-md-4">
+                            <label>Component Name</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Formula</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Monthly Remuneration</label>
+                        </div>
+                    </div>
+                    <div class="form-group row pay-line" *ngFor="let payCom of empSalary.recurringDeductionComponents">
+                        <div class="col-md-4">
+                            {{payCom.payComponentName}}
+                        </div>
+                        <div class="col-md-4">
+                            {{payCom.formula}}
+                        </div>
+                        <div class="col-md-4">
+                            <input pinput [(ngModel)]="payCom.amount" class="form-control" type="text" name="salaryAnnexureID"
+                            id="salaryAnnexureID" #salaryAnnexureID="ngModel"
+                            [ngClass]="{'is-invalid': salaryAnnexureID.invalid && (salaryAnnexureID.dirty || salaryAnnexureID.touched)}"
+                            (keypress)="keyPressNumeric($event)" [ngModelOptions]="{standalone: true}"
+                            (ngModelChange)="calculateNetInHandSalary($event)">
+                        </div>
+                    </div>
+                </div>
+              </div>
+          </p-accordionTab>
+          <p-accordionTab header="(E) - Others" [selected]="true">
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label class="labelfont lableMargin">Net In Hand Salary</label>
+                    <input pinput [(ngModel)]="empSalary.netInHandSalary" class="form-control" type="text" name="netInHandSalary"
+                    id="netInHandSalary" #netInHandSalary="ngModel"
+                    [ngClass]="{'is-invalid': netInHandSalary.invalid && (netInHandSalary.dirty || netInHandSalary.touched)}"
+                    (keypress)="keyPressNumeric($event)">
+                </div>
+                <div class="col-md-6">
+                    <label class="labelfont lableMargin">Gross Salary</label>
+                    <input pinput [(ngModel)]="empSalary.grossSalary" class="form-control" type="text" name="grossSalary"
+                    id="grossSalary" #grossSalary="ngModel"
+                    [ngClass]="{'is-invalid': grossSalary.invalid && (grossSalary.dirty || grossSalary.touched)}"
+                    (keypress)="keyPressNumeric($event)">
+                </div>
+            </div>
+          </p-accordionTab>
+          <p-accordionTab header="(A)-Request Details" [selected]="true" [hidden]="true">
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label class="labelfont lableMargin">Remarks</label>
+                    <input pinput [(ngModel)]="empSalary.requestRemark" class="form-control" type="text" name="requestRemark"
+                    id="requestRemark" #requestRemark="ngModel">
+                </div>
+                <div class="col-md-6">
+                    <label class="labelfont lableMargin">Request On</label>
+                    <input pinput [(ngModel)]="empSalary.requestDate" class="form-control" type="text" name="requestDate"
+                    autocomplete="off" id="requestDate" #requestDate="ngModel" [bsConfig]="datepickerConfig"
+                    placeholder="DD-MM-YYYY" bsDatepicker>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label class="labelfont lableMargin">Approved Remark</label>
+                    <input pinput [(ngModel)]="empSalary.approveRemark" class="form-control" type="text" name="approveRemark"
+                    id="approveRemark" #approveRemark="ngModel">
+                </div>
+                <div class="col-md-6">
+                    <label class="labelfont lableMargin">Approved On</label>
+                    <input pinput [(ngModel)]="empSalary.approvedDate" class="form-control" type="text" name="approvedDate"
+                    autocomplete="off" id="approvedDate" #approvedDate="ngModel" [bsConfig]="datepickerConfig"
+                    placeholder="DD-MM-YYYY" bsDatepicker>
+                </div>
+            </div>
+          </p-accordionTab>
+        </p-accordion><br>
+      <div class="form-group row float-right">
+          <p-button icon="pi pi-check"  label="Save"  Class="p-button-text p-button-sm p-button-success" styleClass="mr1"   type="submit" [disabled]="!salaryForm.valid"></p-button>
+          <p-button icon="pi pi-times" class="p-button-sm " data-dismiss="modal" label="Cancel"  (click)="closeDialog()" styleClass="p-button-secondary"></p-button>
+      </div>
+      </form>
+    </div>
+  </section>  

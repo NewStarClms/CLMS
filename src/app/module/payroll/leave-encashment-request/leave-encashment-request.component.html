@@ -1,0 +1,42 @@
+<div class="form-group row">
+    <div class="col-md-3">
+        <label class="labelfont">Paid Status</label>  <br/>
+            <p-dropdown  [options]="paidStatusList" [(ngModel)]= "paidStatus"  [required]="true" optionLabel="key" optionValue="value" 
+            name="paidStatus" id="paidStatus">
+            </p-dropdown>
+    </div>
+    <div class="col-md-4">
+        <label class="labelfont">MonthYear</label>  <br/>
+            <p-dropdown  [options]="monthList" [(ngModel)]= "paidmonth"  [required]="true" optionLabel="key" optionValue="value" 
+            name="paidmonth" id="paidmonth" class="dropdwonPadding">
+            </p-dropdown>
+            <p-dropdown  [options]="yearList" [(ngModel)]= "paidyear"  [required]="true" optionLabel="key" optionValue="value" 
+            name="paidyear" id="paidyear" class="dropdwonPadding">
+            </p-dropdown>
+    </div>
+    <div class="col-md-5">
+        <p-button type="button" (click)="getEncashPaymentRequestDetail()" label="Get Data"
+          Class="p-button-text p-button-sm p-button-success" styleClass="mr-2 ml-2"></p-button>
+          <p-button class="p-button-sm " #closebutton data-dismiss="modal" styleClass="mr-2 ml-2" label="Encash Payment"
+           styleClass="p-button-secondary" (click)="saveencashPayment()"></p-button>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-lg-12">
+        <label class="labelfont">  Remarks</label>
+        <input pinput [(ngModel)]="requestRemark" class="form-control"
+            type="text" autocomplete="off"  name="requestRemark" id="requestRemark" >
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-lg-12">
+        <app-payroll-grid-rendere
+        [gridRowData]="rowData"
+        [gridColData]="columnDefs"
+        (onCheckAllClicked)="checkUnCheckAllClicked($event)"
+        (onCheckRowClicked)="checkUnCheckRowClicked($event)"
+        (onCellClickEvent)="onCellClicked($event)">
+        </app-payroll-grid-rendere>
+    </div>
+</div>
+  

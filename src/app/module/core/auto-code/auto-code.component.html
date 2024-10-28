@@ -1,0 +1,79 @@
+<section class="card">
+  <header class="card-header">
+    <h2>Auto Code</h2>
+  </header>
+  <div class="group-right">
+    <button pButton pRipple type="button" *ngIf="gridRowData.length > 0" icon="pi pi-file-excel"
+      (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+    <!-- <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"class="p-button-rounded p-button-success"></button> -->
+    <button pButton pRipple type="button" icon="pi pi-filter" class="p-button-rounded p-button-warning"></button>
+  </div>
+  <div class="card-body">
+    <div *ngIf="gridRowData.length > 0">
+      <app-grid-renderer [gridRowData]="gridRowData" [gridColData]="columnDefs"
+        (onCellClickEvent)="onCellClicked($event)"></app-grid-renderer>
+    </div>
+  </div>
+</section>
+<!--add / update / delete modal  -->
+<p-dialog header="Auto Code" (onHide)="CancelAutoCodeData()" [(visible)]="display" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '90vw'}">
+    <div class="form-group row">
+      <div class="col-lg-4">
+        <label class="labelfont">Based On</label>
+        <p-dropdown [options]="orgUnitList" [(ngModel)]="autocodeInfo.organizationID" optionLabel="key"
+          optionValue="value" class="" #organizationName="ngModel" name="organizationName" id="organizationName"
+          (ngModelChange)="prepareAutocodeDataByOU(autocodeInfo.organizationID,autocodeInfo.autoCodeSeriesTypeID)">
+        </p-dropdown>
+      </div>
+    </div>
+  <!-- <form #autocodeForm="ngForm"> -->
+    <div class="">
+      <p-table [columns]="cols" [value]="autocodeList" responsiveLayout="scroll" editMode="row" dataKey="autocodeData">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{col.headerName}}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+          <tr [pEditableRow]="rowData">
+            <td>
+              <label class="labelfont">{{rowData.subOrganizationName}}</label>
+            </td>
+            <td>
+              <input pInputText type="text" [(ngModel)]="rowData.prefix">
+            </td>
+            <td>
+              <input pInputText type="text" [(ngModel)]="rowData.suffix">
+            </td>
+            <td>
+              <input pInputText type="text" [(ngModel)]="rowData.startNo" (keypress)="keyPressNumbers($event)" [ngClass]="{'required': !rowData.startNo}">
+            </td>
+
+            <td>
+              <input pInputText type="text" [(ngModel)]="rowData.padding" (keypress)="keyPressNumbers($event)" [ngClass]="{'required': !rowData.padding}">
+            </td>
+            <td>
+              <input pInputText type="text" [(ngModel)]="rowData.lastGeneratedCode"
+                    (keypress)="keyPressNumbers($event)">
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <br />
+    <div class="float-right">
+      <p-button icon="pi pi-check" type="submit" label="Save" Class="p-button-text p-button-sm p-button-success"
+        (click)="SaveAutoCodeData()" [disabled]="validateFields(autocodeList)"></p-button>
+      <p-button icon="pi pi-times" class="p-button-sm " #closebutton data-dismiss="modal" label="Cancel"
+        (click)="CancelAutoCodeData()" styleClass="p-button-secondary"></p-button>
+    </div>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}"
+  rejectButtonStyleClass="p-button-text">
+
+</p-confirmDialog>
+<!-- page end-->

@@ -1,0 +1,1396 @@
+<header class="card-header">
+  <h2 *ngIf="!allDisabledField">{{headerdialogName}}</h2>
+  <h2 *ngIf="allDisabledField">Time Office Policy Setup for <b>{{attendancepolicyInfo.policyName}}</b></h2>
+</header>
+<div class="card-body">
+  <form #attendancepolicyMasterForm = "ngForm" (submit)="SaveAttendancePolicyMasterData()">
+    <p-tabView [scrollable]="false">
+      <p-tabPanel header="General"  tooltip="General">
+        <div class="form-group row">
+            <div class="col-lg-3">
+              <label class="labelfont">Policy Name<span class="text-danger">*</span></label>
+              <input pinput  [(ngModel)]="attendancepolicyInfo.policyID" class="form-control" type="text"
+                 name="policyID"  id="policyID" hidden="true"                  #policyID="ngModel">
+              <input pinput [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.policyName" class="form-control" type="text"
+                autocomplete="off" required name="policyName" (keypress)="keyPressAlphanumeric($event)" id="policyName"
+                  #policyName="ngModel"
+                [ngClass]="{'is-invalid': policyName.invalid && (policyName.dirty || policyName.touched)}">
+              <div *ngIf="policyName.invalid && (policyName.dirty || policyName.touched)" class="labelfont">
+                <div class="p-error" *ngIf="policyName.errors?.['required']">
+                  Policy Name is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont">Description</label>
+              <input pinput [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.description" class="form-control" type="text"
+                autocomplete="off"  name="description" (keypress)="keyPressAlphanumeric($event)" id="description"
+                  #description="ngModel"
+                [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}">
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont">Cut Off Days<span class="text-danger">*</span></label>
+            <p-dropdown [options]="cutoffDaysList" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.cutOffDay" optionLabel="key" optionValue="value"
+            class="" #cutOffDay="ngModel" [required]="true"
+            [ngClass]="{'is-invalid': cutOffDay.invalid && (cutOffDay.dirty || cutOffDay.touched)}" name="cutOffDay" id="cutOffDay"></p-dropdown>
+            <div *ngIf="cutOffDay.invalid && (cutOffDay.dirty || cutOffDay.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="cutOffDay.errors?.['required']">
+                CutOff Days is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="labelfont">Is Optimistic<span class="text-danger">*</span></label>
+          <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.isOptimistic" 
+          optionLabel="label" optionValue="value" #isOptimistic="ngModel"
+          [ngClass]="{'is-invalid': isOptimistic.invalid && (isOptimistic.dirty || isOptimistic.touched)}" 
+          name="isOptimistic" id="isOptimistic"></p-selectButton>
+            <div *ngIf="isOptimistic.invalid && (isOptimistic.dirty || isOptimistic.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="isOptimistic.errors?.['required']">
+                Is Optimistic is required.
+              </div>
+            </div>
+        </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-3">
+              <label class="labelfont">Max Back Days <span title="Attandence Regulaization">AR</span> <span class="text-danger">*</span></label>
+            <input pinput class="form-control" type="text" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maxBackDaysAR" 
+              #maxBackDaysAR="ngModel" (keypress)="keyPressNumeric($event)"
+            [ngClass]="{'is-invalid': maxBackDaysAR.invalid && (maxBackDaysAR.dirty || maxBackDaysAR.touched)}" 
+            name="maxBackDaysAR" id="maxBackDaysAR">
+              <div *ngIf="maxBackDaysAR.invalid && (maxBackDaysAR.dirty || maxBackDaysAR.touched)" class="labelfont">
+      
+                <div class="p-error" *ngIf="maxBackDaysAR.errors?.['required']">
+                  Max Back Days AR is required.
+                </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="labelfont">Max Count In Month <span title="Attandence Regulaization">AR</span><span class="text-danger">*</span></label>
+          <input pinput class="form-control" type="text" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maxCountInMonthAR" 
+            #maxCountInMonthAR="ngModel" (keypress)="keyPressNumeric($event)"
+          [ngClass]="{'is-invalid': maxCountInMonthAR.invalid && (maxCountInMonthAR.dirty || maxCountInMonthAR.touched)}" 
+          name="maxCountInMonthAR" id="maxCountInMonthAR">
+            <div *ngIf="maxCountInMonthAR.invalid && (maxCountInMonthAR.dirty || maxCountInMonthAR.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="maxCountInMonthAR.errors?.['required']">
+                Max Count In Month AR is required.
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <label class="labelfont">Max Working Based On<span class="text-danger">*</span></label>
+          <p-dropdown [options]="maxworkinghourbasedOnList" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maxWorkingBasedOn" optionLabel="key" optionValue="value"
+          class="" #maxWorkingBasedOn="ngModel" [required]="true"
+          [ngClass]="{'is-invalid': maxWorkingBasedOn.invalid && (maxWorkingBasedOn.dirty || maxWorkingBasedOn.touched)}" name="maxWorkingBasedOn" id="maxWorkingBasedOn"></p-dropdown>
+          <div *ngIf="maxWorkingBasedOn.invalid && (maxWorkingBasedOn.dirty || maxWorkingBasedOn.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="maxWorkingBasedOn.errors?.['required']">
+                Max Working Based On is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Max Working Hours<span class="text-danger">*</span></label><br/>
+          <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maxWorkingHours" #maxWorkingHours="ngModel"
+          [ngClass]="{'is-invalid': maxWorkingHours.invalid && (maxWorkingHours.dirty || maxWorkingHours.touched)}" 
+          name="maxWorkingHours" id="maxWorkingHours" [required]="true"
+          [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getmaxWorkingHoursTime($event)"></p-calendar>
+            <div *ngIf="maxWorkingHours.invalid && (maxWorkingHours.dirty || maxWorkingHours.touched)" class="labelfont">
+              <div class="p-error" *ngIf="maxWorkingHours.errors?.['required']">
+                Max Working Hours is required.
+              </div>
+            </div>
+        </div>
+        </div>
+        <div class="form-group row">
+              <div class="col-lg-3">
+                <label class="labelfont">Punch In Shift<span class="text-danger">*</span></label>
+                <p-dropdown [options]="punchInShiftList" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.punchInShift" optionLabel="key" optionValue="value"
+                  #punchInShift="ngModel" [required]="true"
+                [ngClass]="{'is-invalid': punchInShift.invalid && (punchInShift.dirty || punchInShift.touched)}" name="punchInShift" id="punchInShift"></p-dropdown>
+                <div *ngIf="punchInShift.invalid && (punchInShift.dirty || punchInShift.touched)" class="labelfont">
+          
+                    <div class="p-error" *ngIf="punchInShift.errors?.['required']">
+                        Punch In Shift is required.
+                    </div>
+                  </div>
+              </div>
+              <div class="col-lg-3">
+                <label class="labelfont">Duplicate Check Minute<span class="text-danger">*</span></label><br/>
+                <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.duplicateCheckMinute" #duplicateCheckMinute="ngModel"
+          [ngClass]="{'is-invalid': duplicateCheckMinute.invalid && (duplicateCheckMinute.dirty || duplicateCheckMinute.touched)}" 
+          name="duplicateCheckMinute" id="duplicateCheckMinute" [required]="true"
+          [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getduplicateCheckMinuteTime($event)"></p-calendar>
+                  <div *ngIf="duplicateCheckMinute.invalid && (duplicateCheckMinute.dirty || duplicateCheckMinute.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="duplicateCheckMinute.errors?.['required']">
+                      Duplicate Check Minute is required.
+                    </div>
+                  </div>
+              </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="TimeOffice"  tooltip="TimeOffice">
+          <div class="form-group row">
+              <div class="col-lg-3">
+                  <label class="labelfont">Half Day Marking<span class="text-danger">*</span></label>
+                <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.halfDayMarking"
+                  optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': halfDayMarking.invalid && (halfDayMarking.dirty || halfDayMarking.touched)}" 
+                  name="halfDayMarking" id="halfDayMarking"  #halfDayMarking="ngModel"></p-selectButton>
+                  <div *ngIf="halfDayMarking.invalid && (halfDayMarking.dirty || halfDayMarking.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="halfDayMarking.errors?.['required']">
+                      Half Day Marking is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                  <label class="labelfont">Short Leave Marking<span class="text-danger">*</span></label>
+                <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.srtMarking"
+                  optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': srtMarking.invalid && (srtMarking.dirty || srtMarking.touched)}" 
+                  name="srtMarking" id="srtMarking"  #srtMarking="ngModel"></p-selectButton>
+                  <div *ngIf="srtMarking.invalid && (srtMarking.dirty || srtMarking.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="srtMarking.errors?.['required']">
+                    Short Time Marking is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                  <label class="labelfont">OverTime / OverStay<span class="text-danger">*</span></label>
+                <p-dropdown [options]="otosSettingList" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.otosSetting" optionLabel="key" optionValue="value"
+                  #otosSetting="ngModel" [required]="true"
+                [ngClass]="{'is-invalid': otosSetting.invalid && (otosSetting.dirty || otosSetting.touched)}" name="otosSetting" id="otosSetting"></p-dropdown>
+                <div *ngIf="otosSetting.invalid && (otosSetting.dirty || otosSetting.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="otosSetting.errors?.['required']">
+                      OT or OS is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <label class="labelfont">Consider Out Work<span class="text-danger">*</span></label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.considerOutWork"
+                optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': considerOutWork.invalid && (considerOutWork.dirty || considerOutWork.touched)}" 
+                name="considerOutWork" id="considerOutWork"  #considerOutWork="ngModel"></p-selectButton>
+                <div *ngIf="considerOutWork.invalid && (considerOutWork.dirty || considerOutWork.touched)" class="labelfont">
+      
+                <div class="p-error" *ngIf="considerOutWork.errors?.['required']">
+                    Consider Out Work is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+              <div class="col-lg-3">
+                  <label class="labelfont">Deduct Out Work<span class="text-danger">*</span></label>
+                <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.deductOutWork"
+                  optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': deductOutWork.invalid && (deductOutWork.dirty || deductOutWork.touched)}" 
+                  name="deductOutWork" id="deductOutWork"  #deductOutWork="ngModel"></p-selectButton>
+                  <div *ngIf="deductOutWork.invalid && (deductOutWork.dirty || deductOutWork.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="deductOutWork.errors?.['required']">
+                      Deduct Out Work is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                  <label class="labelfont">Present On Weekly Off<span class="text-danger">*</span></label>
+                <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.presentOnWeeklyOff"
+                  optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': presentOnWeeklyOff.invalid && (presentOnWeeklyOff.dirty || presentOnWeeklyOff.touched)}" 
+                  name="presentOnWeeklyOff" id="presentOnWeeklyOff"  #presentOnWeeklyOff="ngModel"></p-selectButton>
+                  <div *ngIf="presentOnWeeklyOff.invalid && (presentOnWeeklyOff.dirty || presentOnWeeklyOff.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="presentOnWeeklyOff.errors?.['required']">
+                      Present On Weekly Off is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <label class="labelfont">Present On Holiday<span class="text-danger">*</span></label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.presentOnHoliday"
+                optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': presentOnHoliday.invalid && (presentOnHoliday.dirty || presentOnHoliday.touched)}" 
+                name="presentOnHoliday" id="presentOnHoliday"  #presentOnHoliday="ngModel"></p-selectButton>
+                <div *ngIf="presentOnHoliday.invalid && (presentOnHoliday.dirty || presentOnHoliday.touched)" class="labelfont">
+      
+                <div class="p-error" *ngIf="presentOnHoliday.errors?.['required']">
+                    Present On Holiday is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+                <label class="labelfont">Miss Punch As Absent<span class="text-danger">*</span></label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.missPunchAsAbsent"
+                optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': missPunchAsAbsent.invalid && (missPunchAsAbsent.dirty || missPunchAsAbsent.touched)}" 
+                name="missPunchAsAbsent" id="missPunchAsAbsent"  #missPunchAsAbsent="ngModel"></p-selectButton>
+                <div *ngIf="missPunchAsAbsent.invalid && (missPunchAsAbsent.dirty || missPunchAsAbsent.touched)" class="labelfont">
+      
+                <div class="p-error" *ngIf="missPunchAsAbsent.errors?.['required']">
+                    Miss Punch As Absent is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+              <div class="col-lg-3">
+                  <label class="labelfont"> Miss Punch As Half Day<span class="text-danger">*</span></label>
+                <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.missPunchAsHalfDay"
+                  optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': missPunchAsHalfDay.invalid && (missPunchAsHalfDay.dirty || missPunchAsHalfDay.touched)}" 
+                  name="missPunchAsHalfDay" id="missPunchAsHalfDay"  #missPunchAsHalfDay="ngModel"></p-selectButton>
+                  <div *ngIf="missPunchAsHalfDay.invalid && (missPunchAsHalfDay.dirty || missPunchAsHalfDay.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="missPunchAsHalfDay.errors?.['required']">
+                      Miss Punch As Half Day is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <label class="labelfont">Round The Clock Working<span class="text-danger">*</span></label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.roundTheClockWorking"
+                optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': roundTheClockWorking.invalid && (roundTheClockWorking.dirty || roundTheClockWorking.touched)}" 
+                name="roundTheClockWorking" id="roundTheClockWorking"  #roundTheClockWorking="ngModel"></p-selectButton>
+                <div *ngIf="roundTheClockWorking.invalid && (roundTheClockWorking.dirty || roundTheClockWorking.touched)" class="labelfont">
+      
+                <div class="p-error" *ngIf="roundTheClockWorking.errors?.['required']">
+                    Round The Clock Working is required.
+                </div>
+              </div>
+            </div>
+          </div>
+      </p-tabPanel>
+      <p-tabPanel header="Shift Setup"  tooltip="Shift Setup">
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="labelfont">Shift Type<span class="text-danger">*</span></label>
+          <p-dropdown [options]="attendanceshifttypeList" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.shiftType" optionLabel="key" optionValue="value"
+          class="" #shiftType="ngModel" [required]="true" (ngModelChange)="fnshiftType($event)"
+          [ngClass]="{'is-invalid': shiftType.invalid && (shiftType.dirty || shiftType.touched)}" name="shiftType" id="shiftType"></p-dropdown>
+          <div *ngIf="shiftType.invalid && (shiftType.dirty || shiftType.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="shiftType.errors?.['required']">
+              Shift Type is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3" *ngIf="divShifttype">
+          <label class="labelfont">Shift Rotation Days<span class="text-danger">*</span></label>
+        <input type="text" pinput class="form-control" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.shiftRotationDays" 
+        #shiftRotationDays="ngModel"
+        [ngClass]="{'is-invalid': shiftRotationDays.invalid && (shiftRotationDays.dirty || shiftRotationDays.touched)}" 
+        name="shiftRotationDays" id="shiftRotationDays" (keypress)="keyPressNumeric($event)">
+          <div *ngIf="shiftRotationDays.invalid && (shiftRotationDays.dirty || shiftRotationDays.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="shiftRotationDays.errors?.['required']">
+              Shift Rotation Days is required.
+            </div>
+          </div>
+      </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Default Shift<span class="text-danger">*</span></label>
+        <p-dropdown [options]="defaultShiftList" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.defaultShiftId" optionLabel="key" optionValue="value"
+        class="" #defaultShiftId="ngModel" [required]="true"
+        [ngClass]="{'is-invalid': defaultShiftId.invalid && (defaultShiftId.dirty || defaultShiftId.touched)}" name="defaultShiftId" id="defaultShiftId"></p-dropdown>
+        <div *ngIf="defaultShiftId.invalid && (defaultShiftId.dirty || defaultShiftId.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="defaultShiftId.errors?.['required']">
+            Default Shift is required.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Weekly Off Include In Rotation<span class="text-danger">*</span></label>
+      <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.woIncludeInRotation" 
+      optionLabel="label" optionValue="value" #woIncludeInRotation="ngModel"
+      [ngClass]="{'is-invalid': woIncludeInRotation.invalid && (woIncludeInRotation.dirty || woIncludeInRotation.touched)}" 
+      name="woIncludeInRotation" id="woIncludeInRotation"></p-selectButton>
+        <div *ngIf="woIncludeInRotation.invalid && (woIncludeInRotation.dirty || woIncludeInRotation.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="woIncludeInRotation.errors?.['required']">
+            <span title="Weekly Off">WO</span> Include In Rotation is required.
+          </div>
+        </div>
+    </div>
+        </div>
+        <div class="form-group row"> 
+          <div class="col-lg-3">
+            <label class="labelfont">Auto Shift<span class="text-danger">*</span></label>
+          <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.autoShift" 
+          optionLabel="label" optionValue="value" #autoShift="ngModel"
+          [ngClass]="{'is-invalid': autoShift.invalid && (autoShift.dirty || autoShift.touched)}" 
+          name="autoShift" id="autoShift" (onChange)="basedOnModeofTrackallowAutoShift($event)"></p-selectButton>
+            <div *ngIf="autoShift.invalid && (autoShift.dirty || autoShift.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="autoShift.errors?.['required']">
+                Auto Shift is required.
+              </div>
+            </div>
+        </div>
+          <div class="col-lg-3" *ngIf="allowAutoShift" >
+            <label class="labelfont">Allow Shift<span class="text-danger">*</span></label>            <br/>
+            <p-multiSelect [options]="defaultShiftList" [disabled]="allDisabledField" [(ngModel)]="allowShiftList" name="allowShiftList" optionLabel="key" optionValue="value"></p-multiSelect>
+        </div>         
+        <div class="col-lg-3" *ngIf="allowAutoShift">
+          <label class="labelfont">Early Minute Auto Shift<span class="text-danger">*</span></label><br/>
+          <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.earlyMinuteAutoShift" #earlyMinuteAutoShift="ngModel"
+          [ngClass]="{'is-invalid': earlyMinuteAutoShift.invalid && (earlyMinuteAutoShift.dirty || earlyMinuteAutoShift.touched)}" 
+          name="earlyMinuteAutoShift" id="earlyMinuteAutoShift" [required]="true"
+          [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getearlyMinuteAutoShiftTime($event)"></p-calendar>
+            <div *ngIf="earlyMinuteAutoShift.invalid && (earlyMinuteAutoShift.dirty || earlyMinuteAutoShift.touched)" class="labelfont">
+              <div class="p-error" *ngIf="earlyMinuteAutoShift.errors?.['required']">
+                Early Minute Auto Shift is required.
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-3" *ngIf="allowAutoShift">
+          <label class="labelfont">Late Minute Auto Shift<span class="text-danger">*</span></label><br/>
+          <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.lateMinuteAutoShift" #lateMinuteAutoShift="ngModel"
+          [ngClass]="{'is-invalid': lateMinuteAutoShift.invalid && (lateMinuteAutoShift.dirty || lateMinuteAutoShift.touched)}" 
+          name="lateMinuteAutoShift" id="lateMinuteAutoShift" [required]="true"
+          [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getlateMinuteAutoShiftTime($event)"></p-calendar>
+            <div *ngIf="lateMinuteAutoShift.invalid && (lateMinuteAutoShift.dirty || lateMinuteAutoShift.touched)" class="labelfont">
+              <div class="p-error" *ngIf="lateMinuteAutoShift.errors?.['required']">
+                Late Minute Auto Shift is required.
+              </div>
+            </div>
+        </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="labelfont">Holiday Include In Rotation<span class="text-danger">*</span></label>
+          <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.hldIncludeInRotation" 
+          optionLabel="label" optionValue="value" #hldIncludeInRotation="ngModel"
+          [ngClass]="{'is-invalid': hldIncludeInRotation.invalid && (hldIncludeInRotation.dirty || hldIncludeInRotation.touched)}" 
+          name="hldIncludeInRotation" id="hldIncludeInRotation"></p-selectButton>
+            <div *ngIf="hldIncludeInRotation.invalid && (hldIncludeInRotation.dirty || hldIncludeInRotation.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="hldIncludeInRotation.errors?.['required']">
+                <span title="Holyday">HLD</span> Include In Rotation is required.
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Allow Shift On Weekly Off<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.allowShiftOnWO" 
+        optionLabel="label" optionValue="value" #allowShiftOnWO="ngModel"
+        [ngClass]="{'is-invalid': allowShiftOnWO.invalid && (allowShiftOnWO.dirty || allowShiftOnWO.touched)}" 
+        name="allowShiftOnWO" id="allowShiftOnWO"></p-selectButton>
+          <div *ngIf="allowShiftOnWO.invalid && (allowShiftOnWO.dirty || allowShiftOnWO.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="allowShiftOnWO.errors?.['required']">
+              Allow Shift On <span title="Weekly Off">WO</span> is required.
+            </div>
+          </div>
+      </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="WeekOff Setup"  tooltip="WeekOff Setup">
+          <div class="form-group row">
+            <div class="col-lg-3">
+              <label class="labelfont">Default Shift On Weekly Off<span class="text-danger">*</span></label>
+              <p-dropdown [options]="defaultShiftForOWList" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.defaultShiftOnWO" optionLabel="shiftName" optionValue="shiftID"
+              class="" #defaultShiftOnWO="ngModel" [required]="true"
+              [ngClass]="{'is-invalid': defaultShiftOnWO.invalid && (defaultShiftOnWO.dirty || defaultShiftOnWO.touched)}" name="defaultShiftOnWO" id="defaultShiftOnWO"></p-dropdown>
+                  <div *ngIf="defaultShiftOnWO.invalid && (defaultShiftOnWO.dirty || defaultShiftOnWO.touched)" class="labelfont">
+      
+                <div class="p-error" *ngIf="defaultShiftOnWO.errors?.['required']">
+                  Default Shift On <span title="Weekly Off">WO</span> is required.
+                </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="labelfont">Weekly Off Sunday</label>
+            <br/>
+            <p-multiSelect [options]="weeklyOffList" [disabled]="allDisabledField" [(ngModel)]="weeklyOffSunList" name="weeklyOffSunList" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected"></p-multiSelect>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Weekly Off Monday</label>
+          <br/>
+          <p-multiSelect [options]="weeklyOffList" [disabled]="allDisabledField" [(ngModel)]="weeklyOffMonList" name="weeklyOffMonList" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected"></p-multiSelect>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Weekly Off Tuesday</label>
+        <br/>
+        <p-multiSelect [options]="weeklyOffList" [disabled]="allDisabledField" [(ngModel)]="weeklyOffTueList" name="weeklyOffTueList" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected"></p-multiSelect>
+    </div>
+          </div>
+          <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="labelfont">Weekly Off Wednesday</label>
+          <br/>
+          <p-multiSelect [options]="weeklyOffList" [disabled]="allDisabledField" [(ngModel)]="weeklyOffWedList" name="weeklyOffWedList" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected"></p-multiSelect>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Weekly Off Thursday</label>
+        <br/>
+        <p-multiSelect [options]="weeklyOffList" [disabled]="allDisabledField" [(ngModel)]="weeklyOffThrList" name="weeklyOffThrList" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected"></p-multiSelect>
+    </div>
+    <div class="col-lg-3">
+      <label class="labelfont">Weekly Off Friday</label>
+      <br/>
+      <p-multiSelect [options]="weeklyOffList" [disabled]="allDisabledField" [(ngModel)]="weeklyOffFriList" name="weeklyOffFriList" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected"></p-multiSelect>
+  </div>
+  <div class="col-lg-3">
+    <label class="labelfont">Weekly Off Saturday</label>
+    <br/>
+    <p-multiSelect [options]="weeklyOffList" [disabled]="allDisabledField" [(ngModel)]="weeklyOffSatList" name="weeklyOffSatList" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected"></p-multiSelect>
+</div>
+</div>
+      </p-tabPanel>
+      <p-tabPanel header="Punch Setup"  tooltip="Punch Setup">
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="labelfont">End Time For In Punch<span class="text-danger">*</span></label><br/>
+            <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.endTimeForInPunch" #endTimeForInPunch="ngModel"
+            [ngClass]="{'is-invalid': endTimeForInPunch.invalid && (endTimeForInPunch.dirty || endTimeForInPunch.touched)}" 
+            name="endTimeForInPunch" id="endTimeForInPunch" [required]="true"
+            [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getendTimeForInPunchTime($event)"></p-calendar>
+              <div *ngIf="endTimeForInPunch.invalid && (endTimeForInPunch.dirty || endTimeForInPunch.touched)" class="labelfont">
+                <div class="p-error" *ngIf="endTimeForInPunch.errors?.['required']">
+                  End Time For In Punch is required.
+                </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="labelfont">End Time For Out Punch<span class="text-danger">*</span></label><br/>
+              <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.endTimeForOutPunch" #endTimeForOutPunch="ngModel"
+              [ngClass]="{'is-invalid': endTimeForOutPunch.invalid && (endTimeForOutPunch.dirty || endTimeForOutPunch.touched)}" 
+              name="endTimeForOutPunch" id="endTimeForOutPunch" [required]="true"
+              [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getendTimeForOutPunchTime($event)"></p-calendar>
+                <div *ngIf="endTimeForOutPunch.invalid && (endTimeForOutPunch.dirty || endTimeForOutPunch.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="endTimeForOutPunch.errors?.['required']">
+                    End Time For Out Punch is required.
+                  </div>
+                </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="labelfont">Allow Max <span title="Working Hours">WH</span> In Multiple Punch<span class="text-danger">*</span></label>
+          <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.allowMaxWorkingHoursInMultiplePunch" 
+          optionLabel="label" optionValue="value" #allowMaxWorkingHoursInMultiplePunch="ngModel"
+          [ngClass]="{'is-invalid': allowMaxWorkingHoursInMultiplePunch.invalid && (allowMaxWorkingHoursInMultiplePunch.dirty || allowMaxWorkingHoursInMultiplePunch.touched)}" 
+          name="allowMaxWorkingHoursInMultiplePunch" id="allowMaxWorkingHoursInMultiplePunch"></p-selectButton>
+            <div *ngIf="allowMaxWorkingHoursInMultiplePunch.invalid && (allowMaxWorkingHoursInMultiplePunch.dirty || allowMaxWorkingHoursInMultiplePunch.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="allowMaxWorkingHoursInMultiplePunch.errors?.['required']">
+                Allow Max <span title="Working Hours">WH</span> In Multiple Punch is required.
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Working With In Out Mode<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.workingWithInOutMode"
+          optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': workingWithInOutMode.invalid && (workingWithInOutMode.dirty || workingWithInOutMode.touched)}" 
+          name="workingWithInOutMode" id="workingWithInOutMode"  #workingWithInOutMode="ngModel"></p-selectButton>
+          <div *ngIf="workingWithInOutMode.invalid && (workingWithInOutMode.dirty || workingWithInOutMode.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="workingWithInOutMode.errors?.['required']">
+              Working With In Out Mode is required.
+          </div>
+        </div>
+      </div>
+        </div>
+          <div class="form-group row">
+              <div class="col-lg-3">
+                  <label class="labelfont"><span title="Working Hours">WH</span> Start From Shift Start<span class="text-danger">*</span></label>
+                <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.workingHoursStartFromShiftStart"
+                  optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': workingHoursStartFromShiftStart.invalid && (workingHoursStartFromShiftStart.dirty || workingHoursStartFromShiftStart.touched)}" 
+                  name="workingHoursStartFromShiftStart" id="workingHoursStartFromShiftStart"  #workingHoursStartFromShiftStart="ngModel"></p-selectButton>
+                  <div *ngIf="workingHoursStartFromShiftStart.invalid && (workingHoursStartFromShiftStart.dirty || workingHoursStartFromShiftStart.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="workingHoursStartFromShiftStart.errors?.['required']">
+                      <span title="Working Hours">WH</span> Start From Shift Start is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                  <label class="labelfont"><span title="Working Hours">WH</span> End On Shift End<span class="text-danger">*</span></label>
+                <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.workingHoursEndOnShiftEnd"
+                  optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': workingHoursEndOnShiftEnd.invalid && (workingHoursEndOnShiftEnd.dirty || workingHoursEndOnShiftEnd.touched)}" 
+                  name="workingHoursEndOnShiftEnd" id="workingHoursEndOnShiftEnd"  #workingHoursEndOnShiftEnd="ngModel"></p-selectButton>
+                  <div *ngIf="workingHoursEndOnShiftEnd.invalid && (workingHoursEndOnShiftEnd.dirty || workingHoursEndOnShiftEnd.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="workingHoursEndOnShiftEnd.errors?.['required']">
+                      <span title="Working Hours">WH</span> End On Shift End is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <label class="labelfont">Working Hours Round<span class="text-danger">*</span></label>
+              <input pinput type="text" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.workingHoursRound"
+                required="true" class="form-control"  [ngClass]="{'is-invalid': workingHoursRound.invalid && (workingHoursRound.dirty || workingHoursRound.touched)}" 
+                name="workingHoursRound" id="workingHoursRound" (keypress)="keyPressNumeric($event)"  #workingHoursRound="ngModel">
+                <div *ngIf="workingHoursRound.invalid && (workingHoursRound.dirty || workingHoursRound.touched)" class="labelfont">
+      
+                <div class="p-error" *ngIf="workingHoursRound.errors?.['required']">
+                    Working Hours Round is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+                <label class="labelfont">Status Based On <span title="Working Hours">WH</span> In Shift<span class="text-danger">*</span></label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.statusBasedOnWorkingHoursInShift"
+                optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': statusBasedOnWorkingHoursInShift.invalid && (statusBasedOnWorkingHoursInShift.dirty || statusBasedOnWorkingHoursInShift.touched)}" 
+                name="statusBasedOnWorkingHoursInShift" id="statusBasedOnWorkingHoursInShift"  #statusBasedOnWorkingHoursInShift="ngModel"></p-selectButton>
+                <div *ngIf="statusBasedOnWorkingHoursInShift.invalid && (statusBasedOnWorkingHoursInShift.dirty || statusBasedOnWorkingHoursInShift.touched)" class="labelfont">
+      
+                <div class="p-error" *ngIf="statusBasedOnWorkingHoursInShift.errors?.['required']">
+                    Status Based On <span title="Working Hours">WH</span> In Shift is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+              <div class="col-lg-3">
+                <label class="labelfont">Four Punch In Night Shift<span class="text-danger">*</span></label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.fourPunchInNightShift" 
+              optionLabel="label" optionValue="value" #fourPunchInNightShift="ngModel"
+              [ngClass]="{'is-invalid': fourPunchInNightShift.invalid && (fourPunchInNightShift.dirty || fourPunchInNightShift.touched)}" 
+              name="fourPunchInNightShift" id="fourPunchInNightShift"></p-selectButton>
+                <div *ngIf="fourPunchInNightShift.invalid && (fourPunchInNightShift.dirty || fourPunchInNightShift.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="fourPunchInNightShift.errors?.['required']">
+                    Four Punch In Night Shift is required.
+                  </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-3">
+              <label class="labelfont">Web Punch</label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.webPunch" 
+              optionLabel="label" optionValue="value"
+              name="webPunch" id="webPunch"></p-selectButton>
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont">Mobile Punch</label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.mobilePunch" 
+              optionLabel="label" optionValue="value" (onChange)="mobilePunchShowHide($event.value)"
+              name="mobilePunch" id="mobilePunch"></p-selectButton>
+            </div>
+            <div class="col-lg-3" *ngIf="_visible">
+              <label class="labelfont">Number Of Photo</label>
+
+              <p-dropdown [options]="numberOfPhotoList" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.numberOfPhoto" optionLabel="key" optionValue="value"
+              #numberOfPhoto="ngModel" [required]="true"
+            [ngClass]="{'is-invalid': numberOfPhoto.invalid && (numberOfPhoto.dirty || numberOfPhoto.touched)}" name="numberOfPhoto" id="numberOfPhoto"></p-dropdown>
+
+              <!-- <p-dropdown [options]="numberOfPhotoList" [(ngModel)]="attendancepolicyInfo.numberOfPhoto" name="numberOfPhoto" id="numberOfPhoto"   optionLabel="key" optionValue="value" class=""></p-dropdown> -->
+              
+            </div>
+            <div class="col-lg-3" *ngIf="_visible">
+              <label class="labelfont">Geo Fencing Redius</label>
+              <input pinput  [(ngModel)]="attendancepolicyInfo.geoRadius" class="form-control" type="text"
+              name="geoRadius" id="geoRadius">
+            </div>
+            </div>
+
+
+      </p-tabPanel>
+      <p-tabPanel header="OverTime"  rightIcon="pi pi-star-fill" tooltip="OverTime">
+        <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="labelfont">OverTime Formula<span class="text-danger">*</span></label>
+        <p-dropdown [options]="oTFormulaList" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.otFormula" optionLabel="key" optionValue="value"
+        class="" #otFormula="ngModel" [required]="true"
+        [ngClass]="{'is-invalid': otFormula.invalid && (otFormula.dirty || otFormula.touched)}" name="otFormula" id="otFormula"></p-dropdown>
+        <div *ngIf="otFormula.invalid && (otFormula.dirty || otFormula.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="otFormula.errors?.['required']">
+            OverTime Formula is required.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Min Early Coming For OverTime<span class="text-danger">*</span></label><br/>
+        <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.minEarlyComingForOT" #minEarlyComingForOT="ngModel"
+        [ngClass]="{'is-invalid': minEarlyComingForOT.invalid && (minEarlyComingForOT.dirty || minEarlyComingForOT.touched)}" 
+        name="minEarlyComingForOT" id="minEarlyComingForOT" [required]="true"
+        [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getminEarlyComingForOTTime($event)"></p-calendar>
+          <div *ngIf="minEarlyComingForOT.invalid && (minEarlyComingForOT.dirty || minEarlyComingForOT.touched)" class="labelfont">
+            <div class="p-error" *ngIf="minEarlyComingForOT.errors?.['required']">
+              Min Early Coming For OverTime is required.
+            </div>
+          </div>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Max Early Coming For OverTime<span class="text-danger">*</span></label><br/>
+        <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maxEarlyComingForOT" #maxEarlyComingForOT="ngModel"
+        [ngClass]="{'is-invalid': maxEarlyComingForOT.invalid && (maxEarlyComingForOT.dirty || maxEarlyComingForOT.touched)}" 
+        name="maxEarlyComingForOT" id="maxEarlyComingForOT" [required]="true"
+        [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getmaxEarlyComingForOTTime($event)"></p-calendar>
+          <div *ngIf="maxEarlyComingForOT.invalid && (maxEarlyComingForOT.dirty || maxEarlyComingForOT.touched)" class="labelfont">
+            <div class="p-error" *ngIf="maxEarlyComingForOT.errors?.['required']">
+              Max Early Coming For OverTime is required.
+            </div>
+          </div>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Min Late Going For OverTime<span class="text-danger">*</span></label><br/>
+        <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.minLateGoingForOT" #minLateGoingForOT="ngModel"
+        [ngClass]="{'is-invalid': minLateGoingForOT.invalid && (minLateGoingForOT.dirty || minLateGoingForOT.touched)}" 
+        name="minLateGoingForOT" id="minLateGoingForOT" [required]="true"
+        [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getminLateGoingForOTTime($event)"></p-calendar>
+          <div *ngIf="minLateGoingForOT.invalid && (minLateGoingForOT.dirty || minLateGoingForOT.touched)" class="labelfont">
+            <div class="p-error" *ngIf="minLateGoingForOT.errors?.['required']">
+              Min Late Going For OverTime is required.
+            </div>
+          </div>
+      </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="labelfont">Max Late Going For OverTime<span class="text-danger">*</span></label><br/>
+              <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maxLateGoingForOT" #maxLateGoingForOT="ngModel"
+              [ngClass]="{'is-invalid': maxLateGoingForOT.invalid && (maxLateGoingForOT.dirty || maxLateGoingForOT.touched)}" 
+              name="maxLateGoingForOT" id="maxLateGoingForOT" [required]="true"
+              [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getmaxLateGoingForOTTime($event)"></p-calendar>
+                <div *ngIf="maxLateGoingForOT.invalid && (maxLateGoingForOT.dirty || maxLateGoingForOT.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="maxLateGoingForOT.errors?.['required']">
+                    Max Late Going For OverTime is required.
+                  </div>
+                </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont"> OverTime In Minus<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.otInMinus" 
+        optionLabel="label" optionValue="value" #otInMinus="ngModel"
+        [ngClass]="{'is-invalid': otInMinus.invalid && (otInMinus.dirty || otInMinus.touched)}" 
+        name="otInMinus" id="otInMinus"></p-selectButton>
+          <div *ngIf="otInMinus.invalid && (otInMinus.dirty || otInMinus.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="otInMinus.errors?.['required']">
+              OverTime In Minus is required.
+            </div>
+          </div>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Second Half Present And Rest <span title="OverTime">OT</span><span class="text-danger">*</span></label>
+      <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.secondHalfPresentAndRestOT"
+        optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': secondHalfPresentAndRestOT.invalid && (secondHalfPresentAndRestOT.dirty || secondHalfPresentAndRestOT.touched)}" 
+        name="secondHalfPresentAndRestOT" id="secondHalfPresentAndRestOT"  #secondHalfPresentAndRestOT="ngModel"></p-selectButton>
+        <div *ngIf="secondHalfPresentAndRestOT.invalid && (secondHalfPresentAndRestOT.dirty || secondHalfPresentAndRestOT.touched)" class="labelfont">
+  
+        <div class="p-error" *ngIf="secondHalfPresentAndRestOT.errors?.['required']">
+          Second Half Present And Rest OT is required.
+        </div>
+      </div>
+    </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Admin Approval Required For <span title="OverTime">OT</span><span class="text-danger">*</span></label>
+      <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.adminApprovalRequiredForOT"
+        optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': adminApprovalRequiredForOT.invalid && (adminApprovalRequiredForOT.dirty || adminApprovalRequiredForOT.touched)}" 
+        name="adminApprovalRequiredForOT" id="adminApprovalRequiredForOT"  #adminApprovalRequiredForOT="ngModel"></p-selectButton>
+        <div *ngIf="adminApprovalRequiredForOT.invalid && (adminApprovalRequiredForOT.dirty || adminApprovalRequiredForOT.touched)" class="labelfont">
+  
+        <div class="p-error" *ngIf="adminApprovalRequiredForOT.errors?.['required']">
+          Admin Approval Required For <span title="OverTime">OT</span> is required.
+        </div>
+      </div>
+    </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="labelfont">Manager Approval Required For <span title="OverTime">OT</span><span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.managerApprovalRequiredForOT"
+          optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': managerApprovalRequiredForOT.invalid && (managerApprovalRequiredForOT.dirty || managerApprovalRequiredForOT.touched)}" 
+          name="managerApprovalRequiredForOT" id="managerApprovalRequiredForOT"  #managerApprovalRequiredForOT="ngModel"></p-selectButton>
+          <div *ngIf="managerApprovalRequiredForOT.invalid && (managerApprovalRequiredForOT.dirty || managerApprovalRequiredForOT.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="managerApprovalRequiredForOT.errors?.['required']">
+            Manager Approval Required For <span title="OverTime">OT</span> is required.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Allow Work Flow Approval For <span title="OverTime">OT</span><span class="text-danger">*</span></label>
+      <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.allowWorkFlowAprovalForOT"
+        optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': allowWorkFlowAprovalForOT.invalid && (allowWorkFlowAprovalForOT.dirty || allowWorkFlowAprovalForOT.touched)}" 
+        name="allowWorkFlowAprovalForOT" id="allowWorkFlowAprovalForOT"  #allowWorkFlowAprovalForOT="ngModel"></p-selectButton>
+        <div *ngIf="allowWorkFlowAprovalForOT.invalid && (allowWorkFlowAprovalForOT.dirty || allowWorkFlowAprovalForOT.touched)" class="labelfont">
+
+        <div class="p-error" *ngIf="allowWorkFlowAprovalForOT.errors?.['required']">
+          Allow Work Flow Approval For <span title="OverTime">OT</span> is required.
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <label class="labelfont">Auto Initiate Request For <span title="OverTime">OT</span><span class="text-danger">*</span></label>
+    <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.autoInitiateRequestForOT"
+      optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': autoInitiateRequestForOT.invalid && (autoInitiateRequestForOT.dirty || autoInitiateRequestForOT.touched)}" 
+      name="autoInitiateRequestForOT" id="autoInitiateRequestForOT"  #autoInitiateRequestForOT="ngModel"></p-selectButton>
+      <div *ngIf="autoInitiateRequestForOT.invalid && (autoInitiateRequestForOT.dirty || autoInitiateRequestForOT.touched)" class="labelfont">
+
+      <div class="p-error" *ngIf="autoInitiateRequestForOT.errors?.['required']">
+        Auto Initiate Request For <span title="OverTime">OT</span> is required.
+      </div>
+    </div>
+  </div>
+        <div class="col-lg-3">
+          <label class="labelfont">OverTime Round<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.otRound" 
+        optionLabel="label" optionValue="value" #otRound="ngModel" (onChange)="basedOnOverTimeRound($event.value)"
+        [ngClass]="{'is-invalid': otRound.invalid && (otRound.dirty || otRound.touched)}" 
+        name="otRound" id="otRound"></p-selectButton>
+          <div *ngIf="otRound.invalid && (otRound.dirty || otRound.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="otRound.errors?.['required']">
+              OverTime Round is required.
+            </div>
+          </div>
+      </div>
+      </div>
+      <div class="form-group row" *ngIf="overTimeRounddiv">
+        <div class="col-lg-3">
+          <label class="labelfont">OverTime Round Formula<span class="text-danger">*</span></label>
+        <p-dropdown [options]="otRoundFormulaList" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.otRoundFormula" optionLabel="key" optionValue="value"
+        class="" #otRoundFormula="ngModel" [required]="true"
+        [ngClass]="{'is-invalid': otRoundFormula.invalid && (otRoundFormula.dirty || otRoundFormula.touched)}" name="otRoundFormula" id="otRoundFormula"></p-dropdown>
+        <div *ngIf="otRoundFormula.invalid && (otRoundFormula.dirty || otRoundFormula.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="otRoundFormula.errors?.['required']">
+            OverTime Round Formula is required.
+          </div>
+        </div>
+      </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Round Value1<span class="text-danger">*</span></label>
+        <input type="text" pinput class="form-control" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.roundValue1"
+          [required]="true" (keypress)="keyPressNumeric($event)"  [ngClass]="{'is-invalid': roundValue1.invalid && (roundValue1.dirty || roundValue1.touched)}" 
+          name="roundValue1" id="roundValue1"  #roundValue1="ngModel" autocomplete="off">
+          <div *ngIf="roundValue1.invalid && (roundValue1.dirty || roundValue1.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="roundValue1.errors?.['required']">
+            Round Value1 is required.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Round Value2<span class="text-danger">*</span></label>
+      <input type="text" pinput class="form-control" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.roundValue2"
+        [required]="true" (keypress)="keyPressNumeric($event)" [ngClass]="{'is-invalid': roundValue2.invalid && (roundValue2.dirty || roundValue2.touched)}" 
+        name="roundValue2" id="roundValue2"  #roundValue2="ngModel" autocomplete="off">
+        <div *ngIf="roundValue2.invalid && (roundValue2.dirty || roundValue2.touched)" class="labelfont">
+
+        <div class="p-error" *ngIf="roundValue2.errors?.['required']">
+          Round Value2 is required.
+        </div>
+      </div>
+    </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="labelfont">Allow OverTime On Weekly Off<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.allowOTOnWO" 
+        optionLabel="label" optionValue="value" #allowOTOnWO="ngModel" (onChange)="basedOnallowOTonWO($event.value)"
+        [ngClass]="{'is-invalid': allowOTOnWO.invalid && (allowOTOnWO.dirty || allowOTOnWO.touched)}" 
+        name="allowOTOnWO" id="allowOTOnWO"></p-selectButton>
+          <div *ngIf="allowOTOnWO.invalid && (allowOTOnWO.dirty || allowOTOnWO.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="allowOTOnWO.errors?.['required']">
+              Allow OverTime On Weekly Off is required.
+            </div>
+          </div>
+      </div>
+      <div class="col-lg-3"  *ngIf="allowOTonWOdiv">
+        <label class="labelfont">Max OverTime On Weekly Off<span class="text-danger">*</span></label><br/>
+        <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maxOTOnWO" #maxOTOnWO="ngModel"
+        [ngClass]="{'is-invalid': maxOTOnWO.invalid && (maxOTOnWO.dirty || maxOTOnWO.touched)}" 
+        name="maxOTOnWO" id="maxOTOnWO" [required]="true"
+        [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getmaxOTOnWOTime($event)"></p-calendar>
+          <div *ngIf="maxOTOnWO.invalid && (maxOTOnWO.dirty || maxOTOnWO.touched)" class="labelfont">
+            <div class="p-error" *ngIf="maxOTOnWO.errors?.['required']">
+              Max OverTime On Weekly Off is required.
+            </div>
+          </div>
+      </div>
+      <div class="col-lg-3" *ngIf="allowOTonWOdiv">
+        <label class="labelfont">Deduct OverTime On Weekly Off<span class="text-danger">*</span></label><br/>
+              <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.deductOTOnWO" #deductOTOnWO="ngModel"
+              [ngClass]="{'is-invalid': deductOTOnWO.invalid && (deductOTOnWO.dirty || deductOTOnWO.touched)}" 
+              name="deductOTOnWO" id="deductOTOnWO" [required]="true"
+              [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getdeductOTOnWOTime($event)"></p-calendar>
+                <div *ngIf="deductOTOnWO.invalid && (deductOTOnWO.dirty || deductOTOnWO.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="deductOTOnWO.errors?.['required']">
+                    Deduct OverTime On Weekly Off is required.
+                  </div>
+                </div>
+      </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-3" >
+          <label class="labelfont">Allow OverTime On HoliDay<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.allowOTOnHLD" 
+        optionLabel="label" optionValue="value" #allowOTOnHLD="ngModel" (onChange)="basedOnallowOTonH($event.value)"
+        [ngClass]="{'is-invalid': allowOTOnHLD.invalid && (allowOTOnHLD.dirty || allowOTOnHLD.touched)}" 
+        name="allowOTOnHLD" id="allowOTOnHLD"></p-selectButton>
+          <div *ngIf="allowOTOnHLD.invalid && (allowOTOnHLD.dirty || allowOTOnHLD.touched)" class="labelfont">
+      
+            <div class="p-error" *ngIf="allowOTOnHLD.errors?.['required']">
+              Allow OverTime On HoliDay is required.
+            </div>
+          </div>
+      </div>
+        <div class="col-lg-3" *ngIf="allowOTonHdiv">
+          <label class="labelfont">Max OverTime On HoliDay<span class="text-danger">*</span></label><br/>
+              <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maxOTOnHLD" #maxOTOnHLD="ngModel"
+              [ngClass]="{'is-invalid': maxOTOnHLD.invalid && (maxOTOnHLD.dirty || maxOTOnHLD.touched)}" 
+              name="maxOTOnHLD" id="maxOTOnHLD" [required]="true" 
+              [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getmaxOTOnHLDTime($event)"></p-calendar>
+                <div *ngIf="maxOTOnHLD.invalid && (maxOTOnHLD.dirty || maxOTOnHLD.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="maxOTOnHLD.errors?.['required']">
+                    Max OverTime On HoliDay is required.
+                  </div>
+                </div>
+        </div>
+        
+      <div class="col-lg-3" *ngIf="allowOTonHdiv">
+        <label class="labelfont">Deduct OverTime On HoliDay<span class="text-danger">*</span></label><br/>
+                  <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.deductOTOnHLD" #deductOTOnHLD="ngModel"
+                  [ngClass]="{'is-invalid': deductOTOnHLD.invalid && (deductOTOnHLD.dirty || deductOTOnHLD.touched)}" 
+                  name="deductOTOnHLD" id="deductOTOnHLD" [required]="true"
+                  [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getdeductOTOnHLDTime($event)"></p-calendar>
+                    <div *ngIf="deductOTOnHLD.invalid && (deductOTOnHLD.dirty || deductOTOnHLD.touched)" class="labelfont">
+                      <div class="p-error" *ngIf="deductOTOnHLD.errors?.['required']">
+                        Deduct OT On HLD is required.
+                      </div>
+                    </div>
+      </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="labelfont">Allow OT On National HoliDay<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.allowOTOnNHLD" 
+        optionLabel="label" optionValue="value" #allowOTOnNHLD="ngModel" (onChange)="basedOnallowOTonNH($event.value)"
+        [ngClass]="{'is-invalid': allowOTOnNHLD.invalid && (allowOTOnNHLD.dirty || allowOTOnNHLD.touched)}" 
+        name="allowOTOnNHLD" id="allowOTOnNHLD"></p-selectButton>
+          <div *ngIf="allowOTOnNHLD.invalid && (allowOTOnNHLD.dirty || allowOTOnNHLD.touched)" class="labelfont">
+      
+            <div class="p-error" *ngIf="allowOTOnNHLD.errors?.['required']">
+              Allow OverTime On National HoliDay is required.
+            </div>
+          </div>
+      </div>
+      <div class="col-lg-3" *ngIf="allowOTonNHdiv">
+        <label class="labelfont">Max OverTime On National HoliDay<span class="text-danger">*</span></label><br/>
+              <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maxOTOnNHLD" #maxOTOnNHLD="ngModel"
+              [ngClass]="{'is-invalid': maxOTOnNHLD.invalid && (maxOTOnNHLD.dirty || maxOTOnNHLD.touched)}" 
+              name="maxOTOnNHLD" id="maxOTOnNHLD" [required]="true"
+              [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getmaxOTOnNHLDTime($event)"></p-calendar>
+                <div *ngIf="maxOTOnNHLD.invalid && (maxOTOnNHLD.dirty || maxOTOnNHLD.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="maxOTOnNHLD.errors?.['required']">
+                    Max OverTime On National HoliDay is required.
+                  </div>
+                </div>
+      </div>
+      <div class="col-lg-3" *ngIf="allowOTonNHdiv">
+        <label class="labelfont">Deduct OT On National HoliDay<span class="text-danger">*</span></label><br/>
+              <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.deductOTOnNHLD" #deductOTOnNHLD="ngModel"
+              [ngClass]="{'is-invalid': deductOTOnNHLD.invalid && (deductOTOnNHLD.dirty || deductOTOnNHLD.touched)}" 
+              name="deductOTOnNHLD" id="deductOTOnNHLD" [required]="true" 
+              [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getdeductOTOnNHLDTime($event)"></p-calendar>
+                <div *ngIf="deductOTOnNHLD.invalid && (deductOTOnNHLD.dirty || deductOTOnNHLD.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="deductOTOnNHLD.errors?.['required']">
+                    Deduct OverTime On National HoliDay is required.
+                  </div>
+                </div>
+      </div>
+      </div>
+      </p-tabPanel>
+      <p-tabPanel header="COFF"  rightIcon="pi pi-star-fill" tooltip="COF">
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="labelfont">Allow COFF<span class="text-danger">*</span></label>
+          <p-selectButton [options]="stateOptions" (onChange)="basedOnModeofTrackCOF($event)" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.allowCof"
+            optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': allowCof.invalid && (allowCof.dirty || allowCof.touched)}" 
+            name="allowCof" id="allowCof"  #allowCof="ngModel" ></p-selectButton>
+            <div *ngIf="allowCof.invalid && (allowCof.dirty || allowCof.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="allowCof.errors?.['required']">
+              Allow COFF is required.
+            </div>
+          </div>
+        </div>
+        </div>
+        <div *ngIf="COFdivDetail">
+          <div class="form-group row">
+            <div class="col-lg-3">
+              <label class="labelfont">Allow COFF For<span class="text-danger">*</span></label><br/>
+              <p-dropdown [options]="allowCOFforList" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.allowCofFor" optionLabel="key" optionValue="value"
+            class="" #allowCofFor="ngModel" [required]="true"
+            [ngClass]="{'is-invalid': allowCofFor.invalid && (allowCofFor.dirty || allowCofFor.touched)}" name="allowCofFor" id="allowCofFor"></p-dropdown>
+                <div *ngIf="allowCofFor.invalid && (allowCofFor.dirty || allowCofFor.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="allowCofFor.errors?.['required']">
+                    Allow COFF For is required.
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont">Minimum Hours For Full COFF<span class="text-danger">*</span></label>
+              <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.minHoursForFullCof" #minHoursForFullCof="ngModel"
+              [ngClass]="{'is-invalid': minHoursForFullCof.invalid && (minHoursForFullCof.dirty || minHoursForFullCof.touched)}" 
+              name="minHoursForFullCof" id="minHoursForFullCof" [required]="true"
+              [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getminHoursForFullCofTime($event)"></p-calendar>
+              <div *ngIf="minHoursForFullCof.invalid && (minHoursForFullCof.dirty || minHoursForFullCof.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="minHoursForFullCof.errors?.['required']">
+                Min Hours For Full Cof is required.
+              </div>
+            </div>
+          </div>
+            <div class="col-lg-3">
+              <label class="labelfont">Minimum Hours For Half COFF<span class="text-danger">*</span></label><br/>
+              <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.minHoursForHalfCof" #minHoursForHalfCof="ngModel"
+              [ngClass]="{'is-invalid': minHoursForHalfCof.invalid && (minHoursForHalfCof.dirty || minHoursForHalfCof.touched)}" 
+              name="minHoursForHalfCof" id="minHoursForHalfCof" [required]="true"
+              [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getminHoursForHalfCofTime($event)"></p-calendar>
+                <div *ngIf="minHoursForHalfCof.invalid && (minHoursForHalfCof.dirty || minHoursForHalfCof.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="minHoursForHalfCof.errors?.['required']">
+                    Min Hours For Half Cof is required.
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont">COFF Expired Days<span class="text-danger">*</span></label><br/>
+              <input type="text" pinput [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.cofExpiredDays" #cofExpiredDays="ngModel"
+              [ngClass]="{'is-invalid': cofExpiredDays.invalid && (cofExpiredDays.dirty || cofExpiredDays.touched)}" 
+              name="cofExpiredDays" id="cofExpiredDays" [required]="true"
+              class="form-control">
+                <div *ngIf="cofExpiredDays.invalid && (cofExpiredDays.dirty || cofExpiredDays.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="cofExpiredDays.errors?.['required']">
+                    COF Expired Days is required.
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-3">
+              <label class="labelfont">Working Days COFF<span class="text-danger">*</span></label>
+            <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.workingDaysCof"
+              optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': workingDaysCof.invalid && (workingDaysCof.dirty || workingDaysCof.touched)}" 
+              name="workingDaysCof" id="workingDaysCof"  #workingDaysCof="ngModel"></p-selectButton>
+              <div *ngIf="workingDaysCof.invalid && (workingDaysCof.dirty || workingDaysCof.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="workingDaysCof.errors?.['required']">
+                Working Days Cof is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="labelfont">Weekly Off COFF<span class="text-danger">*</span></label>
+          <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.weeklyOffCof"
+            optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': weeklyOffCof.invalid && (weeklyOffCof.dirty || weeklyOffCof.touched)}" 
+            name="weeklyOffCof" id="weeklyOffCof"  #weeklyOffCof="ngModel"></p-selectButton>
+            <div *ngIf="weeklyOffCof.invalid && (weeklyOffCof.dirty || weeklyOffCof.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="weeklyOffCof.errors?.['required']">
+              Weekly Off Cof is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Holiday COFF<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.holidayCof"
+          optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': holidayCof.invalid && (holidayCof.dirty || holidayCof.touched)}" 
+          name="holidayCof" id="holidayCof"  #holidayCof="ngModel"></p-selectButton>
+          <div *ngIf="holidayCof.invalid && (holidayCof.dirty || holidayCof.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="holidayCof.errors?.['required']">
+            Holiday Cof is required.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">National Holiday COFF<span class="text-danger">*</span></label>
+      <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.nationalHolidayCof"
+        optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': nationalHolidayCof.invalid && (nationalHolidayCof.dirty || nationalHolidayCof.touched)}" 
+        name="nationalHolidayCof" id="nationalHolidayCof"  #nationalHolidayCof="ngModel"></p-selectButton>
+        <div *ngIf="nationalHolidayCof.invalid && (nationalHolidayCof.dirty || nationalHolidayCof.touched)" class="labelfont">
+
+        <div class="p-error" *ngIf="nationalHolidayCof.errors?.['required']">
+          National Holiday Cof is required.
+        </div>
+      </div>
+    </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-3">
+              <label class="labelfont">Auto Credit<span class="text-danger">*</span></label>
+            <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.autoCredit"
+              optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': autoCredit.invalid && (autoCredit.dirty || autoCredit.touched)}" 
+              name="autoCredit" id="autoCredit"  #autoCredit="ngModel"></p-selectButton>
+              <div *ngIf="autoCredit.invalid && (autoCredit.dirty || autoCredit.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="autoCredit.errors?.['required']">
+                Auto Credit is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="labelfont">Maximum Credit In Month<span class="text-danger">*</span></label>
+          <input type="text" pinput class="form-control" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maxCreditInMonth"
+            [required]="true"  [ngClass]="{'is-invalid': maxCreditInMonth.invalid && (maxCreditInMonth.dirty || maxCreditInMonth.touched)}" 
+            name="maxCreditInMonth" id="maxCreditInMonth"  #maxCreditInMonth="ngModel">
+            <div *ngIf="maxCreditInMonth.invalid && (maxCreditInMonth.dirty || maxCreditInMonth.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="maxCreditInMonth.errors?.['required']">
+              Max Credit In Month is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Admin Approval Required For COFF<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.adminApprovalRequiredForCof"
+          optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': adminApprovalRequiredForCof.invalid && (adminApprovalRequiredForCof.dirty || adminApprovalRequiredForCof.touched)}" 
+          name="adminApprovalRequiredForCof" id="adminApprovalRequiredForCof"  #adminApprovalRequiredForCof="ngModel"></p-selectButton>
+          <div *ngIf="adminApprovalRequiredForCof.invalid && (adminApprovalRequiredForCof.dirty || adminApprovalRequiredForCof.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="adminApprovalRequiredForCof.errors?.['required']">
+            Admin Approval Required For Cof is required.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Manager Approval Required For COFF<span class="text-danger">*</span></label>
+      <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.managerApprovalRequiredForCof"
+        optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': managerApprovalRequiredForCof.invalid && (managerApprovalRequiredForCof.dirty || managerApprovalRequiredForCof.touched)}" 
+        name="managerApprovalRequiredForCof" id="managerApprovalRequiredForCof"  #managerApprovalRequiredForCof="ngModel"></p-selectButton>
+        <div *ngIf="managerApprovalRequiredForCof.invalid && (managerApprovalRequiredForCof.dirty || managerApprovalRequiredForCof.touched)" class="labelfont">
+
+        <div class="p-error" *ngIf="managerApprovalRequiredForCof.errors?.['required']">
+          Manager Approval Required For Cof is required.
+        </div>
+      </div>
+    </div>
+          </div>
+          <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="labelfont">Working Hours According To Shift<span class="text-danger">*</span></label>
+          <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.workingHoursAccordingToShift"
+            optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': workingHoursAccordingToShift.invalid && (workingHoursAccordingToShift.dirty || workingHoursAccordingToShift.touched)}" 
+            name="workingHoursAccordingToShift" id="workingHoursAccordingToShift"  #workingHoursAccordingToShift="ngModel"></p-selectButton>
+            <div *ngIf="workingHoursAccordingToShift.invalid && (workingHoursAccordingToShift.dirty || workingHoursAccordingToShift.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="workingHoursAccordingToShift.errors?.['required']">
+              Working Hours According To Shift is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Generate Multiple<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.generateMultiple"
+          optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': generateMultiple.invalid && (generateMultiple.dirty || generateMultiple.touched)}" 
+          name="generateMultiple" id="generateMultiple"  #generateMultiple="ngModel"></p-selectButton>
+          <div *ngIf="generateMultiple.invalid && (generateMultiple.dirty || generateMultiple.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="generateMultiple.errors?.['required']">
+            Generate Multiple is required.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <label class="labelfont">Applicable From<span class="text-danger">*</span></label>
+        <input pinput
+        [disabled]="allDisabledField" [(ngModel)]= "attendancepolicyInfo.applicableFrom"
+        class="form-control"
+        type="text"
+        name="applicableFrom"
+        autocomplete="off"
+        id="applicableFrom" 
+        #applicableFrom="ngModel" 
+        [bsConfig]="datepickerConfig" 
+        placeholder="DD-MM-YYYY" 
+        bsDatepicker
+        [required]="cofapplicablerequired"
+        [ngClass]="{'is-invalid': applicableFrom.invalid && (applicableFrom.dirty || applicableFrom.touched)}" >
+        <div *ngIf="applicableFrom.invalid && (applicableFrom.dirty || applicableFrom.touched)"
+        class="labelfont">
+        <div  class="p-error" *ngIf="applicableFrom.errors?.['required']">
+          Applicable From is required.
+        </div>
+      </div>
+    </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Gate Pass"  tooltip="Gate Pass">
+            <div class="form-group row">
+                <div class="col-lg-3">
+                    <label class="labelfont">Gate Pass Count In Day<span class="text-danger">*</span></label>
+                  <input type="text" pinput class="form-control" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.gatePassCountInDay"
+                    [required]="true"  [ngClass]="{'is-invalid': gatePassCountInDay.invalid && (gatePassCountInDay.dirty || gatePassCountInDay.touched)}" 
+                    name="gatePassCountInDay" id="gatePassCountInDay"  #gatePassCountInDay="ngModel">
+                    <div *ngIf="gatePassCountInDay.invalid && (gatePassCountInDay.dirty || gatePassCountInDay.touched)" class="labelfont">
+          
+                    <div class="p-error" *ngIf="gatePassCountInDay.errors?.['required']">
+                        GatePass Count In Day is required.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <label class="labelfont">Maximum Gate Pass Duration<span class="text-danger">*</span></label><br/>
+                  <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maximumGatePassDuration" #maximumGatePassDuration="ngModel"
+                  [ngClass]="{'is-invalid': maximumGatePassDuration.invalid && (maximumGatePassDuration.dirty || maximumGatePassDuration.touched)}" 
+                  name="maximumGatePassDuration" id="maximumGatePassDuration" [required]="true"
+                  [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getmaximumGatePassDurationTime($event)"></p-calendar>
+                    <div *ngIf="maximumGatePassDuration.invalid && (maximumGatePassDuration.dirty || maximumGatePassDuration.touched)" class="labelfont">
+                      <div class="p-error" *ngIf="maximumGatePassDuration.errors?.['required']">
+                        Maximum Gate Pass Duration is required.
+                      </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                  <label class="labelfont">Minimum Gate Pass Duration<span class="text-danger">*</span></label><br/>
+                  <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.minimumGatePassDuration" #minimumGatePassDuration="ngModel"
+                  [ngClass]="{'is-invalid': minimumGatePassDuration.invalid && (minimumGatePassDuration.dirty || minimumGatePassDuration.touched)}" 
+                  name="minimumGatePassDuration" id="minimumGatePassDuration" [required]="true"
+                  [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getminimumGatePassDurationTime($event)"></p-calendar>
+                    <div *ngIf="minimumGatePassDuration.invalid && (minimumGatePassDuration.dirty || minimumGatePassDuration.touched)" class="labelfont">
+                      <div class="p-error" *ngIf="minimumGatePassDuration.errors?.['required']">
+                        Minimum Gate Pass Duration is required.
+                      </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                  <label class="labelfont">Gate Pass Count Month<span class="text-danger">*</span></label>
+                <input type="text" pinput class="form-control" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.gatePassCountMonth"
+                (keypress)="keyPressNumeric($event)" required="true"  [ngClass]="{'is-invalid': gatePassCountMonth.invalid && (gatePassCountMonth.dirty || gatePassCountMonth.touched)}" 
+                  name="gatePassCountMonth" id="gatePassCountMonth"  #gatePassCountMonth="ngModel">
+                  <div *ngIf="gatePassCountMonth.invalid && (gatePassCountMonth.dirty || gatePassCountMonth.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="gatePassCountMonth.errors?.['required']">
+                      Gate Pass Count Month is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-3">
+                <label class="labelfont">Maximum Gate Pass Duration In Month<span class="text-danger">*</span></label><br/>
+                <p-calendar [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maximumGatePassDurationInMonth" #maximumGatePassDurationInMonth="ngModel"
+                [ngClass]="{'is-invalid': maximumGatePassDurationInMonth.invalid && (maximumGatePassDurationInMonth.dirty || maximumGatePassDurationInMonth.touched)}" 
+                name="maximumGatePassDurationInMonth" id="maximumGatePassDurationInMonth" [required]="true"
+                [timeOnly]="true" inputId="timeonly" class="form-control" (ngModelChange)="getmaximumGatePassDurationInMonthTime($event)"></p-calendar>
+                  <div *ngIf="maximumGatePassDurationInMonth.invalid && (maximumGatePassDurationInMonth.dirty || maximumGatePassDurationInMonth.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="maximumGatePassDurationInMonth.errors?.['required']">
+                      Maximum Gate Pass Duration In Month is required.
+                    </div>
+                  </div>
+              </div>
+              <div class="col-lg-3">
+                <label class="labelfont">Allow Exception For Gate Pass<span class="text-danger">*</span></label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.allowExceptionForGatePass"
+                optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': allowExceptionForGatePass.invalid && (allowExceptionForGatePass.dirty || allowExceptionForGatePass.touched)}" 
+                name="allowExceptionForGatePass" id="allowExceptionForGatePass"  #allowExceptionForGatePass="ngModel"></p-selectButton>
+                <div *ngIf="allowExceptionForGatePass.invalid && (allowExceptionForGatePass.dirty || allowExceptionForGatePass.touched)" class="labelfont">
+      
+                <div class="p-error" *ngIf="allowExceptionForGatePass.errors?.['required']">
+                  Allow Exception For Gate Pass is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont"> Back Day Gate Pass Allow<span class="text-danger">*</span></label>
+            <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.backDayGatePassAllow"
+              optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': backDayGatePassAllow.invalid && (backDayGatePassAllow.dirty || backDayGatePassAllow.touched)}" 
+              name="backDayGatePassAllow" id="backDayGatePassAllow"  #backDayGatePassAllow="ngModel"></p-selectButton>
+              <div *ngIf="backDayGatePassAllow.invalid && (backDayGatePassAllow.dirty || backDayGatePassAllow.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="backDayGatePassAllow.errors?.['required']">
+                Back Day Gate Pass Allow is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="labelfont">Max Back Day Gate Pass<span class="text-danger">*</span></label>
+          <input type="text" pinput class="form-control" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.maxBackDayGatePass"
+            required="true"  [ngClass]="{'is-invalid': maxBackDayGatePass.invalid && (maxBackDayGatePass.dirty || maxBackDayGatePass.touched)}" 
+            name="maxBackDayGatePass" id="maxBackDayGatePass" (keypress)="keyPressNumeric($event)" #maxBackDayGatePass="ngModel">
+            <div *ngIf="maxBackDayGatePass.invalid && (maxBackDayGatePass.dirty || maxBackDayGatePass.touched)" class="labelfont">
+
+            <div class="p-error" *ngIf="maxBackDayGatePass.errors?.['required']">
+              Max Back Day Gate Pass is required.
+            </div>
+          </div>
+        </div>
+            </div>
+      </p-tabPanel>
+      <p-tabPanel header="Verification"  tooltip="Verification">
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label class="labelfont">AWA as AAA<span class="text-danger">*</span></label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.awAasAAA" 
+              optionLabel="label" optionValue="value" #awAasAAA="ngModel"
+              [ngClass]="{'is-invalid': awAasAAA.invalid && (awAasAAA.dirty || awAasAAA.touched)}" 
+              name="awAasAAA" id="awAasAAA"></p-selectButton>
+                <div *ngIf="awAasAAA.invalid && (awAasAAA.dirty || awAasAAA.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="awAasAAA.errors?.['required']">
+                    AWA as AAA is required.
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <label class="labelfont">AHA as AAA<span class="text-danger">*</span></label>
+              <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.ahAasAAA" 
+              optionLabel="label" optionValue="value" #ahAasAAA="ngModel"
+              [ngClass]="{'is-invalid': ahAasAAA.invalid && (ahAasAAA.dirty || ahAasAAA.touched)}" 
+              name="ahAasAAA" id="ahAasAAA"></p-selectButton>
+                <div *ngIf="ahAasAAA.invalid && (ahAasAAA.dirty || ahAasAAA.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="ahAasAAA.errors?.['required']">
+                    AHA as AAA is required.
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <label class="labelfont">Min Day To HoliDay As Paid<span class="text-danger">*</span></label>
+                <input pinput class="form-control" type="text" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.minDayToHoliDayAsPaid" 
+                  #minDayToHoliDayAsPaid="ngModel" (keypress)="keyPressNumeric($event)" maxlength="1"
+                [ngClass]="{'is-invalid': minDayToHoliDayAsPaid.invalid && (minDayToHoliDayAsPaid.dirty || minDayToHoliDayAsPaid.touched)}" 
+                name="minDayToHoliDayAsPaid" id="minDayToHoliDayAsPaid">
+                  <div *ngIf="minDayToHoliDayAsPaid.invalid && (minDayToHoliDayAsPaid.dirty || minDayToHoliDayAsPaid.touched)" class="labelfont">
+          
+                    <div class="p-error" *ngIf="minDayToHoliDayAsPaid.errors?.['required']">
+                        Min Day To HoliDay As Paid is required.
+                    </div>
+                  </div>
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont">Min Day To Weekly Off As Paid<span class="text-danger">*</span></label>
+              <input pinput class="form-control" type="text" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.minDayToWeeklyOfAsPaid" 
+                #minDayToWeeklyOfAsPaid="ngModel" required="true" (keypress)="keyPressNumeric($event)" maxlength="1"
+              [ngClass]="{'is-invalid': minDayToWeeklyOfAsPaid.invalid && (minDayToWeeklyOfAsPaid.dirty || minDayToWeeklyOfAsPaid.touched)}" 
+              name="minDayToWeeklyOfAsPaid" id="minDayToWeeklyOfAsPaid">
+                <div *ngIf="minDayToWeeklyOfAsPaid.invalid && (minDayToWeeklyOfAsPaid.dirty || minDayToWeeklyOfAsPaid.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="minDayToWeeklyOfAsPaid.errors?.['required']">
+                      Min Day To Weekly Off As Paid is required.
+                  </div>
+                </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Deduction"  tooltip="Deduction">
+        <div class="form-group row">
+                <div class="col-lg-4">
+                <label class="labelfont">Late Early Deduction Applicable<span class="text-danger">*</span></label>
+                <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.lateEarlyDeductionApplicable"
+                optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': lateEarlyDeductionApplicable.invalid && (lateEarlyDeductionApplicable.dirty || lateEarlyDeductionApplicable.touched)}" 
+                name="lateEarlyDeductionApplicable" (ngModelChange)="showHide($event)" id="lateEarlyDeductionApplicable"  #lateEarlyDeductionApplicable="ngModel"></p-selectButton>
+                <div *ngIf="lateEarlyDeductionApplicable.invalid && (lateEarlyDeductionApplicable.dirty || lateEarlyDeductionApplicable.touched)" class="labelfont">
+                <div class="p-error" *ngIf="lateEarlyDeductionApplicable.errors?.['required']">
+                Late Early Deduction Applicable is required.
+                </div>
+                </div>
+                </div>
+        
+                <div class="col-lg-4" *ngIf="isvisible">
+                <label class="labelfont">Auto Run Late Early Deduction<span class="text-danger">*</span></label>
+                <p-selectButton [options]="stateOptions" [disabled]="allDisabledField" [(ngModel)]="attendancepolicyInfo.autoRunLateEarlyDeduction"
+                optionLabel="label" optionValue="value" [required]="true"  [ngClass]="{'is-invalid': autoRunLateEarlyDeduction.invalid && (autoRunLateEarlyDeduction.dirty || autoRunLateEarlyDeduction.touched)}" 
+                name="autoRunLateEarlyDeduction" id="autoRunLateEarlyDeduction"  #autoRunLateEarlyDeduction="ngModel"></p-selectButton>
+                <div *ngIf="autoRunLateEarlyDeduction.invalid && (autoRunLateEarlyDeduction.dirty || autoRunLateEarlyDeduction.touched)" class="labelfont">
+                <div class="p-error" *ngIf="autoRunLateEarlyDeduction.errors?.['required']">
+                  Auto Run Late Early Deduction is required.
+                </div>
+                </div>
+                </div>
+                </div>
+        
+                <div class="form-group row" *ngIf="this.showHideField===true">
+                  <div class="col-lg-12 float-right">
+                    <div class="float-right">
+                    <p-button icon="pi pi-plus" Class="p-button-success"[disabled]="allDisabledField" (click)="addFiledData()" styleClass="mr1 p-button-success"  type="button" ></p-button>
+                    <p-button icon="pi pi-minus" class="p-button-sm "  [disabled]="allDisabledField" (click)="removeFiledData()" styleClass="p-button-danger" ></p-button>
+                  </div>
+                  </div>
+                </div>
+        
+        
+              <div id="divSlabMain" *ngIf="this.showHideField===true">
+        
+                  <div class="form-group row" id="divSlabMain" *ngFor="let lateEarlyDeduction of lateEarlyDeductionPoliciesListModel; let i=index">
+                    <div class="col-lg-12 form-group row">
+                      <div class="col-lg-4">
+                      <label class="labelfont">Policy BasedOn</label>
+                      <p-dropdown [options]="policyBasedOnList" [(ngModel)]="lateEarlyDeduction.policyBasedOnBased" [disabled]="allDisabledField" name="{{lateEarlyDeduction.policyBasedOnBased+i}}" id="{{lateEarlyDeduction.policyBasedOnBased+i}}"   optionLabel="key" optionValue="value" class=""></p-dropdown>
+                      </div>
+        
+                      <div class="col-lg-4"  *ngIf="this.lateEarlyDeduction.policyBasedOnBased==='A'">
+                      <label class="labelfont" >Late From</label>
+                      <input pinput [(ngModel)]="lateEarlyDeduction.lateFrom" [disabled]="allDisabledField" class="form-control" type="text" autocomplete="off"  name="lateFrom{{i}}" id="lateFrom{{i}}" #lateFrom="ngModel">
+                      </div>
+        
+                      <div class="col-lg-4"  *ngIf="this.lateEarlyDeduction.policyBasedOnBased==='A'">
+                      <label class="labelfont">Late To</label>
+                      <input pinput [(ngModel)]="lateEarlyDeduction.lateTo" [disabled]="allDisabledField" class="form-control" type="text" autocomplete="off"  name="lateTo{{i}}" id="lateTo{{i}}" #lateTo="ngModel">
+                      </div>
+        
+                      <div class="col-lg-4"  *ngIf="this.lateEarlyDeduction.policyBasedOnBased==='S'">
+                      <label class="labelfont">Attandence Status</label>
+                      <p-dropdown [options]="attendanceStatusList" [(ngModel)]="lateEarlyDeduction.attendanceStatus" [disabled]="allDisabledField" name="attendanceStatus{{i}}" id="attendanceStatus{{i}}" optionLabel="key" optionValue="value" class=""></p-dropdown>
+                      </div>
+                    </div>
+        
+                    <div class="col-lg-12 form-group row"  *ngIf="this.lateEarlyDeduction.policyBasedOnBased==='A'">
+                      <div class="col-lg-4">
+                      <label class="labelfont">AND/OR</label>
+                      <p-dropdown [options]="andORList" [(ngModel)]="lateEarlyDeduction.lateEarlyCondition" [disabled]="allDisabledField" name="lateEarlyCondition{{i}}" id="lateEarlyCondition{{i}}" optionLabel="key" optionValue="value" class=""></p-dropdown>
+                      </div>
+        
+                      <div class="col-lg-4">
+                      <label class="labelfont">Early Form</label>
+                      <input pinput [(ngModel)]="lateEarlyDeduction.earlyFrom" class="form-control" type="text" [disabled]="allDisabledField" autocomplete="off"  name="earlyFrom{{i}}" id="earlyFrom{{i}}" #earlyFrom="ngModel">
+                      </div>
+        
+                      <div class="col-lg-4">
+                      <label class="labelfont">Early To</label>
+                      <input pinput [(ngModel)]="lateEarlyDeduction.earlyTo" class="form-control" [disabled]="allDisabledField" type="text" autocomplete="off"  name="earlyTo{{i}}" id="earlyTo{{i}}" #earlyTo="ngModel">
+                      </div>
+                    </div>
+        
+                    <div class="col-lg-12 form-group row">
+                      <div class="col-lg-4">
+                      <label class="labelfont">Exempt Days</label>
+                      <input pinput [(ngModel)]="lateEarlyDeduction.eexemptDays" class="form-control" [disabled]="allDisabledField" type="text" autocomplete="off"  name="eexemptDays{{i}}" id="eexemptDays{{i}}" #eexemptDays="ngModel">
+                      </div>
+        
+                      <div class="col-lg-4">
+                      <label class="labelfont">Every Days</label>
+                      <input pinput [(ngModel)]="lateEarlyDeduction.everyDays" class="form-control" [disabled]="allDisabledField" type="text" autocomplete="off"  name="everyDays{{i}}" id="everyDays{{i}}" #everyDays="ngModel">
+                      </div>
+        
+                      <div class="col-lg-4">
+                      <label class="labelfont">Deduct From</label>
+                      <p-dropdown [options]="deductFromList" [(ngModel)]="lateEarlyDeduction.deductFrom" [disabled]="allDisabledField" name="deductFrom{{i}}" id="deductFrom{{i}}" optionLabel="key" optionValue="value" class=""></p-dropdown>
+                      </div>
+                    </div>
+        
+                    <div class="col-lg-12 row">
+                      <div class="col-lg-4">
+                      <label class="labelfont">Deduct value</label>
+                      <!-- <p-dropdown [options]="deductValueList" [(ngModel)]="lateEarlyDeduction.deductValue" [disabled]="allDisabledField" name="deductValue{{i}}" id="deductValue{{i}}" optionLabel="key" optionValue="value" class=""></p-dropdown> -->
+                      <input pinput [(ngModel)]="lateEarlyDeduction.deductValue" class="form-control" [disabled]="allDisabledField" type="text" autocomplete="off" (keypress)="keyPressNumbersWithDecimal($event)" name="deductValue{{i}}" id="deductValue{{i}}" #deductValue="ngModel">
+                      </div>
+        
+                      <div class="col-lg-8" *ngIf="lateEarlyDeduction.deductFrom==='L'">
+                      <label class="labelfont">Leave</label>
+                      <p-multiSelect  [options]="leaveTypeList" [(ngModel)]="lateEarlyDeduction.leaveList" [disabled]="allDisabledField"  defaultLabel="--Please Select--" name="leaveList{{i}}" id="leaveID" optionLabel="leaveName" optionValue="leaveID" selectedItemsLabel="{0} items selected"></p-multiSelect>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+        
+         </p-tabPanel>
+    </p-tabView>
+    <div class="float-right">
+      <p-button icon="pi pi-check"  [label]="labelName" *ngIf="!allDisabledField"  Class="p-button-text p-button-sm p-button-success" [disabled]="!attendancepolicyMasterForm.valid" type="submit" ></p-button>
+      <p-button icon="pi pi-times" class="p-button-sm " *ngIf="!allDisabledField"  label="Cancel"  (click)="CancelattendancepolicyMasterData()" styleClass="p-button-secondary"></p-button>
+    </div>
+  </form>
+</div>
+ 
+  

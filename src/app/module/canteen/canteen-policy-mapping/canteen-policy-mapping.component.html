@@ -1,0 +1,71 @@
+
+       
+<header class="card-header">
+    <h3>Canteen Policy Setup for <b>{{canteenPolicyModelInfo.policyName}}</b></h3>
+   </header>
+    <!-- <h2>{{canteenPolicyModelInfo.policyBasedOn}}</h2> -->
+        <div class="form-group row col-lg-12" >
+           <p-table [value]="holidaysListUI" dataKey="itemID"  [(selection)]="selectedItemMaster" style="font-size: 18px;" >
+               <ng-template pTemplate="header" [disabled]="allDisabledField">
+                   <tr style="font-size:12px;">
+                    <th></th>
+                     <th>Item Code</th>
+                     <th>Item Name</th>
+                     <th>ItemType</th>
+                     <th>Description</th>
+                     <th>Start Time</th>
+                     <th>End Time</th>
+                     <th>ItemRate</th>
+                     <th>ItemRate After Subsidized</th>
+                     <th>Employee Contribution</th>
+                     <th>Employer Contribution</th>
+                     <th>Subsidized Quantity</th>
+                   </tr>
+               </ng-template>
+ 
+               <ng-template pTemplate="body" let-mapping>
+                   <tr style="font-size:12px;">
+                    <td>
+                     <!-- <label [icon]="pi pi-plus"></label> -->
+ 
+                     <!-- <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': mapping.selected, 'text-red-500 pi-times-circle': !mapping.selected }"></i> -->
+                      <p-tableCheckbox [value]="mapping" [disabled]="allDisabledField"></p-tableCheckbox>
+                     </td>
+                       <td pEditableColumn>
+                        {{mapping.itemCode}}
+                       </td>
+                       <td pEditableColumn>
+                        {{mapping.itemName}}
+                       </td>
+                       <td pEditableColumn>
+                        {{mapping.itemType}}
+                       </td>
+                       <td pEditableColumn>
+                        {{mapping.description}}
+                       </td>
+                       <td pEditableColumn>
+                        {{mapping.startTime}}
+                       </td>
+                       <td pEditableColumn>
+                        {{mapping.endTime}}
+                      </td>
+                      <td pEditableColumn>
+                         {{mapping.itemRate}}
+                        </td>
+                       <td pEditableColumn>
+                        {{mapping.itemRateAfterSubsidy}}
+                       </td>
+                       <td pEditableColumn>
+                       {{mapping.employeeContribution}}
+                     </td>
+                       <td pEditableColumn>
+                        {{mapping.employerContribution}}
+                       </td>
+                       <td pEditableColumn>
+                        {{mapping.subsidizedQuantity}}
+                       </td>
+                    </tr>
+               </ng-template>
+            </p-table>
+      </div>
+ 

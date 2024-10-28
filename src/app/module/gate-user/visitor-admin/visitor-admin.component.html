@@ -1,0 +1,348 @@
+  <section class="card">
+    <header class="card-header">
+      <div class="col-lg-6 float-left">
+        <h2>Visitor Request</h2>
+      </div>
+      <div class="group-right col-lg-6">
+        <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+        <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"class="p-button-rounded p-button-success"></button>
+      </div>
+  </header>
+  <div class="card-body">
+    <div class="form-group row">
+      <div class="col-lg-4">
+        <label class="labelfont">From Date</label>
+        <div class="col-sm-12" style="padding-left:0px;">
+          <input pinput [(ngModel)]="fromDate" class="datetypeDateinput" type="text" autocomplete="off" name="fromDate"
+            id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+          <input [(ngModel)]="fromtime" name="fromtime" class="timetypeDateinput" [popover]="popfromTemplate"
+            [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+          <ng-template #popfromTemplate>
+            <timepicker [(ngModel)]="fromtime" name="fromtime" [showMeridian]="false" (ngModelChange)="getTime($event)">
+            </timepicker>
+          </ng-template>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <label class="labelfont">To Date</label>
+        <div class="col-sm-12" style="padding-left:0px;">
+          <input pinput [(ngModel)]="toDate" class="datetypeDateinput" type="text" autocomplete="off" name="fromDate"
+            id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+          <input [(ngModel)]="totime" name="totime" class="timetypeDateinput" [popover]="poptoTemplate"
+            [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+          <ng-template #poptoTemplate>
+            <timepicker [(ngModel)]="totime" [showMeridian]="false" name="totime" (ngModelChange)="gettoTime($event)">
+            </timepicker>
+          </ng-template>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <label class="labelfont">Status</label>
+        <div>
+          <p-multiSelect [options]="statusList" [(ngModel)]="Vstatus" defaultLabel="Select a Status" optionLabel="key"
+            selectedItemsLabel="{0} items selected"></p-multiSelect>
+        </div>
+      </div>
+      <div class="col-lg-2" style="text-align: right;">
+        <label class="labelfont"></label>
+        <div style="padding-left:0px;">
+          <p-button type="button" id="GetData" label="Get Data" (click)="getVisitorData()"
+            Class="p-button-text p-button-sm p-button-primary"></p-button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row" style="float:right">
+
+    </div>
+    <br />
+    <div *ngIf="rowData.length >= 0">
+      <app-grid-renderer [gridRowData]="rowData" [gridColData]="columnDefs" (onCellClickEvent)="onCellClicked($event)">
+      </app-grid-renderer>
+    </div>
+  </div>
+</section>
+<p-dialog header="New Visitor Request" [(visible)]="display" [modal]="true" id="divNewvisitorrequuest"
+  [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw',height:'80vw'}">
+  <form #visitorform="ngForm" (submit)="visitorform.form.valid && SaveVisitorData()">
+    <div class="form-group row" *ngIf="addVisitorRequest">
+      <div class="col-lg-8">
+         <app-search-visitor (onSearchEvent)="onGetDetail($event)"></app-search-visitor> 
+      </div>
+      <div class="col-lg-1" style="text-align: center;">
+        <label class="labelInput">OR</label>
+      </div>
+      <div class="col-lg-3 divload-list">
+        <p-button pRipple class="plusbtn" icon="pi pi-plus" (click)="addNewVisitor()"
+          class="p-button-rounded p-button-success"></p-button>
+      </div>
+    </div>
+
+    <div *ngIf="!addVisitorRequest">
+      <div class="form-group row ">
+        <div class="col-lg-10" style="padding-left:0px !important">
+          <app-search-autocomplete (onSearchEvent)="onGetEmployeeDetail($event)"></app-search-autocomplete>
+        </div>
+        <div class="col-lg-2 divload-listsearch float-right">
+          <p-button pRipple class="plusbtn" label="Back" (click)="searchvisitor()"
+            class="p-button-rounded p-button-success"></p-button>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="labelfont">Employee Name </label>
+          <input pinput [(ngModel)]="visitorAdminInfo.employeeName" class="form-control" type="text"
+            autocomplete="off"  name="employeeName" id="employeeName" #employeeName="ngModel"
+            [ngClass]="{'is-invalid': employeeName.invalid && (employeeName.dirty || employeeName.touched)}">
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Employee Department</label>
+          <input pinput [(ngModel)]="visitorAdminInfo.employeeDepartment" class="form-control"  type="text"
+            autocomplete="off"  name="employeeDepartment" id="employeeDepartment" #employeeDepartment="ngModel"
+            [ngClass]="{'is-invalid': employeeDepartment.invalid && (employeeDepartment.dirty || employeeDepartment.touched)}">
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Employee Designation</label>
+          <input pinput [(ngModel)]="visitorAdminInfo.employeeDesignation" class="form-control"  type="text"
+            autocomplete="off"  name="employeeDesignation" id="employeeDesignation" #employeeDesignation="ngModel"
+            [ngClass]="{'is-invalid': employeeDesignation.invalid && (employeeDesignation.dirty || employeeDesignation.touched)}">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="labelfont">Visitor Name <span class="text-danger">*</span></label>
+          <input pinput [(ngModel)]="visitorAdminInfo.visitorName" class="form-control" maxlength="50" type="text"
+            autocomplete="off" required name="visitorName" id="visitorName" #visitorName="ngModel"
+            [ngClass]="{'is-invalid': visitorName.invalid && (visitorName.dirty || visitorName.touched)}">
+          <div *ngIf="visitorform.submitted && (visitorName.invalid || visitorName.dirty || visitorName.touched)" class="labelfont">
+            <div class="p-error" *ngIf="visitorName.errors?.['required']">
+              Visitor Name is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Gender <span class="text-danger">*</span></label>
+          <p-dropdown [options]="genderList" [(ngModel)]="visitorAdminInfo.genderID" optionLabel="key"
+            optionValue="value" class="" #genderID="ngModel"
+            [ngClass]="{'is-invalid': genderID.invalid && (genderID.dirty || genderID.touched)}" name="genderID"
+            id="genderID" [required]="true">
+          </p-dropdown>
+          <div *ngIf="visitorform.submitted && (genderID.invalid || genderID.dirty || genderID.touched)" class="labelfont">
+            <div class="p-error" *ngIf="genderID.errors?.['required']">
+              Gender is required.
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-3">
+          <label class="labelfont">Designation</label>
+          <input pinput [(ngModel)]="visitorAdminInfo.designationName" class="form-control" type="text"
+            autocomplete="off" name="designationName" id="designationName" #designationName="ngModel"
+            [ngClass]="{'is-invalid': designationName.invalid && (designationName.dirty || designationName.touched)}">
+        </div>
+
+        <div class="col-lg-3">
+          <label class="labelfont">Contact Number <span class="text-danger">*</span></label>
+          <input pinput [(ngModel)]="visitorAdminInfo.contactNumber" class="form-control" type="text" autocomplete="off"
+            name="contactNumber" required="true" id="contactNumber" #contactNumber="ngModel"
+            (keypress)="keyPressNumeric($event)" maxlength="10"
+            [ngClass]="{'is-invalid': contactNumber.invalid && (contactNumber.dirty || contactNumber.touched)}">
+          <div *ngIf="visitorform.submitted && ( contactNumber.invalid || contactNumber.dirty || contactNumber.touched)" class="labelfont">
+            <div class="p-error" *ngIf="contactNumber.errors?.['required']">
+              Contact Number is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-3" *ngIf="hideOnvisitorType">
+          <label class="labelfont">Company Name </label>
+          <input pinput [(ngModel)]="visitorAdminInfo.companyName" class="form-control" type="text" autocomplete="off"
+            name="companyName" id="companyName" #companyName="ngModel"
+            [ngClass]="{'is-invalid': companyName.invalid && (companyName.dirty || companyName.touched)}">
+          
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont"> Address </label>
+          <input pinput [(ngModel)]="visitorAdminInfo.companyAddress" class="form-control" type="text"
+            autocomplete="off" name="companyAddress" id="companyAddress" #companyAddress="ngModel"
+            [ngClass]="{'is-invalid': companyAddress.invalid && (companyAddress.dirty || companyAddress.touched)}">
+        </div>
+        <div class="col-lg-6">
+          <label class="labelfont">Expected In Date/ Time <span class="text-danger">*</span></label>
+          <br />
+          <div class="col-md-6" style="float: left !important;">
+            <input pinput [(ngModel)]="expInDate" class="form-control" type="text" autocomplete="off" name="fromDate"
+              id="expInDate" (ngModelChange)="getExpInTime($event)" [bsConfig]="datepickerConfig"
+              placeholder="DD-MM-YYYY" autocomplete="off" container=""  bsDatepicker style="margin-left: -11px;">
+
+          </div>
+          
+          <div class="col-md-6" style="float: left !important;">
+            <input [(ngModel)]="expIntime" name="expIntime" autocomplete="off" class="form-control"
+              [popover]="popexpInTemplate" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+            <ng-template #popexpInTemplate>
+              <timepicker [(ngModel)]="expIntime" name="expIntime" [showMeridian]="false"
+                (ngModelChange)="getExpInTime($event)"></timepicker>
+            </ng-template>
+          </div>
+          <input pinput [(ngModel)]="visitorAdminInfo.expectedIn" class="form-control" type="text" autocomplete="off"
+            name="expectedIn" required="true" hidden="true" id="expectedIn" #expectedIn="ngModel"
+            [ngClass]="{'is-invalid': expectedIn.invalid && (expectedIn.dirty || expectedIn.touched)}">
+          <div *ngIf="visitorform.submitted && ( expectedIn.invalid || expectedIn.dirty || expectedIn.touched)" class="labelfont">
+            <div class="p-error" *ngIf="expectedIn.errors?.['required']">
+              Expected In is required.
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="labelfont">Visitor Type <span class="text-danger">*</span></label>
+          <p-dropdown [options]="visitTypeList" [required]="true" [(ngModel)]="visitorAdminInfo.visitorTypeID"
+            optionLabel="visitorTypeName" optionValue="visitorTypeID" class="" #visitorTypeID="ngModel"
+            [ngClass]="{'is-invalid': visitorTypeID.invalid && (visitorTypeID.dirty || visitorTypeID.touched)}"
+            name="visitorTypeID" id="visitorTypeID" (ngModelChange)="fngetvisitorType($event)">
+          </p-dropdown>
+          <div *ngIf="visitorform.submitted && ( visitorTypeID.invalid || visitorTypeID.dirty || visitorTypeID.touched)" class="labelfont">
+            <div class="p-error" *ngIf="visitorTypeID.errors?.['required']">
+              Visitor Type is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Visit Purpose<span class="text-danger">*</span></label>
+          <p-dropdown [options]="visitpurposeList" [required]="true" [(ngModel)]="visitorAdminInfo.visitPurposeID"
+            optionLabel="visitPurposeName" optionValue="visitPurposeID" class="" #visitPurposeID="ngModel"
+            [ngClass]="{'is-invalid': visitPurposeID.invalid && (visitPurposeID.dirty || visitPurposeID.touched)}"
+            name="visitPurposeID" id="visitPurposeID">
+          </p-dropdown>
+          <div *ngIf="visitorform.submitted && (visitPurposeID.invalid || visitPurposeID.dirty || visitPurposeID.touched)" class="labelfont">
+            <div class="p-error" *ngIf="visitPurposeID.errors?.['required']">
+              Visit Purpose is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">In Gate<span class="text-danger">*</span></label>
+          <p-dropdown [options]="gateList" [required]="true" [(ngModel)]="visitorAdminInfo.inGateID"
+            optionLabel="gateName" optionValue="gateID" class="" #inGateID="ngModel"
+            [ngClass]="{'is-invalid': inGateID.invalid && (inGateID.dirty || inGateID.touched)}" name="inGateID"
+            id="inGateID">
+          </p-dropdown>
+          <div *ngIf="visitorform.submitted && ( inGateID.invalid   || inGateID.dirty || inGateID.touched)" class="labelfont">
+            <div class="p-error" *ngIf="inGateID.errors?.['required']">
+              In Gate is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <label class="labelfont">Visitor Priority<span class="text-danger">*</span></label>
+          <p-dropdown [options]="visitorpriorityList" [required]="true" [(ngModel)]="visitorAdminInfo.visitorPriorityID"
+            optionLabel="key" optionValue="value" class="" #visitorPriorityID="ngModel"
+            [ngClass]="{'is-invalid': visitorPriorityID.invalid && (visitorPriorityID.dirty || visitorPriorityID.touched)}"
+            name="visitorPriorityID" id="visitorPriorityID">
+          </p-dropdown>
+          <div *ngIf="visitorform.submitted && ( visitorPriorityID.invalid || visitorPriorityID.dirty || visitorPriorityID.touched)"
+            class="labelfont">
+            <div class="p-error" *ngIf="visitorPriorityID.errors?.['required']">
+              Visitor Priority is required.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+
+        <!-- <div class="col-lg-3">
+                              <label class="labelfont">Visit Time<span class="text-danger">*</span></label>
+                              <input  [(ngModel)]="visitorAdminInfo.visitTime" autocomplete="off"  name="visitTime" class="form-control" [popover]="popvisitTimeTemplate" [outsideClick]="true" placement="bottom" placeholder="HH:MM"    id="visitTime" required="true"/>
+                              <ng-template #popvisitTimeTemplate>
+                                <timepicker [(ngModel)]="visitTime" name="visitTime" [showMeridian]="false" (ngModelChange)="getvisitTimeTime($event)"></timepicker>
+                              </ng-template>
+
+                            </div> -->
+        <!-- <div class="col-lg-3">
+                              <label class="labelfont">Visit End Time<span class="text-danger">*</span></label>
+                              <input  [(ngModel)]="visitorAdminInfo.visitEndTime" autocomplete="off" name="visitEndTime" class="form-control" [popover]="popvisitEndTimeTemplate" [outsideClick]="true" placement="bottom" placeholder="HH:MM"   id="visitEndTime" required="true" />
+                              <ng-template #popvisitEndTimeTemplate>
+                                <timepicker [(ngModel)]="visitEndTime" name="visitEndTime" [showMeridian]="false" (ngModelChange)="getvisitEndTimeTime($event)"></timepicker>
+                              </ng-template>
+
+                            </div> -->
+        <!-- <div class="col-lg-8">
+                              <label class="labelfont">Employee Detail<span class="text-danger">*</span></label>
+                              <input pinput
+                              pinput
+                                  [(ngModel)]= "visitorAdminInfo.employeeDetail"
+                                  class="form-control"
+                                  type="text" autocomplete="off"
+                                  required
+                                  name="employeeDetail"
+                                  id="employeeDetail"  #employeeDetail="ngModel" [ngClass]="{'is-invalid': employeeDetail.invalid && (employeeDetail.dirty || employeeDetail.touched)}"  name="employeeDetail" id="employeeDetail" >
+                              <div *ngIf="employeeDetail.invalid && (employeeDetail.dirty || employeeDetail.touched)"
+                              class="labelfont">
+                        <div  class="p-error" *ngIf="employeeDetail.errors?.['required']">
+                          Employee Detail is required.
+                        </div>
+                      </div>
+                        </div>  -->
+      </div>
+      <div class="float-right">
+        <p-button icon="pi pi-check" type="submit" label="Save" Class="p-button-text p-button-sm p-button-success"
+          ></p-button>
+          <span class="clear-text"></span>
+        <p-button icon="pi pi-times" class="p-button-sm " #closebutton data-dismiss="modal" label="Cancel"
+          (click)="CancelVisitorData()" styleClass="p-button-secondary"></p-button>
+      </div>
+    </div>
+  </form>
+</p-dialog>
+<p-dialog header="Gate Pass" [(visible)]="displaygate" [modal]="true" id="divGatePass" [draggable]="false"
+  [resizable]="false" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '40vw',height:'28vw'}">
+ 
+  <div class="form-group row">
+    <div class="col-lg-12">
+      <label class="labelfont">Gate Pass Template<span class="text-danger">*</span></label>
+      <p-dropdown [options]="visitorPassTemplateList" [(ngModel)]="gatePassID" [required]="true"
+        optionLabel="visitorPassName" optionValue="visitorPassID" name="gatePassID" id="gatePassID">
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="float-right">
+    <br/>
+    <p-button icon="pi pi-check" label="Download" Class="p-button-text p-button-sm p-button-success" id="p-button-download"
+      (click)="DownloadGatePass()"></p-button><span class=" p-mr-btn"></span>
+    <p-button icon="pi pi-times" class="p-button-sm " #closebutton data-dismiss="modal" label="Cancel"
+      (click)="CancelGatePass()" styleClass="p-button-secondary"></p-button>
+      <br/>
+    </div>
+</p-dialog>
+
+<!-- Print Gate Pass -->
+<p-dialog  [(visible)]="displaygatepass" [modal]="true" id="divGatePass" [draggable]="false"
+  [resizable]="false" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw'}">
+  <div class="form-group row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4" style="text-align: center !important;">
+      <ngx-qrcode #parent
+  [elementType]="elementType"
+  [errorCorrectionLevel]="correctionLevel"
+  [value]="qrCodedetail"
+  hidden="true"
+  alt="Demo QR Code" style="width:100px;height:100px"></ngx-qrcode>
+  
+    </div>
+    <div class="col-lg-4"></div>
+  </div>
+  <ng-template pTemplate="header">
+    <button pButton type="button" label="Print" icon="pi pi-print"  printSectionId="print-section" ngxPrint class="p-button-primary" ></button>
+  </ng-template>
+        <div [innerHtml]="gatepassTemplate" id="print-section"></div>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text">
+</p-confirmDialog>
+<!-- page end-->

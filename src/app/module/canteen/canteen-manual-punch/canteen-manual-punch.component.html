@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-lg-12">
+      <form #manualPunchForm = "ngForm" name="form" (submit)="SaveManualPunchSingleData()">
+        <div class="form-group row">
+          <div class="col-lg-5">
+          <label class="labelfont">Punch Date <span class="text-danger">*</span></label>
+          <input pinput class="form-control" type="text" autocomplete="off" name="punchdate" [(ngModel)]="punchdate" id="punchdate" [bsConfig]="datepickerConfig" required="true" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker> 
+        </div>
+
+          <div class="col-lg-2">
+          <label class="labelfont">Punch Time <span class="text-danger">*</span></label><br/>
+          <p-calendar [(ngModel)]="punchtime" name="punchtime" id="punchtime" [required]="true" [timeOnly]="true" inputId="timeonly" class="form-control"></p-calendar>
+          </div>
+            
+          <!-- <div class="col-lg-3">
+          <label class="labelfont">InOut</label>
+          <p-dropdown [options]="inOutList" [(ngModel)]="canteenManualPunchInfo.inOut" optionLabel="key" optionValue="value" #inOut="ngModel" 
+          [ngClass]="{'is-invalid': inOut.invalid && (inOut.dirty || inOut.touched)}" name="inOut" id="inOut"></p-dropdown>
+          </div> -->
+
+          <div class="col-lg-5">
+          <label class="labelfont">Reason</label>
+          <input pinput [(ngModel)]="canteenManualPunchInfo.reason" class="form-control" type="text" name="reason" id="reason"#reason="ngModel" [ngClass]="{'is-invalid': reason.invalid && (reason.dirty || reason.touched)}">
+          </div>
+
+          </div>
+          <div class="form-group row">
+          <div class="col-lg-4"  *ngIf="QuaDisable">
+          <label class="labelfont">Item Quantity</label>
+          <input pinput [(ngModel)]="canteenManualPunchInfo.itemQuantity" class="form-control" type="text"name="reason" id="reason"#reason="ngModel" [ngClass]="{'is-invalid': reason.invalid && (reason.dirty || reason.touched)}">
+        </div>
+
+          <div class="col-lg-4" *ngIf="QuaDisable">
+          <label class="labelfont">Item Code</label>
+          <p-dropdown  [options]="itemMasterList" [(ngModel)]="canteenManualPunchInfo.itemID" optionLabel="itemName" optionValue="itemID" 
+          name="itemID" id="itemID">
+</p-dropdown>
+</div>
+          </div>
+          <div class="float-right">
+          <p-button  type="submit"   label="Punch Post" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+           <p-button icon="pi pi-times" class="p-button-sm "  label="Cancel" styleClass="p-button-secondary" (click)="cancel()"></p-button> 
+        </div>
+      </form>
+    </div>
+   </div>

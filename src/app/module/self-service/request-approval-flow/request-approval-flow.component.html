@@ -1,0 +1,7 @@
+
+  <div class="request-flow"  *ngIf="approvalWorkflowHierarchy && approvalWorkflowHierarchy.length>0">
+    <span>Request Flow:</span>
+    <div class="request-breadcrumb">
+        <span  *ngFor="let approver of approvalWorkflowHierarchy">{{approver.employeeName}} ({{approver.employeeCode}}) </span>
+    </div>
+  </div>

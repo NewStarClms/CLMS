@@ -1,0 +1,136 @@
+<div class="card-body">
+  <div class="form-group row">
+    <div class="col-lg-4">
+      <label class="labelfont">WorkFlow</label>
+      <p-dropdown  [options]="workflowOptionList"   [(ngModel)]="selectedWorkFlow" (ngModelChange)="getRequesTypeList($event)" 
+         optionLabel="key"  optionValue="value"  name="workFlowModuleID"   id="workFlowModuleID">
+      </p-dropdown>
+    </div>
+    <div class="col-lg-4">
+      <label class="labelfont">Request Type</label>
+      <p-dropdown  [options]="requestTypeList"  [(ngModel)]="selectedRequestType"  name="workFlowID"
+        id="workFlowID"  optionLabel="requestType"   optionValue="workFlowID">
+        <ng-template let-item pTemplate="item">
+          <div *ngIf="item.requestType === 'N'">New Request</div>
+          <div *ngIf="item.requestType === 'C'">Cancel</div>
+        </ng-template>
+        <ng-template let-item pTemplate="selectedItem">
+          <div *ngIf="item.requestType === 'N'">New Request</div>
+          <div *ngIf="item.requestType === 'C'">Cancel</div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+    <div class="col-lg-4">
+        <label class="labelfont">Status</label>
+        <p-dropdown  [options]="filteredStatusList"   [(ngModel)]="selectedStatus"  optionLabel="key"  optionValue="value"  name="selectedStatus"   id="selectedStatus">
+        </p-dropdown>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-lg-4">
+        <label class="labelfont">From Date</label>
+        <input pinput [(ngModel)]="fromDate"  class="form-control"type="text" autocomplete="off" name="fromDate"
+        id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+    
+    </div>
+    <div class="col-lg-4">
+        <label class="labelfont">To Date</label>
+        <input pinput [(ngModel)]="toDate"  class="form-control" type="text" autocomplete="off" name="fromDate"
+        id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+    </div>
+    <div class="col-lg-2" style="text-align: right">
+      <label class="labelfont"></label>
+        <p-button  type="button"  label="Get Data"   (click)="getWorkflowData()"  Class="p-button-text p-button-sm p-button-success"></p-button>
+        &nbsp;&nbsp;
+        <p-button  type="button"  label="Close"   (click)="goBack()"  styleClass="p-button-secondary"></p-button>
+    </div>
+  </div>
+    <div class="form-group row">
+          <div  class="col-lg-12" *ngIf="rowData.length >= 0">
+            <div class="fright">
+              <p-button type="button" *ngIf="isPendingRequest" [disabled]="selectedRequests.length==0" (click)="openActionPopup()" label="Action"
+              Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+            </div>
+              <app-grid-renderer
+                [gridRowData]="rowData"
+                [gridColData]="columnDefs"
+                (onCheckAllClicked)="checkUnCheckAllClicked($event)" 
+                (onCheckRowClicked)="checkUnCheckRowClicked($event)"
+                (onCellClickEvent)="onCellClicked($event)">
+              </app-grid-renderer>
+            </div>
+    </div>
+</div>
+
+<p-dialog header="Request Flow Detail" [(visible)]="displayApproveFlow" [modal]="true" [draggable]="false" [resizable]="false"
+    [transitionOptions]="'0ms'" position="top-right" [style]="{width: '90vw'}" (onHide)="closeFlowPopup(false)">
+    <div id="divmyRequestFlowDetail">
+      <ul class="timeline timeline-inverse">
+        <!-- <span  *ngFor="workFlow ofworkFlowList">ll</span> -->
+      <li *ngFor="let workFlow of workFlowAppList">
+        <div class="time-label">
+          <button  *ngIf="workFlow.actionDate" pButton type="button" [label]="workFlow.actionDate" [ngClass]="{'p-button-success': workFlow.requestStatus && workFlow.requestStatus === 'Approved'}" ></button>
+          <button  *ngIf="!workFlow.actionDate && workFlow.requestStatus === 'Pending'" pButton type="button" [label]="workFlow.requestStatus" [ngClass]="{'p-button-warning': workFlow.requestStatus && workFlow.requestStatus === 'Pending'}" ></button>
+          <button  *ngIf="!workFlow.actionDate && workFlow.requestStatus === 'Cancel'" pButton type="button" [label]="workFlow.requestStatus" [ngClass]="{'p-button-danger': workFlow.requestStatus && workFlow.requestStatus === 'Cancel'}" ></button>
+          <button  *ngIf="!workFlow.actionDate && workFlow.requestStatus !== 'Pending' && workFlow.requestStatus !== 'Cancel'" pButton type="button" [label]="workFlow.requestStatus" [ngClass]="{'p-button-secondary': workFlow.requestStatus}" ></button>
+        </div>
+        
+        <!-- <li> -->
+          <i class="fa fa-user bg-aqua"></i>
+          <div class="timeline-item">
+            <span class="time"><i class="fa fa-line-chart"></i> {{ workFlow.requestStatus }}</span>
+            <h3 class="timeline-header">
+              {{ workFlow.employeeName }} [{{ workFlow.employeeCode }}]
+            </h3>
+            <div class="timeline-footer">
+              <span class="time"><i class="fa fa-comments"></i></span>{{ workFlow.requestRemark }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </p-dialog>
+
+  <p-dialog header="Request Flow Detail" [(visible)]="displayLeaveRequest" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw'}" (onHide)="closeLeavePost(false)">
+    <app-request-approval-flow *ngIf="displayLeaveRequest" [workflowID]="selectedRequestType" [employeeID]="employeeID"></app-request-approval-flow>
+    <app-leave-request-dailog   [employeeID]="employeeID" [PostButton]="PostButton" [disabledTxt]="disabledTxt" *ngIf="leaveRequestDiv && displayLeaveRequest" [requestID]="requestID" [requestStatus]="requestStatus" [workflowID]="selectedRequestType" [transactionID]="transactionID" (LeaveSinglediv)="closeLeavePost($event)"></app-leave-request-dailog>
+</p-dialog>
+<p-dialog header="Request Flow Detail" [(visible)]="displayGatePass" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw'}" (onHide)="closeGatePassPopup(false)">
+    <app-request-approval-flow *ngIf="displayGatePass" [workflowID]="selectedRequestType" [employeeID]="employeeID" ></app-request-approval-flow>
+    <app-gatepass-dialog  [employeeID]="employeeID" [PostButton]="PostButton" [disabledTxt]="disabledTxt" *ngIf="gatepassRequestDiv && displayGatePass" [requestID]="requestID" [requestStatus]="requestStatus" [workflowID]="selectedRequestType" [transactionID]="transactionID" (closePopup)="closeGatePassPopup($event)"></app-gatepass-dialog>
+
+</p-dialog>
+<!-- punch regularization request popup -->
+<p-dialog header="Request Flow Detail" [(visible)]="displayPunchRequest" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw'}" (onHide)="closePunchPopup(false)">
+    <app-request-approval-flow  *ngIf="displayPunchRequest" [workflowID]="selectedRequestType" [employeeID]="employeeID"></app-request-approval-flow>
+    <app-punch-regularization  [employeeID]="employeeID" [PostButton]="PostButton" [disabledTxt]="disabledTxt" *ngIf="displayPunchRequest" [requestID]="requestID" [requestStatus]="requestStatus" [workflowID]="selectedRequestType" [transactionID]="transactionID" (closePopup)="closePunchPopup($event)"></app-punch-regularization>
+</p-dialog>
+  
+<p-dialog header="Action On Requests" [(visible)]="approveRejectRemarkDialog"  [modal]="true" [draggable]="false" [resizable]="false"
+[transitionOptions]="'0ms'" (hide)="closeApproveRejectDialog()" position="top-right" [style]="{width: '50vw'}">
+<form #remarkForm="ngForm" >
+  <div class="form-group row">
+  
+    <div class="col-lg-10">
+      <label class="labelfont">Remark <span class="text-danger">*</span></label>
+      <input pinput [(ngModel)]="reqRemarks" class="form-control text-uppercase" type="text"
+        autocomplete="off" required name="requestRemark" id="requestRemark" maxlength="100" #requestRemark="ngModel">
+    </div>
+  </div>
+  <div class="float-right">
+    <p-button icon="pi pi-check" label="Approve" Class="p-button-text p-button-sm" styleClass="p-button-success  mr-2"type="button"
+      [disabled]="!remarkForm.valid" (click)="SaveRemarkData(1)"></p-button>
+      <p-button icon="pi pi-check" label="Reject" Class="p-button-text p-button-sm" styleClass="p-button-danger  mr-2 " type="button"
+      [disabled]="!remarkForm.valid" (click)="SaveRemarkData(2)"></p-button>
+    <p-button icon="pi pi-times" class="p-button-sm " #closebutton data-dismiss="modal" label="Cancel"
+      (click)="closeApproveRejectDialog()" styleClass="p-button-secondary"></p-button>
+  </div>
+  <br /><br /><br />
+</form>
+<ng-template pTemplate="footer">
+
+</ng-template>
+</p-dialog>

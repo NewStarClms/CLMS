@@ -1,0 +1,52 @@
+<h3>Monthly Salary Detail</h3>
+<p-table [value]="salarySummaryDetail" [tableStyle]="{'min-width': '80rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Month Year</th>
+            <th>Gross Rate</th>
+            <th>Net Earning</th>
+            <th>Net Deduction</th>
+            <th>PF</th>
+            <th>ESI</th>
+            <th>LWF</th>
+            <th>PT</th>
+            <th>Net Pay</th>
+            <th style="text-align: center;">Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-summary>
+        <tr>
+          <td>{{summary.monthYear}}</td>
+          <td>{{summary.grossRate}}</td>
+            <td>{{summary.netEaring}}</td>
+            <td>{{summary.netDeduction}}</td>
+            <td>{{summary.pf}}</td>
+            <td>{{summary.esi}}</td>
+            <td>{{summary.lwf}}</td>
+            <td>{{summary.pt}}</td>
+            <td>{{summary.netPay}}</td>
+            <td style="width: 16%;">
+                <button data-action="delete" (click)="onCellClicked(summary, 'view')"
+                class=" action-button p-button-rounded p-button-primary p-button-text" type="button"
+                icon="pi pi-eye" pButton></button>
+                <button data-action="delete" (click)="onCellClicked(summary, 'delete')"
+                class=" action-button delete p-button-rounded p-button-danger p-button-text" type="button"
+                icon="pi pi-trash" pButton></button>
+                <button data-action="delete" (click)="onCellClicked(summary, 'process')"
+                class=" action-button delete p-button-rounded p-button-secondary p-button-text" type="button"
+                icon="pi pi-spinner" pButton></button>
+            </td>
+
+        </tr>
+    </ng-template>
+</p-table>
+<div class="float-right">
+<p-button label="close" class="mr-2 p-button-secondary"(click)="closeSummary()"></p-button>
+</div>
+<p-dialog header="Monthly Salary Details" *ngIf="monthYear" [(visible)]="displaysalary" [modal]="true" id="displayLoanEmi" [draggable]="false"
+    [resizable]="false" (onHide)="closeDailog()" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw',height:'60vw'}">
+    <app-view-salary-summary *ngIf="monthYear && employeeId" [employeeID]="employeeId" [monthYear]="monthYear" (close)="closeDailog()"></app-view-salary-summary>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+
+</p-confirmDialog>

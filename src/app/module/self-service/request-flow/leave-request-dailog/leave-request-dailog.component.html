@@ -1,0 +1,121 @@
+<div class="form-group row">
+    <div class="col-lg-12">
+      <form #leavePostForm = "ngForm" name="form" (submit)="SaveleavePostData()">
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <div class="form-group row">
+              <div class="col-lg-6">
+                <label class="labelfont" >From Date <span class="text-danger">*</span></label>
+                  <input pinput [(ngModel)]="leavefromDate" class="form-control" type="text" autocomplete="off"
+                    name="fromDate" id="fromDate" [bsConfig]="datepickerConfig" required [readonly]="disabledTxt"
+                    placeholder="DD-MM-YYYY"  autocomplete="off" (ngModelChange)="getCorrectDate()" bsDatepicker style="margin-left: -11px;">
+                </div>
+              <div class="col-lg-6">
+                <label class="labelfont">To Date <span class="text-danger">*</span></label>
+                  <input pinput [(ngModel)]="leavetoDate" class="form-control" type="text" autocomplete="off"
+                    name="toDate" id="toDate" [bsConfig]="datepickerConfig" required [readonly]="disabledTxt"
+                    placeholder="DD-MM-YYYY" (ngModelChange)="getCorrectDate()" autocomplete="off" bsDatepicker style="margin-left: -11px;">
+                
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-6">
+                <label class="labelfont"></label>
+                  <p-radioButton name="HalfDayTypeFrom1"  [disabled]="halfDateFdisabledFull" value="Full" [(ngModel)]="HalfDayTypeFrom" inputId="HalfDayTypeFrom1"></p-radioButton>
+                  <label class="radiolabelfont" >Full </label>
+                  <p-radioButton name="HalfDayTypeFrom2" [disabled]="halfDateFdisabledFirst" value="First" [(ngModel)]="HalfDayTypeFrom" inputId="HalfDayTypeFrom2"></p-radioButton>
+                  <label class="radiolabelfont" >First</label>
+                  <p-radioButton name="HalfDayTypeFrom3" [disabled]="halfDateFisabledSecond" value="Second" [(ngModel)]="HalfDayTypeFrom" inputId="HalfDayTypeFrom3"></p-radioButton>
+                  <label class="radiolabelfont" >Second</label>
+               
+            </div>
+            <div class="col-lg-6">
+              <label class="labelfont"></label>
+              <p-radioButton name="HalfDayTypeTo1" [disabled]="halfDatedisabledFull" value="Full" [(ngModel)]="HalfDayTypeTo" inputId="HalfDayTypeTo1"></p-radioButton>
+                  <label class="radiolabelfont">Full </label>
+                  <p-radioButton name="HalfDayTypeTo2"   [disabled]="halfDatedisabledFirst" value="First" [(ngModel)]="HalfDayTypeTo" inputId="HalfDayTypeTo2"></p-radioButton>
+                  <label class="radiolabelfont" >First</label>
+                  <p-radioButton name="HalfDayTypeTo3"  [disabled]="halfDatedisabledSecond" value="Second" [(ngModel)]="HalfDayTypeTo" inputId="HalfDayTypeTo3"></p-radioButton>
+                  <label class="radiolabelfont" >Second</label>
+              
+          </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-6">
+                <label class="labelfont">Leave <span class="text-danger">*</span></label>
+                <p-dropdown  [options]="leaveTypeList" [(ngModel)]= "leaveRequestInfo.leaveID"  [required]="true" optionLabel="leaveName" optionValue="leaveID" 
+                name="leaveID" id="leaveID" [disabled]="disabledTxt">
+               </p-dropdown>
+              </div>
+              <div class="col-lg-6">
+                <label class="labelfont">Remark<span class="text-danger">*</span></label>
+                <input pinput
+                [(ngModel)]= "leaveRequestInfo.requestRemark"
+                class="form-control"
+                type="text" autocomplete="off"
+                required [readonly]="disabledTxt"
+                name="requestRemark"
+                id="requestRemark"  #requestRemark="ngModel"
+                [ngClass]="{'is-invalid': requestRemark.invalid && (requestRemark.dirty || requestRemark.touched)}">
+                <div *ngIf="leavePostForm.submitted && (requestRemark.invalid || requestRemark.dirty || requestRemark.touched)" class="labelfont">
+                <div  class="p-error" *ngIf="requestRemark.errors?.['required']">
+                Remark is required.
+              </div>
+              </div>
+            </div>
+            </div>
+            <div class="float-right">
+              <p-button  type="submit" *ngIf="PostButton"  label="Leave Post" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" [disabled]="!leavePostForm.valid"></p-button>
+               <!-- <p-button icon="pi pi-times" class="p-button-sm "  label="Cancel" styleClass="p-button-secondary" (click)="CancelleavePost()"></p-button>  -->
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <p-table [columns]="laeveBalanceListCol" [value]="laeveBalanceList" [scrollable]="true" scrollHeight="249px">
+              <ng-template pTemplate="header" let-columns>
+                  <tr>
+                      <th *ngFor="let col of columns">
+                          {{col.header}}
+                      </th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-leaveBalance let-columns="columns">
+                  <tr>
+                      <td *ngFor="let col of columns">
+                          {{leaveBalance[col.field]}}
+                      </td>
+                  </tr>
+              </ng-template>
+          </p-table>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <div class="col-lg-12">
+      <p-table [columns]="leaveattendanceListcol" [value]="leaveattendanceListUI" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-attDetail let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns">
+                    {{attDetail[col.field]}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
+    </div>
+    <div class="form group row">
+      <div class="col-lg-12">
+        <div class="float-right">
+          <br/>
+          <p-button icon="pi pi-times" class="p-button-sm "  label="Cancel" styleClass="p-button-secondary" (click)="CancelleavePost()"></p-button> 
+      </div>
+      </div>
+    </div>
+    

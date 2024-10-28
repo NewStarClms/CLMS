@@ -1,0 +1,161 @@
+<div class="card-body">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="toggle">
+          <div *ngFor="let menu of menuItems">
+           <input type="radio" name="sizeBy" class="useractionButton " (change)="onChange(menu.menuId)"  [value]="menu.menuId" [id]="menu.menuId" />
+           <label [for]="menu.menuId" class="useractionButtonLabel cursor-pointer">{{menu.menuName}}</label> 
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class=" float-left">
+           <div *ngIf="showingSingleEmployeeAction">
+            <p-button label="Leave Policy" icon="pi pi-check" styleClass="p-button-help p-mr-btn" (click)="getLeavePolicyDetailSingle()"></p-button>
+            <!-- <p-button label="Shift" icon="pi pi-check" styleClass="p-button-help p-mr-btn" (click)="getShiftPolicyDetail()"></p-button>
+            <p-button label="Holiday" icon="pi pi-check" styleClass="p-button-help p-mr-btn" (click)="getHolidayPolicyDetail()"></p-button>
+            <p-button label="Leave" icon="pi pi-check" styleClass="p-button-help p-mr-btn" (click)="getLeavePolicyDetail()"></p-button> -->
+            </div>
+            <div *ngIf="!showingSingleEmployeeAction">
+              <p-button label="Leave Policy" icon="pi pi-download" styleClass="p-button-help p-mr-btn" (click)="downloadLeavePolicyDetailMultiple()"></p-button>
+              <!-- <p-button label="Shift" icon="pi pi-download" styleClass="p-button-help p-mr-btn" (click)="downloadShiftPolicyDetail()"></p-button>
+              <p-button label="Holiday" icon="pi pi-download" styleClass="p-button-help p-mr-btn" (click)="downloadHolidayPolicyDetail()"></p-button>
+              <p-button label="Leave" icon="pi pi-download" styleClass="p-button-help p-mr-btn" (click)="downloadLeavePolicyDetail()"></p-button> -->
+            </div>
+        </div>
+      </div>
+
+
+      <!-- New Changes -->
+<p-dialog header="Leave Detail" [(visible)]="leavemappingDetaildiv" [modal]="true"
+[draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '100vw',height:'auto'}" >
+<app-policy-mapping  [policyID]="policyleaveId" *ngIf="leavemappingDetaildiv"  [PolicyMethode]="policyMethod"></app-policy-mapping>
+</p-dialog>
+<!-- End -->
+
+    </div>    
+   <div class="row" *ngIf="attendanceMenu"> 
+      <div class="col-lg-12">
+        <div class="form-group row">
+          <div *ngFor="let rights of currentMenuRights; let i = index" class="col-md-3 useractionSection"  (click)="menuClicked(rights.menuRightID)">
+            <div class="useractionMenu cursor-pointer {{backgroundColor[i]}}">
+              <a  class="form-control" class="useractionMenuName">{{rights.displayName}}</a>
+            </div>
+          </div>
+          <!-- <div class="col-md-3 useractionSection cursor-pointer" *ngIf="single" (click)="showleaveAccrualsingle()">
+            <div class="useractionMenu background-green">
+              <a  class="form-control" class="useractionMenuName">Leave Accrual</a>
+            </div>
+          </div>
+          <div class="col-md-3 useractionSection cursor-pointer" *ngIf="multiple" (click)="showleaveAccrualmultiple()">
+            <div class="useractionMenu background-green">
+              <a  class="form-control" class="useractionMenuName">Leave Accrual</a>
+            </div>
+          </div> -->
+          <!-- <div class="col-md-3 useractionSection cursor-pointer" *ngIf="single" (click)="showCarryForwordsingle()">
+            <div class="useractionMenu background-red">
+              <a  class="form-control" class="useractionMenuName">Carry Forword</a>
+            </div>
+        </div> -->
+          <!-- <div class="col-md-3 useractionSection cursor-pointer" *ngIf="single" (click)="showCOFProcesssingle()">
+            <div class="useractionMenu background-blue">
+              <a  class="form-control" class="useractionMenuName">COFF Process</a>
+            </div>
+          </div>
+          <div class="col-md-3 useractionSection cursor-pointer" *ngIf="single"  (click)="showEncashmentsignle()" >
+            <div class="useractionMenu background-orange">
+                <a  class="form-control" class="useractionMenuName">Encashment</a>
+            </div>
+          </div>
+          <div class="col-md-3 useractionSection cursor-pointer" *ngIf="multiple" (click)="showCarryForwordmultiple()">
+            <div class="useractionMenu background-red">
+              <a  class="form-control" class="useractionMenuName">Carry Forword</a>
+            </div>
+        </div>
+          <div class="col-md-3 useractionSection cursor-pointer" *ngIf="multiple" (click)="showCOFProcessmultiple()">
+            <div class="useractionMenu background-blue">
+              <a  class="form-control" class="useractionMenuName">COFF Process</a>
+            </div>
+          </div>
+          <div class="col-md-3 useractionSection cursor-pointer" *ngIf="multiple"  (click)="showEncashmentmultiple()" >
+            <div class="useractionMenu background-orange">
+                <a  class="form-control" class="useractionMenuName">Encashment</a>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="attendanceMenu">
+      <div class="col-lg-12">
+        <div class="row" *ngIf="showingSingleEmployeeAction">
+          <div class="col-md-2">
+            <p-dropdown  [options]="yearList" [(ngModel)]= "leaveaccrualYear"  [required]="true" optionLabel="year" optionValue="year" 
+            name="leaveaccrualYear" id="leaveaccrualYear">
+           </p-dropdown>
+          </div>
+          <div class="col-md-8" >
+            <app-employee-search (onSearchEvent)="onGetEmployeeDetail($event)"></app-employee-search>
+          </div>
+          
+          <div class="col-md-2">
+            <p-button  type="button" (click)="getLeaveCurrentBalance()" label="Current Balance" Class="p-button-text p-button-sm p-button-success"></p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="leavebalancediv">
+      <div class="row">
+        <div class="col-lg-12">
+          <p-table [columns]="laevebalanceListCol" [value]="laevebalanceListUI" [scrollable]="true" scrollHeight="400px">
+            <ng-template pTemplate="header" let-columns >
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-leaveBalance let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        {{leaveBalance[col.field]}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </div>
+      </div>
+    </div> 
+     <div *ngIf="leaveaccrualsinglediv">
+      <p-dialog header="Leave Accrual" [(visible)]="leaveaccrualsinglediv" [modal]="true"
+    [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '80vw',height:'50vw'}" >
+    <div class="request-breadcrumb"><span> {{showEmployeeDepDesiName}}</span></div>
+    <app-single-leave-accrual [employeeID]="employeeId" (singleLeaveAccrualdiv)="CancelsingleLeaveAccrual($event)" *ngIf="leaveaccrualsinglediv"></app-single-leave-accrual> 
+    </p-dialog>
+    </div>
+  <div *ngIf="laeveaccrualmultidiv">
+      <p-dialog header="Leave Accrual" [(visible)]="laeveaccrualmultidiv" [modal]="true"
+    [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{height:'28vw'}" >
+    <app-mulyiple-leave-accrual (multipleLeaveAccrualdiv)="CancelmultipleLeaveAccrualdiv($event)"></app-mulyiple-leave-accrual>
+    </p-dialog>
+    </div> 
+    <!-- <div *ngIf="laevecarryforwordmultidiv">
+      <p-dialog header="Leave Carry Forword" [(visible)]="laevecarryforwordmultidiv" [modal]="true"
+    [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '60vw',height:'45vw'}"  > -->
+    <app-leave-carry-forword (multipleCarryForworddiv)="CancelmultipleLeaveCarrydiv($event)" *ngIf="laevecarryforwordmultidiv"></app-leave-carry-forword>
+    <!-- </p-dialog>
+    </div>  -->
+    <!-- <div *ngIf="laeveEncashmultidiv">
+      <p-dialog header="Leave Encashment" [(visible)]="laeveEncashmultidiv" [modal]="true"
+    [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '70vw',height:'45vw'}" > -->
+    <app-leave-encash (multipleLeaveEncashDiv)="CancelmultipleLeavediv($event)" *ngIf="laeveEncashmultidiv"></app-leave-encash>
+    <!-- </p-dialog>
+    </div>  -->
+
+    <app-coff-process [employeeID]="employeeId" (singleLeaveAccrualdiv)="CancelCoffProcess($event)" *ngIf="coffProcessDiv"></app-coff-process>
+    <app-coff-process [employeeID]="employeeId" (singleLeaveAccrualdiv)="CancelCoffProcess($event)" *ngIf="coffProcessMultiDiv"></app-coff-process>
+
+
+   <div>
+   </div>
+  </div>
+

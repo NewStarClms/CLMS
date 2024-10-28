@@ -1,0 +1,114 @@
+<section class="card">
+    <header class="card-header">
+        <h2>{{headerdialogName}}</h2>
+  </header>
+   <div class="card">
+    <div class="card-body">
+        <!-- <div id="report-detail" class="row col-lg-12"> -->
+            <form #reportForm="ngForm"  (submit)="reportForm.valid && saveReportColumnDetails()">
+                <div class="form-group row">
+                    <!-- <input pinput [(ngModel)]="reportEntityInfo.shiftID" class="form-control" type="text" autocomplete="off" name="shiftID"
+                  id="shiftID " hidden="true"> -->
+                    <div class="col-md-3">
+                        <label class="labelfont">Report Name <span class="text-danger">*</span></label>
+                        <input pinput [(ngModel)]="reportEntityInfo.reportName" class="form-control" type="text"
+                            autocomplete="off" required name="reportName" (keypress)="keyPressAlphanumeric($event)"
+                            id="reportName" #reportName="ngModel"
+                            [ngClass]="{'is-invalid': reportForm.submitted && (reportName.invalid  || reportName.dirty || reportName.touched)}">
+                        <div *ngIf="reportName.invalid && (reportName.dirty || reportName.touched)" class="labelfont">
+        
+                            <div class="p-error" *ngIf="reportName.errors?.['required']">
+                                Report Name is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="labelfont">Line per Page <span class="text-danger">*</span></label>
+                        <input pinput [(ngModel)]="reportEntityInfo.linePerPage" class="form-control" maxlength="30" type="text"
+                            autocomplete="off" required name="linePerPage"   (keypress)="keyPressNumbers($event)" id="linePerPage" #linePerPage="ngModel"
+                            [ngClass]="{'is-invalid': reportForm.submitted && (linePerPage.invalid || linePerPage.dirty || linePerPage.touched)}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="labelfont"> Report Type</label>
+                        <p-dropdown [options]="reportTypeList" [(ngModel)]="reportEntityInfo.reportTypeID" placeholder="Please select"
+                            optionLabel="key" optionValue="value" class="form-control1"  (ngModelChange)="fngetMappedCol($event)" 
+                            #reportTypeID="ngModel" name="reportTypeID" id="reportTypeID">
+                        </p-dropdown>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="labelfont">Visible To All <span class="text-danger">*</span></label>
+                        <p-selectButton [options]="stateOptions" (ngModelChange)="fngetVisibleToall($event)" [(ngModel)]="reportEntityInfo.visibleToAll" optionLabel="label" optionValue="value" name="visibleToAll"></p-selectButton>
+                        <!-- <input pinput [(ngModel)]="reportEntityInfo.linePerPage" class="form-control" maxlength="30" type="text"
+                            autocomplete="off" required name="linePerPage"   (keypress)="keyPressNumbers($event)" id="linePerPage" #linePerPage="ngModel"
+                            [ngClass]="{'is-invalid': reportForm.submitted && (linePerPage.invalid || linePerPage.dirty || linePerPage.touched)}"> -->
+                    </div>
+                    
+                </div>
+                <!-- New Changes -->
+                <div class="form-group row" *ngIf="!divVisibleFor">
+                    <div class="col-md-9">
+                        <label class="labelfont">Visible For <span class="text-danger">*</span></label>
+                            <p>{{reportEntityInfo.visibleFor}}</p>
+                            <p-autoComplete
+                            [(ngModel)]="visibleForEmployee"
+                            [suggestions]="employeeSerchList"
+                            (completeMethod)="searchData($event)"
+                            [forceSelection]="true"
+                            field="key"
+                            [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+                            name="visibleForEmployee"
+                            class="auto-serch"
+                            placeholder="Search Employee" [multiple]="true"
+                            >
+                          </p-autoComplete>
+                
+                        </div>
+                </div>
+                <!-- End -->
+                
+                <!-- <div class="form-group row" *ngIf="!divVisibleFor">
+                    <div class="col-md-9">
+                        <label class="labelfont">Visible For <span class="text-danger">*</span></label>
+                        
+                        <input pinput [(ngModel)]="reportEntityInfo.visibleFor" *ngIf="!reportEntityInfo.visibleToAll" class="form-control" maxlength="30" type="text"
+                            autocomplete="off" required name="visibleFor"    id="visibleFor" #visibleFor="ngModel"
+                            [ngClass]="{'is-invalid': reportForm.submitted && (visibleFor.invalid || visibleFor.dirty || visibleFor.touched)}">
+                    </div>
+                    </div> -->
+                <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label class="labelfont">Descrition</label>
+                            <textarea pinput
+                            [(ngModel)]= "reportEntityInfo.description"
+                            class="form-control"
+                            type="text" autocomplete="off"
+                            name="description"
+                            id="description" #description="ngModel"
+                            [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}"></textarea>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="labelfont">Report Condition</label>
+                            <textarea pinput
+                            [(ngModel)]= "reportEntityInfo.reportCondition"
+                            class="form-control"
+                            type="text" autocomplete="off"
+                            name="reportCondition"
+                            id="reportCondition" #reportCondition="ngModel"
+                            [ngClass]="{'is-invalid': reportCondition.invalid && (reportCondition.dirty || reportCondition.touched)}"></textarea>
+                        </div>
+                        
+                        </div>
+        
+                <app-drag-drop-dual-list *ngIf="availableItems.length>0"  [availables]="availableItems" [selects]="selectedItems" valueField="id"
+                    textField="name" (itemsMoved)="onItemsMoved($event)" ></app-drag-drop-dual-list>
+                    <div class="float-right mx-4 my-4">
+                        <p-button icon="pi pi-check" type="submit"  label="Save"  class=" mx-2 p-button-text p-button-sm p-button-primary" ></p-button>
+                        <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="cancelEdit()" styleClass="p-button-secondary"></p-button>
+                      </div> 
+            </form>
+        <!-- </div> -->
+    </div>
+   </div>
+  </section>
+
+  

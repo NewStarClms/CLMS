@@ -1,0 +1,105 @@
+<section class="card">
+    <div class="card-body">
+        <div class="form-group row">
+            <div class="col-lg-4" >
+                <div class="card-body second-card-body" style="border:1px solid #d8d4d4;padding:5px !important">
+                    <div *ngIf="filePath && filePath !== ''" class="text-cente">
+                        <img [src]="filePath" class="imgStyle"><br/>
+                    </div>
+                    <h4 class="profile-username text-center">{{employeeDetail.employeeName}}</h4>
+                    <p class="text-center">{{employeeDetail.employeeCode}}<br/>
+                    {{employeeDetail.designation}}</p>
+                    <ul class="list-group list-group-unbordered mb-3">
+                        <li class="list-group-item">
+                            <hr/>
+                            <b>Company</b><a class="float-right">{{employeeDetail.company}}</a>
+                            <hr/>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Branch</b><a class="float-right">{{employeeDetail.branch}}</a><hr/>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Department</b><a class="float-right">{{employeeDetail.department}}</a><hr/>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Contact No.</b><a class="float-right">{{employeeDetail.mobileNo}}</a><hr/>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Email ID.</b><a class="float-right">{{employeeDetail.emailID}}</a><hr/>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Punch ID.</b><a class="float-right">{{employeeDetail.punchID}}</a><hr/>
+                        </li>
+                    </ul>
+                </div>
+                <br/>
+            </div>
+            <div class="col-lg-8">
+                <div class="box box-primary puncdhata border-none" style="border:1px solid #d8d4d4;padding:8px !important;margin-bottom: 10px;">
+                    <div class="box-header with-border">
+                        <h4><b>Official Detail</b></h4>
+                    </div>
+                    <div class="box-body no-padding" style="margin-bottom: -21px;">
+                        <div class="form-group row">
+                            <div class="col-md-6" style="padding-left:30px">
+                                <p>Date Of Joining - {{employeeDetail.joiningDate}}</p>
+                                <p>Employee Status - {{employeeDetail.employeeStatus}}</p>
+                                <p>Employee Type - {{employeeDetail.employeeType}}</p>
+                                <p>Category - {{employeeDetail.category}}</p>
+                                <p>Organization - {{employeeDetail.organization}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Grade - {{employeeDetail.grade}}</p>
+                                <p>Functional Manager - {{employeeDetail.functionalManagerName}}</p>
+                                <p>Date Of Birth - {{employeeDetail.dateOfBirth}}</p>
+                                <p>Reporting Manager - {{employeeDetail.reportingManagerName}}</p>
+                                <p>Sub-Department - {{employeeDetail.subDepartment}}</p>
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+                <div class="box box-primary puncdhata border-none" style="border:1px solid #d8d4d4;padding:8px !important;margin-bottom: 10px;">
+                    <div class="box-header with-border">
+                        <h4><b>Account Detail</b></h4>
+                    </div>
+                    <div class="box-body no-padding" style="margin-bottom: -21px;">
+                        <div class="form-group row">
+                            <div class="col-md-6" style="padding-left:30px">
+                                <p>Aadhar Number - {{employeeDetail.aadharNumber}}</p>
+                                <p>PAN Number - {{employeeDetail.panNo}}</p>
+                                <p>UAN Number - {{employeeDetail.uanNumber}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>PF Number - {{employeeDetail.pfNumber}}</p>
+                                <p>ESI Number - {{employeeDetail.esiNumber}}</p>
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+                <div class="box box-primary puncdhata border-none" style="border:1px solid #d8d4d4;padding:8px !important;margin-bottom: 10px;">
+                    <div class="box-header with-border">
+                        <h4><b>Payment Detail</b></h4>
+                    </div>
+                    <div class="box-body no-padding" style="margin-bottom: -21px;">
+                        <div class="form-group row">
+                            <div class="col-md-6" style="padding-left:30px">
+                                <p>Bank Name - {{employeeDetail.bankName}}</p>
+                                <p>Branch Name - {{employeeDetail.branchName}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Account No. - {{employeeDetail.bankAccountNo}}</p>
+                                <p>IFSC Code - {{employeeDetail.ifscCode}}</p>
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+

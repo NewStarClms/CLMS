@@ -1,0 +1,66 @@
+
+<section class="card">
+    <header class="card-header">
+    <h2>Team Attendance</h2>
+    </header>
+    
+   <div class="card-body">
+    <div class="form-group row">
+      <div class="col-lg-12">
+        <ng-multiselect-dropdown
+        name="selectedEmployees"
+        class="full-width-dropdown"
+        [placeholder]="'Select Employee(s)'"
+        [settings]="dropdownSettings"
+        [(ngModel)]="selectedEmployees"
+        [data]="employeeSerchList"></ng-multiselect-dropdown>
+          <!-- <p-autoComplete
+          [(ngModel)]="employee"
+          [suggestions]="employeeSerchList"
+          (completeMethod)="searchData($event)"
+          [forceSelection]="true"
+          field="key"
+          [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+          name="employee"
+          class="auto-serch"
+          placeholder="Search Employee" [multiple]="true"
+          >
+        </p-autoComplete> -->
+    </div>
+  </div>
+    <div class="form-group row">
+        <div class="col-lg-5">
+          <label class="labelfont"></label>
+            <p-radioButton name="ReportID"  value="1" [(ngModel)]="ReportID" inputId="ReportID"></p-radioButton>
+            <label class="radiolabelfont">Attendance Detail   </label>
+            <p-radioButton name="ReportID" value="2" [(ngModel)]="ReportID" inputId="ReportID"></p-radioButton>
+            <label class="radiolabelfont">Attendance Summary</label>
+      </div>
+      <div class="col-lg-4">
+        <span class="p-input-icon-right mr-3 daterangeClass">
+            <i class="pi pi-calendar"></i>
+            <input pinput class="form-control" type="text" autocomplete="off" name="attDate" [(ngModel)]="attDate"
+     id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MMM-YYYY~DD-MMM-YYYY" autocomplete="off" bsDaterangepicker>
+          </span> 
+      </div>
+      <div class="col-lg-2">
+        <p-button  type="button" (click)="getData()" label="Get Data" Class="p-button-text p-button-sm p-button-success"></p-button>
+  </div>
+    </div>
+    
+   </div>
+   <div class="card-body" *ngIf="getDatasummarydiv">
+    <app-grid-renderer
+    [gridRowData]="rowDatasummary"
+    [gridColData]="columnDefssummary"
+    (onCellClickEvent)="onCellClicked($event)"
+    ></app-grid-renderer>
+   </div>
+   <div class="card-body" *ngIf="getDatareportdiv">
+    <app-grid-renderer
+    [gridRowData]="rowDatareport"
+    [gridColData]="columnDefsreport"
+    (onCellClickEvent)="onCellClicked($event)"
+    ></app-grid-renderer>
+   </div>
+  </section>

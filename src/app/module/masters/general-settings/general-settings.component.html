@@ -1,0 +1,50 @@
+<section class="card">
+  <header class="card-header">
+    <h2>Visitor General Setting</h2>
+  </header>
+</section>
+<div class="card-body">
+  <p-table [columns]="cols" [value]="visitorgeneralsetting" responsiveLayout="scroll" editMode="row" dataKey="generalSettingID">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{col.headerName}}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-globalsObj let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="globalsObj" [ngClass]="sizeClass">
+        <td>
+          <label class="labelfont">{{globalsObj.generalSettingName}}</label>
+          <input type="hidden" [(ngModel)]="globalsObj.generalSettingID" />
+        </td>
+        <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+             <p-dropdown [options]="orgGenaralData" optionLabel="key" optionValue="value" [(ngModel)]="globalsObj.value" [showClear]="true">
+            </p-dropdown>
+          </ng-template>
+          <ng-template pTemplate="output">
+            <div *ngIf="globalsObj.value == 'Y'; then ouShow else prtShow"></div>
+            <ng-template #ouShow>
+              Yes
+            </ng-template>
+            <ng-template #prtShow>
+               No
+            </ng-template>
+            </ng-template>
+           </p-cellEditor>
+      </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+            (click)="onRowEditInit(globalsObj)" class="p-button-rounded p-button-text"></button>
+          <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+            (click)="onRowEditSave(globalsObj)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+          <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+            (click)="onRowEditCancel(globalsObj, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+        </td>
+      </tr>
+      
+    </ng-template>
+  </p-table>
+</div>

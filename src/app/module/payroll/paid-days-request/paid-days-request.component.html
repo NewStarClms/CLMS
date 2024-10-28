@@ -1,0 +1,347 @@
+<div class="form-group row">
+    <div class="col-md-4">
+    <label class="labelfont">MonthYear</label>  <br/>
+    <p-dropdown  [options]="monthList" [(ngModel)]= "paidmonth"  [required]="true" optionLabel="key" optionValue="value" 
+    name="paidmonth" id="paidmonth" class="dropdwonPadding">
+    </p-dropdown>
+    <p-dropdown  [options]="yearList" [(ngModel)]= "paidyear"  [required]="true" optionLabel="key" optionValue="value" 
+    name="paidyear" id="paidyear" class="dropdwonPadding">
+    </p-dropdown>
+    </div>
+
+    <div class="col-md-5">
+    <p-button type="button" (click)="getPaidDaysRequestDetail()" label="Get Data"
+    Class="p-button-text p-button-sm p-button-success" styleClass="mr-2 ml-2"></p-button>
+    <p-button class="p-button-sm " #closebutton data-dismiss="modal" styleClass="mr-2 ml-2" label="Salary Process"
+    styleClass="p-button-secondary" (click)="SalaryProcess()"></p-button>
+    </div>
+    </div>
+
+<form #paidDaysForm="ngForm" (submit)="savePaidDaysRequest()">
+    <p-tabView [scrollable]="false">
+    <p-tabPanel header="Paid Days"  tooltip="Paid Days">
+    <h6>Attendance Details</h6>
+            <div class="form-group row">
+            <div class="col-lg-3"> 
+            <label class="labelfont"> Month Days</label>
+            <input pinput [(ngModel)]="paidDaysInfo.monthDay" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="monthDay" id="monthDay"  #monthDay="ngModel">
+            </div>
+
+            <div class="col-lg-3">
+            <label class="labelfont"> Month Year</label>
+            <input pinput class="form-control" type="text" autocomplete="off" name="monthYear" [(ngModel)]="monthYears"
+            id="monthYear" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker #monthYear="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont"> Dividing Factor</label>
+            <input pinput [(ngModel)]="paidDaysInfo.dividingFactor" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="dividingFactor" id="dividingFactor"  #dividingFactor="ngModel">
+            </div>
+
+            <div class="col-lg-3">
+            <label class="labelfont">Optimistic Date</label>
+            <input pinput class="form-control" type="text" autocomplete="off" name="optimisticDate" [(ngModel)]="optimisticDated"
+            id="optimisticDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker #optimisticDate="ngModel">
+            </div>
+            </div>
+
+            <div class="form-group row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3"> 
+            <label class="labelfont"> Attendance Cycle StartDate</label>
+            <input pinput class="form-control" type="text" autocomplete="off" name="attendanceCycleStartDate" [(ngModel)]="paidDaysInfo.attendanceCycleStartDate"
+            id="attendanceCycleStartDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker #attendanceCycleStartDate="ngModel">
+            </div>
+
+            <div class="col-lg-3">
+            <label class="labelfont"> Attendance Cycle EndDate</label>
+            <input pinput class="form-control" type="text" autocomplete="off" name="attendanceCycleEndDate" [(ngModel)]="paidDaysInfo.attendanceCycleEndDate"
+            id="attendanceCycleEndDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker #attendanceCycleEndDate="ngModel">
+            </div>
+            </div>
+
+            <h6>Days</h6>
+            <div class="form-group row">
+            <div class="col-lg-3"> 
+            <label class="labelfont">Present</label>
+            <input pinput [(ngModel)]="paidDaysInfo.present" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="present" id="present"  #present="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont"> Leave</label>
+            <input pinput [(ngModel)]="paidDaysInfo.leave" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="leave" id="leave"  #leave="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont"> Absent</label>
+            <input pinput [(ngModel)]="paidDaysInfo.absent" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="absent" id="absent"  #absent="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont"> Week off</label>
+            <input pinput [(ngModel)]="paidDaysInfo.weeklyOff" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="weeklyOff" id="weeklyOff"  #weeklyOff="ngModel">
+            </div>
+            </div>
+
+            <div class="form-group row">
+            <div class="col-lg-3"> 
+            <label class="labelfont">Holiday</label>
+            <input pinput [(ngModel)]="paidDaysInfo.holiday" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="holiday" id="holiday"  #holiday="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont"> National Holiday</label>
+            <input pinput [(ngModel)]="paidDaysInfo.nationalHoliday" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="nationalHoliday" id="nationalHoliday"  #nationalHoliday="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont"> PaidDays</label>
+            <input pinput [(ngModel)]="paidDaysInfo.paidDays" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="paidDays" id="paidDays"  #paidDays="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">OverTime Min</label>
+            <input [(ngModel)]="paidDaysInfo.overTimeMinute" name="overTimeMinute" autocomplete="off" class="form-control"
+            [popover]="overTimeMinute" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+            <ng-template #overTimeMinute>
+            <timepicker [(ngModel)]="paidDaysInfo.overTimeMinute" name="overTimeMinute" [showMeridian]="false"
+            (ngModelChange)="getoverTimeMinute($event)"></timepicker>
+            </ng-template>
+            </div>
+            </div>
+
+            <div class="form-group row">
+            <div class="col-lg-3" style="float: left !important;"> 
+            <label class="labelfont">Working Min</label>
+            <input [(ngModel)]="paidDaysInfo.workingMinute" name="workingMinute" autocomplete="off" class="form-control"
+            [popover]="workingMinute" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+            <ng-template #workingMinute>
+            <timepicker [(ngModel)]="paidDaysInfo.workingMinute" name="workingMinute" [showMeridian]="false"
+            (ngModelChange)="getworkingMinute($event)"></timepicker>
+            </ng-template>
+            <!-- <p-calendar [(ngModel)]="paidDaysInfo.workingMinute" #workingMinute="ngModel"
+            name="workingMinute" id="workingMinute" (ngModelChange)="getworkingMinute($event)"
+            [timeOnly]="true" inputId="timeonly" class="form-control"></p-calendar> -->
+            </div>
+            </div>
+
+        </p-tabPanel>
+
+        <p-tabPanel header="Other Detail"  tooltip="Other Detail">
+            <div class="form-group row">
+            <div class="col-lg-3"> 
+            <label class="labelfont"> Arrear Days</label>
+            <input pinput [(ngModel)]="paidDaysInfo.arrearDays" class="form-control"
+            type="text" autocomplete="off" readonly (keypress)="keyPressNumbers($event)" name="arrearDays" id="arrearDays"  #arrearDays="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">Actual Paid Days</label>
+            <input pinput [(ngModel)]="paidDaysInfo.actulaPaidDays" class="form-control"
+            type="text" autocomplete="off" readonly  (keypress)="keyPressNumbers($event)" name="actulaPaidDays" id="actulaPaidDays"  #actulaPaidDays="ngModel">
+            </div>
+
+            <div class="col-lg-3">
+            <label class="labelfont">OverTime Arrear Min</label>
+            <input [(ngModel)]="paidDaysInfo.overTimeArrearMinute" name="overTimeArrearMinute" autocomplete="off" class="form-control"
+            [popover]="overTimeArrearMinute" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+            <ng-template #overTimeArrearMinute>
+            <timepicker [(ngModel)]="paidDaysInfo.overTimeArrearMinute" name="overTimeArrearMinute" [showMeridian]="false"
+            (ngModelChange)="getoverTimeArrearMinute($event)"></timepicker>
+            </ng-template>
+            <!--<p-calendar [(ngModel)]="paidDaysInfo.overTimeArrearMinute" #overTimeArrearMinute="ngModel"
+                name="overTimeArrearMinute" id="overTimeArrearMinute" readonly="true" (ngModelChange)="getoverTimeArrearMinute($event)"
+                [timeOnly]="true" inputId="timeonly" class="form-control"></p-calendar> -->
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">CL Leave</label>
+            <input pinput [(ngModel)]="paidDaysInfo.clLeave" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="clLeave" id="clLeave"  #clLeave="ngModel">
+            </div>
+            </div>
+
+            <div class="form-group row">
+            <div class="col-lg-3"> 
+            <label class="labelfont">EL Leave</label>
+            <input pinput [(ngModel)]="paidDaysInfo.elLeave" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="elLeave" id="elLeave"  #elLeave="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">SL Leave</label>
+            <input pinput [(ngModel)]="paidDaysInfo.slLeave" class="form-control"
+            type="text" autocomplete="off"   (keypress)="keyPressNumbers($event)" name="slLeave" id="slLeave"  #slLeave="ngModel">
+            </div>
+
+            <div class="col-lg-3">
+            <label class="labelfont">Other Leave</label>
+            <input pinput [(ngModel)]="paidDaysInfo.otherLeave" class="form-control"
+            type="text" autocomplete="off"   (keypress)="keyPressNumbers($event)" name="otherLeave" id="otherLeave"  #otherLeave="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">LOP Leave</label>
+            <input pinput [(ngModel)]="paidDaysInfo.lopLeave" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="lopLeave" id="lopLeave"  #lopLeave="ngModel">
+            </div>
+            </div>
+
+            <div class="form-group row">
+            <div class="col-lg-3"> 
+            <label class="labelfont">SPL Leave</label>
+            <input pinput [(ngModel)]="paidDaysInfo.splLeave" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="splLeave" id="splLeave"  #splLeave="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">OD Leave</label>
+            <input pinput [(ngModel)]="paidDaysInfo.odLeave" class="form-control"
+            type="text" autocomplete="off"   (keypress)="keyPressNumbers($event)" name="odLeave" id="odLeave"  #odLeave="ngModel">
+            </div>
+
+            <div class="col-lg-3">
+            <label class="labelfont">In Count</label>
+            <input pinput [(ngModel)]="paidDaysInfo.inCount" class="form-control"
+            type="text" autocomplete="off"   (keypress)="keyPressNumbers($event)" name="inCount" id="inCount"  #inCount="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">Out Count</label>
+            <input pinput [(ngModel)]="paidDaysInfo.outCount" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="outCount" id="outCount"  #outCount="ngModel">
+            </div>
+            </div>
+
+            <div class="form-group row">
+            <div class="col-lg-3"> 
+            <label class="labelfont">Present Count</label>
+            <input pinput [(ngModel)]="paidDaysInfo.presentCount" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="presentCount" id="presentCount"  #presentCount="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">Half Day Count</label>
+            <input pinput [(ngModel)]="paidDaysInfo.halfDayCount" class="form-control"
+            type="text" autocomplete="off"   (keypress)="keyPressNumbers($event)" name="halfDayCount" id="halfDayCount"  #halfDayCount="ngModel">
+            </div>
+
+            <div class="col-lg-3">
+            <label class="labelfont">Mis Punch Count</label>
+            <input pinput [(ngModel)]="paidDaysInfo.misPunchCount" class="form-control"
+            type="text" autocomplete="off"   (keypress)="keyPressNumbers($event)" name="misPunchCount" id="misPunchCount"  #misPunchCount="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">Late Min</label>
+            <input [(ngModel)]="paidDaysInfo.lateMinute" name="lateMinute" autocomplete="off" class="form-control"
+            [popover]="lateMinute" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+            <ng-template #lateMinute>
+            <timepicker [(ngModel)]="paidDaysInfo.lateMinute" name="lateMinute" [showMeridian]="false"
+            (ngModelChange)="getlateMinute($event)"></timepicker>
+            </ng-template>
+            </div>
+            </div>
+
+            <div class="form-group row">
+            <div class="col-lg-3"> 
+            <label class="labelfont">Late Days</label>
+            <input pinput [(ngModel)]="paidDaysInfo.lateDays" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="lateDays" id="lateDays"  #lateDays="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">Early Min</label>
+            <input [(ngModel)]="paidDaysInfo.earlyMinute" name="earlyMinute" autocomplete="off" class="form-control"
+            [popover]="earlyMinute" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+            <ng-template #earlyMinute>
+            <timepicker [(ngModel)]="paidDaysInfo.earlyMinute" name="earlyMinute" [showMeridian]="false"
+            (ngModelChange)="getearlyMinute($event)"></timepicker>
+            </ng-template>
+            </div>
+
+            <div class="col-lg-3">
+            <label class="labelfont">Early Days</label>
+            <input pinput [(ngModel)]="paidDaysInfo.earlyDays" class="form-control"
+            type="text" autocomplete="off"   (keypress)="keyPressNumbers($event)" name="earlyDays" id="earlyDays"  #earlyDays="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">Canteen Count</label>
+            <input pinput [(ngModel)]="paidDaysInfo.canteenCount" class="form-control"
+            type="text" autocomplete="off"   (keypress)="keyPressNumbers($event)" name="canteenCount" id="canteenCount"  #canteenCount="ngModel">
+            </div>
+            </div>
+
+            <div class="form-group row">
+            <div class="col-lg-3"> 
+            <label class="labelfont">Canteen Amount</label>
+            <input pinput [(ngModel)]="paidDaysInfo.canteenAmount" class="form-control"
+            type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="canteenAmount" id="canteenAmount"  #canteenAmount="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">Shift Allowance Count</label>
+            <input pinput [(ngModel)]="paidDaysInfo.shiftAllowanceCount" class="form-control"
+            type="text" autocomplete="off"   (keypress)="keyPressNumbers($event)" name="shiftAllowanceCount" id="shiftAllowanceCount"  #shiftAllowanceCount="ngModel">
+            </div>
+
+            <div class="col-lg-3">
+            <label class="labelfont">Shift Allowance Amount</label>
+            <input pinput [(ngModel)]="paidDaysInfo.shiftAllowanceAmount" class="form-control"
+            type="text" autocomplete="off"   (keypress)="keyPressNumbers($event)" name="shiftAllowanceAmount" id="shiftAllowanceAmount"  #shiftAllowanceAmount="ngModel">
+            </div>
+
+            <div class="col-lg-3"> 
+            <label class="labelfont">Salary Process</label>
+            <p-selectButton [options]="stateOptions"
+            [(ngModel)]="paidDaysInfo.salaryProcess" optionLabel="label" optionValue="value"
+            name="salaryProcess" id="salaryProcess"></p-selectButton>
+            </div>
+            </div>
+
+            <div class="form-group row">
+            <div class="col-lg-3"> 
+            <label class="labelfont">Locked</label>
+            <p-selectButton [options]="stateOptions"
+            [(ngModel)]="paidDaysInfo.locked" optionLabel="label" optionValue="value"
+            name="locked" id="locked"></p-selectButton>
+            </div>
+
+            <div class="col-lg-3">
+                <label class="labelfont">Late Deduct From</label>
+                <p-dropdown [options]="deductFromList" [(ngModel)]="paidDaysInfo.deductionFlag"  name="deductionFlag" id="deductionFlag" optionLabel="key" optionValue="value" class=""></p-dropdown>
+            </div>
+            <div class="col-lg-3">
+                <label class="labelfont">Late Deduction Days</label>
+                <input pinput [(ngModel)]="paidDaysInfo.lateDeductionDays" class="form-control"  type="text" autocomplete="off" (keypress)="keyPressNumbers($event)" name="lateDeductionDays" id="lateDeductionDays" #lateDeductionDays="ngModel">
+            </div>
+            <div class="col-lg-3">
+                <label class="labelfont">Late Deduction Value</label>
+                <input pinput [(ngModel)]="paidDaysInfo.lateDeductionValue" class="form-control" type="text" autocomplete="off" (keypress)="keyPressNumbersWithDecimal($event)" name="lateDeductionValue" id="lateDeductionValue" #lateDeductionValue="ngModel">
+            </div>
+
+            <div class="col-lg-4"> 
+            <label class="labelfont">Remark</label>
+            <input pinput [(ngModel)]="paidDaysInfo.remark" class="form-control"
+            type="text" autocomplete="off" name="remark" id="remark"  #remark="ngModel">
+            </div>
+            </div>
+
+         </p-tabPanel>
+         </p-tabView>
+           <div class="float-right">
+           <p-button icon="pi pi-check"  label="Save"   Class="p-button-text p-button-sm p-button-success" [disabled]="!paidDaysForm.valid" styleClass="mr-2 ml-2" type="submit" ></p-button>
+           <p-button icon="pi pi-times" class="p-button-sm "   label="Cancel"  (click)="Close()" styleClass="p-button-secondary mr-2 ml-2"></p-button>
+           </div>
+</form>

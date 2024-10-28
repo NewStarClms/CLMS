@@ -1,0 +1,223 @@
+<div *ngIf="!rowData" class="ag-custom-loading-cell" style="padding-left: 10px; line-height: 25px;">
+    <i class="fas fa-spinner fa-pulse"></i>
+    <span> Please wait .... </span>
+  </div>
+  <div class="p-d-flex" *ngIf="!hideSearchBox">
+    <span class="p-input-icon-left p-ml-auto">
+      <i class="pi pi-search"></i>
+      <input pInputText type="text" class="searchtxtinput" 
+        (input)="dt1.filterGlobal(applyFilterGlobal($event), 'contains')" id="filterText" placeholder="Search keyword"
+        autocomplete="off" />
+    </span>
+  </div>
+  <p-table #dt1 responsiveLayout="scroll" dataKey="id" [resizableColumns]=true [value]="rowData"
+    [globalFilterFields]="grobleFilterColField" [columns]="columnDefs" [paginator]="pagination" [rows]="5"
+    [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[5,10,25,50,100]" [totalRecords]="totalRows" [lazy]="isLazyLoad"
+    (onLazyLoad)='lazyLoadGridData($event)'>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.checkbox?'':col.field">
+          
+          <div *ngIf="col.field; then childBlock else default"></div>
+          <ng-template #childBlock>
+            <div *ngIf="col.checkbox; then renderCheckBox else renderHeader"> </div>
+            <ng-template #renderCheckBox> 
+              <input type="checkbox" id="chbSelectAll" (change)="checkUncheckAll($event.target)" />
+            </ng-template>
+            <ng-template #renderHeader>
+              {{col.headerName}}
+              <p-sortIcon field="col.field" *ngIf="col.sortable"></p-sortIcon>
+            </ng-template>
+          </ng-template>
+          <ng-template #default>
+  {{ col.headerName }}
+          </ng-template>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+      <tr>
+        <!-- <td *ngFor="let col of columns" [ngClass]="col.field ? 'checked' : 'unchecked'"> -->
+          <td *ngFor="let col of columns">
+          <div *ngIf="col.field; then thenBlock else elseBlock"></div>
+          <ng-template #thenBlock>
+            <div *ngIf="col.isRemark && rowData.cancelRequestID !== -1">
+              <button data-action="addRemark" *ngIf="rowData.transactionID" data-set="AddRemark"
+              title="Provide Remark" (click)="onCellClicked(rowData, 'AddRemark')" icon="pi pi-comments"
+              class="action-button p-button-rounded p-button-warning p-button-text" type="button" pButton></button>
+            </div>
+              <div *ngIf="col.isAppRemark && rowData.requestStatusID === 0; then appRequest else noappReq"></div>
+            <ng-template #appRequest>
+              <button  data-action="addRemark"  data-set="AddRemark"
+              title="Provide Remark" (click)="onCellClicked(rowData, 'AddRemark')" icon="pi pi-comments"
+              class="action-button p-button-rounded p-button-warning p-button-text" type="button" pButton></button>
+            </ng-template>
+            <ng-template #noappReq>
+              <div class="heightOnly">
+              </div>
+            </ng-template>
+            <div *ngIf="col.cellEditorParams; then editorBlock else noneditBlock"></div>
+            <ng-template #editorBlock>
+              {{rowData[col.field] | masterName: col.cellEditorParams}}
+            </ng-template>
+            <ng-template #noneditBlock>
+              <div *ngIf="col.textfiled; then textfieldshow else textfieldhide"></div>
+              <ng-template #textfieldshow>
+                <div *ngIf="rowData.encash">
+                  <input type="text" name="encashvalue" id="encashvalue" value="{{rowData.encash}}">
+                </div>
+              </ng-template>
+              <ng-template #textfieldhide>
+                <div *ngIf="col.showImage; then imageShow else colTextField"></div>
+                <ng-template #imageShow>
+                  <div *ngIf="rowData.profileImagePath != null">
+                    <img [src]="rowData.profileImagePath" width="35px" height="35px">
+                  </div>
+                  <div *ngIf="rowData.profileImagePath == null">
+                    <img src="../../../../assets/img/man.png" width="35px" height="35px">
+                  </div>
+                </ng-template>
+                <ng-template #colTextField>
+                  <div *ngIf="col.icons; then iconShow else textShow"></div>
+                  <ng-template #iconShow>
+                    <i *ngIf="rowData[col.field] && !col.iconName" class="pi edit-icon pi-check-circle"></i>
+                    <i *ngIf="!rowData[col.field] && !col.iconName" class="pi trash-icon pi-times-circle"></i>
+                    <i *ngIf="col.iconName=='download'" style="cursor: pointer;" class="pi pi-download" (click)="onCellClicked(rowData, 'download')"></i>
+                    <i *ngIf="col.iconName=='view'" style="cursor: pointer;"  class="pi pi-eye" (click)="onCellClicked(rowData, 'view')"></i>
+                  </ng-template>
+                  <ng-template #textShow>
+                    <div *ngIf="col.hideData; then hidedata else showdata"></div>
+                    <ng-template #showdata>
+                      <div *ngIf="col.highLight">
+                        <button  *ngIf="rowData[col.field] === 'Approved'" pButton type="button" [label]="rowData[col.field]" class="p-button-success" style="height: 1.6rem; cursor: default;"></button>
+                        <button  *ngIf="rowData[col.field] === 'Pending'" pButton type="button" [label]="rowData[col.field]" class="p-button-warning" style="height: 1.6rem; cursor: default;"></button>
+                        <button  *ngIf="rowData[col.field] === 'User Cancel'" pButton type="button" [label]="rowData[col.field]" class="p-button-secondary" style="height: 1.6rem; cursor: default;"></button>
+                        <button  *ngIf="rowData[col.field] === 'Reject'" pButton type="button" [label]="rowData[col.field]" class="p-button-danger" style="height: 1.6rem; cursor: default;"></button>
+                      </div>
+                      <div *ngIf="!col.highLight">
+                        {{rowData[col.field]}}
+                      </div>
+                    </ng-template>
+                    <ng-template #hidedata>
+                      <div *ngIf="col.checkbox">
+                        <input type="checkbox" (change)="checkUnCheckRow(rowData,$event.target)"
+                          [checked]="rowData['isSelected']" [(ngModel)]="rowData['isSelected']">
+                      </div>
+                    </ng-template>
+                  </ng-template>
+    
+                </ng-template>
+              </ng-template>
+              
+            </ng-template>
+            <div *ngIf="col.usermanage; then action"></div>
+            <ng-template #action>
+              <button data-action="pwdReset" data-set="pwdReset" label="Pwd Reset" (click)="onCellClicked(rowData, 'PwdReset')"
+              class="p-button-sm p-button-success" type="button" [disabled]="!rowData.active"
+              pButton></button> <br/>
+              <button data-action="toggleEss" data-set="toggleEss" label="{{rowData.active?'Revoke Ess':'Enable Ess'}}" (click)="onCellClicked(rowData, 'ToggleEss')"
+              class="p-button-sm p-button-success" type="button"
+              pButton></button>
+            </ng-template>
+            <div *ngIf="col.customBtn; then customButton"></div>
+            <ng-template #customButton>
+              <button data-action="customBtn" data-set="customBtn" [label]="col.customBtnText" (click)="onCellClicked(rowData, 'customBtn')"
+              class="p-button-sm p-button-success" type="button" pButton></button>
+            </ng-template>
+            <div *ngIf="col.salarystructure; then salaryaction"></div>
+            <ng-template #salaryaction>
+              <button *ngIf="rowData.employeeStatutoryID==0" data-action="save" data-set="save" label="Fill Statutory" (click)="onCellClicked(rowData, 'fillstatutory')"
+              class="p-button-sm p-button-success" type="button" pButton></button>
+              <button *ngIf="rowData.employeeStatutoryID!=0" data-action="save" data-set="save" label="Update Statutory" (click)="onCellClicked(rowData, 'fillstatutory')"
+              class="p-button-sm p-button-success" type="button" pButton></button><br/>
+              <button *ngIf="rowData.employeeStatutoryID!=0" data-action="save" data-set="save" label="Salary Structure" (click)="onCellClicked(rowData, 'salarystructure')"
+              class="p-button-sm p-button-success" type="button" pButton></button>
+            </ng-template>
+            <div *ngIf="col.separation; then separation"></div>
+            <ng-template #separation>
+              <button  data-action="save" (click)="onCellClicked(rowData, 'separation')"
+              class="action-button edit p-button-rounded p-button-primary  p-button-text" type="button" icon="pi pi-eject" pButton></button>
+            </ng-template>
+            <div *ngIf="col.settlement; then settlement"></div>
+            <ng-template #settlement>
+              <button *ngIf="rowData.employeeLeavingDetailID>0" data-action="save" (click)="onCellClicked(rowData, 'settlement')"
+              class="action-button edit p-button-rounded p-button-primary  p-button-text" icon="pi pi-money-bill" type="button" pButton></button>
+            </ng-template>
+          </ng-template>
+          <ng-template #elseBlock>
+            <div *ngIf="col.usergroupAccess; then usergroupactionshow else actionshow"></div>
+            <ng-template #usergroupactionshow>
+              <button *ngIf="rowData.systemDefault !=1" data-action="delete" (click)="onCellClicked(rowData, 'delete')"
+                class=" action-button delete p-button-rounded p-button-danger p-button-text" type="button"
+                icon="pi pi-trash" pButton></button>
+              <button *ngIf="rowData.systemDefault !=1" data-action="edit" data-set="edit"
+                (click)="onCellClicked(rowData, 'edit')"
+                class="action-button edit p-button-rounded p-button-primary p-button-text" type="button"
+                icon="pi pi-pencil" pButton></button>
+            </ng-template>
+            <ng-template #actionshow>
+              <div class="heightOnly" *ngIf="!col.deleteAllow || !col.editAllow">
+              </div>
+              <button *ngIf="col.deleteAllow" data-action="delete" (click)="onCellClicked(rowData, 'delete')"
+                class=" action-button delete p-button-rounded p-button-danger p-button-text" type="button"
+                icon="pi pi-trash" pButton></button>
+              <button *ngIf="col.editAllow" data-action="edit" data-set="edit" (click)="onCellClicked(rowData, 'edit')"
+                class="action-button edit p-button-rounded p-button-primary p-button-text" type="button"
+                icon="pi pi-pencil" pButton></button>
+            </ng-template>
+            <div *ngIf="col.mapAccessRight; then mapAccessRight"></div>
+            <ng-template #mapAccessRight>
+              <button data-action="mapAccessRight" *ngIf="rowData.userGroupTypeID !=1" data-set="mapAccessRight"
+                (click)="onCellClicked(rowData, 'mapAccessRight')" icon="pi pi-users"
+                class="action-button p-button-rounded p-button-warning p-button-text" type="button" pButton></button>
+                <button data-action="DashboardSetting" *ngIf="rowData.userGroupTypeID !=1" data-set="DashboardSetting" title="Dashboard Setting" (click)="onCellClicked(rowData, 'DashboardSetting')"
+                icon="pi pi-cog" class="action-button p-button-rounded p-button-primary p-button-text" type="button"
+                pButton></button>
+            </ng-template>
+            <div *ngIf="col.gatePassRequest; then gatePassRequest else nopass"></div>
+            <ng-template #gatePassRequest>
+              <button data-action="gatePassRequest" *ngIf="rowData.visitStatusID == 9" data-set="gatePassRequest"
+                title="Gate Pass" (click)="onCellClicked(rowData, 'gatePassRequest')" icon="pi pi-id-card"
+                class="action-button p-button-rounded p-button-warning p-button-text" type="button" pButton></button>
+            </ng-template>
+            <ng-template #nopass>
+              <!-- <div class="heightOnly">
+              </div> -->
+            </ng-template>
+            <div *ngIf="col.policyMapping; then policyMappedFlag"></div>
+            <ng-template #policyMappedFlag>
+              <button data-action="policyMappedFlag" *ngIf="rowData.policyID" data-set="policyMapping"
+                title="Policy Mapping" (click)="onCellClicked(rowData, 'shiftMapping')" icon="pi pi-palette"
+                class="action-button p-button-rounded p-button-warning p-button-text" type="button" pButton></button>
+            </ng-template>
+            <div *ngIf="col.policyOuMap; then OuMappedFlag"></div>
+            <ng-template #OuMappedFlag>
+              <button data-action="OUMap" data-set="OUMap" title="Map OU" (click)="onCellClicked(rowData, 'OUMap')"
+                icon="pi pi-globe" class="action-button p-button-rounded p-button-primary p-button-text" type="button"
+                pButton></button>
+            </ng-template>
+            
+            <div *ngIf="col.requestData; then info"></div>
+            <ng-template #info>
+              <button data-action="requestData" data-set="requestData" title="request Info" (click)="onCellClicked(rowData, 'requestedit')"
+                icon="pi pi-info-circle" class="action-button p-button-rounded p-button-primary p-button-text" type="button"
+                pButton></button>
+            </ng-template>
+            <div *ngIf="col.requestFlow; then flowChart"></div>
+            <ng-template #flowChart>
+              <button data-action="requestFlow" data-set="requestFlow" title="Workflow" (click)="onCellClicked(rowData, 'requestFlow')"
+                icon="pi pi-chart-line" class="action-button p-button-rounded p-button-primary p-button-text" type="button"
+                pButton></button>
+            </ng-template>
+  
+          </ng-template>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7">No Records found.</td>
+      </tr>
+    </ng-template>
+  </p-table>

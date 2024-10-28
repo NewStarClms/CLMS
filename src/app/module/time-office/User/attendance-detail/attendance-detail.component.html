@@ -1,0 +1,321 @@
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="toggle">
+          <div *ngFor="let menu of menuItems">
+           <input type="radio" name="sizeBy" class="useractionButton " (change)="onChange(menu.menuId)"  [value]="menu.menuId" [id]="menu.menuId" />
+          <label [for]="menu.menuId" class="useractionButtonLabel cursor-pointer">{{menu.menuName}}</label> 
+          <!-- <input type="radio" name="sizeBy" class="useractionButton " (change)="onChange($event)" value="multiple" id="sizeDimensions" />
+          <label for="sizeDimensions" class="useractionButtonLabel cursor-pointer">Multiple Employee</label> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class=" float-left">
+          <div *ngIf="showingSingleEmployeeAction">
+          <p-button label="Attendance" icon="pi pi-check" styleClass="p-button-help p-mr-btn" (click)="getAttendancePolicyDetail()"></p-button>
+          <p-button label="Shift" icon="pi pi-check" styleClass="p-button-help p-mr-btn" (click)="getShiftPolicyDetail()"></p-button>
+          <p-button label="Holiday" icon="pi pi-check" styleClass="p-button-help p-mr-btn" (click)="getHolidayPolicyDetail()"></p-button>
+          <p-button label="Leave" icon="pi pi-check" styleClass="p-button-help p-mr-btn" (click)="getLeavePolicyDetail()"></p-button>
+          </div>
+          <div *ngIf="!showingSingleEmployeeAction">
+            <p-button label="Attendance" icon="pi pi-download" styleClass="p-button-help p-mr-btn" (click)="downloadAttendancePolicyDetail()"></p-button>
+            <p-button label="Shift" icon="pi pi-download" styleClass="p-button-help p-mr-btn" (click)="downloadShiftPolicyDetail()"></p-button>
+            <p-button label="Holiday" icon="pi pi-download" styleClass="p-button-help p-mr-btn" (click)="downloadHolidayPolicyDetail()"></p-button>
+            <p-button label="Leave" icon="pi pi-download" styleClass="p-button-help p-mr-btn" (click)="downloadLeavePolicyDetail()"></p-button>
+            </div>
+        </div>
+      </div>
+    </div>    
+    <div class="row" *ngIf="attendanceMenu">
+      <div class="col-lg-12">
+        <div class="form-group row">
+          <div *ngFor="let rights of currentMenuRights; let i = index" class="col-md-3 useractionSection"  (click)="menuClicked(rights.menuRightID)">
+            <div class="useractionMenu cursor-pointer {{backgroundColor[i]}}">
+              <a  class="form-control" class="useractionMenuName">{{rights.displayName}}</a>
+            </div>
+          </div>
+        </div>
+         <!--<div class="form-group row">
+          <div class="col-md-3 useractionSection cursor-pointer" *ngIf="single" (click)="showmanualpunchsingle()">
+            <div class="useractionMenu background-green">
+              <a  class="form-control" class="useractionMenuName">Manual Punch</a>
+            </div>
+          </div>
+          <div class="col-md-3 useractionSection cursor-pointer" (click)="showmanualpunchmulti()" *ngIf="multiple">
+            <div class="useractionMenu background-green">
+              <a  class="form-control" class="useractionMenuName">Manual Punch</a>
+            </div>
+          </div>
+          <div class="col-md-3 useractionSection cursor-pointer" (click)="showrosterlockunlocksingle()">
+            <div class="useractionMenu background-red">
+              <a  class="form-control" class="useractionMenuName">Attendance lock</a>
+            </div>
+          </div> -->
+          <!-- <div class="col-md-3 useractionSection cursor-pointer">
+            <div class="useractionMenu background-red">
+              <a  class="form-control" class="useractionMenuName">Attendance lock</a>
+            </div>
+        </div> -->
+          <!-- <div class="col-md-3 useractionSection cursor-pointer" (click)="showrosterpunchsingle()">
+            <div class="useractionMenu background-blue">
+              <a  class="form-control" class="useractionMenuName">Roster Process</a>
+            </div>
+          </div>
+          <div class="col-md-3 useractionSection cursor-pointer"  (click)="showShiftsignle()" >
+            <div class="useractionMenu background-orange">
+                <a  class="form-control" class="useractionMenuName">Shift</a>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+        <div class="col-md-3 useractionSection cursor-pointer"  (click)="showVerificationDialog()">
+          <div class="useractionMenu background-grey">
+            <a  class="form-control" class="useractionMenuName">Verification</a>
+          </div>
+        </div>
+        <div class="col-md-3 useractionSection cursor-pointer">
+          <div class="useractionMenu background-aqua">
+            <a  class="form-control" class="useractionMenuName">Late/Early Deduction</a>
+          </div>
+        </div>
+        <div class="col-md-3 useractionSection cursor-pointer" (click)="showBackDataProcess()">
+          <div class="useractionMenu background-teal">
+            <a class="form-control" class="useractionMenuName">Back Data Process</a>
+          </div>
+        </div>
+        <div class="col-md-3 useractionSection cursor-pointer" *ngIf="multiple" (click)="navigateToESSRequest()">
+          <div class="useractionMenu background-blue" *ngIf="multiple">
+              <a  class="form-control" class="useractionMenuName">ESS Request</a>
+          </div>
+      </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-3 useractionSection cursor-pointer" (click)="showGatepasssingle()">
+            <div class="useractionMenu background-pink" *ngIf="single">
+               <a  class="form-control" class="useractionMenuName">Gate Pass</a>
+            </div>
+          </div>
+          <div class="col-md-3 useractionSection cursor-pointer" (click)="showLeaverequestsingle()">
+            <div class="useractionMenu background-teal" *ngIf="single">
+                <a  class="form-control" class="useractionMenuName">Leave Post</a>
+            </div>
+        </div>
+       
+        </div> -->
+      </div>
+    </div>
+    <div class="row" *ngIf="attendanceMenu">
+      <div class="col-lg-12">
+        <div class="row" *ngIf="showingSingleEmployeeAction">
+          <div class="col-md-4 pr0">
+            <span class="p-input-icon-right mr-3 daterangeClass">
+              <i class="pi pi-calendar"></i>
+              <input pinput class="form-control" type="text" autocomplete="off" name="attDate" [(ngModel)]="attDate" (ngModelChange)="onDateChaness($event)"
+       id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MMM-YYYY~DD-MMM-YYYY" autocomplete="off" bsDaterangepicker>
+            </span> 
+          </div>
+          <div class="col-md-6" >
+            <app-employee-search (onSearchEvent)="onGetEmployeeDetail($event)"></app-employee-search>
+          </div>
+          <div class="col-md-2">
+            <p-button  type="button" (click)="getAttendanceDetail()" label="Get Data" Class="p-button-text p-button-sm p-button-success"></p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="attendanceDetaildiv">
+      <div class="row mb1">
+        <div class="col-lg-12" *ngIf="attsummary">
+          <div class="background-grey summarydiv float-left">Present {{present}}</div>
+          <div class="background-grey summarydiv float-left">Absent {{absent}}</div>
+          <div class="background-grey summarydiv float-left">Leave {{leave}}</div>
+          <div class="background-grey summarydiv float-left">WeeklyOff {{weeklyoff}}</div>
+          <div class="background-grey summarydiv float-left">Holiday {{holiday}}</div>
+          <div class="background-grey summarydiv float-left">LateArrival {{lateArrival}}</div>
+          <div class="background-grey summarydiv float-left">EarlyDeparture {{earlyDeparture}}</div>
+          <div class="background-grey summarydiv float-left" *ngIf="otosFlags">{{otosFlag}} {{extraWork}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <h5>Attendance Detail</h5>
+          <p-table [columns]="attendanceDetailListCol" [value]="attendanceDetailsListUI" [scrollable]="true" scrollHeight="400px">
+            <ng-template pTemplate="header" let-columns >
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowholiday let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                      <div *ngIf="col.hideText==false;  then hidefield else showfield"></div>
+                    <ng-template #hidefield></ng-template>
+                        <ng-template #showfield>
+                          <div *ngIf="col.icons; then iconShow else textShow"></div>
+                          <ng-template #iconShow>
+                            <div *ngIf="rowholiday.attendanceLocked==true">
+                              <span>{{rowholiday[col.field]}} (Lock)</span>
+                            </div>
+                            <div *ngIf="rowholiday.attendanceLocked==false">
+                              <span>{{rowholiday[col.field]}}</span>
+                            </div>
+                          </ng-template>
+                          <ng-template #textShow>
+                            <div *ngIf="rowholiday.attendanceValue != 1">
+                              <span style="color:red;">{{rowholiday[col.field]}}</span>
+                          </div>
+                          <div *ngIf="rowholiday.attendanceValue == 1">
+                            <span>{{rowholiday[col.field]}}</span>
+                        </div>
+                          </ng-template>
+                        </ng-template>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </div>
+      </div>
+    </div>
+  
+      <p-dialog header="Manual Punch" [(visible)]="manaualpunchsinglediv" [modal]="true"
+    [draggable]="false" [resizable]="false" (onHide)="CancelmanualPunchSignlediv()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '60vw',height:'45vw'}" >
+    <div class="request-breadcrumb"><span> {{showEmployeeDepDesiName}}</span></div>
+    <app-manual-punch-single-employee [employeeID]="employeeId" [FromDate]="fromDate" [ToDate]="toDate" (manualPunchdiv)="CancelmanualPunchSignlediv()" (recallAttendancedetail)="recallAttDeatil()"></app-manual-punch-single-employee>
+    </p-dialog>
+   
+
+      <p-dialog header="Manual Punch" [(visible)]="manaualpunchmultidiv" [modal]="true"
+    [draggable]="false" [resizable]="false" (onHide)="CancelmanualPunchMultidiv()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '60vw',height:'auto'}" >
+    <app-manual-punch-multi-employee [FromDate]="fromDate" [ToDate]="toDate" (manualPunchmultidiv)="CancelmanualPunchMultidiv()" [singlemultidiv]="singlemultiDiv"></app-manual-punch-multi-employee>
+    </p-dialog>
+
+    
+
+      <p-dialog header="Roster Process" [(visible)]="rosterprocesssinglediv" [modal]="true"
+    [draggable]="false" [resizable]="false" (onHide)="CancelrosterSinglediv()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '60vw',height:'24vw'}" >
+    <div class="request-breadcrumb" *ngIf="visibleEmployeeDepDesiName"><span> {{showEmployeeDepDesiName}}</span></div>
+    <app-rosterprocesssingle [employeeID]="employeeId" [FromDate]="fromDate" [ToDate]="toDate" (rosterSinglediv)="CancelrosterSinglediv()" (recallAttendancedetail)="recallAttDeatil()" [singlemultidiv]="singlemultiDiv"></app-rosterprocesssingle>
+    </p-dialog>
+
+
+      <p-dialog header="Roster Lock/Unlock" [(visible)]="rosterprocesslockunlockdiv" [modal]="true"
+    [draggable]="false" [resizable]="false" (onHide)="CancelrosterLockUlockForm()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '60vw',height:'24vw'}" >
+    <div class="request-breadcrumb" *ngIf="visibleEmployeeDepDesiName"><span> {{showEmployeeDepDesiName}}</span></div>
+    <app-roster-lock-unlock [employeeID]="employeeId" [FromDate]="fromDate" [ToDate]="toDate" (rosterSinglediv)="CancelrosterLockUlockForm()" (recallAttendancedetail)="recallAttDeatil()" [singlemultidiv]="singlemultiDiv"></app-roster-lock-unlock>
+    </p-dialog>
+
+      <p-dialog header="ESS Requests" [(visible)]="essrequestmultiplediv" [modal]="true"
+      [draggable]="false" [resizable]="false" (onHide)="cancelEssRequestmultidiv()"  [transitionOptions]="'0ms'"position="top-right" [style]="{width: '83vw',height:'43vw'}" >
+      <app-ess-request [FromDate]="fromDate" [ToDate]="toDate" (essRequestmultidiv)="cancelEssRequestmultidiv()"></app-ess-request>
+      </p-dialog>
+
+    <p-dialog header="Shift Change" [(visible)]="shiftsinglediv" [modal]="true"
+    [draggable]="false" [resizable]="false" (onHide)="Cancelshiftdiv()"  [transitionOptions]="'0ms'"position="top-right" [style]="{width: '60vw',height:'28vw'}" >
+    <div class="request-breadcrumb" *ngIf="visibleEmployeeDepDesiName"><span> {{showEmployeeDepDesiName}}</span></div>
+    <app-shiftchnagesingle [employeeID]="employeeId" [FromDate]="fromDate" [ToDate]="toDate" [shiftcodeList]="shiftcodesList" (recallAttendancedetail)="recallAttDeatil()"  (shiftChangeSinglediv)="Cancelshiftdiv()" [singlemultidiv]="singlemultiDiv"></app-shiftchnagesingle>
+    </p-dialog>
+    <p-dialog header="Back Data Process" [(visible)]="backDataProcessdiv" [modal]="true"
+    [draggable]="false" [resizable]="false" (onHide)="CancelbackDatadiv()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '40vw',height:'auto'}" >
+    <div class="request-breadcrumb" *ngIf="visibleEmployeeDepDesiName"><span> {{showEmployeeDepDesiName}}</span></div>
+    <app-backdata-process [employeeID]="employeeId" [FromDate]="fromDate" [ToDate]="toDate" (backDataProcessdiv)="CancelbackDatadiv()" (recallAttendancedetail)="recallBackDayDetail()" [singlemultidiv]="singlemultiDiv"></app-backdata-process>
+    </p-dialog>
+
+   <div >
+    <p-dialog header="Attendance Detail" [(visible)]="attendancemappingDetaildiv" [modal]="true"
+    [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '100vw',height:'auto'}" >
+    <app-add-edit-attendance-policy-master *ngIf="attendancemappingDetaildiv" [policyattID]="policyattId" ></app-add-edit-attendance-policy-master>
+    </p-dialog>
+    <p-dialog header="Shift Detail" [(visible)]="shiftmappingDetaildiv" [modal]="true"
+    [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '100vw',height:'auto'}" >
+    <app-shift-mapping  [policyID]="policyshiftId" *ngIf="shiftmappingDetaildiv" [policyTypeID]="policyType" [PolicyMethode]="policyMethod"></app-shift-mapping>
+    </p-dialog>
+
+    <p-dialog header="Holiday Detail" [(visible)]="holidaymappingDetaildiv" [modal]="true"
+    [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '100vw',height:'auto'}" >
+    <app-holiday-calender-policy-mapping  [policyholidayID]="policyholidayId" *ngIf="holidaymappingDetaildiv"></app-holiday-calender-policy-mapping>
+    </p-dialog>
+    <p-dialog header="Leave Detail" [(visible)]="leavemappingDetaildiv" [modal]="true"
+    [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '100vw',height:'auto'}" >
+    <app-policy-mapping  [policyID]="policyleaveId" *ngIf="leavemappingDetaildiv" [PolicyMethode]="policyMethod"></app-policy-mapping>
+    </p-dialog>
+    <p-dialog header="Gate Pass" [(visible)]="gatepassDetaildiv" [modal]="true"
+    [draggable]="false" [resizable]="false" (onHide)="CancelgatePass()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '80vw',height:'auto'}" >
+    <div class="request-breadcrumb"><span> {{showEmployeeDepDesiName}}</span></div>
+    <app-gatepass [employeeID]="employeeId" [FromDate]="fromDate" [ToDate]="toDate" (gatePassSinglediv)="CancelgatePass()" *ngIf="gatepassDetaildiv"></app-gatepass>
+    </p-dialog>
+    <p-dialog header="Leave Request" [(visible)]="LeaveRequsetDetaildiv" [modal]="true"
+    [draggable]="false" [resizable]="false" (onHide)="CancelLeaveRequest()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '80vw',height:'auto'}" >
+    <div class="request-breadcrumb"><span> {{showEmployeeDepDesiName}}</span></div>
+    <app-leave-request [employeeID]="employeeId" [FromDate]="fromDate" [ToDate]="toDate" (LeaveSinglediv)="CancelLeaveRequest()" *ngIf="LeaveRequsetDetaildiv"></app-leave-request>
+    </p-dialog>
+
+    <p-dialog header="Verification Request" [(visible)]="verificationDialogDiv" [modal]="true"
+    [draggable]="false" [resizable]="false" (onHide)="CancelVerificationRequest()" [transitionOptions]="'0ms'"position="center" [style]="{width: '33vw',height:'25vw'}" >
+    <div class="request-breadcrumb" *ngIf="visibleEmployeeDepDesiName"><span> {{showEmployeeDepDesiName}}</span></div>
+           <div  class="card">
+          <div class="card-body">
+              <div class="form-group row">
+                <div class="col-lg-4">
+                  <label class="labelfont">Month Year<span class="text-danger">*</span></label>
+                </div>
+                <div class="col-lg-8">
+                  <p-dropdown [options]="monthList" [(ngModel)]="month" [required]="true" optionLabel="key"
+                      optionValue="value" name="month" id="month" class="dropdwonPadding">
+                  </p-dropdown>
+                  <p-dropdown [options]="yearList" [(ngModel)]="year" [required]="true" optionLabel="key"
+                      optionValue="value" name="year" id="year" class="dropdwonPadding">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-4">
+                </div>
+                <div class="col-lg-8">
+                  <p-button type="button" (click)="submitVerification()" label="Submit"
+                    Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+                     &nbsp;&nbsp;&nbsp;
+                    <p-button type="button" (click)="CancelVerificationRequest()" label="Close"
+                    Class="p-button-text p-button-sm p-button-secondary" styleClass="p-button-secondary"></p-button>
+                </div>
+            </div>
+          </div>
+        </div>
+    </p-dialog>
+
+    <p-dialog header="Late/Early Deduction Process" [(visible)]="lateEarlyDeductionDialogDiv" [modal]="true"
+    [draggable]="false" [resizable]="false" (onHide)="CancelLateEarlyDeduction()" [transitionOptions]="'0ms'"position="center" [style]="{width: '33vw',height:'25vw'}" >
+    <div class="request-breadcrumb" *ngIf="visibleEmployeeDepDesiName"><span> {{showEmployeeDepDesiName}}</span></div>
+         <div  class="card">
+          <div class="card-body">
+            <div class="form-group row">
+            <div class="col-lg-4">
+            <label class="labelfont">Month Year<span class="text-danger">*</span></label>
+            </div>
+            <div class="col-lg-8">
+            <p-dropdown [options]="monthList" [(ngModel)]="month" [required]="true" optionLabel="key" optionValue="value" name="month" id="month" class="dropdwonPadding"></p-dropdown>
+            <p-dropdown [options]="yearList" [(ngModel)]="year" [required]="true" optionLabel="key" optionValue="value" name="year" id="year" class="dropdwonPadding"></p-dropdown>
+            </div>
+            </div>
+            <div class="form-group row">
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-8">
+              <p-button type="button" (click)="submitLateEarlyDeduction()" label="Submit"
+              Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+              &nbsp;&nbsp;&nbsp;
+              <p-button type="button" (click)="CancelLateEarlyDeduction()" label="Close"
+              Class="p-button-text p-button-sm p-button-secondary" styleClass="p-button-secondary"></p-button>
+            </div>
+            </div>
+
+          </div>
+        </div>
+    </p-dialog>
+
+
+   </div>
+  </div>
+

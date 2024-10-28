@@ -1,0 +1,380 @@
+<section class="card">
+  <header class="card-header">
+    <h2>Imports Data For : {{importName}}</h2>
+  </header>
+  <div class="noteCls">
+    <label class="labelfont">
+      Note:
+      <ol>
+        <li>All Column in text format in excel sheet format.</li>
+        <li>Excel sheet is xlsx Format.</li>
+        <li>Can not change header in excel sheet format.</li>
+        <li *ngFor="let note of validateNote">{{ note }}</li>
+      </ol>
+    </label>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <!-- <div id="report-detail" class="row col-lg-12"> -->
+      <form
+        #importForm="ngForm"
+        (submit)="importForm.valid && saveImportData(importForm)">
+        <div class="form-group row">
+          <!-- <div class="col-md-3">
+    <label class="labelfont"> Module</label>
+    <p-dropdown [options]="moduleListOption" [(ngModel)]="fileTemplateObj.moduleId"
+    placeholder="Please select" optionLabel="key" optionValue="value" class="form-control1"
+    name="moduleListId" [required]="true" id="moduleListId" (ngModelChange)="fngetMappedimport($event)" #moduleListId="ngModel"
+    [ngClass]="{'is-invalid': moduleListId.invalid && (moduleListId.dirty || moduleListId.touched)}">
+    </p-dropdown>
+    <div *ngIf="importForm.submitted && ( moduleListId.invalid || moduleListId.dirty || moduleListId.touched)" class="labelfont">
+    <div class="p-error" *ngIf="moduleListId.errors?.['required']">
+    Module is required.
+    </div>
+    </div>
+    </div> -->
+
+          <div class="col-md-4">
+            <label class="labelfont"> Import </label>
+            <p-dropdown
+              [options]="importListOption"
+              [(ngModel)]="fileTemplateObj.importId"
+              placeholder="Please select"
+              optionLabel="key"
+              optionValue="value"
+              class="form-control1"
+              (ngModelChange)="fngetMappedAction($event)"
+              #importId="ngModel"
+              name="importId"
+              [required]="true"
+              id="importId"
+              [ngClass]="{'is-invalid':importId.invalid && (importId.dirty || importId.touched)}">
+            </p-dropdown>
+            <div
+              *ngIf="
+                importForm.submitted &&
+                (importId.invalid || importId.dirty || importId.touched)
+              "
+              class="labelfont"
+            >
+              <div class="p-error" *ngIf="importId.errors?.['required']">
+                Import Master is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont"
+              >Action <span class="text-danger">*</span></label
+            >
+            <p-dropdown
+              [options]="actionListOption"
+              [(ngModel)]="fileTemplateObj.action"
+              placeholder="Please select"
+              (ngModelChange)="fnInsertUpdateAction($event)"
+              optionLabel="key"
+              optionValue="value"
+              class="form-control1"
+              #action="ngModel"
+              name="action"
+              id="action"
+            >
+            </p-dropdown>
+          </div>
+       
+          <ul class="nav-item dropdown no-arrow" *ngIf="visibleAppliedfilter">
+          <span *ngIf="appliedfilter" class="dot"></span>
+          <a class="nav-link dropdown-toggle" href="#" id="globalfilter" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" (click)="displayGlobalFilter()">
+            <i class="fas fa-filter fa-fw"></i>
+            <!-- <i class='fas fa-filter fa-border fa-2x'></i> -->
+          </a>
+        </ul>
+        
+        </div>
+        <!-- {{fileTemplateObj.importId }} -->
+        <div
+          class="form-group row"
+          *ngIf="
+            fileTemplateObj.importId === 20 ||
+            fileTemplateObj.importId === 21 ||
+            fileTemplateObj.importId === 18
+          "
+        >
+          <div class="col-md-6" *ngIf="fileTemplateObj.importId === 21">
+            <label class="labelfont"> Leave Acc. Type </label>
+            <p-dropdown
+              [options]="accrualTypeOption"
+              [(ngModel)]="leaveAccType"
+              placeholder="Please select"
+              optionLabel="value"
+              optionValue="key"
+              class="form-control1"
+              [required]="true"
+              #accrualTypeOptionId="ngModel"
+              name="accrualTypeOptionId"
+              id="accrualTypeOptionId"
+              [ngClass]="{
+                'is-invalid':
+                  accrualTypeOptionId.invalid &&
+                  (accrualTypeOptionId.dirty || accrualTypeOptionId.touched)
+              }"
+            >
+            </p-dropdown>
+          </div>
+          <div class="col-md-3">
+            <label class="labelfont"> Month</label>
+            <p-dropdown
+              [options]="months"
+              optionLabel="Text"
+              optionValue="Value"
+              [(ngModel)]="month"
+              class="form-control1 p-month-dropdown tile-p-dropdown"
+              name="month"
+              id="month"
+            >
+            </p-dropdown>
+          </div>
+          <div class="col-md-3">
+            <label class="labelfont"> Year</label>
+            <p-dropdown
+              [options]="years"
+              optionLabel="year"
+              optionValue="year"
+              [(ngModel)]="year"
+              class="form-control1 p-year-dropdown tile-p-dropdown"
+              name="year"
+              id="year"
+            >
+            </p-dropdown>
+          </div>
+          <!-- <div style="width: 100%;"> -->
+          <!-- <div class="col-md-3">
+     <label class="labelfont"> Month</label>
+     <p-dropdown [options]="months" optionLabel="Text" optionValue="Value" [(ngModel)]="month"
+     class="form-control1 p-month-dropdown tile-p-dropdown" name="month" id="month">
+     </p-dropdown>
+
+    </div>
+    <div class=" col-md-3">
+    <label class="labelfont"> Year</label>
+    <p-dropdown [options]="years" optionLabel="year" optionValue="year" [(ngModel)]="year"
+    class="form-control1 p-year-dropdown  tile-p-dropdown" name="year" id="year"> </p-dropdown>
+    </div> -->
+          <!-- </div> -->
+        </div>
+        <div
+          class="form-group row"
+          *ngIf="
+            fileTemplateObj.importId === 24 || fileTemplateObj.importId === 25
+          "
+        >
+          <div class="col-md-3">
+            <label class="labelfont"> Month</label>
+            <p-dropdown
+              [options]="months"
+              optionLabel="Text"
+              optionValue="Value"
+              [(ngModel)]="month"
+              class="form-control1 p-month-dropdown tile-p-dropdown"
+              name="month"
+              id="month"
+            >
+            </p-dropdown>
+          </div>
+          <div class="col-md-3">
+            <label class="labelfont"> Year</label>
+            <p-dropdown
+              [options]="years"
+              optionLabel="year"
+              optionValue="year"
+              [(ngModel)]="year"
+              class="form-control1 p-year-dropdown tile-p-dropdown"
+              name="year"
+              id="year"
+            >
+            </p-dropdown>
+          </div>
+          <!-- <div style="width: 100%;"> -->
+          <div class="col-md-3" *ngIf="fileTemplateObj.importId === 25">
+            <label class="labelfont"> Month</label>
+            <p-dropdown
+              [options]="monthList"
+              optionLabel="Text"
+              optionValue="Value"
+              [(ngModel)]="toMonth"
+              optionLabel="key"
+              optionValue="value"
+              class="form-control1 p-month-dropdown tile-p-dropdown"
+              name="toMonth"
+              id="toMonth"
+            >
+            </p-dropdown>
+          </div>
+          <div class="col-md-3" *ngIf="fileTemplateObj.importId === 25">
+            <label class="labelfont"> Year</label>
+            <p-dropdown
+              [options]="years"
+              optionLabel="year"
+              optionValue="year"
+              [(ngModel)]="yearTo"
+              class="form-control1 p-year-dropdown tile-p-dropdown"
+              name="yearTo"
+              id="yearTo"
+            >
+            </p-dropdown>
+          </div>
+          <!-- </div> -->
+        </div>
+        <div
+          class="form-group row"
+          *ngIf="
+            fileTemplateObj.importId === 27 || fileTemplateObj.importId === 28
+          "
+        >
+          <div class="col-md-4">
+            <label class="labelfont"> Pay Group</label>
+            <p-dropdown
+              [options]="payGroupList"
+              optionLabel="policyName"
+              optionValue="policyID"
+              [(ngModel)]="paygroupID"
+              class="form-control1 p-month-dropdown tile-p-dropdown"
+              name="month"
+              id="month"
+            >
+            </p-dropdown>
+          </div>
+          <div class="col-md-3" *ngIf="fileTemplateObj.importId === 28">
+            <label class="labelfont"> Month</label>
+            <p-dropdown
+              [options]="months"
+              optionLabel="Text"
+              optionValue="Value"
+              [(ngModel)]="monthTo"
+              class="form-control1 p-month-dropdown tile-p-dropdown"
+              name="monthTo"
+              id="monthTo"
+            >
+            </p-dropdown>
+          </div>
+          <div class="col-md-3" *ngIf="fileTemplateObj.importId === 28">
+            <label class="labelfont"> Year</label>
+            <p-dropdown
+              [options]="years"
+              optionLabel="year"
+              optionValue="year"
+              [(ngModel)]="yearTo"
+              class="form-control1 p-year-dropdown tile-p-dropdown"
+              name="yearTo"
+              id="yearTo"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="fileTemplateObj.importId === 17">
+          <div class="col-md-4">
+            <span class="p-input-icon-right mr-3 daterangeClass">
+              <i class="pi pi-calendar"></i>
+              <input
+                pinput
+                class="form-control"
+                type="text"
+                autocomplete="off"
+                name="attDate"
+                [(ngModel)]="shiftDaterange"
+                id="fromDate"
+                [bsConfig]="datepickerConfig"
+                placeholder="DD-MMM-YYYY~DD-MMM-YYYY"
+                autocomplete="off"
+                bsDaterangepicker
+              />
+            </span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-12">
+            <p-fileUpload
+              #form
+              name="importFile[]"
+              accept=".xlsx"
+              chooseLabel="Choose a xlsx file"
+              [disabled]="!fileTemplateObj.action"
+              uploadLabel="Verify Data"
+              [customUpload]="true"
+              (onSelect)="getFile($event)"
+              id="importFile"
+              (uploadHandler)="uplodHandler($event)"
+              (onClear)="cancelHandler($event)"
+              (onRemove)="cancelRHandler($event)"
+            >
+              <ng-template pTemplate="toolbar">
+                <button
+                  pButton
+                  type="button"
+                  label="Get Template"
+                  (click)="downloadTemplate()"
+                  class="p-button-link"
+                ></button>
+                <div class="float-right">
+                  <p-button
+                    icon="pi pi-check"
+                    type="submit"
+                    label="Upload"
+                    class="mx-2 p-button-text p-button-sm p-button-primary"
+                  ></p-button>
+                  <!-- <p-button icon="pi pi-times" class="p-button-sm " #closebutton data-dismiss="modal"
+    label="Cancel" (click)="cancelEdit()" styleClass="p-button-secondary">
+    </p-button> -->
+                </div>
+              </ng-template>
+              <ng-template let-file pTemplate="file">
+                <div>Custom UI to display a file</div>
+              </ng-template>
+              <ng-template pTemplate="content" let-files>
+                <div class="contentFile" *ngIf="data.length === 0">
+                  No Data yet
+                </div>
+              </ng-template>
+            </p-fileUpload>
+            <span *ngIf="importFile" class="labelfont fileTitle"
+              >File: {{ importFile.name }}</span
+            >
+            <div class="form-group row" *ngIf="rowData.length > 0">
+              <div class="col-lg-12 tableFixHead">
+                <table>
+                  <thead>
+                    <tr>
+                      <th *ngFor="let col of cols">
+                        {{ col }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of rowData">
+                      <td *ngFor="let val of row">
+                        {{ val }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<p-dialog header="Filter Employee" [(visible)]="visibles" [modal]="true" [draggable]="false" [resizable]="true" position="top-right" [style]="{width: '65vw'}">
+  <div class="card-body no-padding-left">
+    <div class="form-group row no-padding-left">
+      <div class="col-lg-12 no-padding-left">
+        <input type="hidden" id="filtervalue" [value]="filtertypevale">
+        <app-employee-global-filter (filterAppliedEvent)="onGetFilterDetail()" (cancelGlobalFilter)="cancelGlobalFiltter()"></app-employee-global-filter>
+      </div>
+    </div>
+  </div>
+</p-dialog> 

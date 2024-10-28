@@ -1,0 +1,221 @@
+<section class="card">
+  <header class="card-header">
+     <h2>{{headerdialogName}}</h2>
+  </header>
+</section>
+<!--add / update / delete modal  -->
+<div class="card">
+  <div class="card-body">
+    <form #companyForm = "ngForm" name="form" (submit)="SaveCompanyData(companyForm)">
+      <p-accordion>
+        <p-accordionTab header="Company Information" [selected]=true>
+          <div class="form-group row">
+            <input pinput [(ngModel)]= "companyInfo.companyID" class="form-control" type="text" autocomplete="off" name="companyID" id="companyID" hidden="true">
+            <div class="col-lg-4">
+              <label class="labelfont">Organization <span class="text-danger">*</span></label>
+              <p-dropdown  [options]="orgList" optionLabel="organizationName" optionValue="organizationID" [(ngModel)]= "companyInfo.organizationID"   class=" shadow-none" #organizationID="ngModel"
+              [ngClass]="{'is-invalid': organizationID.invalid && (organizationID.dirty || organizationID.touched)}"  name="organizationID" id="organizationID">
+              </p-dropdown>
+              <div *ngIf="organizationID.invalid && (organizationID.dirty || organizationID.touched)"
+                      class="labelfont">
+                <div  class="p-error" *ngIf="organizationID.errors?.['required']">
+                  Organization is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Company Code <span class="text-danger">*</span></label>
+              <input pinput [(ngModel)]= "companyInfo.companyCode" class="form-control text-uppercase" (keypress)="keyPressAlphanumeric($event)" type="text" autocomplete="off" maxlength ="5" minlength="1" required name="companyCode" id="companyCode"  #companyCode="ngModel"
+              [ngClass]="{'is-invalid': companyCode.invalid && (companyCode.dirty || companyCode.touched)}">
+              <div *ngIf="companyCode.invalid && (companyCode.dirty || companyCode.touched)"
+                      class="labelfont">
+                      <div  class="p-error" *ngIf="companyCode.errors?.['required']">
+                        Company Code is required.
+                      </div>
+                      <div  class="p-error" *ngIf="companyCode.errors?.['minlength']">
+                        Company Code must be at least 5 characters long.
+                    </div>
+              </div>
+
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Company Name <span class="text-danger">*</span></label>
+              <input pinput [(ngModel)]= "companyInfo.companyName" class="form-control" type="text" autocomplete="off" maxlength="100" required name="companyName" id="companyName"  #companyName="ngModel"
+              [ngClass]="{'is-invalid': companyName.invalid && (companyName.dirty || companyName.touched)}" (keypress)="keyPressAlphanumeric($event)">
+              <div *ngIf="companyName.invalid && (companyName.dirty || companyName.touched)"
+                      class="labelfont" >
+                      <div  class="p-error" *ngIf="companyName.errors?.['required']">
+                        Company Name is required.
+                      </div>
+              </div>
+            </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="labelfont">Short Name</label>
+            <input pinput [(ngModel)]= "companyInfo.shortName" class="form-control" type="text" autocomplete="off"  name="shortName" maxlength="50" id="shortName" minimumWages>
+          </div>
+
+
+        </div>
+
+        </p-accordionTab>
+        <p-accordionTab header="Communication Details" [selected]=true>
+          <div class="form-group row">
+            <div class="col-lg-8">
+              <label class="labelfont">Company Address</label>
+              <input pinput [(ngModel)]= "companyInfo.companyAddress" class="form-control" type="text" autocomplete="off" width="200px" row="1"name="companyAddress" id="companyAddress" >
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Country <span class="text-danger">*</span></label>
+              <p-dropdown  [options]="countryList" [(ngModel)]= "companyInfo.countryID" optionLabel="countryName" optionValue="countryID" class="" #countryID="ngModel"
+              [ngClass]="{'is-invalid': countryID.invalid && (countryID.dirty || countryID.touched)}"  name="countryID" id="countryID" [required]="true">
+              </p-dropdown>
+              <div *ngIf="countryID.invalid && (countryID.dirty || countryID.touched)"
+                        class="labelfont">
+                  <div  class="p-error" *ngIf="countryID.errors?.['required']">
+                    Country is required.
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">States <span class="text-danger">*</span></label>
+              <p-dropdown  [options]="stateList" [(ngModel)]= "companyInfo.stateID" optionLabel="stateName" optionValue="stateID" (ngModelChange)="fillCityDDL()" class="" #stateID="ngModel"
+              [ngClass]="{'is-invalid': stateID.invalid && (stateID.dirty || stateID.touched)}"  name="stateID" id="stateID" [required]="true">
+              </p-dropdown>
+              <div *ngIf="stateID.invalid && (stateID.dirty || stateID.touched)"
+                        class="labelfont">
+                  <div  class="p-error" *ngIf="stateID.errors?.['required']">
+                    State is required.
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">City <span class="text-danger">*</span></label>
+              <p-dropdown  [options]="cityList" [(ngModel)]= "companyInfo.cityID" optionLabel="cityName" optionValue="cityID" class="" #cityID="ngModel"
+              [ngClass]="{'is-invalid': cityID.invalid && (cityID.dirty || cityID.touched)}"  [disabled]="getState()" name="cityID" id="cityID" [required]="true">
+              </p-dropdown>
+              <div *ngIf="cityID.invalid && (cityID.dirty || cityID.touched)"
+                        class="labelfont">
+                  <div  class="p-error" *ngIf="cityID.errors?.['required']">
+                    City is required.
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Pincode</label>
+             <input pinput [(ngModel)]= "companyInfo.pinCode" class="form-control text-uppercase" (keypress)="keyPressNumbers($event)" type="text" autocomplete="off" maxlength ="6" minlength="6" name="pinCode" id="pinCode"  #pinCode="ngModel"
+                              [ngClass]="{'is-invalid': pinCode.invalid && (pinCode.dirty || pinCode.touched)}">
+              <div *ngIf="pinCode.invalid && (pinCode.dirty || pinCode.touched)"
+                      class="labelfont">
+                      <!-- <div  class="p-error" *ngIf="pinCode.errors?.['required']">
+                        Company Code is required.
+                      </div> -->
+                      <div  class="p-error" *ngIf="pinCode.errors?.['minlength']">
+                        Pincode must be at least 6 characters long.
+                    </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">Phone</label>
+              <input pinput [(ngModel)]= "companyInfo.phone" class="form-control" type="text" autocomplete="off"  name="phone" id="phone" (keypress)="keyPressNumbers($event)" maxlength="12">
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Email</label>
+              <input pinput [(ngModel)]="companyInfo.email" class="form-control" type="text" autocomplete="off" #email="ngModel" name="email" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}">
+              <div *ngIf="email.invalid && (email.dirty || email.touched)" class="labelfont">
+                <div class="p-error" *ngIf="email.errors?.pattern">
+                  This is not a valid Email!!!
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Fax</label>
+              <input pinput [(ngModel)]= "companyInfo.fax" class="form-control" type="text" autocomplete="off" name="fax" id="fax" (keypress)="keyPressNumbers($event)">
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Logo and Website" [selected]=true>
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">Website</label>
+              <input pinput [(ngModel)]= "companyInfo.webSite" class="form-control" type="text" autocomplete="off" name="webSite" id="webSite" >
+            </div>
+            <div class="col-lg-3">
+              <img [src]="filePath" style="width:120px">
+                <input name="companyLogo"
+                id="companyLogo"  type="file" id="companyLogo"  class="form-control" (change)="handleFileInput($event)" style="display: none;"/>
+                <br/>
+            <label class="btn btn-primary" for="companyLogo" style="margin-left: 7px !important;">Select Logo</label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-3">
+              <label class="labelfont lableMargin">View Name on Report</label>
+              <p-selectButton [options]="stateOptions" [(ngModel)]="companyInfo.viewNameOnReport" optionLabel="label"
+                optionValue="value" name="viewNameOnReport"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+              <label class="labelfont lableMargin">View Logo on Report</label>
+              <p-selectButton [options]="stateOptions" [(ngModel)]="companyInfo.viewLogoOnReport" optionLabel="label"
+                optionValue="value" name="viewLogoOnReport"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+              <label class="labelfont lableMargin">View Address on Report</label>
+              <p-selectButton [options]="stateOptions" [(ngModel)]="companyInfo.viewAddressOnReport" optionLabel="label"
+                optionValue="value" name="viewAddressOnReport"></p-selectButton>
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Additional Details" [selected]=true>
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">Tan No.</label>
+              <input pinput [(ngModel)]= "companyInfo.tanNo" class="form-control" type="text" autocomplete="off" name="tanNo" id="tanNo" (keypress)="keyPressAlphanumeric($event)">
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">GST No.</label>
+              <input pinput [(ngModel)]= "companyInfo.gstNo" class="form-control" type="text" autocomplete="off" name="gstNo" id="gstNo" (keypress)="keyPressAlphanumeric($event)">
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">PF No.</label>
+                <input pinput [(ngModel)]= "companyInfo.pfNo" class="form-control" type="text" autocomplete="off" name="pfNo" id="pfNo" (keypress)="keyPressAlphanumeric($event)">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">ESI No.</label>
+              <input pinput [(ngModel)]= "companyInfo.esiNo" class="form-control" type="text" autocomplete="off" name="esiNo" id="esiNo" (keypress)="keyPressAlphanumeric($event)">
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">License No</label>
+              <input pinput [(ngModel)]= "companyInfo.licenseNo" class="form-control" type="text" autocomplete="off" name="licenseNo" id="licenseNo" (keypress)="keyPressAlphanumeric($event)">
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">Registration No</label>
+              <input pinput [(ngModel)]= "companyInfo.registrationNo" class="form-control" type="text" autocomplete="off" name="registrationNo" id="registrationNo" (keypress)="keyPressAlphanumeric($event)">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">Pan No</label>
+              <input pinput [(ngModel)]= "companyInfo.panNo" class="form-control" type="text" autocomplete="off" name="panNo" id="panNo" (keypress)="keyPressAlphanumeric($event)">
+            </div>
+          </div>
+        </p-accordionTab>
+    </p-accordion>
+    <div class="form-group row pull-right p-mt-4">
+      <div class="col-sm-12">
+        <p-button icon="pi pi-check" type="submit"   [label]="labelName" Class="p-button-text p-button-sm p-button-success" [disabled]="!companyForm.valid"></p-button>
+        <p-button icon="pi pi-times" class="p-button-sm "  label="Cancel" styleClass="p-button-secondary" (click)="CancelCompanyForm()"></p-button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+
+<!-- page end-->

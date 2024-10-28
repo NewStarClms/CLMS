@@ -1,0 +1,37 @@
+<div class="card tile-card">
+    <h5 class="card-header">
+    <div style="width: 35%;float:left">
+    <a data-toggle="collapse" href="#collapse-birthday" aria-expanded="true" aria-controls="collapse-birthday" id="heading-leave">
+    <i class="fa fa-chevron-down pull-right"></i>
+    Birthday Status
+    </a>
+    </div>
+    <div style="width: 25%;float:left">
+    <!-- <span style="font-size: 11px;"> (YYYY) </span> -->
+    <input pinput [(ngModel)]="FromDate" class="form-control date" type="text" autocomplete="off"
+    name="FromDate" id="FromDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off"
+    bsDatepicker>
+
+    
+    </div>
+    <div style="width: 25%;float:left">
+    <input pinput [(ngModel)]="ToDate" class="form-control date" type="text" autocomplete="off"
+    name="ToDate" id="ToDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off"
+    bsDatepicker>
+
+     </div>
+    <!-- <p-dropdown [options]="FromDate" optionLabel="FromDate" optionValue="FromDate" [(ngModel)]="FromDate" class="p-year-dropdown" name="FromDate" id="FromDate"> </p-dropdown> -->
+    <div style="width: 10%;float:left">
+    <p-button icon="fa fa-search" iconPos="right" class="p-button-sm" (click)="loadEmployeeBirthday();">
+    </p-button>
+  
+    </div>
+    </h5>
+    <div id="collapse-birthday" class="collapse show" aria-labelledby="heading-leave">
+    <div class="card-body top5">
+    
+    <app-grid-renderer [gridRowData]="rowData" [gridColData]="columnDefs" [hideSearchBox]="true" [isPaginationRequired]="false">
+    </app-grid-renderer>
+    </div>
+    </div>
+    </div>

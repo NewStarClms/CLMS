@@ -1,0 +1,29 @@
+.labelfont{
+  font-family: Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-weight: 400;
+    font-size: .85rem;
+}
+input:focus, textarea:focus, select:focus{border-top:none;border-left:none;border-right:none;}
+
+:host ::ng-deep .p-button {
+  margin: 0 .5rem 0 0;
+}
+
+p {
+  margin: 0;
+}
+
+.confirmation-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:host ::ng-deep .p-dialog .p-button {
+  min-width: 6rem;
+}
+:host ::ng-deep .mapAccessRightBlock
+{
+  display:none !important;
+}
+

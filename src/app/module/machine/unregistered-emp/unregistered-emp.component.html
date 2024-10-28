@@ -1,0 +1,22 @@
+<section class="card">
+    <header class="card-header">
+      <div class="group-left col-lg-6" style="float: left;">
+        <h2>Un-Registered Employee(s)</h2>
+      </div>
+  </header>
+
+  <div class="card-body">
+    <div class="form-group row">
+      <div class="col-lg-12">
+        <app-grid-renderer  
+        [gridRowData]="rowData"  
+        [gridColData]="columnDefs" 
+        (onCellClickEvent)="onCellClicked($event)">
+        </app-grid-renderer>
+      </div>
+   </div>
+</div>
+</section>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+</p-confirmDialog>
+  <!-- [isPaginationRequired]="false" -->

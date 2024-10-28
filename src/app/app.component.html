@@ -1,0 +1,40 @@
+<div id="wrapper">
+  <!-- Sidebar -->
+  <!-- <app-sidebar *ngIf="currentUser && routeParams?.sidebar"></app-sidebar> -->
+  <!-- Sidebar -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      <app-header *ngIf="currentUser && routeParams?.sidebar"></app-header>
+      <!-- Container Fluid-->
+      <div *ngIf="!currentUser && !showForgotPassword">
+        <app-login></app-login>
+      </div>
+      <div *ngIf="!currentUser && showForgotPassword">
+       <app-forgot-password></app-forgot-password>
+      </div>
+      <div class="container-fluid" id="container-wrapper" *ngIf="currentUser">
+        <router-outlet></router-outlet>
+      </div>
+      <!---Container Fluid-->
+    </div>
+    <!-- Footer -->
+<app-footer *ngIf="currentUser && routeParams?.sidebar"></app-footer>
+    <!-- Footer -->
+  </div>
+</div>
+
+<!-- Scroll to top -->
+<a class="scroll-to-top rounded" href="#page-top">
+  <i class="fas fa-angle-up"></i>
+</a>
+<p-toast position="top-left"></p-toast>
+<ng-http-loader  [backdrop]="true"
+[backgroundColor]="'#19B698'"
+[debounceDelay]="100"
+[extraDuration]="300"
+[minDuration]="300"
+[spinner]="spinnerStyle.skCubeGrid">></ng-http-loader>
+
+<!-- 
+  skChasingDots, skCubeGrid, skDoubleBounce, skRotatingPlane, skSpinnerPulse, skThreeBounce, skWanderingCubes and skWave
+ -->

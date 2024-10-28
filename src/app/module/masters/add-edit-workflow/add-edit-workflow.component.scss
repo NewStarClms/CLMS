@@ -1,0 +1,82 @@
+.workflowInpt{
+    line-height: 1.6rem !important;
+    border: 1px solid lightgray;
+    padding: 0 0 0 6px;
+}
+.form-control{
+    font-size: 11px !important;
+    line-height: 1.1rem !important;
+}
+
+p-checkbox {
+    display: inline-flex;
+    vertical-align: text-bottom !important;
+    align-items: center;
+}
+
+.workflowInpt:focus {
+    border: 1px solid #4682B4 !important;
+}
+.workflowInpt:visible {
+    border: 1px solid #4682B4 !important;
+}
+.clearText {
+    border-bottom: 2px solid darkgrey;
+}
+
+:host ::ng-deep .workflowDrop> .p-dropdown {
+    background: #ffffff;
+    border: 1px solid #ced4da !important;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 3px;
+    width: 13.5rem !important;
+    padding: 0 0 0 3px !important;
+}
+:host ::ng-deep #userRoleID> .p-dropdown .p-dropdown-label {
+    font-size: 11px !important;
+}
+:host ::ng-deep  .p-dropdown-panel .p-dropdown-items .p-dropdown-item{
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border: 0 none;
+    color: #495057;
+    background: transparent;
+    transition: box-shadow 0.2s;
+    border-radius: 0;
+    font-size: 11px !important;
+}
+span.p-buttonset {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.ruleMapCls{
+    font-size:11px !important
+}
+/*Increase p-checkbox size*/
+:host ::ng-deep .p-checkbox .p-checkbox-box {
+    width: 23px;
+    height: 23px;
+    margin-left: 1rem;
+  }
+  :host ::ng-deep .p-checkbox  {
+    width: 43px;
+    height: 43px;
+  }
+  .form-group {
+    margin-bottom: 0 !important;
+}
+.pull-right{
+    float:right;
+  }
+  :host ::ng-deep input.p-autocomplete-input.p-inputtext.p-component {
+    padding-left: 14px !important;
+    width: 24rem;
+    margin: 2.1rem 0 0 3rem !important;
+    line-height: 1.7rem;
+
+  }
+  :host ::ng-deep .p-dropdown-label {
+    line-height: 1.7rem;
+    font-size: 11px !important;
+
+  }

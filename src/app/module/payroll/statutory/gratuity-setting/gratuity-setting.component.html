@@ -1,0 +1,116 @@
+
+<section class="card">
+    <header class="card-header">
+       <h2>Gratuity Setting</h2>
+    </header>
+  </section>
+  <!--add / update / delete modal  -->
+  <div class="card">
+    <div class="card-body">
+      <form #gratuitysettingForm = "ngForm" name="form" (submit)="savegratuitySetting()">
+     
+            <div class="form-group row">
+                <div class="col-lg-3">
+                    <label class="labelfont">Minimum eligibility(6 Days Working) Year<span class="text-danger">*</span></label>
+                    <input pinput [(ngModel)]="gartuitySettingInfo.minimumYearFor6DayWorking" class="form-control" type="text"
+              autocomplete="off" required name="minimumYearFor6DayWorking" (keypress)="keyPressNumbers($event)" id="minimumYearFor6DayWorking"
+               #minimumYearFor6DayWorking="ngModel"
+              [ngClass]="{'is-invalid': minimumYearFor6DayWorking.invalid && (minimumYearFor6DayWorking.dirty || minimumYearFor6DayWorking.touched)}">
+            <div *ngIf="minimumYearFor6DayWorking.invalid && (minimumYearFor6DayWorking.dirty || minimumYearFor6DayWorking.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="minimumYearFor6DayWorking.errors?.['required']">
+                Minimum eligibility(6 Days Working) is required.
+              </div>
+            </div>
+            </div>
+            <div class="col-lg-3">
+                <label class="labelfont">Minimum eligibility(6 Days Working) Month<span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="gartuitySettingInfo.minimumMonthFor6DayWorking" class="form-control" type="text"
+          autocomplete="off" required name="minimumMonthFor6DayWorking" (keypress)="keyPressNumbers($event)" id="minimumMonthFor6DayWorking"
+           #minimumMonthFor6DayWorking="ngModel"
+          [ngClass]="{'is-invalid': minimumMonthFor6DayWorking.invalid && (minimumMonthFor6DayWorking.dirty || minimumMonthFor6DayWorking.touched)}">
+        <div *ngIf="minimumMonthFor6DayWorking.invalid && (minimumMonthFor6DayWorking.dirty || minimumMonthFor6DayWorking.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="minimumMonthFor6DayWorking.errors?.['required']">
+            Minimum eligibility(6 Days Working) is required.
+          </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+            <label class="labelfont">Minimum eligibility(5 Days Working) Year<span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="gartuitySettingInfo.minimumYearFor5DayWorking" class="form-control" type="text"
+      autocomplete="off" required name="minimumYearFor5DayWorking" (keypress)="keyPressNumbers($event)" id="minimumYearFor5DayWorking"
+       #minimumYearFor5DayWorking="ngModel"
+      [ngClass]="{'is-invalid': minimumYearFor5DayWorking.invalid && (minimumYearFor5DayWorking.dirty || minimumYearFor5DayWorking.touched)}">
+    <div *ngIf="minimumYearFor5DayWorking.invalid && (minimumYearFor5DayWorking.dirty || minimumYearFor5DayWorking.touched)" class="labelfont">
+
+      <div class="p-error" *ngIf="minimumYearFor5DayWorking.errors?.['required']">
+        Minimum eligibility(6 Days Working) is required.
+      </div>
+    </div>
+    </div>
+    <div class="col-lg-3">
+        <label class="labelfont">Minimum eligibility(5 Days Working) Month<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="gartuitySettingInfo.minimumMonthFor5DayWorking" class="form-control" type="text"
+  autocomplete="off" required name="minimumMonthFor5DayWorking" (keypress)="keyPressNumbers($event)" id="minimumMonthFor5DayWorking"
+   #minimumMonthFor5DayWorking="ngModel"
+  [ngClass]="{'is-invalid': minimumMonthFor5DayWorking.invalid && (minimumMonthFor5DayWorking.dirty || minimumMonthFor5DayWorking.touched)}">
+<div *ngIf="minimumMonthFor5DayWorking.invalid && (minimumMonthFor5DayWorking.dirty || minimumMonthFor5DayWorking.touched)" class="labelfont">
+
+  <div class="p-error" *ngIf="minimumMonthFor5DayWorking.errors?.['required']">
+    Minimum eligibility(6 Days Working) is required.
+  </div>
+</div>
+</div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-3">
+                    <label class="labelfont">Gratuity Month Round<span class="text-danger">*</span></label>
+                    <input pinput [(ngModel)]="gartuitySettingInfo.gratuityMonthRound" class="form-control" type="text"
+              autocomplete="off" required name="gratuityMonthRound" (keypress)="keyPressNumbers($event)" id="gratuityMonthRound"
+               #gratuityMonthRound="ngModel"
+              [ngClass]="{'is-invalid': gratuityMonthRound.invalid && (gratuityMonthRound.dirty || gratuityMonthRound.touched)}">
+            <div *ngIf="gratuityMonthRound.invalid && (gratuityMonthRound.dirty || gratuityMonthRound.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="gratuityMonthRound.errors?.['required']">
+                Gratuity Month Round is required.
+              </div>
+            </div>
+            </div>
+            <div class="col-lg-3">
+                <label class="labelfont">Gratuity Amount Limit<span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="gartuitySettingInfo.gratuityAmountLimit" class="form-control" type="text"
+          autocomplete="off" required name="gratuityAmountLimit" (keypress)="keyPressNumbers($event)" id="gratuityAmountLimit"
+           #gratuityAmountLimit="ngModel"
+          [ngClass]="{'is-invalid': gratuityAmountLimit.invalid && (gratuityAmountLimit.dirty || gratuityAmountLimit.touched)}">
+        <div *ngIf="gratuityAmountLimit.invalid && (gratuityAmountLimit.dirty || gratuityAmountLimit.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="gratuityAmountLimit.errors?.['required']">
+            Gratuity Amount Limit is required.
+          </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+            <label class="labelfont">Gratuity Formula<span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="gartuitySettingInfo.gratuityFormula" class="form-control" type="text"
+      autocomplete="off" required name="gratuityFormula" (keypress)="keyPressNumbers($event)" id="gratuityFormula"
+       #gratuityFormula="ngModel"
+      [ngClass]="{'is-invalid': gratuityFormula.invalid && (gratuityFormula.dirty || gratuityFormula.touched)}">
+    <div *ngIf="gratuityFormula.invalid && (gratuityFormula.dirty || gratuityFormula.touched)" class="labelfont">
+
+      <div class="p-error" *ngIf="gratuityFormula.errors?.['required']">
+        Gratuity Formula is required.
+      </div>
+    </div>
+    </div>
+            </div>
+      <div class="form-group row pull-right p-mt-4">
+        <div class="col-sm-12">
+          <p-button icon="pi pi-check" type="submit"   label="Save" Class="p-button-text p-button-sm p-button-success" [disabled]="!gratuitysettingForm.valid"></p-button>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- page end-->

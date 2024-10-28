@@ -1,0 +1,495 @@
+<section class="card">
+    <header class="card-header">
+        <div class="row">
+            <div class="col-xl-10">
+                <h2>{{labelName}} Machine</h2>
+            </div>
+        </div>
+    </header>
+    <div class="card-body" *ngIf="machine != undefined">
+        <form #machineForm="ngForm" name="form" (submit)="submitMachineData(machineForm)">
+            <p-accordion>
+                <p-accordionTab header="Basic Information" [selected]="true">
+                <div class="form-group row">
+                    <input pinput [(ngModel)]= "machine.machineID" class="form-control" type="text" autocomplete="off" name="machineID" id="machineID" hidden="true">
+                    <div class="col-sm-3">
+                        <label class="labelfont">Machine Code <span class="text-danger">*</span></label>
+                        <input pinput [(ngModel)]= "machine.machineCode" class="form-control" required type="text" autocomplete="off" name="machineCode" id="machineCode" #machineCode="ngModel"
+                        [ngClass]="{'is-invalid': machineCode.invalid && (machineCode.dirty || machineCode.touched)}">
+                        <div *ngIf="machineCode.invalid && (machineCode.dirty || machineCode.touched)" class="labelfont">
+                            <div  class="p-error" *ngIf="machineCode.errors?.['required']">
+                                Machine Code is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Machine Name <span class="text-danger">*</span></label>
+                        <input pinput [(ngModel)]= "machine.machineName" class="form-control" required type="text" autocomplete="off" name="machineName" id="machineName" #machineName="ngModel"
+                        [ngClass]="{'is-invalid': machineName.invalid && (machineName.dirty || machineName.touched)}">
+                        <div *ngIf="machineName.invalid && (machineName.dirty || machineName.touched)" class="labelfont">
+                            <div  class="p-error" *ngIf="machineName.errors?.['required']">
+                                Machine Name is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Machine Model <span class="text-danger">*</span></label>
+                        <p-dropdown  [options]="machineModels" optionLabel="machineModelName"  optionValue="machineModelID" [(ngModel)]= "machine.machineModelID"   class=" shadow-none" #machineModelID="ngModel"
+                        [ngClass]="{'is-invalid': machineModelID.invalid && (machineModelID.dirty || machineModelID.touched)}"  name="machineModelID" id="machineModelID">
+                        </p-dropdown>
+                        <div *ngIf="machineModelID.invalid && (machineModelID.dirty || machineModelID.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="machineModelID.errors?.['required']">
+                                Machine Model is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Serial Number<span class="text-danger">*</span></label>
+                        <input pinput [(ngModel)]= "machine.serialNumber" [readonly]="isUpdateMode" required  class="form-control"  type="text"
+                            autocomplete="off" name="serialNumber" id="serialNumber" #serialNumber="ngModel">
+                        
+                        <div *ngIf="serialNumber.invalid && (serialNumber.dirty || serialNumber.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="serialNumber.errors?.['required']">
+                                Serial Number is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Branch(Location)</label>
+                        <p-dropdown  [options]="branchList" optionLabel="branchCode"  optionValue="branchID" [(ngModel)]= "machine.branchID"   class="shadow-none" #branchID="ngModel"
+                         name="branchID" id="branchID">
+                        </p-dropdown>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Machine Type <span class="text-danger">*</span></label>
+                        <p-dropdown  [options]="machineTypes" optionLabel="machineTypeName"  optionValue="machineTypeID" [(ngModel)]= "machine.machineTypeID"   class=" shadow-none" #machineTypeID="ngModel"
+                        [ngClass]="{'is-invalid': machineTypeID.invalid && (machineTypeID.dirty || machineTypeID.touched)}"  name="machineTypeID" id="machineTypeID">
+                        </p-dropdown>
+                        <div *ngIf="machineTypeID.invalid && (machineTypeID.dirty || machineTypeID.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="machineTypeID.errors?.['required']">
+                                Machine Type is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Machine Position <span class="text-danger">*</span></label>
+                        <p-dropdown  [options]="machinePositions" optionLabel="machinePositionText"  optionValue="machinePositionValue" [(ngModel)]= "machine.machinePosition"   class=" shadow-none" #machinePosition="ngModel"
+                        [ngClass]="{'is-invalid': machinePosition.invalid && (machinePosition.dirty || machinePosition.touched)}"  name="machinePosition" id="machinePosition">
+                        </p-dropdown>
+                        <div *ngIf="machinePosition.invalid && (machinePosition.dirty || machinePosition.touched)" class="labelfont">
+                            <div  class="p-error" *ngIf="machinePosition.errors?.['required']">
+                                Machine Position is required.
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="col-sm-3">
+                        <label class="labelfont">Finger Type <span class="text-danger">*</span></label>
+                        <p-dropdown  [options]="fingerTypes" optionLabel="fingerTypeText"  optionValue="fingerTypeValue" [(ngModel)]= "machine.fingerType"   class=" shadow-none" #fingerType="ngModel"
+                        [ngClass]="{'is-invalid': fingerType.invalid && (fingerType.dirty || fingerType.touched)}"  name="fingerType" id="fingerType">
+                        </p-dropdown>
+                        <div *ngIf="fingerType.invalid && (fingerType.dirty || fingerType.touched)" class="labelfont">
+                            <div  class="p-error" *ngIf="fingerType.errors?.['required']">
+                                Finger Type is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Last Download Flag</label>
+                        
+                        <input pinput [(ngModel)]= "machine.lastDownloadFlag" class="form-control"  type="text" autocomplete="off" name="lastDownloadFlag" id="lastDownloadFlag" #lastDownloadFlag="ngModel">
+                    
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Purging Days</label>
+                        <input pinput [(ngModel)]= "machine.purgingDays" class="form-control"  type="text"
+                        autocomplete="off" name="purgingDays" id="purgingDays" #purgingDays="ngModel">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Machine in Client Mode? <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.clientMode" type="checkbox"  name="clientMode" id="clientMode"  #clientMode="ngModel"
+                                [ngClass]="{'is-invalid': clientMode.invalid && (clientMode.dirty || clientMode.touched)}">
+                        <div *ngIf="clientMode.invalid && (clientMode.dirty || clientMode.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="clientMode.errors?.['required']">
+                                Client Mode is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <input [(ngModel)]="machine.temperature" type="checkbox" name="temperature" id="temperature"   #temperature="ngModel"
+                        [ngClass]="{'is-invalid': temperature.invalid && (temperature.dirty || temperature.touched)}">
+                        <label class="labelfont">Is Temperature</label>
+                        <div *ngIf="temperature.invalid && (temperature.dirty || temperature.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="temperature.errors?.['required']">
+                                Temperature is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-accordionTab>
+            <p-accordionTab header="Machine Settings(Check As Applicable)" [selected]="true">
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label class="labelfont">Emp Type <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.empType" type="checkbox" name="empType" id="empType"   #empType="ngModel"
+                        [ngClass]="{'is-invalid': empType.invalid && (empType.dirty || empType.touched)}">
+                        <div *ngIf="empType.invalid && (empType.dirty || empType.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="empType.errors?.['required']">
+                                Emp Type is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Name <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.name" type="checkbox" name="name" id="name"   #name="ngModel"
+                        [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}">
+                        <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="name.errors?.['required']">
+                                Name is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Card Number <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.cardNumber" type="checkbox" name="cardNumber"  id="cardNumber"  #cardNumber="ngModel"
+                        [ngClass]="{'is-invalid': cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)}">
+                        <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="cardNumber.errors?.['required']">
+                                Card Number is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">PIN <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.pin" type="checkbox" name="pin" id="pin"  #pin="ngModel" 
+                        [ngClass]="{'is-invalid': pin.invalid && (pin.dirty || pin.touched)}">
+                        <div *ngIf="pin.invalid && (pin.dirty || pin.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="pin.errors?.['required']">
+                                PIN is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Finger <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.finger" type="checkbox" name="finger" id="finger"   #finger="ngModel"
+                        [ngClass]="{'is-invalid': finger.invalid && (finger.dirty || finger.touched)}">
+                        <div *ngIf="finger.invalid && (finger.dirty || finger.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="finger.errors?.['required']">
+                                Finger is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Face <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.face" type="checkbox" name="face" id="face"  #face="ngModel" 
+                        [ngClass]="{'is-invalid': face.invalid && (face.dirty || face.touched)}">
+                        <div *ngIf="face.invalid && (face.dirty || face.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="face.errors?.['required']">
+                                Face is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">SNR <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.snr" type="checkbox" name="snr" id="snr"  #snr="ngModel" 
+                        [ngClass]="{'is-invalid': snr.invalid && (snr.dirty || snr.touched)}">
+                        <div *ngIf="snr.invalid && (snr.dirty || snr.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="snr.errors?.['required']">
+                                SNR is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Check Stats <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.checkStats" type="checkbox" name="checkStats" id="checkStats"   #checkStats="ngModel"
+                        [ngClass]="{'is-invalid': checkStats.invalid && (checkStats.dirty || checkStats.touched)}">
+                        <div *ngIf="checkStats.invalid && (checkStats.dirty || checkStats.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="checkStats.errors?.['required']">
+                                Check Stats is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Data Download <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.dataDownload" type="checkbox" name="dataDownload" id="dataDownload"   #dataDownload="ngModel"
+                        [ngClass]="{'is-invalid': dataDownload.invalid && (dataDownload.dirty || dataDownload.touched)}">
+                        <div *ngIf="dataDownload.invalid && (dataDownload.dirty || dataDownload.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="dataDownload.errors?.['required']">
+                                Data Download is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Purging <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.purging" type="checkbox" name="purging" id="purging"   #purging="ngModel"
+                        [ngClass]="{'is-invalid': purging.invalid && (purging.dirty || purging.touched)}">
+                        <div *ngIf="purging.invalid && (purging.dirty || purging.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="purging.errors?.['required']">
+                                Purging is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Masking <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.masking" type="checkbox" name="masking" id="masking"   #masking="ngModel"
+                        [ngClass]="{'is-invalid': masking.invalid && (masking.dirty || masking.touched)}">
+                        <div *ngIf="masking.invalid && (masking.dirty || masking.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="masking.errors?.['required']">
+                                Masking is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Add-in Service <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.addinService" type="checkbox" name="addinService" id="addinService"   #addinService="ngModel"
+                        [ngClass]="{'is-invalid': addinService.invalid && (addinService.dirty || addinService.touched)}">
+                        <div *ngIf="addinService.invalid && (addinService.dirty || addinService.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="addinService.errors?.['required']">
+                                Add in Service is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-accordionTab>
+            <p-accordionTab header="Connectivity Detail" [selected]="true">
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label class="labelfont">IP Address</label>
+                        <input pinput [(ngModel)]= "machine.ipAddress" class="form-control"  type="text" autocomplete="off"
+                        name="ipAddress" id="ipAddress" #ipAddress="ngModel">
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Subnet Mask</label>
+                        <input pinput [(ngModel)]= "machine.subnetmask" class="form-control"  type="text" autocomplete="off" name="subnetmask" id="subnetmask" #subnetmask="ngModel">
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Gateway</label>
+                        <input pinput [(ngModel)]= "machine.gateway" class="form-control"  type="text" autocomplete="off" name="gateway" id="gateway" #gateway="ngModel"
+                        >
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Port Number</label>
+                        <input pinput [(ngModel)]= "machine.port" class="form-control" maxlength="3"  type="text" autocomplete="off" name="port" id="port" #port="ngModel"
+                        >
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Mac Address</label>
+                        <input pinput [(ngModel)]= "machine.macAddress" class="form-control"  type="text" autocomplete="off" name="macAddress" id="macAddress" #macAddress="ngModel"
+                        >
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">DNS Server</label>
+                        <input pinput [(ngModel)]= "machine.dnsServer" class="form-control" type="text" autocomplete="off" name="dnsServer" id="dnsServer" #dnsServer="ngModel"
+                        >
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Admin Password</label>
+                        <input pinput [(ngModel)]= "machine.adminPassoword" class="form-control"  type="Password" autocomplete="off" name="adminPassoword" id="adminPassoword" #adminPassoword="ngModel"
+                        >
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Super Password</label>
+                        <input pinput [(ngModel)]= "machine.superPassoword" class="form-control"  type="Password" autocomplete="off" name="superPassoword" id="superPassoword" #superPassoword="ngModel"
+                        >
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Network Mode Type<span class="text-danger">*</span></label>
+                        <p-dropdown  [options]="networkModeTypes" optionLabel="networkModeTypeName"  optionValue="networkModeTypeID" [(ngModel)]= "machine.networkModeTypeID"   class=" shadow-none" #networkModeTypeID="ngModel"
+                        [ngClass]="{'is-invalid': networkModeTypeID.invalid && (networkModeTypeID.dirty || networkModeTypeID.touched)}"  name="networkModeTypeID" id="networkModeTypeID">
+                        </p-dropdown>
+                        <div *ngIf="networkModeTypeID.invalid && (networkModeTypeID.dirty || networkModeTypeID.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="networkModeTypeID.errors?.['required']">
+                                Network Mode Type is required.
+                            </div>
+                    </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Connectivity Type <span class="text-danger">*</span></label>
+                        <p-dropdown  [options]="connectivityTypes" optionLabel="connectivityTypeName"  optionValue="connectivityTypeID" [(ngModel)]= "machine.connectivityType"   class=" shadow-none" #connectivityType="ngModel"
+                        [ngClass]="{'is-invalid': connectivityType.invalid && (connectivityType.dirty || connectivityType.touched)}"  name="connectivityType" id="connectivityType">
+                        </p-dropdown>
+                        <div *ngIf="connectivityType.invalid && (connectivityType.dirty || connectivityType.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="connectivityType.errors?.['required']">
+                                Connectivity Type is required.
+                            </div>
+                    </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Connectivity Interval <span class="text-danger">*</span></label>
+                        <input pinput [(ngModel)]= "machine.connectivityInterval" class="form-control"  type="number" autocomplete="off" name="connectivityInterval" id="connectivityInterval" #connectivityInterval="ngModel"
+                        >
+                        <div *ngIf="connectivityInterval.invalid && (connectivityInterval.dirty || connectivityInterval.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="connectivityInterval.errors?.['required']">
+                                Connectivity Interval is required.
+                            </div>
+                    </div>
+                    </div>
+                </div>
+            </p-accordionTab>
+            <p-accordionTab header="Option Setting" [selected]="true">
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label class="labelfont">Hold</label>
+                        <input [(ngModel)]="machine.hold" type="checkbox" name="hold" id="hold"  #hold="ngModel"
+                        >
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Registered <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.registerd" type="checkbox"  name="registerd" id="registerd"  #registerd="ngModel"
+                                [ngClass]="{'is-invalid': registerd.invalid && (registerd.dirty || registerd.touched)}">
+                        <div *ngIf="registerd.invalid && (registerd.dirty || registerd.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="registerd.errors?.['required']">
+                                Registered is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Printer Status</label>
+                        <input [(ngModel)]="machine.printerStatus" type="checkbox" name="printerStatus" id="printerStatus"  #printerStatus="ngModel"
+                        >
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Machine Validity <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.machineValidity" type="checkbox" name="machineValidity"  id="machineValidity"  #machineValidity="ngModel"
+                        [ngClass]="{'is-invalid': machineValidity.invalid && (machineValidity.dirty || machineValidity.touched)}">
+                        <div *ngIf="machineValidity.invalid && (machineValidity.dirty || machineValidity.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="machineValidity.errors?.['required']">
+                                Machine Validity is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Machine Active <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.machineActive" type="checkbox" name="machineActive"  id="machineActive"  #machineActive="ngModel"
+                        [ngClass]="{'is-invalid': machineActive.invalid && (machineActive.dirty || machineActive.touched)}">
+                        <div *ngIf="machineActive.invalid && (machineActive.dirty || machineActive.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="machineActive.errors?.['required']">
+                                Machine Active is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="labelfont">Always Connected <span class="text-danger">*</span></label>
+                        <input [(ngModel)]="machine.alwaysConnected" type="checkbox" name="alwaysConnected"  id="alwaysConnected"  #alwaysConnected="ngModel"
+                        [ngClass]="{'is-invalid': alwaysConnected.invalid && (alwaysConnected.dirty || alwaysConnected.touched)}">
+                        <div *ngIf="alwaysConnected.invalid && (alwaysConnected.dirty || alwaysConnected.touched)"
+                        class="labelfont">
+                            <div  class="p-error" *ngIf="alwaysConnected.errors?.['required']">
+                                Always Connected is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-accordionTab>
+            <p-accordionTab header="Machine Internal Info" [selected]="true" *ngIf="isUpdateMode">
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label class="labelfont">Last Download Time </label>
+                        <input pinput [(ngModel)]="machine.lastDownloadTime" readonly class="form-control" type="text" autocomplete="off"
+                        name="lastDownloadTime" id="lastDownloadTime" >
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Connect Time</label>
+                        <input pinput [(ngModel)]="machine.connectTime" readonly class="form-control" type="text" autocomplete="off"
+                        name="connectTime" id="connectTime" >
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Disconnect Time</label>
+                        <input pinput [(ngModel)]="machine.disconnectTime" readonly class="form-control" type="text" autocomplete="off"
+                        name="disconnectTime" id="disconnectTime" >
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Machine Datetime</label>
+                        <input pinput [(ngModel)]="machine.machineDateTime" readonly class="form-control" type="text" autocomplete="off"
+                        name="machineDateTime" id="machineDateTime">
+                    </div>
+                <!-- </div>
+                <div class="form-group row" *ngIf="isUpdateMode"> -->
+                    
+                    <div class="col-sm-3">
+                        <label class="labelfont">Memory Detail</label>
+                    
+                        <input pinput [(ngModel)]= "machine.memoryDetail" readonly class="form-control"  type="text"
+                        autocomplete="off" name="memoryDetail" id="memoryDetail" #memoryDetail="ngModel">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Total Memory</label>
+                    
+                        <input pinput [(ngModel)]= "machine.totalMemory" readonly class="form-control"  type="text"
+                        autocomplete="off" name="totalMemory" id="totalMemory" #totalMemory="ngModel">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Free Memory</label>
+                    
+                        <input pinput [(ngModel)]= "machine.freeMemory" readonly class="form-control"  type="text"
+                        autocomplete="off" name="freeMemory" id="freeMemory" #freeMemory="ngModel">
+                    </div>
+                <!-- </div>
+                <div class="form-group row" *ngIf="isUpdateMode">   -->
+                    
+                    <div class="col-sm-3">
+                        <label class="labelfont">Banner</label>
+                        <input pinput [(ngModel)]= "machine.banner" readonly class="form-control"  type="text"
+                        autocomplete="off" name="banner" id="banner" #banner="ngModel">
+                    
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">SDK Version</label>
+                    
+                        <input pinput [(ngModel)]= "machine.sdkVersion" readonly class="form-control"  type="text"
+                        autocomplete="off" name="sdkVersion" id="sdkVersion" #sdkVersion="ngModel">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Software Version</label>
+                    
+                        <input pinput [(ngModel)]= "machine.softwareVersion" readonly class="form-control"  type="text"
+                        autocomplete="off" name="softwareVersion" id="softwareVersion" #softwareVersion="ngModel">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Bin File Version</label>
+                    
+                        <input pinput [(ngModel)]= "machine.binFileVersion" readonly class="form-control"  type="text"
+                        autocomplete="off" name="binFileVersion" id="binFileVersion" #binFileVersion="ngModel">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="labelfont">Hardware Version</label>
+                        
+                        <input pinput [(ngModel)]= "machine.hardwareVersion" readonly class="form-control"  type="text"
+                        autocomplete="off" name="hardwareVersion" id="hardwareVersion" #hardwareVersion="ngModel">
+                    </div>
+                </div>
+            </p-accordionTab>
+            
+        </p-accordion>
+            <div class="form-group row pull-right p-mt-4">
+                <div class="col-sm-12">
+                  <p-button icon="pi pi-check" type="submit"   [label]="labelName" Class="p-button-text p-button-sm p-button-success" [disabled]="!machineForm.valid"></p-button>
+                &nbsp;&nbsp;   <p-button icon="pi pi-times" class="p-button-sm "  label="Cancel" styleClass="p-button-secondary" (click)="goBack()"></p-button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

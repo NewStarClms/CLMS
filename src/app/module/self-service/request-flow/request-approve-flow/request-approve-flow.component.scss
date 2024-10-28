@@ -1,0 +1,179 @@
+.text-xs{
+    color:#ffffff;
+}
+.labelfont{
+  font-weight: bold !important;
+}
+.card-body {
+    padding: 0.5rem 1rem 0.5rem 1rem;
+}
+p.inner-text {
+    font-size: 9px;
+    text-transform: initial;
+    line-height: 2px;
+}
+
+// scrolling
+.ps-content{
+    // overflow-y: scroll;
+    height: 30rem;
+}
+
+@media screen and (max-width: 1920px) {
+  body {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 1440px) {
+  body {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 1366px) {
+  body {
+    font-size: 13.28px;
+  }
+}
+@media screen and (max-width: 1280px) {
+  body {
+    font-size: 12.44px;
+  }
+}
+.report-wrapper .clsReport .header-section {
+  padding-left: 32px;
+  padding-top: 16px;
+  padding-right: 32px;
+  padding-bottom: 16px;
+  background-color: #ffffff;
+}
+
+/**************** slide css *********************/
+.clsSlidebar1 {
+  /* // padding: 20px 0px 20px 24px;
+  // display: block;
+  // position: relative;
+  // top: 82px; */
+  padding: 20px 0px 20px 24px;
+  display: table;
+  position: relative;
+  width: 100%;
+}
+
+.clscarousel1 .material-icons {
+  position: absolute;
+  margin-left: -37px;
+  margin-top: 12px;
+}
+
+#slidebarmenu1 {
+  width: 30%;
+  /* height: 100vh; */
+  background-color: black;
+  position: relative;
+  background-color: #ffffff;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  /* // float: left;    */
+  box-shadow: 0 2px 4px 0 rgba(48, 56, 97, 0.2);
+  overflow: hidden;
+  display: table-cell;
+  vertical-align: top;
+}
+#slidebarmenu{
+    width: 15rem;
+    margin: 2vh 2vh 2vh 2vh;
+    background-color: aliceblue;
+}
+
+#slidebarmenu ul {
+  margin: 0 0 0 0;
+  padding: 0;
+}
+
+#slidebarmenu ul li a {
+  padding: 0;
+  display: block;
+  height: 34px;
+  padding: 9px 20px 14px 11px;
+}
+
+#slidebarmenu ul li {
+  list-style: none;
+  margin: 0 0 0 0;
+}
+
+.active, #slidebarmenu ul li a:hover {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #fff !important;
+  text-decoration: none;
+  background-color: #4c5260;
+  cursor: pointer;
+}
+
+#slidebarmenu ul li.active a, #slidebarmenu ul li:hover a {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #fff !important;
+  text-decoration: none;
+  background-color: #4c5260;
+  cursor: pointer;
+}
+
+#slidebarmenu ul li a {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 12px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #262e3e;
+}
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container{
+  width: 30rem !important;
+}
+.datetypeDateinput{
+  width: 36%;
+  margin-right: 10px;
+ border: 1px solid #ced4da;
+  line-height: 2;
+  border-radius: 3px;
+  color:#75777a;
+  height: 30px;
+  font-size: 13px;
+}
+.p-button {
+  height: 30px !important;
+  margin-bottom: 5px;
+}
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1rem;
+  color: #495057;
+  padding: 0;
+  margin: 0;
+  height: 30px !important;
+  padding: 1px 1px 4px 8px !important;
+  font-size: 13px !important;
+}
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-token {
+  padding: 0.25rem 0.5rem !important;
+  margin-right: 0.5rem;
+  background: #E3F2FD;
+  color: #495057;
+  border-radius: 3px;
+  height: 21px !important;
+  margin-left: 3px !important;
+  margin-bottom: 8px !important;
+}
+.bg-blue {
+  background-color: #1a4866;
+  color: white;
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  line-height: 1.5 !important;
+  white-space: initial !important;
+  // padding: .5em !important;
+}

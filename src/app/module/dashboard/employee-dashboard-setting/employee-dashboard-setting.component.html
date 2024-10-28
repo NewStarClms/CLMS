@@ -1,0 +1,15 @@
+<div cdkDropList class="setting-list" (cdkDropListDropped)="drop($event)" [cdkDropListData]="employeeDashboardSettings">  
+	<div class="setting-box" *ngFor="let setting of employeeDashboardSettings, index as i" cdkDrag>
+    <div class="drag-index">{{i+1}}</div>
+		<div class="w-100 drag-content">
+       {{setting.settingName}}
+    </div>
+    <div class="drag-content">
+      <input type="checkbox" name="active" id="active" [checked]="setting.active" [(ngModel)]="setting.active">
+    </div> 
+  </div>
+  <div class="float-right">
+    <p-button icon="pi pi-check" type="submit"  label="Save Settings"  (click)="SaveUserSetting();" Class="p-button-text p-button-sm p-button-primary"></p-button>
+    <p-button icon="pi pi-times" class="p-button-sm "data-dismiss="modal" (click)="CancelUserSettingDialog();" label="Cancel" styleClass="p-button-secondary"></p-button>
+    </div>
+</div>

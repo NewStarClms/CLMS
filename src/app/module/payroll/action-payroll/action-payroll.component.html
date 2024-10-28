@@ -1,0 +1,93 @@
+<div class="card-body">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="toggle">
+        <div *ngFor="let menu of menuItems">
+          <input type="radio" name="sizeBy" class="useractionButton " (change)="onChange(menu.menuId)"  [value]="menu.menuId" [id]="menu.menuId" />
+         <label [for]="menu.menuId" class="useractionButtonLabel cursor-pointer">{{menu.menuName}}</label> 
+      </div>
+    </div>
+   </div>
+  </div>
+  <div class="row" *ngIf="showAttendanceMenu">
+    <div class="col-lg-12">
+      <div class="form-group row">
+        <div *ngFor="let rights of currentMenuRights; let i = index" class="col-md-3 useractionSection"  (click)="menuClicked(rights.menuRightID)">
+          <div  class="useractionMenu cursor-pointer {{backgroundColor[i]}}">
+            <a  class="form-control" class="useractionMenuName">{{rights.displayName}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="showingSingleEmployeeAction">
+    <div class="col-md-3">
+      <p-dropdown [options]="financialYearList" placeholder="Select FinancialYear" [(ngModel)]="fYear" optionLabel="key"
+        optionValue="value" class="form-select " #financialYear="ngModel" name="financialYear" id="financialYear">
+      </p-dropdown>
+    </div>
+    <div class="col-md-6">
+      <app-employee-search (onSearchEvent)="onGetEmployeeDetail($event)"></app-employee-search>
+    </div>
+    <div class="col-md-3">
+      <p-button type="button" (click)="getRequestDetail()" label="Get Data"
+        Class="p-button-text p-button-sm p-button-success"></p-button>
+    </div>
+  </div>
+  <p-divider></p-divider>
+  <div id="showContent" *ngIf="showStaticsData">
+    <div class="form-group row" *ngFor="let item of employeeYearData | pairs">
+      <div class="col-md-6">
+        <p-fieldset *ngIf="item[0]?.process" [legend]="item[0]?.process">
+          <ul>
+            <li *ngFor="let msg of item[0]?.employeeYearlyStatistics" (click)="getSummaryDetail(item[0].process)">{{ msg?.massgaeText
+              }}</li>
+          </ul>
+        </p-fieldset>
+      </div>
+      <div class="col-md-6">
+        <p-fieldset *ngIf="item[1]?.process" [legend]="item[1]?.process">
+          <ul>
+            <li *ngFor="let msg of item[1]?.employeeYearlyStatistics" (click)="getSummaryDetail(item[1].process)">{{ msg?.massgaeText }}</li>
+          </ul>
+        </p-fieldset>
+      </div>
+    </div>
+  </div>
+  <div id="showSummary" *ngIf="showSummary && !showStaticsData && employeeId && fYear">
+    <app-salary-summary  *ngIf="showSummary && employeeId && fYear" [employeeId]="employeeId" [financialYear]="fYear" (close)="closeSummary()"></app-salary-summary>
+  </div>
+  <div id="showSummary" *ngIf="showloanSummary && !showStaticsData && employeeId">
+    <app-loan-summary *ngIf="showloanSummary && employeeId"[employeeId]="employeeId" (close)="closeSummary()"></app-loan-summary>
+  </div>
+</div>
+<div *ngIf="showBonusProcess">
+  <app-bonus-process (close)="closeSummary()"></app-bonus-process>
+</div>
+<div *ngIf="requestFrmDiv">
+  <p-dialog header="Loan Request" [(visible)]="displayRequestFrm" [modal]="true" id="displayRequest" [draggable]="false"
+    [resizable]="false" (onHide)="closeDailog()" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '73vw',height:'40vw'}">
+    <div class="request-breadcrumb"><span> {{showEmployeeDepDesiName}}</span></div>
+    <app-loan-request (closeDialog)="closeDailog()" *ngIf="displayRequestFrm && isrequestLoan" [employeeID]="employeeId"></app-loan-request>
+</p-dialog>
+</div>
+<div *ngIf="paidDaysrequestFrmDiv">
+  <p-dialog header="Paid Days Detail" [(visible)]="displayPaidDaysRequestFrm" [modal]="true" id="displayPaidDaysRequestFrm" [draggable]="false"
+    [resizable]="false" (onHide)="closeDailog()" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '73vw',height:'40vw'}">
+    <div class="request-breadcrumb"><span> {{showEmployeeDepDesiName}}</span></div>
+    <app-paid-days-request (closediv)="closeDailog()" *ngIf="displayPaidDaysRequestFrm && isrequestPaidDays" [employeeID]="employeeId"></app-paid-days-request>
+</p-dialog>
+</div>
+<div *ngIf="encashPaymentrequestFrmDiv">
+  <p-dialog header="Encash Payment" [(visible)]="displayEncashPaymentRequestFrm" [modal]="true" id="displayPaidDaysRequestFrm" [draggable]="false"
+    [resizable]="false" (onHide)="closeDailog()" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '73vw',height:'40vw'}">
+    <app-leave-encashment-request (closediv)="closeDailog()" *ngIf="displayEncashPaymentRequestFrm && isrequestEncashPayment"></app-leave-encashment-request>
+</p-dialog>
+</div>
+<div *ngIf="variablePayFrmDiv">
+  <p-dialog header="Variable Salary" [(visible)]="displayVariablePayFrmDiv" [modal]="true" id="displayVariablePayFrmDiv" [draggable]="false"
+    [resizable]="false" (onHide)="closeDailog()" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '73vw',height:'40vw'}">
+    <div class="request-breadcrumb"><span> {{showEmployeeDepDesiName}}</span></div>
+    <app-variable-pay (closediv)="closeDailog()" *ngIf="displayVariablePayFrmDiv && isVariablePayment"  [employeeID]="employeeId"></app-variable-pay>
+</p-dialog>
+</div>

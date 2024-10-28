@@ -1,0 +1,237 @@
+
+<section class="card">
+    <header class="card-header">
+      <h2>Bonus Setting</h2>
+  </header>
+  <div class="group-right">
+    <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"class="p-button-rounded p-button-success"></button>
+  
+  </div>
+    <div class="card-body">
+      <app-payroll-grid-rendere
+      [gridRowData]="rowData"
+      [gridColData]="columnDefs"
+      (onCellClickEvent)="onCellClicked($event)"
+      ></app-payroll-grid-rendere>
+    </div>
+  </section>
+<p-dialog header="Bonus Setting" [(visible)]="displayBonus" [modal]="true"
+[draggable]="false" [resizable]="false" (onHide)="CancelBonusSettingData()"  [transitionOptions]="'0ms'"position="top-right" [style]="{width: '70vw',height:'60vw'}" >
+    <form #BonusSettingForm = "ngForm" (submit)="saveBonusSetting()">
+      <div class="form-group row">
+        <div class="col-lg-4">
+          <label class="labelfont">Bonus Setup Name<span class="text-danger">*</span></label>
+          
+          <input pinput [(ngModel)]="bonusSettingInfo.bonusSettingName" class="form-control" type="text"
+    autocomplete="off" required name="bonusSettingName" id="bonusSettingName" 
+     #bonusSettingName="ngModel"
+    [ngClass]="{'is-invalid': bonusSettingName.invalid && (bonusSettingName.dirty || bonusSettingName.touched)}">
+
+  <div *ngIf="bonusSettingName.invalid && (bonusSettingName.dirty || bonusSettingName.touched)" class="labelfont">
+
+    <div class="p-error" *ngIf="bonusSettingName.errors?.['required']">
+      Bonus Setup Name is required.
+    </div>
+  </div>
+        </div>
+        <div class="col-lg-2">
+          <label class="labelfont">Bonus On Which<span class="text-danger">*</span></label>
+          <p-dropdown [options]="bonusOnWhichList" [(ngModel)]="bonusSettingInfo.bonusOnWhich" optionLabel="key" optionValue="value"
+          class="" #bonusOnWhich="ngModel" [required]="true"
+          [ngClass]="{'is-invalid': bonusOnWhich.invalid && (bonusOnWhich.dirty || bonusOnWhich.touched)}" name="bonusOnWhich" id="bonusOnWhich"></p-dropdown>
+        <div *ngIf="bonusOnWhich.invalid && (bonusOnWhich.dirty || bonusOnWhich.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="bonusOnWhich.errors?.['required']">
+          Bonus On Which is required.
+          </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Min Days For Bonus<span class="text-danger">*</span></label>
+          <input pinput [(ngModel)]="bonusSettingInfo.minimumDaysForBonus" class="form-control" type="text"
+          autocomplete="off" required name="minimumDaysForBonus" id="minimumDaysForBonus" 
+          #minimumDaysForBonus="ngModel"
+          [ngClass]="{'is-invalid': minimumDaysForBonus.invalid && (minimumDaysForBonus.dirty || minimumDaysForBonus.touched)}">
+
+        <div *ngIf="minimumDaysForBonus.invalid && (minimumDaysForBonus.dirty || minimumDaysForBonus.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="minimumDaysForBonus.errors?.['required']">
+            Min Days For Bonus is required.
+          </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Prorate On Paid Days<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="bonusSettingInfo.prorateOnPaidDays" 
+        optionLabel="label" optionValue="value" #prorateOnPaidDays="ngModel"
+        [ngClass]="{'is-invalid': prorateOnPaidDays.invalid && (prorateOnPaidDays.dirty || prorateOnPaidDays.touched)}" 
+        name="prorateOnPaidDays" id="prorateOnPaidDays" ></p-selectButton>
+          <div *ngIf="prorateOnPaidDays.invalid && (prorateOnPaidDays.dirty || prorateOnPaidDays.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="prorateOnPaidDays.errors?.['required']">
+              Prorate On Paid Days is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-2">
+          <label class="labelfont">Bonus Percentage<span class="text-danger">*</span></label>
+          <input pinput [(ngModel)]="bonusSettingInfo.bonusPercentage" class="form-control" type="text"
+            autocomplete="off" required name="bonusPercentage" id="bonusPercentage" 
+            #bonusPercentage="ngModel" (keypress)="keyPressNumbers($event)"
+            [ngClass]="{'is-invalid': bonusPercentage.invalid && (bonusPercentage.dirty || bonusPercentage.touched)}">
+
+          <div *ngIf="bonusPercentage.invalid && (bonusPercentage.dirty || bonusPercentage.touched)" class="labelfont">
+
+            <div class="p-error" *ngIf="bonusPercentage.errors?.['required']">
+              Bonus Percentage is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Bonus Amount Limit<span class="text-danger">*</span></label>
+          <input pinput [(ngModel)]="bonusSettingInfo.bonusAmountLimit" class="form-control" type="text"
+    autocomplete="off" required name="bonusAmountLimit" id="bonusAmountLimit" 
+     #bonusAmountLimit="ngModel" (keypress)="keyPressNumbers($event)"
+    [ngClass]="{'is-invalid': bonusAmountLimit.invalid && (bonusAmountLimit.dirty || bonusAmountLimit.touched)}">
+
+  <div *ngIf="bonusAmountLimit.invalid && (bonusAmountLimit.dirty || bonusAmountLimit.touched)" class="labelfont">
+
+    <div class="p-error" *ngIf="bonusAmountLimit.errors?.['required']">
+      Bonus Amount Limit is required.
+    </div>
+  </div>
+        </div>
+        <div class="col-lg-2">
+          <label class="labelfont">Bonus On Arrear<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="bonusSettingInfo.bonusOnArrear" 
+        optionLabel="label" optionValue="value" #bonusOnArrear="ngModel"
+        [ngClass]="{'is-invalid': bonusOnArrear.invalid && (bonusOnArrear.dirty || bonusOnArrear.touched)}" 
+        name="bonusOnArrear" id="bonusOnArrear" ></p-selectButton>
+          <div *ngIf="bonusOnArrear.invalid && (bonusOnArrear.dirty || bonusOnArrear.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="bonusOnArrear.errors?.['required']">
+              Bonus On Arrear is required.
+            </div>
+          </div>
+      </div>
+      <div class="col-lg-2">
+        <label class="labelfont">Exgratia Allow<span class="text-danger">*</span></label>
+      <p-selectButton [options]="stateOptions"  [(ngModel)]="bonusSettingInfo.exgratiaAllow" 
+      optionLabel="label" optionValue="value" #exgratiaAllow="ngModel"
+      [ngClass]="{'is-invalid': exgratiaAllow.invalid && (exgratiaAllow.dirty || exgratiaAllow.touched)}" 
+      name="exgratiaAllow" id="exgratiaAllow" ></p-selectButton>
+        <div *ngIf="exgratiaAllow.invalid && (exgratiaAllow.dirty || exgratiaAllow.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="exgratiaAllow.errors?.['required']">
+            Exgratia Allow is required.
+          </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+      <label class="labelfont">Exgratia Amount Limit<span class="text-danger">*</span></label>
+      <input pinput [(ngModel)]="bonusSettingInfo.exgratiaAmountLimit" class="form-control" type="text"
+autocomplete="off" required name="exgratiaAmountLimit" id="exgratiaAmountLimit" 
+ #exgratiaAmountLimit="ngModel" (keypress)="keyPressNumbers($event)"
+[ngClass]="{'is-invalid': exgratiaAmountLimit.invalid && (exgratiaAmountLimit.dirty || exgratiaAmountLimit.touched)}">
+
+<div *ngIf="exgratiaAmountLimit.invalid && (exgratiaAmountLimit.dirty || exgratiaAmountLimit.touched)" class="labelfont">
+
+<div class="p-error" *ngIf="exgratiaAmountLimit.errors?.['required']">
+  Exgratia Amount Limit is required.
+</div>
+</div>
+</div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label class="labelfont">Remark</label>
+          <input pinput [(ngModel)]="bonusSettingInfo.remarks" class="form-control" type="text"
+        autocomplete="off"  name="remarks" id="remarks" 
+        #remarks="ngModel"
+        [ngClass]="{'is-invalid': remarks.invalid && (remarks.dirty || remarks.touched)}">
+        </div>
+      </div>
+        <div class="form-group row">
+        <input id="hdnbonusSlabCount" type="hidden" [(ngModel)]="hdnbonusSlabCount" name="hdnbonusSlabCount" value="{{hdnbonusSlabCount - 1}}" />
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-12 float-right">
+            <div class="float-right">
+              <p-button icon="pi pi-plus"  [disabled]="addbtndisabled" Class="p-button-success" (click)="addFiledData()" styleClass="mr1 p-button-success"  type="button" ></p-button>
+              <p-button icon="pi pi-minus" [disabled]="removebtndisabled" class="p-button-sm "  (click)="removeFiledData()" styleClass="p-button-danger" ></p-button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row" id="divSlabMain">
+          
+          <div class="col-lg-12 form-group row" *ngFor="let bonusslab of bonusslabList; let i = index" id="divbonusslab_{{i}}_Q">
+            <div class="col-lg-3">
+              <label class="labelfont">Ceiling From<span class="text-danger">*</span></label>
+              <input pinput [(ngModel)]="bonusslab.ceilingFrom" class="form-control" type="text"
+        autocomplete="off" required name="ceilingFrom{{i}}" id="ceilingFrom{{i}}" 
+         #ceilingFrom="ngModel" (keypress)="keyPressNumbers($event)"
+        [ngClass]="{'is-invalid': ceilingFrom.invalid && (ceilingFrom.dirty || ceilingFrom.touched)}">
+    
+      <div *ngIf="ceilingFrom.invalid && (ceilingFrom.dirty || ceilingFrom.touched)" class="labelfont">
+
+        <div class="p-error" *ngIf="ceilingFrom.errors?.['required']">
+          ceiling From is required.
+        </div>
+      </div>
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont">Ceiling To<span class="text-danger">*</span></label>
+              <input pinput [(ngModel)]="bonusslab.ceilingTo" class="form-control" type="text"
+        autocomplete="off" required name="ceilingTo{{i}}" id="ceilingTo{{i}}" 
+        #ceilingTo="ngModel" (keypress)="keyPressNumbers($event)"
+        [ngClass]="{'is-invalid': ceilingTo.invalid && (ceilingTo.dirty || ceilingTo.touched)}">
+
+      <div *ngIf="ceilingTo.invalid && (ceilingTo.dirty || ceilingTo.touched)" class="labelfont">
+
+        <div class="p-error" *ngIf="ceilingTo.errors?.['required']">
+          Ceiling To is required.
+        </div>
+      </div>
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont">Amount Calculation On<span class="text-danger">*</span></label>
+        <p-dropdown [options]="amountCalculatiOnList" [(ngModel)]="bonusslab.amountCalculatiOn" optionLabel="key" optionValue="value"
+        class="" #amountCalculatiOn="ngModel" [required]="true" (ngModelChange)="getamountcalculation(i,$event)"
+        [ngClass]="{'is-invalid': amountCalculatiOn.invalid && (amountCalculatiOn.dirty || amountCalculatiOn.touched)}" name="amountCalculatiOn{{i}}" id="amountCalculatiOn{{i}}"></p-dropdown>
+      <div *ngIf="amountCalculatiOn.invalid && (amountCalculatiOn.dirty || amountCalculatiOn.touched)" class="labelfont">
+  
+        <div class="p-error" *ngIf="amountCalculatiOn.errors?.['required']">
+         Amount Calculation On is required.
+        </div>
+      </div>
+            </div>
+            <div class="col-lg-3" id="fixedamountxt{{i}}">
+              <label class="labelfont">Fixed Amount<span class="text-danger">*</span></label>
+              <input pinput [(ngModel)]="bonusslab.fixedAmount" class="form-control" type="text"
+        autocomplete="off" required name="fixedAmount{{i}}" id="fixedAmount{{i}}" 
+         #fixedAmount="ngModel" (keypress)="keyPressNumbers($event)"
+        [ngClass]="{'is-invalid': fixedAmount.invalid && (fixedAmount.dirty || fixedAmount.touched)}">
+    
+      <div *ngIf="fixedAmount.invalid && (fixedAmount.dirty || fixedAmount.touched)" class="labelfont">
+
+        <div class="p-error" *ngIf="fixedAmount.errors?.['required']">
+          Fixed Amount is required.
+        </div>
+      </div>
+            </div>
+          </div>
+        </div>  
+        <div class="float-right">
+          <p-button icon="pi pi-check"  label="Save"  Class="p-button-text p-button-sm p-button-success" styleClass="mr1"  type="submit" [disabled]="!BonusSettingForm.valid"></p-button>
+          <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancelBonusSettingData()" styleClass="p-button-secondary"></p-button>
+        </div>
+        <br/><br/>
+        </form>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}"
+  rejectButtonStyleClass="p-button-text">
+
+</p-confirmDialog>

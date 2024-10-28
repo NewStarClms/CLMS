@@ -1,0 +1,58 @@
+  <div class="content" >
+    <div class="guestVisit" (click)="goToGuestEntry()" >Guest Visitor Entry</div>
+    <div class="container">
+    <div class="row">
+    <div class="col-md-6 sliderImagediv">
+    <!-- <img src="assets/img/login-bg.svg" alt="Image" class="img-fluid" data-pagespeed-url-hash="3023428066" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> -->
+    
+    <p-galleria [value]="images" panelWidth="400" panelHeight="220"
+    [autoPlay]="true" [circular]="true">
+        <ng-template pTemplate="item" let-item>
+                <img [src]="item.source" class="imagesSize"/>
+        </ng-template>
+    </p-galleria>
+    </div>
+    <div class="col-md-6 contents">
+    <div class="row justify-content-center">
+    <div class="col-md-8">
+    <div class="mb-4">
+    <h3>Sign In to <strong>Star CLMS</strong></h3>
+    <!-- <p class="mb-4">Star Link Communication Private Limited is one of the leading Indian manufacturers of Biometric Attendance and Access Control Systems. </p> -->
+    </div>
+    <form class="form-signin" (ngSubmit)="onSubmit(false)" #loginForm="ngForm" novalidate>
+        
+    <div class="form-group  first">
+    <label for="username">Username</label>
+    <input  id="username" [ngModelOptions]="{ standalone: true }" pInputText type="text"  class="form-control" [(ngModel)]="loginDetails.userName"   #uName="ngModel"/>
+          <div *ngIf="submitted && uName.errors" class="invalid-feedback">
+              <div *ngIf="uName.errors.required">Username is required</div>
+          </div>
+    </div>
+    <div class="form-group form-floating last mb-4">
+    <label for="password">Password</label>
+    <input  [ngModelOptions]="{ standalone: true }" type="password"  class="form-control" id="password" [(ngModel)]="loginDetails.password" #pName="ngModel" />
+    <div *ngIf="submitted && pName.errors" class="invalid-feedback">
+        <div *ngIf="pName.errors.required">Password is required</div>
+    </div>
+    </div>
+    <!-- <div class="form-group form-floating last mb-4">
+        <label for="password">Domain</label>
+        <input type="text" [(ngModel)]="loginDetails.clientCode"   class="form-control" #dName="ngModel" [ngModelOptions]="{ standalone: true }" />
+    <div *ngIf="submitted && dName.errors" class="invalid-feedback">
+        <div *ngIf="dName.errors.required">Client Code is required</div>
+    </div>
+        </div> -->
+    
+    <div class="d-flex align-items-center">
+    <span class="ml-auto"><a 
+       href="#" (click)="navigateForgotPwd()"  class="forgot-pass">Forgot Password</a></span>
+    </div>
+    <input type="submit" value="Log In" class="btn text-white btn-block btn-primary">
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- <app-guest-visitor></app-guest-visitor> -->

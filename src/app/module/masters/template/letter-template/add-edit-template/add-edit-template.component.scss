@@ -1,0 +1,51 @@
+.labelfont{
+    padding-left: 10px !important;
+}
+.tagclass{
+    background-color: #19b698;
+    color: white;
+    text-align: center;
+    margin-top: 2px !important;
+    margin-bottom: 0px !important;
+    font-size:14px;
+    padding-left: 15px !important;
+}
+.tagclass li{
+    list-style: none;
+    margin-top: 2px !important;
+    margin-bottom: 0px !important;
+}
+
+#pricing-table {
+    font-size:10px !important;
+        text-align: center;
+        width: 500px;
+        height: 645px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
+    
+      #pricing-table .plan {
+        margin-left: -45px;
+        text-shadow: 0 1px rgba(255,255,255,.8);        
+        background: #fff;      
+        // border: 1px solid #ddd;
+        color: #333;
+        padding: 20px;
+        width: 250px; /* plan width = 180 + 20 + 20 + 1 + 1 = 222px */      
+        float: left;
+        position: relative;
+      }
+      
+      .clear:before, .clear:after {
+        content:"";
+        display:table
+      }
+      
+      .clear:after {
+        clear:both
+      }
+        
+      .clear {
+        zoom:1
+      }

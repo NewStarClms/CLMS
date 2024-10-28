@@ -1,0 +1,61 @@
+<section class="card">
+    <header class="card-header">
+      <div class="group-left col-lg-12" style="float: left;">
+        <h2>Manage Employee's Salary Structure</h2>
+      </div>
+  </header>
+  <div class="card-body">
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <p-dropdown  [options]="assignStatusList" [(ngModel)]= "selectedAssignStatus" optionLabel="key" optionValue="value" >
+        </p-dropdown>
+      </div>
+      <div class="col-lg-6">
+           <p-autoComplete
+              [(ngModel)]="selectedSearchedEmployee"
+              [suggestions]="searchedEmployeeList"
+              (completeMethod)="loadAutoComplete($event)"
+              [forceSelection]="true"
+              field="key"
+              [minLength]="2"
+              class="auto-serch"
+              [style]="{'width':'100%','height':'36px'}" [inputStyle]="{'width':'100%'}"
+              placeholder="Search Employee"
+              (ngModelChange)="loadSelectedSearchedEmpDetail()">
+            </p-autoComplete>
+      </div>
+      <div class="col-lg-2">
+        <p-dropdown [hidden]="true"  [options]="approvalStatusList" [(ngModel)]= "selectedApprovalStatus" optionLabel="key" optionValue="value" >
+        </p-dropdown>
+      </div>
+      <div class="col-lg-2">
+        <p-button label="Load List"  iconPos="right"  class="p-button-sm" (click)="loadPayrollEmployeeList();" ></p-button> 
+      </div>
+    </div>
+   
+    <div class="form-group row">
+      <div class="col-lg-12 sal-grid"> 
+        <app-grid-renderer  
+        [gridRowData]="rowData"  
+        [gridColData]="columnDefs" 
+        (onCellClickEvent)="onCellClicked($event)">
+        </app-grid-renderer>
+      </div>
+   </div>
+</div>
+</section>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+</p-confirmDialog>
+
+<p-dialog [header]="headerText" [(visible)]="showStatutoryPopup" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" (onHide)="closePopUp(false)" position="top" [style]="{width: '80vw', height: '40vw'}">
+  <div *ngIf="currentStatutoryEmployeeID>0">
+     <app-statutory [employeeID]="currentStatutoryEmployeeID" (closeDialog)="closePopUp($event)"></app-statutory>
+  </div>
+</p-dialog>
+<p-dialog [header]="headerText" [(visible)]="showSalaryPopup" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'"  (onHide)="closePopUp(false)"position="top" [style]="{width: '80vw', height: '80vw'}">
+  <div *ngIf="currentSalaryEmployeeID>0">
+     <app-salary [employeeID]="currentSalaryEmployeeID" (closeDialog)="closePopUp($event)"></app-salary>
+  </div>
+</p-dialog>

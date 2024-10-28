@@ -1,0 +1,215 @@
+<section class="card">
+  <header class="card-header">
+    <h2>{{headerdialogName}}
+    </h2>
+</header>
+  <div class="card-body">
+
+<form #visitorPassTemplateForm = "ngForm" (submit)="SaveVisitorPassTemplateData()">
+  <div class="form-group row">
+    <input pinput
+    [(ngModel)]= "visitorpassTemplateInfo.templateID"
+    class="form-control"
+     type="text" autocomplete="off"
+    name="templateID"
+    id="templateID"
+    hidden="true">
+    <div class="col-lg-4">
+      <label class="labelfont">Template Name <span class="text-danger">*</span></label>
+        <input pinput
+        [(ngModel)]= "visitorpassTemplateInfo.templateName"
+        class="form-control"
+        type="text" autocomplete="off"
+        required
+        maxlength="50"
+        name="templateName"
+        id="templateName" #templateName="ngModel"
+        [ngClass]="{'is-invalid': templateName.invalid && (templateName.dirty || templateName.touched)}">
+        <div *ngIf="templateName.invalid && (templateName.dirty || templateName.touched)"
+        class="labelfont">
+
+        <div  class="p-error" *ngIf="templateName.errors?.['required']">
+          Template Name is required.
+        </div>
+    </div>
+    </div>
+    <div class="col-lg-8">
+      <label class="labelfont">Subject</label>
+        <input pinput
+        [(ngModel)]= "visitorpassTemplateInfo.subject"
+        class="form-control"
+        type="text" autocomplete="off"
+        name="subject"
+        id="subject" #subject="ngModel"
+        [ngClass]="{'is-invalid': subject.invalid && (subject.dirty || subject.touched)}">
+        <div *ngIf="subject.invalid && (subject.dirty || subject.touched)"
+        class="labelfont">
+
+        <div  class="p-error" *ngIf="subject.errors?.['required']">
+          Subject is required.
+        </div>
+    </div>
+    </div>
+</div>
+<div class="form-group row">
+  <div class="col-lg-1">
+    <label class="labelfont">Alert</label>
+    <br/>
+      <input pinput
+      [(ngModel)]= "visitorpassTemplateInfo.alert"
+      type="checkbox"
+
+      name="alert"
+      id="alert" #alert="ngModel"
+      [ngClass]="{'is-invalid': alert.invalid && (alert.dirty || alert.touched)}">
+      <div *ngIf="alert.invalid && (alert.dirty || alert.touched)"
+      class="labelfont">
+      <div  class="p-error" *ngIf="alert.errors?.['required']">
+        Alert is required.
+      </div>
+  </div>
+</div>
+<div class="col-lg-1">
+  <label class="labelfont">Mail</label>
+  <br/>
+    <input pinput
+    [(ngModel)]= "visitorpassTemplateInfo.mail"
+    type="checkbox"
+
+    name="mail"
+    id="mail" #mail="ngModel"
+    [ngClass]="{'is-invalid': mail.invalid && (mail.dirty || mail.touched)}">
+    <div *ngIf="mail.invalid && (mail.dirty || mail.touched)"
+    class="labelfont">
+    <div  class="p-error" *ngIf="mail.errors?.['required']">
+      Mail is required.
+    </div>
+</div>
+</div>
+<div class="col-lg-1">
+<label class="labelfont">Gate Pass</label>
+<br/>
+  <input pinput
+  [(ngModel)]= "visitorpassTemplateInfo.gatePass"
+  type="checkbox"
+
+  name="gatePass"
+  id="gatePass" #gatePass="ngModel"
+  [ngClass]="{'is-invalid': gatePass.invalid && (gatePass.dirty || gatePass.touched)}">
+  <div *ngIf="gatePass.invalid && (gatePass.dirty || gatePass.touched)"
+  class="labelfont">
+  <div  class="p-error" *ngIf="gatePass.errors?.['required']">
+    Gate Pass is required.
+  </div>
+</div>
+</div>
+<div class="col-lg-1">
+<label class="labelfont">SMS</label>
+<br/>
+  <input pinput
+  [(ngModel)]= "visitorpassTemplateInfo.sms"
+  type="checkbox"
+
+  name="sms"
+  id="sms" #sms="ngModel"
+  [ngClass]="{'is-invalid': sms.invalid && (sms.dirty || sms.touched)}">
+  <div *ngIf="sms.invalid && (sms.dirty || sms.touched)"
+  class="labelfont">
+  <div  class="p-error" *ngIf="sms.errors?.['required']">
+    SMS is required.
+  </div>
+</div>
+</div>
+<div class="col-lg-2">
+<label class="labelfont">Send To Visitor</label>
+<br/>
+  <input pinput
+  [(ngModel)]= "visitorpassTemplateInfo.sendToVisitor"
+  type="checkbox"
+
+  name="sendToVisitor"
+  id="sendToVisitor" #sendToVisitor="ngModel"
+  [ngClass]="{'is-invalid': sendToVisitor.invalid && (sendToVisitor.dirty || sendToVisitor.touched)}">
+  <div *ngIf="sendToVisitor.invalid && (sendToVisitor.dirty || sendToVisitor.touched)"
+  class="labelfont">
+  <div  class="p-error" *ngIf="sendToVisitor.errors?.['required']">
+    Send To Visitor is required.
+  </div>
+</div>
+</div>
+<div class="col-lg-2">
+<label class="labelfont">Send To Gate User</label>
+<br/>
+  <input pinput
+  [(ngModel)]= "visitorpassTemplateInfo.sendToGateUser"
+  type="checkbox"
+
+  name="sendToGateUser"
+  id="sendToGateUser" #sendToGateUser="ngModel"
+  [ngClass]="{'is-invalid': sendToGateUser.invalid && (sendToGateUser.dirty || sendToGateUser.touched)}">
+  <div *ngIf="sendToGateUser.invalid && (sendToGateUser.dirty || sendToGateUser.touched)"
+  class="labelfont">
+  <div  class="p-error" *ngIf="sendToGateUser.errors?.['required']">
+    Send To Gate User is required.
+  </div>
+</div>
+</div>
+<div class="col-lg-2">
+  <label class="labelfont">Send To Employee</label>
+  <br/>
+    <input pinput
+    [(ngModel)]= "visitorpassTemplateInfo.sendToEmployee"
+    type="checkbox"
+
+    name="sendToEmployee"
+    id="sendToEmployee" #sendToEmployee="ngModel"
+    [ngClass]="{'is-invalid': sendToEmployee.invalid && (sendToEmployee.dirty || sendToEmployee.touched)}">
+    <div *ngIf="sendToEmployee.invalid && (sendToEmployee.dirty || sendToEmployee.touched)"
+    class="labelfont">
+    <div  class="p-error" *ngIf="sendToEmployee.errors?.['required']">
+      Send To Employee is required.
+    </div>
+  </div>
+  </div>
+  <div class="col-lg-2">
+    <label class="labelfont">Request Status<span class="text-danger">*</span></label>
+        <p-dropdown  [options]="requestStatusList" [(ngModel)]= "visitorpassTemplateInfo.requestStatusID" optionLabel="key" optionValue="value" class="" #requestStatusID="ngModel"
+        [ngClass]="{'is-invalid': requestStatusID.invalid && (requestStatusID.dirty || requestStatusID.touched)}"  name="requestStatusID" id="requestStatusID" >
+        </p-dropdown>
+        <div *ngIf="requestStatusID.invalid && (requestStatusID.dirty || requestStatusID.touched)"
+            class="labelfont">
+          <div  class="p-error" *ngIf="requestStatusID.errors?.['required']">
+            Request Status is required.
+          </div>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="form-group row">
+  <div class="col-lg-9">
+    <ckeditor
+    #editor
+    [config]="editorConfig"
+    [(ngModel)]="visitorpassTemplateInfo.template"
+    (drop)="drop($event)"
+    (dragover)="allowDrop($event)"
+    id="template"
+    name="template"
+    >
+  </ckeditor>
+  </div>
+  <div class="col-lg-3 tag-box">
+      <ul class="tagclass sticky-bottom affix-bottom"  *ngFor="let tag of tags">
+          <li attr.id="{{tag.tagName}}" draggable="true" (dragstart)="drag($event)" (click)="copy($event)">{{tag.tagName}}</li>
+      </ul>
+
+  </div>
+</div>
+        <br/>
+        <div class="float-right">
+          <p-button icon="pi pi-check"   [label]="labelName"  Class="p-button-text p-button-sm p-button-success" type="submit" [disabled]="!visitorPassTemplateForm.valid"></p-button>
+          <p-button icon="pi pi-times" class="p-button-sm "   label="Cancel"  (click)="CancelVisitorPassTemplateData()" styleClass="p-button-secondary"></p-button>
+        </div>
+</form>
+  </div>
+</section>

@@ -1,0 +1,100 @@
+<section class="card">
+    <header class="card-header">
+      <h2>Holiday Master</h2>
+  </header>
+  <div class="group-right">
+    <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+    <button pButton pRipple type="button" icon="pi pi-plus" *ngIf="isAddAllowed" (click)="addNew()"class="p-button-rounded p-button-success"></button>
+    <button pButton pRipple type="button" icon="pi pi-filter" class="p-button-rounded p-button-warning"></button>
+  </div>
+    <div class="card-body">
+            <div *ngIf="rowData.length > 0">
+              <app-grid-renderer
+              [gridRowData]="rowData"
+              [gridColData]="columnDefs"
+              (onCellClickEvent)="onCellClicked($event)"
+              ></app-grid-renderer>
+              </div>
+    </div>
+  </section>
+   <!--add / update / delete modal  -->
+   <p-dialog [header]="headerdialogName" (onHide)="CancelHolidayMasterData()" [(visible)]="display" [modal]="true"
+  [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '50vw',height:'30vw'}" >
+                        <form #holidayMasterForm = "ngForm" (submit)="SaveHolidayMasterData()">
+                            <div class="form-group row">
+                                <div class="col-lg-6">
+                                  <label class="labelfont">Holiday Name<span class="text-danger">*</span></label>
+                                  <input pinput
+                                  [(ngModel)]= "holidayMasterInfo.holidayName"
+                                  class="form-control text-uppercase"
+                                   type="text" autocomplete="off"
+                                  required
+                                  (keypress)="keyPressAlphanumeric($event)"
+                                  name="holidayName"
+                                  id="holidayName" #holidayName="ngModel"
+                                  [ngClass]="{'is-invalid': holidayName.invalid && (holidayName.dirty || holidayName.touched)}">
+                                  <div *ngIf="holidayName.invalid && (holidayName.dirty || holidayName.touched)"
+                                  class="labelfont">
+                                  <div  class="p-error" *ngIf="holidayName.errors?.['required']">
+                                   Holiday Name is required.
+                                  </div>
+                          </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <label class="labelfont">Holiday Date<span class="text-danger">*</span></label>
+                                  <input pinput
+                                  [(ngModel)]= "holiDate"
+                                  type="text" autocomplete="off"
+                                  required
+                                  [bsConfig]="datepickerConfig" 
+                                placeholder="DD-MM-YYYY" 
+                                bsDatepicker
+                                  name="holidayDate"
+                                  id="holidayDate"  
+                                  class="form-control">
+                                  <!-- [ngClass]="{'is-invalid': holidayDate.invalid && (holidayDate.dirty || holidayDate.touched)}">
+                                  <div *ngIf="holidayDate.invalid && (holidayDate.dirty || holidayDate.touched)"
+                      class="labelfont">
+                <div  class="p-error" *ngIf="holidayDate.errors?.['required']">
+                  Holiday Date is required.
+                </div>
+              </div> -->
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-6">
+                                  <label class="labelfont">Holiday Type <span class="text-danger">*</span></label>
+                                  <p-dropdown  [options]="holidayTypeList" [(ngModel)]= "holidayMasterInfo.holidayType" optionLabel="key" optionValue="value" class="" #holidayType="ngModel"
+                                  [ngClass]="{'is-invalid': holidayType.invalid && (holidayType.dirty || holidayType.touched)}"  name="holidayType" id="holidayType" [required]="true" >
+                                  </p-dropdown>
+                                  <div *ngIf="holidayType.invalid && (holidayType.dirty || holidayType.touched)"
+                                            class="labelfont">
+                                      <div  class="p-error" *ngIf="holidayType.errors?.['required']">
+                                        Holiday Type is required.
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="labelfont">Description</label>
+                                    <input pinput
+                                    [(ngModel)]= "holidayMasterInfo.description"
+                                    class="form-control"
+                                    type="text" autocomplete="off"
+                                    name="description"
+                                    id="description" #description="ngModel"
+                                    [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}">
+                                  </div>
+                            </div>
+                           
+                        <div class="float-right">
+                          <p-button icon="pi pi-check" type="submit"  [label]="labelName"  Class="p-button-text p-button-sm p-button-success" [disabled]="!holidayMasterForm.valid"></p-button>
+                          <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancelHolidayMasterData()" styleClass="p-button-secondary"></p-button>
+                        </div>
+                           
+                        </form>
+                      </p-dialog>
+                      <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+  
+                      </p-confirmDialog>
+  <!-- page end-->
+  

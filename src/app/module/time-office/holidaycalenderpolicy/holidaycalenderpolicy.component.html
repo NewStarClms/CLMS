@@ -1,0 +1,127 @@
+<section class="card">
+    <div id="card-header-inner">
+      <p class="alignleft">Holiday Calendar Policy </p>
+      <p class="alignright">
+          <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+          <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()" class="p-button-rounded p-button-success"></button>
+          </p>
+      <div style="clear: both;"></div>
+  
+    </div>
+      <div class="card-body">
+        <app-grid-renderer 
+        [gridRowData]="rowData" 
+        [gridColData]="columnDefs"
+        (onCellClickEvent)="onCellClicked($event)" 
+        ></app-grid-renderer>
+      </div>
+    </section>
+    <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000"
+      rejectButtonStyleClass="p-button-text">
+    </p-confirmDialog>
+   <p-dialog [header]="headerdialogName" [(visible)]="display" [modal]="true" id="divHolidayPolicy"
+  [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '50vw'}" >
+  <div class="form-group row">
+    <div class="col-lg-6">
+      <label class="labelfont">Policy Name <span class="text-danger">*</span></label>
+      <input pinput [(ngModel)]="holidayCalenderPolicyInfo.policyName" class="form-control" type="text"
+                  autocomplete="off" required name="policyName" (keypress)="keyPressAlphanumeric($event)" id="policyName"
+                   #policyName="ngModel"
+                  [ngClass]="{'is-invalid': policyName.invalid && (policyName.dirty || policyName.touched)}">
+                <div *ngIf="policyName.invalid && (policyName.dirty || policyName.touched)" class="labelfont">
+        
+                  <div class="p-error" *ngIf="policyName.errors?.['required']">
+                    Policy Name is required.
+                  </div>
+                </div>
+    </div>
+    <div class="col-lg-6">
+      <label class="labelfont">Restricted Holiday Applicable <span class="text-danger">*</span></label>
+      <p-selectButton [options]="stateOptions" [(ngModel)]="holidayCalenderPolicyInfo.restrictedHolidayApplicable" 
+      optionLabel="label" optionValue="value" #restrictedHolidayApplicable="ngModel"
+      [ngClass]="{'is-invalid': restrictedHolidayApplicable.invalid && (restrictedHolidayApplicable.dirty || restrictedHolidayApplicable.touched)}" 
+      name="restrictedHolidayApplicable" id="restrictedHolidayApplicable" [required]="true"></p-selectButton>
+      <div *ngIf="restrictedHolidayApplicable.invalid && (restrictedHolidayApplicable.dirty || restrictedHolidayApplicable.touched)" class="labelfont">
+        
+        <div class="p-error" *ngIf="restrictedHolidayApplicable.errors?.['required']">
+          Restricted Holiday Applicable is required.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-lg-6">
+      <label class="labelfont">Maximum Restricted Holiday Request</label>
+      <input pinput [(ngModel)]="holidayCalenderPolicyInfo.maximumRestrictedHolidayRequest" class="form-control" type="text"
+                  autocomplete="off"  name="maximumRestrictedHolidayRequest" (keypress)="keyPressNumeric($event)" id="maximumRestrictedHolidayRequest"
+                   #maximumRestrictedHolidayRequest="ngModel"
+                  [ngClass]="{'is-invalid': maximumRestrictedHolidayRequest.invalid && (maximumRestrictedHolidayRequest.dirty || maximumRestrictedHolidayRequest.touched)}">
+              
+                </div>
+    <div class="col-lg-6">
+      <label class="labelfont">Restricted Holiday Prodata</label>
+      <p-selectButton [options]="stateOptions" [(ngModel)]="holidayCalenderPolicyInfo.restrictedHolidayProdata" 
+      optionLabel="label" optionValue="value" #restrictedHolidayProdata="ngModel"
+      [ngClass]="{'is-invalid': restrictedHolidayProdata.invalid && (restrictedHolidayProdata.dirty || restrictedHolidayProdata.touched)}" 
+      name="restrictedHolidayProdata" id="restrictedHolidayProdata"></p-selectButton>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-lg-6">
+      <label class="labelfont">Prodata Date</label>
+      <input pinput [(ngModel)]="holidayCalenderPolicyInfo.prodataDate" class="form-control" type="text"
+                  autocomplete="off"  name="prodataDate" (keypress)="keyPressNumeric($event)" id="prodataDate"
+                   #prodataDate="ngModel"
+                  [ngClass]="{'is-invalid': prodataDate.invalid && (prodataDate.dirty || prodataDate.touched)}">
+              
+      
+                </div>
+    <div class="col-lg-6">
+      <label class="labelfont">Description</label>
+         <input pinput [(ngModel)]="holidayCalenderPolicyInfo.description" class="form-control" type="text"
+         autocomplete="off"  name="description"  id="description"
+          #description="ngModel"
+         [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}">
+    </div>
+  </div>
+  <div class="float-right">
+      <p-button icon="pi pi-check" [label]="labelName"  Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" (click)="SaveholidayPolicy()"></p-button>
+    <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancelholidayPolicy()" styleClass="p-button-secondary"></p-button>
+  
+  </div>
+  </p-dialog>
+  <p-dialog header="Organization Mapping" (onHide)="CancelOrgnaizationMapping()" [(visible)]="displayOUMap" [modal]="true" id="divOUMap"
+  [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '50vw',height:'38vw'}" >
+  <div class="form-group row">
+    <div class="col-lg-6">
+     
+      <label class="labelfont">Organization</label>
+      <p-dropdown [options]="orgUnitList"  appendTo="body" [(ngModel)]="orgnaizationMappingInfo.organizationKeyID" optionLabel="key"
+        optionValue="value" class="" #organizationKeyID="ngModel" name="organizationKeyID" id="organizationKeyID"
+        (ngModelChange)="prepareOrgListByOU(orgnaizationMappingInfo.organizationKeyID)">
+      </p-dropdown>
+    </div>
+    <div class="col-lg-6">
+      <label class="labelfont"><br/></label><br/>
+      <p-multiSelect [options]="orgDataUnitList"  appendTo="body"  placeholder="Please Select" [(ngModel)]="selectedOrganiztion" name="organization" optionLabel="key" optionValue="value"></p-multiSelect>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-lg-6">
+      <label class="labelfont">Location</label>
+      <p-dropdown [options]="locationList"   appendTo="body" [(ngModel)]="orgnaizationMappingInfo.locationKeyID" optionLabel="key"
+        optionValue="value" class="" #locationKeyID="ngModel" name="locationKeyID" id="locationKeyID"
+        (ngModelChange)="preparelocationDataByOU(orgnaizationMappingInfo.locationKeyID)">
+      </p-dropdown>
+    </div>
+    <div class="col-lg-6">
+      <label class="labelfont"><br/></label><br/>
+      <p-multiSelect [options]="locationDataList"  appendTo="body"  placeholder="Please Select" [(ngModel)]="selectedLocation" name="location" optionLabel="key" optionValue="value"></p-multiSelect>
+    </div>
+  </div>
+  <div class="float-right m10-top">
+      <p-button icon="pi pi-check" label="Save" styleClass="p-mr-btn mr1"  Class="p-button-text p-button-sm p-button-success" (click)="SaveOrgnaizationMapping()"></p-button>
+    <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancelOrgnaizationMapping()" styleClass="p-button-secondary"></p-button>
+  
+  </div>
+  </p-dialog>

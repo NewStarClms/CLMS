@@ -1,0 +1,182 @@
+<section class="card">
+    <div class="card-body">
+      <form #settlementForm="ngForm" (submit)="saveEmployeeSettlementDetail()">
+        <div class="form-group row">
+            <div class="col-md-9">
+                <label class="labelfont lableMargin">Employee</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.displayName" class="form-control" type="text" name="displayName"
+                  id="displayName" #ctc="ngModel" disabled="true">
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Employee Status</label>
+                <p-dropdown  [options]="empStatusList" [(ngModel)]= "employeeSettlementDetail.employeeStatusID" optionLabel="key" optionValue="value" 
+                name="employeeStatusID" id="employeeStatusID" #employeeStatusID="ngModel">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Date of Joining</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.joiningDate" class="form-control" type="text" name="joiningDate"
+                autocomplete="off" id="joiningDate" #joiningDate="ngModel" disabled="true" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Settlement Date</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.settlementDate" class="form-control" type="text" name="settlementDate"
+                autocomplete="off" id="settlementDate" #settlementDate="ngModel" disabled="true" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker>
+            </div>
+        <!-- </div>
+        <div class="form-group row"> -->
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Date of Resignation</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.resignationDate" class="form-control" type="text" name="resignationDate"
+                autocomplete="off" id="resignationDate" #resignationDate="ngModel" disabled="true" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Date of Leaving</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.leavingDate" class="form-control" type="text" name="leavingDate"
+                autocomplete="off" id="leavingDate" #leavingDate="ngModel" disabled="true" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">                
+                <label class="labelfont lableMargin">Notice Duration</label>
+                <div style="display: flex;">
+                <input pinput [(ngModel)]="employeeSettlementDetail.noticePeriod" class="form-control" type="text" name="noticePeriod"
+                id="noticePeriod" #noticePeriod="ngModel"  [ngClass]="{'is-invalid': noticePeriod.invalid && (noticePeriod.dirty || noticePeriod.touched)}"
+                (keypress)="keyPressNumeric($event)">
+               <label>({{employeeSettlementDetail.noticePeriodType=="M"? "Months" : "Days"}})</label>
+               </div>
+            </div>
+           
+            <div class="col-md-1">
+                <label class="labelfont lableMargin">Amount</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.noticeAmount" class="form-control" type="text" name="noticeAmount"
+                id="noticeAmount" #noticeAmount="ngModel"  [ngClass]="{'is-invalid': noticeAmount.invalid && (noticeAmount.dirty || noticeAmount.touched)}"
+                (keypress)="keyPressNumeric($event)">
+               
+            </div>
+            <div class="col-md-2">
+                <label class="labelfont lableMargin">Pay Type</label>
+                <p-dropdown  [options]="noticePayTypeList" [(ngModel)]= "employeeSettlementDetail.noticePayType" optionLabel="key" optionValue="value" 
+                name="noticePayType" id="noticePayType" #noticePayType="ngModel">
+                </p-dropdown>
+            </div>
+        <!-- </div>
+        <div class="form-group row"> -->
+            <div class="col-md-1">     
+                <label class="labelfont lableMargin">Pay Month</label>
+                <p-dropdown  [options]="payMonths" [(ngModel)]= "selectedPayMonth" optionLabel="key" optionValue="value" 
+                name="selectedPayMonth" id="selectedPayMonth">
+                </p-dropdown>
+            </div>
+            <div class="col-md-2"> 
+                <label class="labelfont lableMargin">Pay Year</label>
+                <p-dropdown  [options]="payYears" [(ngModel)]= "selectedPayYear" optionLabel="key" optionValue="value" 
+                name="selectedPayYear" id="selectedPayYear">
+                </p-dropdown>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Net Pay</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.netPay" class="form-control" type="text" name="netPay"
+                id="netPay" #netPay="ngModel" disabled="true">       
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">                
+                <label class="labelfont lableMargin">Leave Count</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.leaveCount" class="form-control" type="text" name="leaveCount"
+                id="leaveCount" #leaveCount="ngModel"  [ngClass]="{'is-invalid': leaveCount.invalid && (leaveCount.dirty || leaveCount.touched)}"
+                (keypress)="keyPressNumeric($event)">
+            </div>
+            <div class="col-md-3">                
+                <label class="labelfont lableMargin">Leave Amount</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.leaveAmount" class="form-control" type="text" name="leaveAmount"
+                id="leaveAmount" #leaveAmount="ngModel"  [ngClass]="{'is-invalid': leaveAmount.invalid && (leaveAmount.dirty || leaveAmount.touched)}"
+                (keypress)="keyPressNumeric($event)">
+            </div>
+        <!-- </div>
+        <div class="form-group row"> -->
+            <div class="col-md-3">                
+                <label class="labelfont lableMargin">Gratuity Amount</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.gratuityAmount" class="form-control" type="text" name="gratuityAmount"
+                id="gratuityAmount" #gratuityAmount="ngModel"  [ngClass]="{'is-invalid': gratuityAmount.invalid && (gratuityAmount.dirty || gratuityAmount.touched)}"
+                (keypress)="keyPressNumeric($event)">
+            </div>
+            <div class="col-md-3">                
+                <label class="labelfont lableMargin">Bonus Amount</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.bonusAmount" class="form-control" type="text" name="bonusAmount"
+                id="bonusAmount" #bonusAmount="ngModel"  [ngClass]="{'is-invalid': bonusAmount.invalid && (bonusAmount.dirty || bonusAmount.touched)}"
+                (keypress)="keyPressNumeric($event)">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">                
+                <label class="labelfont lableMargin">Hold Salary Amount</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.holdSalaryAmount" class="form-control" type="text" name="holdSalaryAmount"
+                id="holdSalaryAmount" #holdSalaryAmount="ngModel"  [ngClass]="{'is-invalid': holdSalaryAmount.invalid && (holdSalaryAmount.dirty || holdSalaryAmount.touched)}"
+                (keypress)="keyPressNumeric($event)">
+            </div>
+            <div class="col-md-3">                
+                <label class="labelfont lableMargin">Salary Amount</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.salaryAmount" class="form-control" type="text" name="salaryAmount"
+                id="salaryAmount" #salaryAmount="ngModel"  [ngClass]="{'is-invalid': salaryAmount.invalid && (salaryAmount.dirty || salaryAmount.touched)}"
+                (keypress)="keyPressNumeric($event)">
+            </div>
+        <!-- </div>
+        <div class="form-group row"> -->
+            <div class="col-md-3">                
+                <label class="labelfont lableMargin">Other Addition Amount</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.otherAdditionAmount" class="form-control" type="text" name="otherAdditionAmount"
+                id="otherAdditionAmount" #otherAdditionAmount="ngModel"  [ngClass]="{'is-invalid': otherAdditionAmount.invalid && (otherAdditionAmount.dirty || otherAdditionAmount.touched)}"
+                (keypress)="keyPressNumeric($event)">
+            </div>
+            <div class="col-md-3">                
+                <label class="labelfont lableMargin">Other Deduction Amount</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.otherDeductionAmount" class="form-control" type="text" name="otherDeductionAmount"
+                id="otherDeductionAmount" #otherDeductionAmount="ngModel"  [ngClass]="{'is-invalid': otherDeductionAmount.invalid && (otherDeductionAmount.dirty || otherDeductionAmount.touched)}"
+                (keypress)="keyPressNumeric($event)">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">                
+                <label class="labelfont lableMargin">Loan Recovery</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.loanRecovery" class="form-control" type="text" name="loanRecovery"
+                id="loanRecovery" #loanRecovery="ngModel"  [ngClass]="{'is-invalid': loanRecovery.invalid && (loanRecovery.dirty || loanRecovery.touched)}"
+                (keypress)="keyPressNumeric($event)">
+            </div>
+            <div class="col-md-3">                
+                <label class="labelfont lableMargin">Asset Recovery</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.assetRecovery" class="form-control" type="text" name="assetRecovery"
+                id="assetRecovery" #assetRecovery="ngModel"  [ngClass]="{'is-invalid': assetRecovery.invalid && (assetRecovery.dirty || assetRecovery.touched)}"
+                (keypress)="keyPressNumeric($event)">
+            </div>
+        <!-- </div>
+        <div class="form-group row"> -->
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Reason</label>
+                <p-dropdown  [options]="reasonList" [(ngModel)]= "employeeSettlementDetail.employeeLastStatusID" optionLabel="key" optionValue="value" 
+                name="employeeLastStatusID" id="employeeLastStatusID" #employeeLastStatusID="ngModel">
+                </p-dropdown>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Remarks</label>
+                <input pinput [(ngModel)]="employeeSettlementDetail.settlementReason" class="form-control" type="text" name="settlementReason"
+                autocomplete="off" id="settlementReason" #settlementReason="ngModel">
+            </div>
+        </div>
+        <div class="form-group row float-right">
+            <p-button icon="pi pi-check"  label="{{selectedStatusID ==5? 'Delete': 'Save'}}"  class="{{selectedStatusID ==5?'mr1 p-button-danger':'p-button-text p-button-sm p-button-success mr1'}}" styleClass="{{selectedStatusID ==5?'p-button-danger':''}}" type="submit" [disabled]="!settlementForm.valid"></p-button>
+            <p-button icon="pi pi-times" class="p-button-sm " data-dismiss="modal" label="Cancel"  (click)="closeDialog()" styleClass="p-button-secondary"></p-button>
+        </div>
+      </form>
+    </div>
+</section>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text">
+
+</p-confirmDialog>

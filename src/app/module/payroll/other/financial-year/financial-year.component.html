@@ -1,0 +1,67 @@
+<section class="card">
+    <header class="card-header">
+    <h2>Financialy Year</h2>
+    </header>
+    <div class="group-right">
+        <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+    <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()" class="p-button-rounded p-button-success"></button>
+    </div>
+    <div class="card-body">
+        <app-payroll-grid-rendere
+        [gridRowData]="rowData"
+        [gridColData]="columnDefs"
+        (onCellClickEvent)="onCellClicked($event)"
+        ></app-payroll-grid-rendere>
+    <!-- <app-grid-renderer [gridRowData]="rowData" [gridColData]="columnDefs" (onCellClickEvent)="onCellClicked($event)" ></app-grid-renderer> -->
+    </div>
+    </section>
+
+<p-dialog [header]="headerdialogName" (onHide)="Cancel()" [(visible)]="display" [modal]="true" [draggable]="false" [resizable]="false" [transitionOptions]="'1ms'" position="top-right" [style]="{width: '50vw'}">
+       <form #financialyYear="ngForm" name="form" (submit)="SaveFinancialyYear(financialyYear)">
+        <div class="form-group row col-lg-12">
+        <div class="col-lg-4 p-field">
+        <label class="labelfont">Start Date</label>
+        <input pinput [(ngModel)]="start"
+        class="form-control" type="text" 
+        name="startDate"
+        autocomplete="off"
+        id="startDate"
+        #deviceAccessValidUpto="ngModel"
+        [bsConfig]="datepickerConfig"
+        placeholder="DD-MM-YYYY" 
+        bsDatepicker>
+        </div>
+        <div class="col-lg-4 p-field">
+            <label class="labelfont">End Date</label>
+            <input pinput [(ngModel)]="end"
+            class="form-control" 
+            type="text" 
+            name="endDate"
+            autocomplete="off"
+            id="endDate"
+            #deviceAccessValidUpto="ngModel"
+            [bsConfig]="datepickerConfig"
+            placeholder="DD-MM-YYYY" 
+            bsDatepicker>
+        </div>
+        <div class="col-lg-4 p-field">
+            <label class="labelfont">CurrentFinancialYear</label>
+            <p-selectButton [options]="stateOptions" [(ngModel)]="FinancialyYearInfo.currentFinancialYear"
+            optionLabel="label" optionValue="value" name="currentFinancialYear"></p-selectButton>
+            </div>
+        </div>
+      
+        <div class="float-right">
+        <p-button icon="pi pi-check" type="submit" [label]="labelName" Class="p-button-text p-button-sm p-button-success"
+        styleClass="mr1"></p-button>
+        <p-button icon="pi pi-times" class="p-button-sm " #closebutton data-dismiss="modal" label="Cancel"  (click)="Cancel()"
+        styleClass="p-button-secondary"></p-button>
+        </div>
+        </form>
+        <ng-template pTemplate="footer">
+        </ng-template>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000"
+rejectButtonStyleClass="p-button-text">
+</p-confirmDialog> 

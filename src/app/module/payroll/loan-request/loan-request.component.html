@@ -1,0 +1,94 @@
+<form #loanForm="ngForm" (submit)="loanForm.valid && saveLoanRequest()">
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label class="labelfont"> Loan Type<span class="text-danger">*</span></label>
+            <p-dropdown [options]="loanTypeOption"  [(ngModel)]="loanRequestObj.payCode"
+                optionLabel="key" optionValue="value" class="" [filter]="false" filterBy="value"
+                #paycode="ngModel" name="paycode" id="paycode" [required]="true"
+                [ngClass]="{'is-invalid': paycode.invalid && (paycode.dirty || paycode.touched)}">
+            </p-dropdown>
+            <div *ngIf="loanForm.submitted && (paycode.invalid || paycode.dirty || paycode.touched)" class="labelfont">
+                <div class="p-error" *ngIf="paycode.errors?.['required']">
+                    Loan Type is required.
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-md-3" >
+            <label class="labelfont">  Loan Amount </label>
+            <input pinput [(ngModel)]="loanRequestObj.loanAmount" class="form-control text-uppercase"
+                type="text" autocomplete="off" (keypress)="keyPressNumbers($event)" name="loanAmount" id="loanAmount"  #payInJoiningMonthDay="ngModel">
+        </div>
+        <div class="col-md-3" >
+            <label class="labelfont">  No of Emi </label>
+            <input pinput [(ngModel)]="loanRequestObj.emi" class="form-control text-uppercase"
+                type="text" autocomplete="off" (keypress)="keyPressNumbers($event)"  name="emi" id="emi"  #emi="ngModel">
+        </div>
+        <div class="col-md-3">
+            <label class="labelfont"> Request Date</label>
+
+            <input pinput [(ngModel)]="loanRequestObj.requireDate" class="form-control" type="text" name="requireDate"
+            autocomplete="off" id="requireDate" #requireDate="ngModel" [bsConfig]="datepickerConfig"
+            placeholder="DD-MM-YYYY" bsDatepicker [ngClass]="{'is-invalid': requireDate.invalid && (requireDate.dirty || requireDate.touched)}">
+        </div>
+    </div>
+    <div class="form-group row">
+        
+        <div class="col-md-2">
+            <label class="labelfont"> Deduct From Salary</label>
+            <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)"
+                [(ngModel)]="loanRequestObj.deductFromSalary" optionLabel="label" optionValue="value"
+                name="deductFromSalary"></p-selectButton>
+        </div>
+
+        <div class="col-md-4">
+            <label class="labelfont"> Deduct From MonthYear</label>  <br/>
+                <p-dropdown  [options]="monthList" [(ngModel)]= "month"  [required]="true" optionLabel="key" optionValue="value" 
+                name="month" id="month" class="dropdwonPadding">
+                </p-dropdown>
+                <p-dropdown  [options]="yearList" [(ngModel)]= "year"  [required]="true" optionLabel="key" optionValue="value" 
+                name="year" id="year" class="dropdwonPadding">
+                </p-dropdown>
+        </div>
+        <div class="col-md-3">
+            <label class="labelfont"> Interest Type<span class="text-danger">*</span></label>
+            <p-dropdown [options]="interestTypeOption"  [(ngModel)]="loanRequestObj.interestType"
+                optionLabel="key" optionValue="value" class="" [filter]="false" filterBy="value"
+                #interestType="ngModel" name="interestType" id="interestType" [required]="true"
+                [ngClass]="{'is-invalid': interestType.invalid && (interestType.dirty || interestType.touched)}">
+            </p-dropdown>
+            <div *ngIf="loanForm.submitted && (interestType.invalid || interestType.dirty || interestType.touched)" class="labelfont">
+                <div class="p-error" *ngIf="interestType.errors?.['required']">
+                    Intrest Type is required.
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-md-3" >
+            <label class="labelfont">  Interest Rate </label>
+            <input pinput [(ngModel)]="loanRequestObj.interestRate" class="form-control text-uppercase"
+                type="text" autocomplete="off"  (keypress)="keyPressNumbers($event)" name="interestRate" id="interestRate"  #interestRate="ngModel">
+        </div>
+        
+    </div>
+    <div class="form-group row">
+       <div class="col-lg-12">
+        <p> <b>Loan Type Detail</b></p>
+        <p>Loan Eligibility : <b>{{loanEligibilityDay}}</b> days after date of joining</p>
+        <p>Max EMI :  <b>{{maxEmi}}</b></p>
+        <p>Loan Amount Limit : <b>{{loanAmountLimits}}</b></p>
+       </div>
+    </div>
+    <div class="form-group row">
+        <label class="labelfont">  Remarks</label>
+        <input pinput [(ngModel)]="loanRequestObj.requestRemark" class="form-control text-uppercase"
+            type="text" autocomplete="off"  name="requestRemark" id="requestRemark"  #requestRemark="ngModel">
+    </div>
+    <div class="float-right">
+
+        <p-button icon="pi pi-check" type="submit" label="Save" Class="p-button-text p-button-sm p-button-success" styleClass="mr-2 ml-2"
+          [disabled]="!loanForm.valid"></p-button>
+        <p-button icon="pi pi-times" class="p-button-sm " #closebutton data-dismiss="modal" styleClass="mr-2 ml-2" label="Cancel"
+           styleClass="p-button-secondary" (click)="ClosePopup()"></p-button>
+      </div>
+</form>

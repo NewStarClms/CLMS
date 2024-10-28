@@ -1,0 +1,252 @@
+<section class="card">
+  <div class="card-body">
+    <form #statutoryForm = "ngForm" (submit)="saveStatutoryData()">
+    <p-tabView>
+        <p-tabPanel header="Basic Details" tooltip="Basic Details">
+        <div class="form-group row">
+            <div class="col-md-4">
+                <label class="labelfont">PAN Number</label>
+                <input pinput [(ngModel)]="empStatutory.panNo" class="form-control" type="text" name="panNo" id="panNo"
+                    #panNo="ngModel" [ngClass]="{'is-invalid': panNo.invalid && (panNo.dirty || panNo.touched)}"
+                    (keypress)="keyPressAlphanumeric($event)">
+            </div>
+            <div class="col-md-4">
+                <label class="labelfont">Aadhar Number</label>
+                <input pinput [(ngModel)]="empStatutory.aadharNumber" class="form-control" type="text" name="aadharNumber"
+                id="aadharNumber" #aadharNumber="ngModel"
+                [ngClass]="{'is-invalid': aadharNumber.invalid && (aadharNumber.dirty || aadharNumber.touched)}"
+                (keypress)="keyPressNumeric($event)">
+            </div>
+            <div class="col-md-4">
+              <label class="labelfont lableMargin">Employee Type</label>
+              <p-dropdown [options]="empTypeList" [(ngModel)]="empStatutory.employeeType" optionLabel="key"
+              optionValue="value" class="" #employeeType="ngModel"
+              [ngClass]="{'is-invalid': employeeType.invalid && (employeeType.dirty || employeeType.touched)}"
+              name="employeeType" id="employeeType" [required]="true">
+              </p-dropdown>
+              <div *ngIf="employeeType.invalid && (employeeType.dirty || employeeType.touched)"
+                  class="labelfont">
+                  <div class="p-error" *ngIf="employeeType.errors?.['required']">
+                  Employee Type is required.
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="form-group row">
+           
+            <div class="col-md-4">
+                <label class="labelfont lableMargin">Date of joining Form5</label>
+                <input pinput [(ngModel)]="empStatutory.dateOfJoinForm5" class="form-control" type="text" name="dateOfJoinForm5"
+                autocomplete="off" id="dateOfJoinForm5" #dateOfJoinForm5="ngModel" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker
+                [ngClass]="{'is-invalid': dateOfJoinForm5.invalid && (dateOfJoinForm5.dirty || dateOfJoinForm5.touched)}">
+                <div *ngIf="dateOfJoinForm5.invalid && (dateOfJoinForm5.dirty || dateOfJoinForm5.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="dateOfJoinForm5.errors?.['required']">
+                    Joining Date is required.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="labelfont lableMargin">Date of Leaving Form10</label>
+              <input pinput [(ngModel)]="empStatutory.dateOfLeavingForm10" class="form-control" type="text" name="dateOfLeavingForm10"
+              autocomplete="off" id="dateOfLeavingForm10" #dateOfLeavingForm10="ngModel" [bsConfig]="datepickerConfig"
+              placeholder="DD-MM-YYYY" bsDatepicker >
+          </div>
+          <div class="col-md-4">
+              <label class="labelfont">Dispensary</label>
+              <p-dropdown [options]="dispensaryList" [(ngModel)]="empStatutory.dispensaryID"  optionLabel="dispensaryName"
+              optionValue="dispensaryID"  class="" #dispensaryID="ngModel"
+                [ngClass]="{'is-invalid': dispensaryID.invalid && (dispensaryID.dirty || dispensaryID.touched)}" name="dispensaryID"
+                id="dispensaryID">
+              </p-dropdown> 
+          </div>
+
+        </div>
+
+        </p-tabPanel>
+        <p-tabPanel header="PF Details" rightIcon="pi pi-star-fill" tooltip="PF Details">
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">PF Applicable</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="empStatutory.pfApplicable" optionLabel="label"
+                  optionValue="value" name="pfApplicable"></p-selectButton>
+            </div>
+            <div class="col-md-6">
+                <label class="labelfont">PF Number</label>
+                <input pinput [(ngModel)]="empStatutory.pfNumber" class="form-control" type="text" name="pfNumber"
+                  id="pfNumber" #pfNumber="ngModel"
+                  [ngClass]="{'is-invalid': pfNumber.invalid && (pfNumber.dirty || pfNumber.touched)}"
+                  (keypress)="keyPressAlphanumeric($event)">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">VPF Applicable</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="empStatutory.vpfApplicable" optionLabel="label"
+                  optionValue="value" name="vpfApplicable"></p-selectButton>
+            </div>
+            <div class="col-md-6">
+                <label class="labelfont lableMargin">VPF Effective Date</label>
+                <input pinput [(ngModel)]="empStatutory.vpfEffectiveDate" class="form-control" type="text" name="vpfEffectiveDate"
+                autocomplete="off" id="vpfEffectiveDate" #vpfEffectiveDate="ngModel" [bsConfig]="datepickerConfig"
+                placeholder="DD-MM-YYYY" bsDatepicker >
+            </div>
+            
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+              <label class="labelfont">UAN Number</label>
+              <input pinput [(ngModel)]="empStatutory.uanNumber" class="form-control" type="text" name="uanNumber"
+                id="uanNumber" #uanNumber="ngModel"
+                [ngClass]="{'is-invalid': uanNumber.invalid && (uanNumber.dirty || uanNumber.touched)}"
+                (keypress)="keyPressAlphanumeric($event)">
+            </div>
+            <div class="col-md-6">
+                <label class="labelfont">PF Gross Limit</label>
+                <input pinput [(ngModel)]="empStatutory.pfGrossLimit" class="form-control" type="text" name="pfGrossLimit"
+                  id="pfGrossLimit" #pfGrossLimit="ngModel"
+                  [ngClass]="{'is-invalid': pfGrossLimit.invalid && (pfGrossLimit.dirty || pfGrossLimit.touched)}"
+                  (keypress)="keyPressNumeric($event)">
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Bank Detail" rightIcon="pi pi-star-fill" tooltip="Bank Detail">
+        <div class="form-group row">
+          <div class="col-md-6">
+            <label class="labelfont">Payment Mode <span class="text-danger">*</span></label>
+            <p-dropdown [options]="paymodeList" [(ngModel)]="empStatutory.paymentModeID" optionLabel="key"
+              optionValue="value" #paymentModeID="ngModel"
+              [ngClass]="{'is-invalid': paymentModeID.invalid && (paymentModeID.dirty || paymentModeID.touched)}"
+              name="paymentModeID" id="paymentModeID" (ngModelChange)="fngetpaymentmode($event)">
+            </p-dropdown>
+          </div>
+
+          <div class="col-md-6" *ngIf="bankDetailformode">
+            <label class="labelfont">Payment Bank <span class="text-danger">*</span></label>
+            <p-dropdown [options]="bankbranchList" [(ngModel)]="empStatutory.paymentBankID" optionLabel="bankBranchName"
+              optionValue="bankBranchID" #paymentBankID="ngModel"
+              [ngClass]="{'is-invalid': paymentBankID.invalid && (paymentBankID.dirty || paymentBankID.touched)}"
+              name="paymentBankID" id="paymentBankID">
+            </p-dropdown>
+          </div>
+          <div class="col-md-6" *ngIf="bankDetailformode">
+            <label class="labelfont">Bank Name<span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="empStatutory.bankName" class="form-control" type="text" name="bankName"
+              id="bankName" #bankName="ngModel"
+              [ngClass]="{'is-invalid': bankName.invalid && (bankName.dirty || bankName.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+            <div *ngIf="bankName.invalid && (bankName.dirty || bankName.touched)" class="labelfont">
+              <div class="p-error" *ngIf="bankName.errors?.['required']">
+                Bank is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" *ngIf="bankDetailformode">
+            <label class="labelfont">Branch Name<span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="empStatutory.branchName" class="form-control" type="text" name="branchName"
+              id="branchName" #branchName="ngModel"
+              [ngClass]="{'is-invalid': branchName.invalid && (branchName.dirty || branchName.touched)}"
+              (keypress)="keyPressAlphanumeric($event)">
+            <div *ngIf="branchName.invalid && (branchName.dirty || branchName.touched)" class="labelfont">
+              <div class="p-error" *ngIf="branchName.errors?.['required']">
+                Branch is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" *ngIf="bankDetailformode">
+            <label class="labelfont">Account No. <span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="empStatutory.bankAccountNo" class="form-control" type="text" name="bankAccountNo"
+              id="bankAccountNo" #bankAccountNo="ngModel"
+              [ngClass]="{'is-invalid': bankAccountNo.invalid && (bankAccountNo.dirty || bankAccountNo.touched)}"
+              (keypress)="keyPressAlphanumeric($event)" [required]="true">
+            <div *ngIf="bankAccountNo.invalid && (bankAccountNo.dirty || bankAccountNo.touched)" class="labelfont">
+              <div class="p-error" *ngIf="bankAccountNo.errors?.['required']">
+                Account No. is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" *ngIf="bankDetailformode">
+            <label class="labelfont">IFSC Code <span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="empStatutory.ifscCode" class="form-control" type="text" name="ifscCode"
+              id="ifscCode" #ifscCode="ngModel"
+              [ngClass]="{'is-invalid': ifscCode.invalid && (ifscCode.dirty || ifscCode.touched)}"
+              (keypress)="keyPressAlphanumeric($event)" [required]="true">
+            <div *ngIf="ifscCode.invalid && (ifscCode.dirty || ifscCode.touched)" class="labelfont">
+              <div class="p-error" *ngIf="ifscCode.errors?.['required']">
+                IFSC Code is required.
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+    <p-tabPanel header="Other Details" rightIcon="pi pi-star-fill" tooltip="Other Details">
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Gratuity Applicable</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="empStatutory.gratuityApplicable" optionLabel="label"
+                  optionValue="value" name="gratuityApplicable"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Bonus Applicable</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="empStatutory.bonusApplicable" optionLabel="label"
+                  optionValue="value" name="bonusApplicable"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">NPS Applicable</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="empStatutory.npsApplicable" optionLabel="label"
+                  optionValue="value" name="npsApplicable"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">PT Applicable</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="empStatutory.ptApplicable" optionLabel="label"
+                  optionValue="value" name="ptApplicable"></p-selectButton>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">ESI Applicable</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="empStatutory.esiApplicable" optionLabel="label"
+                    optionValue="value" name="esiApplicable"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont">ESI Number</label>
+                <input pinput [(ngModel)]="empStatutory.esiNumber" class="form-control" type="text" name="esiNumber"
+                    id="esiNumber" #esiNumber="ngModel"
+                    [ngClass]="{'is-invalid': esiNumber.invalid && (esiNumber.dirty || esiNumber.touched)}"
+                    (keypress)="keyPressAlphanumeric($event)">
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">LWF Applicable</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="empStatutory.lwfApplicable" optionLabel="label"
+                  optionValue="value" name="lwfApplicable"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Leave Encashment Applicable</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="empStatutory.leaveEncashmentApplicable" optionLabel="label"
+                  optionValue="value" name="leaveEncashmentApplicable"></p-selectButton>
+            </div>
+        </div>
+        <div class="form-group row">            
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Pension Applicable</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="empStatutory.pensionApplicable" optionLabel="label"
+                  optionValue="value" name="pensionApplicable"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont lableMargin">Pension Number</label>
+                <input pinput [(ngModel)]="empStatutory.pensionNumber" class="form-control" type="text" name="pensionNumber"
+                id="pensionNumber" #pensionNumber="ngModel"
+                [ngClass]="{'is-invalid': pensionNumber.invalid && (pensionNumber.dirty || pensionNumber.touched)}"
+                (keypress)="keyPressAlphanumeric($event)">
+            </div>
+        </div>
+        </p-tabPanel>
+    </p-tabView>
+    <div class="form-group row float-right">
+        <p-button icon="pi pi-check"  label="Save"  Class="p-button-text p-button-sm p-button-success" styleClass="mr1"   type="submit" [disabled]="!statutoryForm.valid"></p-button>
+        <p-button icon="pi pi-times" class="p-button-sm " data-dismiss="modal" label="Cancel"  (click)="closeDialog()" styleClass="p-button-secondary"></p-button>
+    </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,151 @@
+<!-- TopBar -->
+<nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+  <!-- <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+    <i class="fa fa-bars"></i>
+  </button>
+  <button id="Attpunch" class="btn btn-link mr-3 shadow-1" (click)="PostPunch()" *ngIf="visible">
+    Attendance Punch
+   </button> -->
+   <a  routerLink="dashboard"  class="navbar-brand d-flex align-items-center justify-content-center" (click)="loadDefaultMenu();">
+    <h2  style="color: #19B698;font-weight: 900;">
+     <!-- <img  src="/assets/img/logo.png" style="width: 140px;"> -->
+     <img  src="/assets/img/logo-b.png" style="width: 140px; height: 80px;">
+    </h2>
+   </a>
+   <app-sidebar *ngIf="currentUser && routeParams?.sidebar"  [menuItems]="menuItems" class="navbar-nav mr-auto"></app-sidebar>
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item dropdown no-arrow " *ngIf="isReportAllowed" >
+      <a class="nav-link dropdown-toggle" id="setting" role="button" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false" (click)="loadReportDashboard()">
+      <i class="far pi pi-cloud-download" style="font-size: 1.3rem; cursor: pointer;" (click)="loadReportDashboard()"></i>
+    </a>
+   </li>
+   <li class="nav-item dropdown no-arrow " *ngIf="isUploadAllowed" >
+    <a class="nav-link dropdown-toggle" id="setting" role="button" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false" (click)="loadImportDashboard()">
+    <i class="pi pi-upload" style="font-size: 1.3rem; cursor: pointer;" (click)="loadReportDashboard()"></i>
+  </a>
+ </li>
+    <li class="nav-item dropdown no-arrow " *ngIf="isSetupAllowed">
+      <a class="nav-link dropdown-toggle" href="#" id="setting" role="button" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false" (click)="loadSettingsMenu()">
+      <i class="fas fa-wrench"></i>
+    </a>
+   </li>
+    <li class="nav-item dropdown no-arrow" *ngIf="IsAccessRight">
+        <a class="nav-link dropdown-toggle" href="#" id="setting" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false" (click)="openJobProgressDialog()">
+          <i class="pi pi-spin pi-spinner"></i>
+        </a>
+    </li>
+    <li class="nav-item dropdown no-arrow" *ngIf="displayGlobalFltr">
+      <span *ngIf="appliedfilter" class="dot"></span>
+      <a class="nav-link dropdown-toggle" href="#" id="globalfilter" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false" (click)="displayGlobalFilter()">
+        <i class="fas fa-filter fa-fw"></i>
+      </a>
+    </li>
+    <div class="topbar-divider d-none d-sm-block"></div>
+    <li class="nav-item dropdown no-arrow">
+      <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <img class="img-profile rounded-circle" src="assets/img/boy.png" style="max-width: 60px">
+        <span class="ml-2 d-none d-lg-inline text-white small">{{loginUrserName}}</span>
+        <!-- {{loginUrserName}} -->
+      </a>
+      <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+        <a class="dropdown-item" routerLink="work/employee-profile">
+          <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+          Profile
+        </a>
+        <a class="dropdown-item cursor-pointer" (click)="fnEmployeeDashboardSetting()">
+          <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+          Settings
+        </a>
+        <a class="dropdown-item cursor-pointer" (click)="fnChangePassword()">
+          <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
+          Change Password
+        </a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal" style="cursor: pointer;">
+          <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+          Logout
+        </a>
+      </div>
+    </li>
+  </ul>
+</nav>
+<!-- Modal Logout -->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to logout?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal" (click)="logout()">Logout</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<p-dialog header="Filter Employee" [(visible)]="display" [modal]="true"
+[draggable]="false" [resizable]="true" position="top-right" [style]="{width: '65vw'}" >
+  <div class="card-body no-padding-left">
+    <div class="form-group row no-padding-left">
+      <div class="col-lg-12 no-padding-left">
+        <input type="hidden" id="filtervalue" [value]="filtertypevale">
+        <app-employee-global-filter  (filterAppliedEvent)="onGetFilterDetail()"></app-employee-global-filter>
+      </div>
+    </div>
+  </div>
+<br/>
+</p-dialog>
+<p-dialog header="Change Password" [(visible)]="changePassword" [modal]="true"
+[draggable]="false" [resizable]="true" position="top-right" [style]="{width: '50vw'}" >
+  <div class="card-body no-padding-left">
+    <div class="form-group row no-padding-left">
+      <div class="col-lg-12 no-padding-left">
+        <app-reset-password (changePassword)="hidePopUp()" ></app-reset-password>
+      </div>
+    </div>
+  </div>
+<br/>
+</p-dialog>
+<p-dialog header="Employee's Dashboard Titles Settings" [(visible)]="showEmployeeDashboardSetting" [modal]="true"
+[draggable]="false" [resizable]="true" position="top-right" [style]="{width: '50vw'}" >
+  <div class="card-body no-padding-left">
+    <div class="form-group row no-padding-left">
+      <div class="col-lg-12 no-padding-left">
+        <app-employee-dashboard-setting (showEmployeeDashboardSetting)="hideEmployeeDashboardSettingPopUp()" ></app-employee-dashboard-setting>
+      </div>
+    </div>
+  </div>
+<br/>
+</p-dialog>
+
+<p-dialog header="Jobs Status" [(visible)]="showMachineJobsStatus" [modal]="true"
+[draggable]="false" [resizable]="true" position="top-right" [style]="{width: '30vw'}" (onHide)="closeMachineJobsStatusDialog()">
+  <div class="card-body no-padding-left">
+    <div class="form-group row no-padding-left">
+      <div class="col-lg-12 no-padding-left">
+        <app-machine-job-status [showMachineStatus]="hideMachineStatus" [events]="raiseEventToLoadJobData.asObservable()"></app-machine-job-status>
+      </div>
+    </div>
+  </div>
+<br/>
+</p-dialog>
+
+<p-dialog header="Attendance Punch" [(visible)]="requestbyessdiv" [modal]="true"
+[draggable]="false" [resizable]="false" (onHide)="cancelRequestedByEss()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '50vw',height:'22vw'}" >
+ <app-other-punch [latituded]="Latitude" [longituded]="Longitude" [currentAddresss]="currentAddress" (canceRequestByESSdiv)="cancelRequestedByEss()" *ngIf="requestbyessdiv"></app-other-punch> 
+</p-dialog>
+<!-- Topbar -->

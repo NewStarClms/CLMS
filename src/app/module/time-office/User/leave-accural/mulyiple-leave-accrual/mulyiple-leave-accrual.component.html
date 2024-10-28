@@ -1,0 +1,28 @@
+<div class="form-group row">
+    <div class="col-lg-12">
+      <form #leaveaccrualPostForm = "ngForm" name="form" (submit)="SaveleaveaacrualPostData()">
+        <div class="form-group row">
+            <div class="col-lg-7">
+                <label class="labelfont">Month Year<span class="text-danger">*</span></label>
+                <br/>
+                <p-dropdown  [options]="monthList" [(ngModel)]= "leaveaccrualmonth"  [required]="true" optionLabel="key" optionValue="value" 
+                name="leaveaccrualmonth" id="leaveaccrualmonth" class="dropdwonPadding">
+               </p-dropdown>
+                <p-dropdown  [options]="yearList" [(ngModel)]= "leaveaccrualYear"  [required]="true" optionLabel="key" optionValue="value" 
+                name="leaveaccrualYear" id="leaveaccrualYear" class="dropdwonPadding">
+               </p-dropdown>
+            </div>
+            <div class="col-lg-4">
+                <label class="labelfont">Accrual Type</label>
+                <p-dropdown  [options]="accrualTypeList" [(ngModel)]= "accrualType"  [required]="true" optionLabel="key" optionValue="value" 
+            name="accrualType" id="accrualType">
+           </p-dropdown>
+            </div>
+           
+        </div>
+        <div class="float-right">
+            <p-button  type="submit"   label="Accrual" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" [disabled]="!leaveaccrualPostForm.valid"></p-button>
+          </div>
+      </form>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<section class="card">
+    <header class="card-header">
+        <div class="col-lg-6 float-left">
+          <h2>Manage Alert Template</h2>
+        </div>
+    </header>
+    <div class="card-body">
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="labelfont" >WorkFlow</label> 
+            <p-dropdown  [(ngModel)]="selectedWorkflowModuleID"
+             [options]="workflowOptionList" 
+             name="selectedWorkflowModuleID" id="selectedWorkflowModuleID"  
+             (ngModelChange)="getRequesTypeList($event)" 
+             optionLabel="key" optionValue="value">
+            </p-dropdown>
+          </div>
+          <div class="col-lg-4">
+            <label class="labelfont">Request Type</label>
+            <p-dropdown  [(ngModel)]="selectedWorkflowID"
+              [options]="requestTypeList"
+              name="selectedWorkflowID" id="selectedWorkflowID" 
+              optionLabel="requestType" optionValue="workFlowID">
+                <ng-template let-item pTemplate="item">
+                    <div *ngIf="(item.requestType === 'N');">
+                    New Request
+                    </div>
+                    <div *ngIf="(item.requestType === 'C');">
+                    Cancel
+                    </div>
+                </ng-template>
+                <ng-template let-item pTemplate="selectedItem">
+                    <div *ngIf="(item.requestType === 'N');">
+                        New Request
+                    </div>
+                    <div *ngIf="(item.requestType === 'C');">
+                        Cancel
+                    </div>
+                </ng-template>
+            </p-dropdown>
+          </div>
+          <div class="col-lg-2" style="text-align: right;">
+            <label class="labelfont"></label>
+            <div style="padding-left:0px;">
+            <p-button type="button" label="Get Data" (click)="getAlertTemplates()" Class="p-button-text p-button-sm p-button-success"
+            ></p-button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+           <div class="col-lg-12 alertgrid">
+                <app-grid-renderer
+                    [gridRowData]="rowData"
+                    [gridColData]="columnDefs"
+                    (onCellClickEvent)="onCellClicked($event)">
+                </app-grid-renderer>
+            </div>
+        </div>
+    </div>
+</section>

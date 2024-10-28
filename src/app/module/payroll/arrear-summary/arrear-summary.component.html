@@ -1,0 +1,188 @@
+<p-tabView>
+    <p-tabPanel header="Summary">
+        <p class="title-slary mt-2">Paid Days</p>
+        <p-divider></p-divider>
+        <table class="atttable table table-bordered table-hover headerfix">
+            <thead>
+                <tr>
+                    <th>Pay Group</th>
+                    <th>Dividing Factor</th>
+                    <th>Arrear Days</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of arrearDetail">
+                    <td>{{data.payGroup}}</td>
+                    <td>{{data.dividingFactor}}</td>
+                    <td>{{data.paidDays}}</td> 
+                </tr>
+            </tbody>
+        </table>
+        <!-- </p-table> -->
+        <p class="title-slary mt-2">Arrear Payment</p>
+        <p-divider></p-divider>
+        <table class="atttable table table-bordered table-hover headerfix">
+            <thead>
+                <tr>
+                    <th>CTC</th>
+                    <th>Gross Rate</th>
+                    <th>Arrear Earning</th>
+                    <th>Arrear Deduction</th>
+                    <th>Arrear Pay</th>
+                    <th>Net Pay Words</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pdata of arrearDetail">
+                    <td>{{pdata.ctc}}</td>
+                    <td>{{pdata.grossRate}}</td>
+                    <td>{{pdata.arrearEaring}}</td>
+                    <td>{{pdata.arrearDeduction}}</td>
+                    <td>{{pdata.arrearPay}}</td>
+                    <td>{{pdata.netPayWords}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </p-tabPanel>
+    <p-tabPanel header="Detail">
+        <p class="title-slary mt-2">Addition</p>
+        <p-divider></p-divider>
+        <table class="atttable table table-bordered table-hover headerfix">
+            <thead>
+                <tr>
+                    <th>Pay Component</th>
+                    <th>Pay Rate</th>
+                    <th>Arrear Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pdata of arrearSalaryPaidDetailsAddition">
+                    <td>{{pdata.payComponentName}}</td>
+                    <td>{{pdata.payRate}}</td>
+                    <td>{{pdata.arrearAmount}}</td>
+                </tr>
+                <tr *ngIf="arrearSalaryPaidDetailsAddition?.length>0">
+                    <td><b>Grand Total</b></td>
+                    <td><b>{{ arrearSalaryTotalDetails.payRateTotal}}</b></td>
+                    <td><b>{{ arrearSalaryTotalDetails.arrearAmountTotal}}</b></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="title-slary mt-2">Deduction</p>
+        <p-divider></p-divider>
+        <table class="atttable table table-bordered table-hover headerfix">
+            <thead>
+                <tr>
+                    <th>Pay Component Name</th>
+                    <th>Pay Rate</th>
+                    <th>Arrear Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pdata of arrearSalaryPaidDetailsDeduction">
+                    <td>{{pdata.payComponentName}}</td>
+                    <td>{{pdata.payRate}}</td>
+                    <td>{{pdata.arrearAmount}}</td>
+                </tr>
+                <tr *ngIf="arrearSalaryPaidDetailsDeduction?.length>0">
+                    <td><b>Grand Total</b></td>
+                    <td><b>{{ arrearSalaryTotalDetails_1.payRateTotal}}</b></td>
+                    <td><b>{{ arrearSalaryTotalDetails_1.arrearAmountTotal}}</b></td>
+                </tr>
+                <tr *ngIf="arrearSalaryPaidDetailsDeduction?.length === 0"><td colspan="5" style="text-align: ce;">No Deduction Available</td></tr>
+            </tbody>
+            
+        </table>
+
+    </p-tabPanel>
+    <p-tabPanel header="Statutory">
+        <p></p>
+        <table class="atttable table table-bordered table-hover headerfix" *ngIf="arrearDetail.length>0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Amount On</th>
+                    <th>Employee</th>
+                    <th>Employer</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PF</td>
+                    <td>{{ arrearDetail[0]?.pfGross}}</td>
+                    <td>{{ arrearDetail[0]?.pf}}</td>
+                    <td>{{ arrearDetail[0]?.epsAcc10 + arrearDetail[0]?.epfAcc1}}</td>
+                </tr>
+                <tr>
+                    <td>ESI</td>
+                    <td>{{ arrearDetail[0]?.esiGross}}</td>
+                    <td>{{ arrearDetail[0]?.esi}}</td>
+                    <td>{{ arrearDetail[0]?.esiEmployer}}</td>
+                </tr>
+                <tr>
+                    <td>LWF</td>
+                    <td>{{ arrearDetail[0]?.lwfGross}}</td>
+                    <td>{{ arrearDetail[0]?.lwf}}</td>
+                    <td>{{ arrearDetail[0]?.lwfEmployer}}</td>
+                </tr>
+                <tr>
+                    <td>PT</td>
+                    <td>{{ arrearDetail[0]?.ptGross}}</td>
+                    <td>{{ arrearDetail[0]?.pt}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Grand Total</b></td>
+                    <td>{{ arrearDetail[0]?.pfGross + arrearDetail[0]?.esiGross +
+                        arrearDetail[0]?.lwfGross + arrearDetail[0]?.ptGross}}</td>
+                    <td><b>{{ arrearDetail[0]?.pf + arrearDetail[0]?.esi + arrearDetail[0]?.lwf
+                            + arrearDetail[0]?.pt}}</b></td>
+                    <td><b>{{ arrearDetail[0]?.epsAcc10 + arrearDetail[0]?.epfAcc1 +
+                            arrearDetail[0]?.esiEmployer + arrearDetail[0]?.lwfEmployer}}</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </p-tabPanel>
+    <p-tabPanel header="PF Detail">
+        <p></p>
+        <table class="atttable table table-bordered table-hover headerfix">
+            <thead>
+                <tr>
+                    <th>PF Account</th>
+                    <th>Gross</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>EPSAcc10</td>
+                    <td>{{arrearDetail[0]?.pfGross}}</td>
+                    <td>{{ arrearDetail[0]?.epsAcc10}}</td>
+                </tr>
+                <tr>
+                    <td>EPFAcc1</td>
+                    <td></td>
+                    <td>{{ arrearDetail[0]?.epfAcc1}}</td>
+                </tr>
+                <tr>
+                    <td>EDLIAcc21</td>
+                    <td>{{ arrearDetail[0]?.edliAcc21}}</td>
+                    <td>{{ arrearDetail[0]?.edliAcc21}}</td>
+                </tr>
+                <tr>
+                    <td>PFAdminChargesAcc2</td>
+                    <td></td>
+                    <td>{{ arrearDetail[0]?.pfAdminChargesAcc2}}</td>
+                </tr>
+                <tr>
+                    <td>EDLIAdminChargesAcc22</td>
+                    <td></td>
+                    <td>{{ arrearDetail[0]?.edliAdminChargesAcc22}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </p-tabPanel>
+</p-tabView>
+<div class="float-right mt-2">
+    <p-button label="Close" class="mr-2 p-button-secondary" (click)="closeDialog()"></p-button>
+</div>

@@ -1,0 +1,130 @@
+<div class="card-body">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="toggle">
+        <div *ngFor="let menu of menuItems">
+         <input type="radio" name="sizeBy" class="useractionButton " (change)="onChange(menu.menuId)"  [value]="menu.menuId" [id]="menu.menuId" />
+        <label [for]="menu.menuId" class="useractionButtonLabel cursor-pointer">{{menu.menuName}}</label> 
+        <!-- <input type="radio" name="sizeBy" class="useractionButton " (change)="onChange($event)" value="multiple" id="sizeDimensions" />
+        <label for="sizeDimensions" class="useractionButtonLabel cursor-pointer">Multiple Employee</label> -->
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class=" float-left">
+        <div *ngIf="showingSingleEmployeeAction">
+        <p-button label="Canteen Policy" icon="pi pi-check" styleClass="p-button-help p-mr-btn" (click)="getAttendancePolicyDetail()"></p-button>
+        </div>
+        <div *ngIf="!showingSingleEmployeeAction">
+          <p-button label="Canteen Policy" icon="pi pi-download" styleClass="p-button-help p-mr-btn"></p-button>
+          </div>
+      </div>
+    </div>
+  </div> 
+  
+
+
+  <div class="row" *ngIf="attendanceMenu">
+    <div class="col-lg-12">
+      <div class="form-group row">
+        <div *ngFor="let rights of currentMenuRights; let i = index" class="col-md-3 useractionSection"  (click)="menuClicked(rights.menuRightID)">
+          <div class="useractionMenu cursor-pointer {{backgroundColor[i]}}">
+            <a  class="form-control" class="useractionMenuName">{{rights.displayName}}</a>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="row" *ngIf="attendanceMenu">
+    <div class="col-lg-12">
+      <div class="row" *ngIf="showingSingleEmployeeAction">
+       <div class="col-md-4 pr0">
+          <span class="p-input-icon-right mr-3 daterangeClass">
+            <i class="pi pi-calendar"></i>
+            <input pinput class="form-control" type="text" autocomplete="off" name="attDate" [(ngModel)]="attDate" (ngModelChange)="onDateChaness($event)"
+            id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MMM-YYYY~DD-MMM-YYYY" autocomplete="off" bsDaterangepicker>
+          </span> 
+        </div>
+        <div class="col-md-6" >
+          <app-employee-search (onSearchEvent)="onGetEmployeeDetail($event)"></app-employee-search>
+        </div>
+        <div class="col-md-2">
+          <p-button  type="button" (click)="getCanteenDetails()" label="Get Data" Class="p-button-text p-button-sm p-button-success"></p-button>
+        </div>
+      </div>
+    </div>
+      <div class="col-lg-12" *ngIf="attendanceDetaildiv">
+        <h5>Canteen Details</h5>
+        <p-table [columns]="attendanceDetailListCol" [value]="attendanceDetailsListUI" [scrollable]="true" scrollHeight="400px">
+          <ng-template pTemplate="header" let-columns >
+              <tr>
+                  <th *ngFor="let col of columns">
+                      {{col.header}}
+                  </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowholiday let-columns="columns">
+              <tr>
+                  <td *ngFor="let col of columns">
+                    <div *ngIf="col.hideText==false;  then hidefield else showfield"></div>
+                  <ng-template #hidefield></ng-template>
+                      <ng-template #showfield>
+                        <div *ngIf="col.icons; then iconShow else textShow"></div>
+                        <ng-template #iconShow>
+                          <!-- <div *ngIf="rowholiday.attendanceLocked==true">
+                            <span>{{rowholiday[col.field]}} (Lock)</span>
+                          </div> -->
+                          <!-- <div *ngIf="rowholiday.attendanceLocked==false">
+                            <span>{{rowholiday[col.field]}}</span>
+                          </div> -->
+                        </ng-template>
+                        <ng-template #textShow>
+                          <div *ngIf="rowholiday.attendanceValue != 1">
+                            <span style="color:black;">{{rowholiday[col.field]}}</span>
+                        </div>
+                        <div *ngIf="rowholiday.attendanceValue == 1">
+                          <span>{{rowholiday[col.field]}}</span>
+                      </div>
+                        </ng-template>
+                      </ng-template>
+                  </td>
+              </tr>
+          </ng-template>
+      </p-table>
+     
+    </div>
+  </div>
+
+
+
+
+  <!-- <app-canteen-grid-rendere  [gridRowData]="rowData" [gridColData]="columnDefs" *ngIf="visible"></app-canteen-grid-rendere> -->
+
+
+  <p-dialog header="Canteen Details" [(visible)]="attendancemappingDetaildiv" [modal]="true"
+  [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '90vw',height:'auto'}" >
+  <app-canteen-policy-mapping *ngIf="attendancemappingDetaildiv" [policyCanteenID]="policyCanteenId" ></app-canteen-policy-mapping>
+  </p-dialog>
+
+
+  <div *ngIf="manaualpunchsinglediv">
+  <p-dialog header="Manual Punch" [(visible)]="manaualpunchsinglediv" [modal]="true"
+  [draggable]="false" [resizable]="false"  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '45vw',height:'30vw'}" >
+  <app-canteen-manual-punch [employeeID]="employeeId" [FromDate]="fromDate" [ToDate]="toDate"  [policyCanteenID]="policyCanteenId" (canteenManualPunchdiv)="CancelCanteenProcess(false)" (recallCanteenManualPunchDetail)="recallCanteenManualPunch()"></app-canteen-manual-punch>
+  </p-dialog>
+  </div>
+    
+
+<p-dialog header="Canteen Process" [(visible)]="singleCanteenProcessdiv" [modal]="true"
+  [draggable]="false" [resizable]="false"  (onHide)="CancelCanteen(false)" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '40vw',height:'25vw'}" >
+  <app-canteenprocess-single-employee [employeeID]="employeeId" [FromDate]="fromDate" [ToDate]="toDate" (singleCanteenProcessdiv)="CancelCanteenProcess(false)"></app-canteenprocess-single-employee>
+  </p-dialog> 
+ 
+  <p-dialog header="Canteen Process" [(visible)]="multipleCanteenProcessdiv" [modal]="true"
+  [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '40vw',height:'25vw'}" >
+  <app-canteenprocess-multiple-employee  [employeeID]="employeeId" [FromDate]="fromDate" [ToDate]="toDate" (multipleCanteenProcessdiv)="CancelCanteenProcess(false)"></app-canteenprocess-multiple-employee>
+  </p-dialog> 
+ </div>
+
+

@@ -1,0 +1,187 @@
+<section class="card">
+  <header class="card-header">
+    <h2>LWF Setting</h2>
+</header>
+<div class="group-right">
+  <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNewlwf()"class="p-button-rounded p-button-success"></button>
+
+</div>
+  <div class="card-body">
+    <app-payroll-grid-rendere
+    [gridRowData]="rowData"
+    [gridColData]="columnDefs"
+    (onCellClickEvent)="onCellClicked($event)"
+    ></app-payroll-grid-rendere>
+  </div>
+</section>
+
+  <p-dialog header="{{dialogHeaderName}}" [(visible)]="display" [modal]="true"
+[draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '80vw'}" >
+    <form #lwfSettingForm = "ngForm" (submit)="saveLWFSetting()">
+        <div class="form-group row">
+         
+          <div class="col-lg-3">
+            <label class="labelfont">State<span class="text-danger">*</span></label>
+      <p-dropdown [options]="stateList" [(ngModel)]="lwfSettingInfo.stateID" optionLabel="stateName" optionValue="stateID"
+      class="" #stateID="ngModel" [required]="true"
+      [ngClass]="{'is-invalid': stateID.invalid && (stateID.dirty || stateID.touched)}" name="stateID" id="stateID"></p-dropdown>
+    <div *ngIf="stateID.invalid && (stateID.dirty || stateID.touched)" class="labelfont">
+
+      <div class="p-error" *ngIf="stateID.errors?.['required']">
+        PF Round is required.
+      </div>
+    </div>
+    </div>
+    <div class="col-lg-3">
+      <label class="labelfont">Deduction Rule<span class="text-danger">*</span></label>
+<p-dropdown [options]="deductionruleList" [(ngModel)]="lwfSettingInfo.lwfDeductionRule" optionLabel="key" optionValue="value"
+class="" #lwfDeductionRule="ngModel" [required]="true"
+[ngClass]="{'is-invalid': lwfDeductionRule.invalid && (lwfDeductionRule.dirty || lwfDeductionRule.touched)}" name="lwfDeductionRule" id="lwfDeductionRule"></p-dropdown>
+<div *ngIf="lwfDeductionRule.invalid && (lwfDeductionRule.dirty || lwfDeductionRule.touched)" class="labelfont">
+
+<div class="p-error" *ngIf="lwfDeductionRule.errors?.['required']">
+  Deduction Rule is required.
+</div>
+</div>
+</div>
+<div class="col-lg-3">
+  <label class="labelfont">Max Employee LWF<span class="text-danger">*</span></label>
+  <input pinput [(ngModel)]="lwfSettingInfo.maximumEmployeeLWF" class="form-control" type="text"
+autocomplete="off" required name="maximumEmployeeLWF" (keypress)="keyPressNumbers($event)" id="maximumEmployeeLWF"
+#maximumEmployeeLWF="ngModel"
+[ngClass]="{'is-invalid': maximumEmployeeLWF.invalid && (maximumEmployeeLWF.dirty || maximumEmployeeLWF.touched)}">
+<div *ngIf="maximumEmployeeLWF.invalid && (maximumEmployeeLWF.dirty || maximumEmployeeLWF.touched)" class="labelfont">
+
+<div class="p-error" *ngIf="maximumEmployeeLWF.errors?.['required']">
+  Max Employee LWF is required.
+</div>
+</div>
+</div>
+<div class="col-lg-3">
+  <label class="labelfont">Max Employer LWF<span class="text-danger">*</span></label>
+  <input pinput [(ngModel)]="lwfSettingInfo.maximumEmployerLWF" class="form-control" type="text"
+autocomplete="off" required name="maximumEmployerLWF" (keypress)="keyPressNumbers($event)" id="maximumEmployerLWF"
+#maximumEmployerLWF="ngModel"
+[ngClass]="{'is-invalid': maximumEmployerLWF.invalid && (maximumEmployerLWF.dirty || maximumEmployerLWF.touched)}">
+<div *ngIf="maximumEmployerLWF.invalid && (maximumEmployerLWF.dirty || maximumEmployerLWF.touched)" class="labelfont">
+
+<div class="p-error" *ngIf="maximumEmployerLWF.errors?.['required']">
+  Max Employer LWF is required.
+</div>
+</div>
+</div>
+
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="labelfont">LWF On Gross Salary<span class="text-danger">*</span></label>
+          <p-selectButton [options]="stateOptions"  [(ngModel)]="lwfSettingInfo.lwfOnGrossSalary" 
+          optionLabel="label" optionValue="value" #lwfOnGrossSalary="ngModel"
+          [ngClass]="{'is-invalid': lwfOnGrossSalary.invalid && (lwfOnGrossSalary.dirty || lwfOnGrossSalary.touched)}" 
+          name="lwfOnGrossSalary" id="lwfOnGrossSalary" ></p-selectButton>
+            <div *ngIf="lwfOnGrossSalary.invalid && (lwfOnGrossSalary.dirty || lwfOnGrossSalary.touched)" class="labelfont">
+          
+              <div class="p-error" *ngIf="lwfOnGrossSalary.errors?.['required']">
+                LWF On Gross Salary is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="labelfont">Prorate On Paid Days<span class="text-danger">*</span></label>
+          <p-selectButton [options]="stateOptions"  [(ngModel)]="lwfSettingInfo.prorateOnPaidDays" 
+          optionLabel="label" optionValue="value" #prorateOnPaidDays="ngModel"
+          [ngClass]="{'is-invalid': prorateOnPaidDays.invalid && (prorateOnPaidDays.dirty || prorateOnPaidDays.touched)}" 
+          name="prorateOnPaidDays" id="prorateOnPaidDays" ></p-selectButton>
+            <div *ngIf="prorateOnPaidDays.invalid && (prorateOnPaidDays.dirty || prorateOnPaidDays.touched)" class="labelfont">
+          
+              <div class="p-error" *ngIf="prorateOnPaidDays.errors?.['required']">
+                Prorate On Paid Days is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="labelfont">Employee LWF Round<span class="text-danger">*</span></label>
+          <p-dropdown [options]="lwfRoundingsList" [(ngModel)]="lwfSettingInfo.employeeLWFRound" optionLabel="key" optionValue="value"
+          class="" #employeeLWFRound="ngModel" [required]="true"
+          [ngClass]="{'is-invalid': employeeLWFRound.invalid && (employeeLWFRound.dirty || employeeLWFRound.touched)}" name="employeeLWFRound" id="employeeLWFRound"></p-dropdown>
+          <div *ngIf="employeeLWFRound.invalid && (employeeLWFRound.dirty || employeeLWFRound.touched)" class="labelfont">
+          
+          <div class="p-error" *ngIf="employeeLWFRound.errors?.['required']">
+          Employee LWF Round is required.
+          </div>
+          </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="labelfont">Employer LWF Round<span class="text-danger">*</span></label>
+          <p-dropdown [options]="lwfRoundingsList" [(ngModel)]="lwfSettingInfo.employerLWFRound" optionLabel="key" optionValue="value"
+          class="" #employerLWFRound="ngModel" [required]="true"
+          [ngClass]="{'is-invalid': employerLWFRound.invalid && (employerLWFRound.dirty || employerLWFRound.touched)}" name="employerLWFRound" id="employerLWFRound"></p-dropdown>
+          <div *ngIf="employerLWFRound.invalid && (employerLWFRound.dirty || employerLWFRound.touched)" class="labelfont">
+          
+          <div class="p-error" *ngIf="employerLWFRound.errors?.['required']">
+          Employer LWF Round is required.
+          </div>
+          </div>
+          </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-3">
+              <label class="labelfont">Prorate Part Of CTC<span class="text-danger">*</span></label>
+            <p-selectButton [options]="stateOptions"  [(ngModel)]="lwfSettingInfo.lwfPartOfCTC" 
+            optionLabel="label" optionValue="value" #lwfPartOfCTC="ngModel"
+            [ngClass]="{'is-invalid': lwfPartOfCTC.invalid && (lwfPartOfCTC.dirty || lwfPartOfCTC.touched)}" 
+            name="lwfPartOfCTC" id="lwfPartOfCTC" ></p-selectButton>
+              <div *ngIf="lwfPartOfCTC.invalid && (lwfPartOfCTC.dirty || lwfPartOfCTC.touched)" class="labelfont">
+            
+                <div class="p-error" *ngIf="lwfPartOfCTC.errors?.['required']">
+                  Prorate Part Of CTC is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont">Show On Challan With Zero LWF<span class="text-danger">*</span></label>
+            <p-selectButton [options]="stateOptions"  [(ngModel)]="lwfSettingInfo.showOnChallanWithZeroLWF" 
+            optionLabel="label" optionValue="value" #showOnChallanWithZeroLWF="ngModel"
+            [ngClass]="{'is-invalid': showOnChallanWithZeroLWF.invalid && (showOnChallanWithZeroLWF.dirty || showOnChallanWithZeroLWF.touched)}" 
+            name="showOnChallanWithZeroLWF" id="showOnChallanWithZeroLWF" ></p-selectButton>
+              <div *ngIf="showOnChallanWithZeroLWF.invalid && (showOnChallanWithZeroLWF.dirty || showOnChallanWithZeroLWF.touched)" class="labelfont">
+            
+                <div class="p-error" *ngIf="showOnChallanWithZeroLWF.errors?.['required']">
+                  Show On Challan With Zero LWF is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <label class="labelfont">LWF On Arrear<span class="text-danger">*</span></label>
+            <p-selectButton [options]="stateOptions"  [(ngModel)]="lwfSettingInfo.lwfOnArrear" 
+            optionLabel="label" optionValue="value" #lwfOnArrear="ngModel"
+            [ngClass]="{'is-invalid': lwfOnArrear.invalid && (lwfOnArrear.dirty || lwfOnArrear.touched)}" 
+            name="lwfOnArrear" id="lwfOnArrear" ></p-selectButton>
+              <div *ngIf="lwfOnArrear.invalid && (lwfOnArrear.dirty || lwfOnArrear.touched)" class="labelfont">
+            
+                <div class="p-error" *ngIf="lwfOnArrear.errors?.['required']">
+                  LWF On Arrear is required.
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-lg-3" *ngIf="lwfonarreartypetxt">
+              <label class="labelfont">Type<span class="text-danger">*</span></label>
+              <p-dropdown [options]="lwfOnArrearTypeList" [(ngModel)]="lwfSettingInfo.lwfOnArrearType" optionLabel="key" optionValue="value"
+              class="" #lwfOnArrearType="ngModel" [required]="true"
+              [ngClass]="{'is-invalid': lwfOnArrearType.invalid && (lwfOnArrearType.dirty || lwfOnArrearType.touched)}" name="lwfOnArrearType" id="lwfOnArrearType"></p-dropdown>
+            <div *ngIf="lwfOnArrearType.invalid && (lwfOnArrearType.dirty || lwfOnArrearType.touched)" class="labelfont">
+            
+            <div class="p-error" *ngIf="lwfOnArrearType.errors?.['required']">
+            Arrear Type is required.
+            </div>
+            </div>
+            </div> -->
+          
+          </div>
+        <div class="float-right">
+          <p-button icon="pi pi-check"  label="{{savebuttonHeaderName}}"  Class="p-button-text p-button-sm p-button-success" styleClass="mr1"  type="submit" [disabled]="!lwfSettingForm.valid"></p-button>
+          <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancellwfSettingData()" styleClass="p-button-secondary"></p-button>
+        </div>
+        </form>
+</p-dialog>
+  <!-- page end-->

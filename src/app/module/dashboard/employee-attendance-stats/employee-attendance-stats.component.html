@@ -1,0 +1,230 @@
+<div class="card tile-card">
+    <h5 class="card-header">
+        <div style="width: 45%;float:left">
+            <a data-toggle="collapse" href="#collapse-visitorstatus" aria-expanded="true"
+                aria-controls="collapse-visitorstatus" id="heading-visitorstatus">
+                <i class="fa fa-chevron-down pull-right"></i>
+                 Attendance Stats
+            </a>
+        </div>
+        <div style="width: 55%;float:right">
+
+            <input pinput [(ngModel)]="fromDate" class="form-control date" type="text" autocomplete="off"
+                name="fromDate" id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off"
+                bsDatepicker>
+
+            <p-button icon="fa fa-search" iconPos="right" class="p-button-sm" (click)="loadAttendanceStats();">
+            </p-button>
+        </div>
+    </h5>
+    <div id="collapse-visitorstatus" class="collapse show" aria-labelledby="heading-visitorstatus">
+        <div class="row"> 
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('Present Employee','Present')">
+                       <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                    </a>
+                    <a routerLink="/" title="Download report" style="text-decoration: none;"   (click)="download('Present')">
+                        <i class="fa fa-download text-white" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="col-sm-8" >
+                    <span class="hdr">Present</span><span>{{attendance.present}}</span>
+                </div>
+            </div>
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('Absent Employee','Absent')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;" (click)="download('Absent')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8">
+                    <span class="hdr">Absent</span><span>{{attendance.absent}}</span>
+                </div>
+            </div>
+        </div>  
+        <div class="row"> 
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('Employee Leave','Leave')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;"  (click)="download('Leave')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8" >
+                    <span class="hdr">Leave</span><span>{{attendance.leave}}</span>
+                </div>
+            </div>
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('Week-Off Employee','WO')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;"  (click)="download('WO')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8">
+                    <span class="hdr">WO</span><span>{{attendance.wo}}</span>
+                </div>
+            </div>
+        </div>  
+        <div class="row"> 
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('Employee Holiday','Holiday')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;"  (click)="download('Holiday')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8" >
+                    <span class="hdr">Holiday</span><span>{{attendance.holiday}}</span>
+                </div>
+            </div>
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('Late Arriving Employee','LateArrival')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;"  (click)="download('LateArrival')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8">
+                    <span class="hdr">Late</span><span>{{attendance.lateArrival}}</span>
+                </div>
+            </div>
+        </div>  
+        <div class="row"> 
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('Early Departure','EarlyDeparture')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;" (click)="download('EarlyDeparture')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8">
+                    <span class="hdr">Early</span><span>{{attendance.earlyDeparture}}</span>
+                </div>
+            </div>
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('New Joinee Employee','NewJoin')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;" (click)="download('NewJoin')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8">
+                    <span class="hdr">New Join</span><span>{{attendance.joinEmployee}}</span>
+                </div>
+            </div>
+        </div>  
+        <div class="row"> 
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('Total Employee','Total')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;"  (click)="download('Total')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8">
+                    <span class="hdr">Total</span><span>{{attendance.totalEmployee}}</span>
+                </div>
+            </div>
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('Employee Roaster Not Created','RosterNotCreated')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;" (click)="download('RosterNotCreated')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8">
+                    <span class="hdr">Roster not created</span><span>{{attendance.rosterNotCreated}}</span>
+                </div>
+            </div>
+        </div>  
+        <div class="row"> 
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('Employee OD Count','ODCount')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;" (click)="download('ODCount')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8">
+                    <span class="hdr">OD</span><span>{{attendance.odCount}}</span>
+                </div>
+            </div>
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;"  (click)="openDialog('Employee Personal GatePass','PGatePassTime')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;" (click)="download('PGatePassTime')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8">
+                    <span class="hdr">PGatePass Time</span><span>{{attendance.pGatePassTime}}</span>
+                </div>
+            </div>
+        </div>  
+        <div class="row"> 
+            <div class="row col-sm-6">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="See details" style="text-decoration: none;" (click)="openDialog('Employee Official GatePass','OGatePassTime')">
+                        <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                     </a>
+                     <a routerLink="/" title="Download report" style="text-decoration: none;" (click)="download('OGatePassTime')">
+                         <i class="fa fa-download text-white" aria-hidden="true"></i>
+                     </a>
+                </div>
+                <div class="col-sm-8">
+                    <span class="hdr">OGatePass Time</span><span>{{attendance.oGatePassTime}}</span>
+                </div>
+            </div>
+           
+        </div>  
+    </div>
+</div>
+<p-dialog [header]="headerName" [(visible)]="showPopup" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" position="top-right" [style]="{width: '50vw'}">
+  <div class="card">
+        <div class="row"> 
+            <div class="row col-sm-12">
+                <div class="col-sm-4">
+                    <a routerLink="/" title="Download report" style="text-decoration: none;" (click)="downloadView('')">
+                        <i class="fa fa-download font20" aria-hidden="true"></i>
+                    </a>
+                    <a routerLink="/" title="Download Excel report" style="text-decoration: none;" (click)="downloadView('EXCEL')">
+                        <i class="fa fa-file-excel font20" aria-hidden="true"></i>
+                    </a>
+                    <a routerLink="/" title="Download PDF report" style="text-decoration: none;" (click)="downloadView('PDF')">
+                        <i class="fa fa-file-pdf font20" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    <div class="card-body"  #reportGrid>
+        <app-grid-renderer [gridRowData]="rowData" [gridColData]="columnDefs" [hideSearchBox]="true" [isPaginationRequired]="true">
+        </app-grid-renderer>
+    </div>
+  </div>
+</p-dialog>

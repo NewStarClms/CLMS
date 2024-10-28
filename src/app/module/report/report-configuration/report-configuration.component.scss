@@ -1,0 +1,44 @@
+  #report-detail{
+    padding: 0 1rem 1rem 1rem;
+    position: absolute;
+  }
+  .report-header {
+    padding: 0rem 1rem;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .form-control{
+    line-height: 1.5 !important;
+    font-size: 13px !important;
+  }
+  textarea.form-control {
+     height: 40px !important;
+}
+
+// New Changes
+:host ::ng-deep .p-multiselect {
+  display: inline-flex;
+  cursor: pointer;
+  position: relative;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border:none;
+ border-bottom: 1px solid #d1d3e2;
+ width:80%
+}
+:host ::ng-deep .p-multiselect:not(.p-disabled):hover {
+ border:none;
+ border-bottom: 1px solid #d1d3e2;
+ width:80%
+}
+:host ::ng-deep .p-multiselect-panel .p-multiselect-header {
+  display: none;
+}
+:host ::ng-deep .p-multiselect .p-multiselect-label {
+  padding: 0.3rem 0.5rem !important;
+}
+:host ::ng-deep .p-autocomplete-multiple-container {
+  width: 100% !important;
+}
+// End

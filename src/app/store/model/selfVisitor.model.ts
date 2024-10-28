@@ -1,0 +1,27 @@
+export interface SelfVisitor
+{
+  visitorID: number,
+  visitorCode: string | null,
+  visitorName: string | null,
+  designationName: string | null,
+  contactNumber: string | null,
+  companyName: string | null,
+  companyAddress: string | null,
+  visitTime: string | null,
+  visitEndTime: string | null,
+  visitStatusID: number,
+  visitorLogID: number,
+  profileImagePath: string | null,
+  profileImagePathURL: string | null,
+  genderID: number,
+  visitorTypeID: number,
+  visitPurposeID: number,
+  employeeID: number,
+  employeeDetail: string | null,
+  inGateID: number,
+  expectedIn: string | null,
+  visitorPriorityID: number,
+  employeeName: string | null,
+    employeeDepartment: string | null,
+    employeeDesignation: string | null
+}

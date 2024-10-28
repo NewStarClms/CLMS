@@ -1,0 +1,83 @@
+.labelfontStatus{
+    font-weight: bold !important;
+  }
+  input:focus, textarea:focus, select:focus{border-top:none;border-left:none;border-right:none;}
+  :host ::ng-deep .p-button {
+    margin: 0 .5rem 0 0;
+  }
+  
+  p {
+    margin: 0;
+  }
+  
+  .confirmation-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .datetypeinput{
+    width: 50%;
+    margin-right: 10px;
+    border: none;
+    border-bottom: 1px solid #d1d3e2;
+  }
+  
+  :host ::ng-deep .ng-tns-c99-33 > .p-inputtext{
+    border:none !important;
+  }
+  :host ::ng-deep .ng-tns-c99-33 > .p-inputtext:focus-visible{
+    border:none !important;
+    border-color: #ced4da !important;
+  }
+  :host ::ng-deep .ng-tns-c99-33 > .p-calendar{
+    width:100% !important;
+  }
+  :host ::ng-deep .ng-tns-c99-33 > .p-calendar:focus{
+    width:100% !important;
+  }
+  
+  .btn-right h5{
+    font-size: 0.7rem;
+      font-weight: 600;
+      display: flex;
+      flex-direction: row-reverse;
+      cursor: pointer;
+  }
+  .addIcon{
+    font-size: .6rem !important;
+      font-weight: 800 !important;
+      padding: 3px !important;
+  }
+  .pull-right {
+    display: flex;
+    flex-direction: row-reverse;
+    float: right;
+    margin: 11px -18px 1px 0;
+  }
+  :host ::ng-deep .input-icon-right {
+    display: flex !important;
+    position: relative !important;
+  }
+  :host ::ng-deep p-radiobutton {
+    display: inline-flex !important;
+    vertical-align: middle !important;
+    align-items: center !important;
+  }
+  .radiolabelfont{
+  padding:0px 8px 0px 8px !important;
+  }
+  div.sticky {
+    position: fixed;
+    bottom: 0px;
+    display: flex;
+    width: 85%;
+    flex-direction: row-reverse;
+    background-color: lightgray;
+    padding-right: 4vh;
+    padding-bottom: 10px;
+    padding-top:10px;
+  }
+  p-dialog .p-dialog-header {
+    padding: 0px 0px 0px 11px !important;
+  }

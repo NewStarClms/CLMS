@@ -1,0 +1,11 @@
+{
+    "appURL": "https://154.61.75.86/api",
+    "domainInfo":{
+        "domainType": 3,
+        "clientCode": "STARLINK"
+    },
+    "guestLogin":{
+        "userID":"str001",
+        "password": "star"
+    }
+}

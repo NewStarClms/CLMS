@@ -1,0 +1,64 @@
+<section class="card">
+<header class="card-header">
+    <div class="col-lg-6 float-left">
+    <h2>Download Visitor Report</h2>
+    </div>
+</header>
+  <div class="card-body">
+    <form #visitorreportForm="ngForm" (submit)="getVisitorReport()">
+        <div class="form-group row">
+            <div class="col-lg-4">
+              <label class="labelfont">From Date</label>
+              <div class="col-sm-12" style="padding-left:0px;">
+                <input pinput [(ngModel)]="reportParams.fromDate" class="datetypeDateinput" type="text" autocomplete="off" name="fromDate"
+                  id="fromDate" [bsConfig]="datepickerConfig" (ngModelChange)="getTime($event)" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker>
+                <input [(ngModel)]="reportParams.fromtime" name="fromtime" class="timetypeDateinput" [popover]="popfromTemplate"
+                  [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+                <ng-template #popfromTemplate>
+                  <timepicker [(ngModel)]="reportParams.fromtime" name="fromtime" [showMeridian]="false" (ngModelChange)="getTime($event)">
+                  </timepicker>
+                </ng-template>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <label class="labelfont">To Date</label>
+              <div class="col-sm-12" style="padding-left:0px;">
+                <input pinput [(ngModel)]="reportParams.toDate"  class="datetypeDateinput" type="text" autocomplete="off" name="fromDate"
+                  id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY"  (ngModelChange)="gettoTime($event)" autocomplete="off" bsDatepicker>
+                <input [(ngModel)]="reportParams.totime" name="totime" class="timetypeDateinput" [popover]="poptoTemplate"
+                  [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+                <ng-template #poptoTemplate>
+                  <timepicker [(ngModel)]="reportParams.totime" [showMeridian]="false" name="totime" (ngModelChange)="gettoTime($event)">
+                  </timepicker>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+              <div class="col-lg-4">
+                  <label class="labelfont">Report Type <span class="text-danger">*</span></label>
+                  <p-dropdown [options]="reportTypeOption" [(ngModel)]="reportParams.reportID" optionLabel="key"
+                    optionValue="value" class="" #reportID="ngModel" 
+                    [ngClass]="{'is-invalid': reportID.invalid && (reportID.dirty || reportID.touched)}" name="reportID"
+                    id="reportID" [required]="true">
+                  </p-dropdown>
+                  <div *ngIf="reportID.invalid && (reportID.dirty || reportID.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="reportID.errors?.['required']">
+                      Report ID is required.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <label class="labelfont">Status</label>
+                  <div>
+                    <p-multiSelect [options]="statusList" name="vstatus" [(ngModel)]="reportParams.Vstatus" defaultLabel="Select a Status" optionLabel="key"
+                      selectedItemsLabel="{0} items selected"></p-multiSelect>
+                  </div>
+                </div>
+          </div>
+              <div class="col-lg-9" style="padding-left:0px;">
+                <p-button type="submit" id="DownloadReport" label="Download Report" Class="p-button-text p-button-sm p-button-success"></p-button>
+              </div>
+    </form>
+</div>
+</section>

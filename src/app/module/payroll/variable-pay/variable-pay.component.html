@@ -1,0 +1,76 @@
+<div class="form-group row">
+    <div class="col-md-3">
+        <label class="labelfont">MonthYear</label> 
+    </div>
+    <div class="col-md-4">
+            <p-dropdown  [options]="monthList" [(ngModel)]= "month"  [required]="true" optionLabel="key" optionValue="value" 
+            name="month" id="month" class="dropdwonPadding">
+            </p-dropdown>
+            <p-dropdown  [options]="yearList" [(ngModel)]= "year"  [required]="true" optionLabel="key" optionValue="value" 
+            name="year" id="year" class="dropdwonPadding">
+            </p-dropdown>
+    </div>
+    <div class="col-md-5">
+        <p-button type="button" (click)="getVariablePay()" label="Get Data"
+          Class="p-button-text p-button-sm p-button-success" styleClass="mr-2 ml-2"></p-button>
+    </div>
+</div>
+
+<form #variableSalaryForm="ngForm" (submit)="updateVariableSalary()">
+    <div class="form-group row pay-header">
+    <!-- <div class="form-group row "> -->
+        <div class="col-md-3">
+            <label>Component Name</label>
+        </div>
+        <div class="col-md-1">
+            <label>Amount</label>
+        </div>
+        <div class="col-md-2">
+            <label>Pay Amount</label>
+        </div>
+        <div class="col-md-2">
+            <label>Formula</label>
+        </div>
+        <div class="col-md-3">
+            <label>Remark</label>
+        </div>
+        <div class="col-md-1">
+            <label>Status</label>
+        </div>
+    </div>
+    <!-- </div> -->
+    <div class="form-group row pay-line" *ngIf="employeeVariableSalary==null || employeeVariableSalary.variableSalaries==null || employeeVariableSalary.variableSalaries.length==0 ">
+      <label>No data available</label>
+    </div>
+    <div class="form-group row pay-line" *ngFor="let variableSalary of employeeVariableSalary?.variableSalaries;let index = index;">
+        <div class="col-md-3">
+            {{variableSalary.payComponentName}}
+        </div>
+        <div  class="col-md-1">
+            {{variableSalary.amount}}
+        </div>
+        <div class="col-md-2">
+           <input pinput [(ngModel)]="variableSalary.payAmount" class="form-control p-inputtext" type="text" name="payAmount"
+            id="payAmount" #payAmount="ngModel" [disabled]="variableSalary.status"
+            [ngClass]="{'is-invalid': payAmount.invalid && (payAmount.dirty || payAmount.touched)}"
+            (keypress)="keyPressNumeric($event)" [ngModelOptions]="{standalone: true}"> 
+        </div>
+        <div class="col-md-2">
+            {{variableSalary.formula}}
+        </div>
+        <div class="col-md-3">
+            <input pinput [(ngModel)]="variableSalary.remarks" class="form-control p-inputtext" type="text" name="remarks"
+            id="remarks" #remarks="ngModel" [disabled]="variableSalary.status"
+            [ngClass]="{'is-invalid': remarks.invalid && (remarks.dirty || remarks.touched)}"
+            [ngModelOptions]="{standalone: true}" placeholder="Remarks"> 
+        </div>
+        <div  class="col-md-1">
+            {{variableSalary.status? "Paid": "Unpaid"}}
+        </div>
+    </div>
+    <div class="float-right">
+        <p-button icon="pi pi-check"  label="Save"   Class="p-button-text p-button-sm p-button-success" [disabled]="!variableSalaryForm.valid ||
+        employeeVariableSalary==null || employeeVariableSalary.variableSalaries==null || employeeVariableSalary.variableSalaries.length==0" styleClass="mr-2 ml-2" type="submit" ></p-button>
+        <p-button icon="pi pi-times" class="p-button-sm "   label="Cancel"  (click)="Close()" styleClass="p-button-secondary mr-2 ml-2"></p-button>
+      </div>
+</form>

@@ -1,0 +1,28 @@
+<section class="card">
+  <header class="card-header">
+      <h4>Map Access Right For User Group <b>{{userGroupName}}</b></h4>
+  </header>
+  <div class="card-body">
+    <form #userGroupMappingForm = "ngForm" (submit)="SaveUserGroupMappingData()">
+      <p-tabView  (onChange)="handleChange($event)">
+        <p-tabPanel [header]="menu.menuTypeName"  [tooltip]="menu.menuTypeName" *ngFor="let menu of menus">
+          <!-- {{ menu.menuItems | json}} -->
+          <p-tree 
+           [value]="menu.menuItems" 
+           [(selection)]="selectedMenuRights" 
+           (onNodeSelect)="nodeSelect($event, selectedMenuRights)" 
+           (onNodeUnselect)="nodeUnselectData($event, selectedMenuRights)" 
+           selectionMode="checkbox" datakey="data"> 
+          </p-tree>
+          <!-- / -->
+          <div class="float-right" *ngIf="menu.menuItems.length>0">
+            <p-button icon="pi pi-check"  label="Save"  Class="p-button-text p-button-sm p-button-success" type="submit" [disabled]="!userGroupMappingForm.valid"></p-button>
+            <p-button icon="pi pi-times" class="p-button-sm "   label="Cancel"  (click)="CancelUserGroupMappingData()" styleClass="p-button-secondary"></p-button>
+          </div>
+        </p-tabPanel>
+         
+      </p-tabView>
+    </form>
+  </div>
+</section>
+

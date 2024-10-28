@@ -1,0 +1,37 @@
+<section class="card">
+    <header class="card-header">
+      <div class="group-left col-lg-6" style="float: left;">
+        <h2>Employee</h2>
+      </div>
+      <div class="group-right col-lg-6">
+        <button pButton pRipple type="button" icon="pi pi-plus"(click)="addNewEmployee()" title="Add New Employee" class="p-button-rounded p-button-success"></button>
+       </div>
+  </header>
+  <br/>
+  <div class="card-body" style="padding-left:13px;padding-top: 0px;">
+    <div class="form-group row" style="margin-bottom: 0rem !important;">
+      <div class="col-lg-8">
+        <app-search-autocomplete  (onSearchEvent)="onGetEmployeeDetail($event)"></app-search-autocomplete>
+      </div>
+      <div class="col-lg-1" style="text-align: center;">OR</div>
+    <div class="col-lg-3 divload-list">
+     <p-button label="Load List"  iconPos="right" class="p-button-sm"  (onClick)="loadList()" ></p-button>
+     </div>
+    </div>
+    <div *ngIf="rowData.length > 0" style="padding-left: 21px;">
+      <app-grid-renderer
+      [gridRowData]="rowData"
+      [gridColData]="columnDefs"
+      (onCellClickEvent)="onCellClicked($event)"
+      [totalRecords]="totalRecordCount"
+      [isLazyLoadingEnabled]="true"
+      (onLazyLoadGridData)="onLazyLoadGridData($event)"
+      ></app-grid-renderer>
+      </div>
+  </div>
+  </section>
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+
+  </p-confirmDialog>
+
+

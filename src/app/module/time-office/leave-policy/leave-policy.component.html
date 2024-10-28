@@ -1,0 +1,111 @@
+<section class="card">
+    <div id="card-header-inner">
+        <p class="alignleft">Leave Policy</p>
+        <p class="alignright">
+            <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel"
+                (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+            <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"
+                class="p-button-rounded p-button-success"></button>
+        </p>
+        <div style="clear: both;"></div>
+
+    </div>
+    <div class="card-body" *ngIf="rowData.length > 0">
+        <app-grid-renderer [gridRowData]="rowData" [gridColData]="columnDefs"
+            (onCellClickEvent)="onCellClicked($event)"></app-grid-renderer>
+    </div>
+</section>
+
+<!-- new policy addition -->
+<p-dialog [header]="headerdialogName" [(visible)]="isAddNewPolicy" [modal]="true" id="divOUMap"
+[draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '50vw'}" >
+<div class="form-group row">
+  <div class="col-lg-6">
+    <label class="labelfont">Name</label>
+    <input type="text" pinput class="form-control" [(ngModel)]="leavePolicyInfo.policyName" 
+    #policyName="ngModel"
+    [ngClass]="{'is-invalid': policyName.invalid && (policyName.dirty || policyName.touched)}" 
+    name="policyName" id="policyName" (keypress)="appUtil.validateAlphanumeric($event)">
+      <div *ngIf="policyName.invalid && (policyName.dirty || policyName.touched)" class="labelfont">
+        <div class="p-error" *ngIf="policyName.errors?.['required']">
+          Policy Name is required.
+        </div>
+      </div>
+  </div>
+  <div class="col-lg-6">
+    <label class="labelfont">Description</label>
+    <input type="text" pinput class="form-control" [(ngModel)]="leavePolicyInfo.description" 
+    #description="ngModel"
+    [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}" 
+    name="description" id="description" (keypress)="appUtil.validateAlphanumeric($event)">
+      <div *ngIf="description.invalid && (description.dirty || description.touched)" class="labelfont">
+        <div class="p-error" *ngIf="description.errors?.['required']">
+          Policy Description is required.
+        </div>
+      </div>
+  </div>
+</div>
+<div class="float-right">
+<p-button icon="pi pi-check"  [label]="labelName"  class="p-button-text p-button-sm p-button-success mr1" (click)="saveLeavePolicy()"></p-button>
+<p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="cancelLeavePolicy()" styleClass="p-button-secondary"></p-button>
+
+</div>
+</p-dialog>
+<!-- delect policy confirmation -->
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+
+</p-confirmDialog>
+
+<!-- mapping dailog -->
+<p-dialog *ngIf="policyID && policyTypeID" header="Leave Policy Mapping" [(visible)]="displayPolicyMapping" [modal]="true" id="divOUMap"
+[draggable]="false" [closable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '80vw'}" >
+<app-policy-mapping
+[policyID]="policyID"
+      [policyTypeID]="policyTypeID"
+      ></app-policy-mapping>
+      <div class="footer">
+        <div class="btnFooter float-right">
+          <br/>
+           <p-button icon="pi pi-times" class="p-button-sm mr1" #closebutton data-dismiss="modal" label="Cancel"
+            styleClass="p-button-secondary" (click)="cancelLeavemappingdiv()"></p-button> 
+        </div>
+      </div>
+</p-dialog>
+
+<!-- OU mapping -->
+<p-dialog header="Organization Mapping" (onHide)="CancelOrgnaizationMapping()" [(visible)]="displayOUMap" [modal]="true" id="divOUMap"
+  [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '50vw',height:'38vw'}" >
+  <div class="form-group row">
+    <div class="col-lg-6">
+     
+      <label class="labelfont">Organization</label>
+      <p-dropdown [options]="orgUnitList" appendTo="body" [(ngModel)]="orgnaizationMappingInfo.organizationKeyID" optionLabel="key"
+        optionValue="value" class="" #organizationKeyID="ngModel" name="organizationKeyID" id="organizationKeyID"
+        (ngModelChange)="prepareOrgListByOU(orgnaizationMappingInfo.organizationKeyID)">
+      </p-dropdown>
+    </div>
+    <div class="col-lg-6">
+      <label class="labelfont"><br/></label><br/>
+      <p-multiSelect [options]="orgDataUnitList" appendTo="body" placeholder="Please Select" [(ngModel)]="selectedOrganiztion" name="organization" optionLabel="key" optionValue="value"></p-multiSelect>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-lg-6">
+      <label class="labelfont">Location</label>
+      <p-dropdown [options]="locationList" appendTo="body" [(ngModel)]="orgnaizationMappingInfo.locationKeyID" optionLabel="key"
+        optionValue="value" class="" #locationKeyID="ngModel" name="locationKeyID" id="locationKeyID"
+        (ngModelChange)="preparelocationDataByOU(orgnaizationMappingInfo.locationKeyID)">
+      </p-dropdown>
+    </div>
+    <div class="col-lg-6">
+      <label class="labelfont"><br/></label><br/>
+      <p-multiSelect [options]="LocationDataList" appendTo="body" placeholder="Please Select" [(ngModel)]="selectedLocation" name="location" optionLabel="key" optionValue="value"></p-multiSelect>
+    </div>
+  </div>
+  <div class="float-right">
+      <p-button icon="pi pi-check" label="Save"  Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn mr1" (click)="SaveOrgnaizationMapping()"></p-button>
+    <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancelOrgnaizationMapping()" styleClass="p-button-secondary"></p-button>
+  
+  </div>
+  </p-dialog>

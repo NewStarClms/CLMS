@@ -1,0 +1,22 @@
+.loader {
+    position: relative;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    left:50%;
+    top:50%;
+  }
+  #overlay{
+      position: absolute;
+      top:0px;
+      left:0px;
+      background: black;
+      opacity: .5;
+  }
+  .container{
+      position:relative;
+      height: 300px;
+      width: 200px;
+      border:1px solid
+  }
+  

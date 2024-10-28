@@ -1,0 +1,66 @@
+<ng-container>
+  <!-- <nav *ngFor="let menuItem of menuItems">
+    <li class="nav-item" *ngIf="(!menuItem.childs || menuItem.childs.length==0 || !hasValidSubMenu(menuItem.childs))">
+    <a class="nav-link" [routerLink]="menuItem.routerLink">{{ menuItem.menuName }}</a>
+    </li>
+    <li class="nav-item dropdown-submenu" *ngIf="menuItem.childs && menuItem.childs.length>0 && hasValidSubMenu(menuItem.childs)">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown{{ menuItem.menuId }}"
+      role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{ menuItem.menuName }}
+      </a>
+      <div class="dropdown-menu" attr.aria-labelledby="navbarDropdown{{ menuItem.menuId }}" *ngIf="hasValidSubMenu(menuItem.childs)">
+          <app-sidebar  *ngIf="menuItem.childs && menuItem.childs.length>0"
+          [menuItems]="menuItem.childs"></app-sidebar> 
+      </div>
+    </li>
+  </nav> -->
+
+
+  <nav class="navbar">
+    <ul>
+      <li *ngFor="let rootMenu of menuItems;let itemIndex=index;" class=""
+        style="text-align:center;margin-left: -10px;">
+        <a [routerLink]="rootMenu.hasChild? route.url: rootMenu.routerLink"
+          attr.data-toggle="{{rootMenu.childs.length>0? 'collapse':''}}"
+          attr.data-target="{{'#collapseBootstrap'+rootMenu.menuId}}" aria-expanded="true"
+          attr.aria-controls="{{'collapseBootstrap'+rootMenu.menuId}}" class="dropdown-toggle">
+          <span style="font-size: 17px;text-align:center;">{{rootMenu.menuName}}</span>
+        </a>
+        <ul id="{{'accordionsubSidebar'+rootMenu.menuId}}" class="sub-menu">
+          <li *ngFor="let secondChild of rootMenu.childs">
+            <a [routerLink]="secondChild.hasChild? route.url: secondChild.routerLink"
+              attr.data-toggle="{{secondChild.childs.length>0 && !secondChild.hasAction? 'collapse':''}}"
+              attr.data-target="{{'#collapseorg'+secondChild.menuId}}" aria-expanded="true"
+              attr.aria-controls="{{'collapseorg'+secondChild.menuId}}">
+              <i class="{{!secondChild.hasAction ? 'far pi pi-globe' : 'far pi pi-list'}} sec-child"></i>&nbsp;&nbsp;
+              <span class="mid">{{secondChild.menuName}}</span>
+            </a>
+            <ul id="{{'accordionsubSidebar'+secondChild.menuId}}">
+              <li *ngFor="let thirdChild of secondChild.childs">
+                <a [routerLink]="thirdChild.hasChild? route.url: thirdChild.routerLink"
+                  attr.data-toggle="{{thirdChild.childs.length>0 && !thirdChild.hasAction? 'collapse':''}}"
+                  attr.data-target="{{'#collapseorg_level2'+thirdChild.menuId}}" aria-expanded="true"
+                  attr.aria-controls="{{'collapseorg_level2'+thirdChild.menuId}}">
+                  <i
+                    class="{{!secondChild.hasAction ? 'far pi pi-globe' : 'far pi pi-list'}} sec-child"></i>&nbsp;&nbsp;
+                  <span class="mid">{{thirdChild.menuName}}</span>
+                </a>
+                <ul id="{{'accordionsubSidebar'+secondChild.menuId}}">
+                  <li *ngFor="let fourthChild of thirdChild.childs">
+                    <a class="collapse-item nav-link-fourth" routerLink="{{fourthChild.routerLink}}">
+                      <i
+                        class="{{!secondChild.hasAction ? 'far pi pi-globe' : 'far pi pi-list'}} sec-child"></i>&nbsp;&nbsp;
+                      <span class="mid"> {{fourthChild.menuName}}</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+
+</ng-container>

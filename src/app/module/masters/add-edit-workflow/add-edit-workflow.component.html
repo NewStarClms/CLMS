@@ -1,0 +1,122 @@
+<section class="card">
+  <header class="card-header">
+    <h2>{{headerdialogName}} </h2>
+  </header>
+</section>
+<div class="card">
+  <div class="card-body" *ngIf="requestTypeList.length > 0">
+    <form #workflowForm="ngForm" (submit)="saveWorkFlowruleData(workflowForm)">
+      <div class="form-group row">
+       
+        <div class="col-lg-3" *ngIf="workflowOptionList.length>0">
+          <label class="labelfont">Work Flow<span class="text-danger">*</span></label>
+         <p-dropdown [options]="workflowOptionList"  optionLabel="key" optionValue="value"
+            [(ngModel)]="workFlowModuleID" class="shadow-none" #workFlowModuleNo="ngModel"
+            (ngModelChange)="prepareRequestType()"  [disabled]="isDisabled" name="workFlowModuleval" id="workFlowModuleval">
+          </p-dropdown>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Request Type</label>
+          <p-dropdown [options]="requestTypeList" [required]="true" [(ngModel)]="workflowRuleObj.workFlowID"
+            name="workFlowID" id="workFlowID"  optionLabel="requestType" optionValue="workFlowID" class="" #workFlowID="ngModel">
+            <ng-template let-item pTemplate="item">
+              <div *ngIf="(item.requestType === 'N');">
+                New Request
+              </div>
+              <div *ngIf="(item.requestType === 'C');">
+                Cancel
+              </div>
+          </ng-template>
+          <ng-template let-item pTemplate="selectedItem">
+            <div *ngIf="(item.requestType === 'N');">
+              New Request
+            </div>
+            <div *ngIf="(item.requestType === 'C');">
+              Cancel
+            </div>
+        </ng-template>
+        </p-dropdown>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">Work Flow Rule Name <span class="text-danger">*</span></label>
+          <input pinput [(ngModel)]="workflowRuleObj.workFlowRuleName" class="form-control" type="text"
+            autocomplete="off" maxlength="100" required name="workFlowRuleName" id="workFlowRuleName"
+            #workFlowRuleName="ngModel">
+        </div>
+        <div class="col-lg-4">
+          <label class="labelfont">Description</label>
+          <input pinput [(ngModel)]="workflowRuleObj.description" class="form-control" type="text" autocomplete="off"
+            maxlength="100"  name="description" id="description" #description="ngModel" />
+        </div>
+      </div>
+      <span class="p-buttonset">
+        <button pButton type="button"icon="pi pi-trash" (click)="deleteRuleMap()" class="p-button-danger mr-1 mb-1"></button>
+        <button pButton  type="button" icon="pi pi-plus" (click)="addNewRuleMap()" class="p-button-success mr-2 mb-1"></button>
+    </span>
+      <div class="clearText mb-3"></div>
+      <div class="form-group row ruleMapCls" *ngFor="let ruleObj of workflowRuleObj.ruleLevelMappings; ;let itemIndex=index;">
+        <div class="col-lg-2 ruleMap">
+          <!-- <input pinput type="hidden" [(ngModel)]="ruleObj.levelNumber" value=" {{ itemIndex + 1}}"  type="text" class="workflowInpt ml-3" style="width: 21rem;"autocomplete="off"
+          maxlength="100" name="levelNumber" id="levelNumber" > -->
+          {{ itemIndex + 1}} <label class="labelfont" class="ml-2 mr-2 mb-2">  Approver</label>
+            <p-dropdown [options]="userRoleOptionList" [required]="true" [(ngModel)]="ruleObj.userRoleID"
+            name="userRoleID{{itemIndex}}" id="userRoleID{{itemIndex}}" optionLabel="key" optionValue="value" class="workflowDrop" #userRoleID{{itemIndex}}="ngModel">
+          </p-dropdown>
+         
+        </div>
+        <div class="col-lg-5">
+          <!-- <input pinput *ngIf="ruleObj.userRoleID === 9" [(ngModel)]="ruleObj.employeeID"  type="text" class="workflowInpt ml-3" style="width: 21rem;"autocomplete="off"
+          maxlength="100" required name="employeeID" id="employeeID" placeholder="Please Provide Emp ID" #userRoleID="ngModel">
+        >-->
+        <!-- {{ ruleObj.identifierLabel | json }} -->
+        <p-autoComplete
+        *ngIf="ruleObj.userRoleID === 9"
+                [(ngModel)]="ruleObj.identifierLabel"
+                [suggestions]="employeeSerchList"
+                (completeMethod)="searchData($event)"
+                [forceSelection]="true"
+                field="key"
+                [minLength]="2"
+                class="auto-serch"
+                placeholder="Search Employee" [multiple]="false"
+                name="employeeID{{itemIndex}}"
+                id="employeeID{{itemIndex}}"
+                (onSelect)="selectEmployee($event,itemIndex)"
+                (onUnselect)="unSelectEmployee($event,itemIndex)"
+                >
+              </p-autoComplete>
+          </div> 
+
+        <div class="col-lg-2">
+          <label class="labelfont" class="ml-2 mr-2 mb-2">TAT  </label>
+          <input pinput [(ngModel)]="ruleObj.tat" type="text" class="workflowInpt" autocomplete="off"
+          [disabled]="checkIndex(itemIndex)"  maxlength="100" required name="tat{{itemIndex}}" id="tat" #tat{{itemIndex}}="ngModel">
+        </div>
+        <div class="col-lg-1">
+              <label class=" ml-2 mr-2 mb-2" title="Intimation">Intimation</label>
+              <p-checkbox [(ngModel)]="ruleObj.intimationOnly" [binary]="true" name="intimationOnly{{itemIndex}}" #intimationOnly{{itemIndex}}="ngModel" id="intimationOnly" inputId="binary"></p-checkbox>
+        </div>
+        <div class="col-lg-2">
+          <label class=" ml-2 mr-2 mb-2">Due Days</label>
+          <input pinput [(ngModel)]="ruleObj.dueDay" type="text" class="workflowInpt" autocomplete="off"
+          maxlength="100" required name="dueDay{{itemIndex}}" id="tat" #dueDay{{itemIndex}}="ngModel">
+    </div>
+
+      </div>
+      <div class="form-group row pull-right">
+        <div class="col-lg-12">
+          <p-button icon="pi pi-check" type="submit" [label]="labelName"
+            Class="p-button-text p-button-sm p-button-success mr-2 ml-2" [disabled]="!workflowForm.valid"></p-button>
+          <p-button icon="pi pi-times" class="p-button-sm ml-2" label="Cancel" styleClass="p-button-secondary"
+            (click)="CancelworkflowForm()"></p-button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text">
+
+</p-confirmDialog>
+
+<!-- page end-->

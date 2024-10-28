@@ -1,0 +1,28 @@
+<div class="card tile-card">
+    <h5 class="card-header">
+        <div style="width: 35%;float:left">
+            <a data-toggle="collapse" href="#collapse-attendance" aria-expanded="true"
+                aria-controls="collapse-attendance" id="heading-attendance">
+                <i class="fa fa-chevron-down pull-right"></i>
+                My Attendance
+            </a>
+        </div>
+        <div style="width: 65%;float:right">
+            <span style="font-size: 11px;"> (MM/YYYY) </span>
+            <p-dropdown [options]="months" optionLabel="Text" optionValue="Value" [(ngModel)]="month"
+                class="p-month-dropdown tile-p-dropdown" name="month" id="month"> </p-dropdown>
+            <p-dropdown [options]="years" optionLabel="year" optionValue="year" [(ngModel)]="year"
+                class="p-year-dropdown  tile-p-dropdown" name="year" id="year"> </p-dropdown>
+            <p-button icon="fa fa-search" iconPos="right" class="p-button-sm tile-p-button" (click)="loadAtttendance();">
+            </p-button>
+        </div>
+    </h5>
+    <div id="collapse-attendance" class="collapse show" aria-labelledby="heading-attendance">
+        <div class="card-body">
+            <div class="col-md-12 attendance-header" [innerHTML]="headerLabel">
+            </div>
+            <full-calendar #calendar [options]="calendarOptions">
+            </full-calendar>
+        </div>
+    </div>
+</div>

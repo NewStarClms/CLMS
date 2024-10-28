@@ -1,0 +1,80 @@
+.request-flow
+{
+    display:inline-flex !important;
+    margin-bottom: 25px;
+}
+.request-flow span
+{
+    padding-right: 12px !important;
+    font-weight: bold !important;
+}
+
+
+.request-breadcrumb {
+	display: inline-block;
+	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.35);
+	overflow: hidden;
+	border-radius: 5px;
+	counter-reset: flag; 
+}
+
+.request-breadcrumb span {
+	text-decoration: none;
+	outline: none;
+	display: block;
+	float: left;
+	font-size: 12px;
+	line-height: 36px;
+	color: white;
+	padding: 0 10px 0 60px;
+	background: #666;
+	background: linear-gradient(#666, #333);
+	position: relative;
+}
+.request-breadcrumb span:first-child {
+	padding-left: 46px;
+	border-radius: 5px 0 0 5px; 
+}
+.request-breadcrumb span:first-child:before {
+	left: 14px;
+}
+.request-breadcrumb span:last-child {
+	border-radius: 0 5px 5px 0; 
+	padding-right: 20px;
+}
+.request-breadcrumb span:after {
+	content: '';
+	position: absolute;
+	top: 0; 
+	right: -18px;
+	width: 36px; 
+	height: 36px;
+	transform: scale(0.707) rotate(45deg);
+	z-index: 1;
+	background: #666;
+	background: linear-gradient(135deg, #666, #333);
+	box-shadow: 
+		2px -2px 0 2px rgba(235, 231, 231, 0.966), 
+		3px -3px 0 2px rgb(245, 243, 243);
+	border-radius: 0 5px 0 50px;
+}
+.request-breadcrumb span:last-child:after {
+	content: none;
+}
+.request-breadcrumb span:before {
+	content: counter(flag);
+	counter-increment: flag;
+	/*some styles now*/
+	border-radius: 100%;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	margin: 8px 0;
+	position: absolute;
+	top: 0;
+	left: 30px;
+	background: #444;
+	background: linear-gradient(#444, #222);
+	font-weight: bold;
+    padding-left: 7px;
+}

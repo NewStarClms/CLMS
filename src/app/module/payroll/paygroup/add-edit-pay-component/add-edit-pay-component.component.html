@@ -1,0 +1,232 @@
+<section class="card">
+    <header class="card-header">
+      <h2>{{headerdialogName}} </h2>
+      <span>Note : * Fields are not change after Component Mapping.</span>
+    </header>
+  </section>
+  <div class="card">
+    <div class="card-body">
+        <form #payForm="ngForm" (submit)="payForm.valid && savePayComponent(payForm)">
+        <p-tabView>
+    <p-tabPanel header="Settings">
+        <div class="form-group row">
+            <input pinput [(ngModel)]="payCommInfo.payComponentID" class="form-control" type="text"
+                autocomplete="off" name="payComponentID" id="payComponentID " hidden="true">
+            <div class="col-md-3">
+                <label class="labelfont">Component Name <span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="payCommInfo.payComponentName" required class="form-control"
+                    type="text" autocomplete="off"  name="payComponentName"
+                     id="payComponentName" 
+                    #payComponentName="ngModel"
+                    [ngClass]="{'is-invalid': payComponentName.invalid && (payComponentName.dirty || payComponentName.touched)}">
+                <div *ngIf="payForm.submitted && (payComponentName.invalid || payComponentName.dirty || payComponentName.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="payComponentName.errors?.['required']">
+                        Component Name is required.
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont">Pay Head <span class="text-danger">*</span></label>
+                <p-dropdown [options]="payHeadList" [(ngModel)]="payCommInfo.payHeadID" 
+                    optionLabel="key" optionValue="value"  class="" [filter]="true" filterBy="value" (ngModelChange)="fnupdateModel($event)"
+                    #payHeadID="ngModel" [ngClass]="{'is-invalid': payHeadID.invalid && (payHeadID.dirty || payHeadID.touched)}"
+                    name="payHeadID" id="payHeadID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="payForm.submitted && (payHeadID.invalid || payHeadID.dirty || payHeadID.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="payHeadID.errors?.['required']">
+                        Pay Head Name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Component Type <span class="text-danger">*</span></label>
+                <div class="clearfix"></div>
+                <p-radioButton name="payComponentTypeA" #payComponentType="ngModel" required="true" class="ml-1 mr-1 " value="A" [(ngModel)]="payCommInfo.payComponentType" inputId="payComponentTypeA"></p-radioButton>
+                  <label class="radiolabelfont mr-1 ml-1 " >Addtion </label>
+                  <p-radioButton name="payComponentTypeD" #payComponentType="ngModel" required="true" class=" mr-1 ml-1" value="D" [(ngModel)]="payCommInfo.payComponentType" inputId="payComponentTypeD"></p-radioButton>
+                  <label class="radiolabelfont mr-1 ml-1 mt-2" >Deduction</label>
+                  <div *ngIf="payForm.submitted && (payComponentType.invalid || payComponentType.dirty || payComponentType.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="payComponentType.errors?.['required']">
+                        Component Type is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Rounding <span class="text-danger">*</span></label>
+                <p-dropdown [options]="roundingOption" [(ngModel)]="payCommInfo.rounding"
+                    optionLabel="label" optionValue="value" class="" [filter]="true" filterBy="value"
+                    #rounding="ngModel" [disabled]="!payheadCurrentData.roundingEditable" 
+                    [ngClass]="{'is-invalid': rounding.invalid && (rounding.dirty || rounding.touched)}"
+                    name="rounding" id="rounding">
+                </p-dropdown>
+                <div *ngIf="payForm.submitted && (rounding.invalid || rounding.dirty || rounding.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="rounding.errors?.['required']">
+                        Rounding  is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label class="labelfont"> Is Variable? </label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.variableComponent"  [disabled]="!payheadCurrentData.variablePaycodeEditable" optionLabel="label" optionValue="value" name="variableComponent"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Prorate On Paid Days * </label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.prorateOnPaidDays" optionLabel="label" optionValue="value" name="prorateOnPaidDays"></p-selectButton>
+            </div>
+            
+            <div class="col-md-3">
+                <label class="labelfont"> Part Of Gross </label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [disabled]="!payheadCurrentData.partOFGrossEditable"
+                 [(ngModel)]="payCommInfo.partOfGross" optionLabel="label" optionValue="value" name="partOfGross"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Part Of CTC </label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.partOfCTC" optionLabel="label" optionValue="value" name="partOfCTC"
+                 [disabled]="!payheadCurrentData.partOfCTCEditable"></p-selectButton>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label class="labelfont"> Pay With Salary </label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.payWithSalary" [disabled]="!payheadCurrentData.payWithSalaryEditable"
+                 optionLabel="label" optionValue="value" name="payWithSalary"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Show On Salary Slip </label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.showOnSalarySlip"  [disabled]="!payheadCurrentData.showOnSalarySlipEditable"
+                optionLabel="label" optionValue="value" name="showOnSalarySlip"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Show On Salary Register </label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)"  [disabled]="!payheadCurrentData.showOnSalaryRegisterEditable"
+                [(ngModel)]="payCommInfo.showOnSalaryRegister" optionLabel="label" optionValue="value" name="showOnSalaryRegister"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Pay In Joining Month </label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" 
+                 [(ngModel)]="payCommInfo.payInJoiningMonth" optionLabel="label" optionValue="value" name="payInJoiningMonth"></p-selectButton>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3" *ngIf="payCommInfo.payInJoiningMonth">
+                <label class="labelfont">  Pay In Joining Month Day </label>
+                <input pinput [(ngModel)]="payCommInfo.payInJoiningMonthDay" class="form-control"
+                    type="number" autocomplete="off"  name="payInJoiningMonthDay" id="payInJoiningMonthDay" maxlength="5" #payInJoiningMonthDay="ngModel">
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Pay In Leaving Month</label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)"  
+                 [(ngModel)]="payCommInfo.payInLeavingMonth" optionLabel="label" optionValue="value" name="payInLeavingMonth"></p-selectButton>
+            </div>
+            <div class="col-md-3" *ngIf="payCommInfo.payInLeavingMonth">
+                <label class="labelfont"> Pay In Leaving Month Day </label>
+                <input pinput [(ngModel)]="payCommInfo.payInLeavingMonthDay" class="form-control"
+                    type="number" autocomplete="off"  name="payInLeavingMonthDay" id="payInLeavingMonthDay" maxlength="5" #payInLeavingMonthDay="ngModel">
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Salary Slip Order </label>
+                <input pinput [(ngModel)]="payCommInfo.salarySlipOrder" class="form-control"
+                    type="number" autocomplete="off"  name="salarySlipOrder" id="salarySlipOrder" maxlength="5" #salarySlipOrder="ngModel">
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Salary Register Order </label>
+                <input pinput [(ngModel)]="payCommInfo.salaryRegisterOrder" class="form-control"
+                    type="number" autocomplete="off"  name="salaryRegisterOrder" id="salaryRegisterOrder" maxlength="5" #salaryRegisterOrder="ngModel">
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Applicable">
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label class="labelfont"> PF Applicable</label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.pfApplicable" optionLabel="label" optionValue="value" name="pfApplicable"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> LWF Applicable </label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.lwfApplicable" optionLabel="label" optionValue="value" name="lwfApplicable"></p-selectButton>
+            </div>
+            
+            <div class="col-md-3">
+                <label class="labelfont"> ESI Applicable</label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.esiApplicable" optionLabel="label" optionValue="value" name="esiApplicable"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> PT Applicable</label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.ptApplicable" optionLabel="label" optionValue="value" name="ptApplicable"></p-selectButton>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label class="labelfont"> Leave Encashment Applicable</label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.leaveEncashmentApplicable" optionLabel="label" optionValue="value" name="leaveEncashmentApplicable"></p-selectButton>
+            </div>
+            <!-- new Changes -->
+            <!-- Aplicable replace by Applicable -->
+            <div class="col-md-3">
+                <label class="labelfont"> Arrear Applicable </label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.arrearApplicable" optionLabel="label" optionValue="value" name="arrearApplicable"></p-selectButton>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Bonus Applicable </label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.bonusApplicable" optionLabel="label" optionValue="value" name="bonusApplicable"></p-selectButton>
+            </div>
+            <!-- End -->
+        </div>
+        
+    </p-tabPanel>
+    <p-tabPanel header="Extra Settings">
+
+        <div class="form-group row">
+            <div class="col-md-4" *ngIf="this.payheadCurrentData.payHeadID===12">
+            <label class="labelfont">Leave Code</label>
+            <p-dropdown  [options]="leaveTypeList" [(ngModel)]="payCommInfo.leaveID" optionLabel="leaveName" optionValue="leaveID" (ngModelChange)="fnupdateOption($event)"
+            name="leaveID" id="leaveID">
+            </p-dropdown>
+            </div> 
+            </div>
+
+        <div class="form-group row" *ngIf="this.payheadCurrentData.payHeadID===8">
+            <div class="col-md-3">
+                <label class="labelfont"> Interest Type</label>
+                <p-dropdown [options]="interestTypeOption" [(ngModel)]="payCommInfo.interestType"
+                    optionLabel="label" optionValue="value" class="" [filter]="true" filterBy="value"
+                    #interestType="ngModel" name="interestType" id="interestType">
+                </p-dropdown>
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Loan Type</label>
+                <input pinput [(ngModel)]="payCommInfo.loanType" class="form-control"
+                type="text" autocomplete="off"  name="loanType" id="loanType" #LoanType="ngModel">
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Loan Amount Limit</label>
+                <input pinput [(ngModel)]="payCommInfo.loanAmountLimit" class="form-control"
+                type="text" autocomplete="off"  name="loanAmountLimit" id="loanAmountLimit" maxlength="5" #loanAmountLimit="ngModel">
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Max EMI</label>
+                <input pinput [(ngModel)]="payCommInfo.maxEMI" class="form-control"
+                type="text" autocomplete="off"  name="maxEMI" id="maxEMI" maxlength="5" #maxEMI="ngModel">
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Loan Eligibility Days From Joining Date</label>
+                <input pinput [(ngModel)]="payCommInfo.loanEligibilityDays" class="form-control"
+                type="text" autocomplete="off"  name="loanEligibilityDays" id="loanEligibilityDays" maxlength="5" #loanEligibilityDays="ngModel">
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont"> Exception Allowed</label>
+                <p-selectButton [options]="stateOptions" (ngModelChange)="fnupdateOption($event)" [(ngModel)]="payCommInfo.exceptionAllowed" optionLabel="label" optionValue="value" name="exceptionAllowed"></p-selectButton>
+            </div>
+            </div>
+    </p-tabPanel>
+    </p-tabView>
+    <div class="float-right">
+        <p-button class="p-button-sm"  type="submit"  label="Save"  Class="p-button-text p-button-sm p-button-success mr-2 ml-2" styleClass="p-button-success" ></p-button>
+        <p-button  class="p-button-sm"  #closebutton data-dismiss="modal" label="Cancel"  styleClass=" mr-2 ml-2 p-button-secondary" (click)="cancelEdit()"></p-button>
+      </div>
+</form>
+    </div>
+    </div>

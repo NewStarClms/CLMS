@@ -1,0 +1,72 @@
+
+
+  <section class="card">
+    <header class="card-header">
+      <h2>Minimum Wages Master</h2>
+  </header>
+  <div class="group-right">
+    <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"class="p-button-rounded p-button-success"></button>
+  
+  </div>
+    <div class="card-body">
+      <app-payroll-grid-rendere
+      [gridRowData]="rowData"
+      [gridColData]="columnDefs"
+      (onCellClickEvent)="onCellClicked($event)"
+      ></app-payroll-grid-rendere>
+    </div>
+  </section>
+<p-dialog header="Minimum Wages Master" [(visible)]="displaywagesMaster" [modal]="true"
+[draggable]="false" [resizable]="false" (onHide)="CancelwagesSettingData()" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '50vw'}" >
+    <form #wagesSettingForm = "ngForm" (submit)="savewagesSetting()">
+        <div class="form-group row">
+            <div class="col-lg-6">
+                <label class="labelfont">State<span class="text-danger">*</span></label>
+          <p-dropdown [options]="stateList" [(ngModel)]="wagesSettingInfo.stateID" optionLabel="stateName" optionValue="stateID"
+          class="" #stateID="ngModel" [required]="true" (ngModelChange)="getstateID($event)"
+          [ngClass]="{'is-invalid': stateID.invalid && (stateID.dirty || stateID.touched)}" name="stateID" id="stateID"></p-dropdown>
+        <div *ngIf="stateID.invalid && (stateID.dirty || stateID.touched)" class="labelfont">
+    
+          <div class="p-error" *ngIf="stateID.errors?.['required']">
+           State is required.
+          </div>
+        </div>
+        </div>
+        </div>
+       
+        <div class="form-group row" *ngFor = "let item of wagesSettingInfo.minimumWagesMapping; index as i;" >
+            <div class="col-lg-4" *ngIf="minimumWagesdiv">
+              <!-- <p>{{item.employeeSkillTypeID}}</p> -->
+                {{item.employeeSkillTypeName}}
+                <input pinput [(ngModel)]="item.employeeSkillTypeID" class="form-control" type="hidden"
+                name="employeeSkillTypeID{{i}}" id="employeeSkillTypeID{{i}}"
+                #employeeSkillTypeID="ngModel">
+                <input pinput [(ngModel)]="item.employeeSkillTypeName" class="form-control" type="hidden"
+          autocomplete="off"  name="{{item.employeeSkillTypeName+i}}" id="{{item.employeeSkillTypeName+i}}" readonly
+           #employeeSkillTypeName="ngModel">
+         
+           <input pinput [(ngModel)]="item.stateID" class="form-control" type="hidden"
+           autocomplete="off" name="stateID{{i}}" id="stateID{{i}}"
+            #stateID="ngModel">
+        </div>
+        <div class="col-lg-6" *ngIf="minimumWagesdiv">
+            <input pinput [(ngModel)]="item.minimumWagesAmount" class="form-control" type="text"
+      autocomplete="off" required name="minimumWagesAmount{{i}}" id="minimumWagesAmount{{i}}" 
+       #minimumWagesAmount="ngModel"
+      [ngClass]="{'is-invalid': minimumWagesAmount.invalid && (minimumWagesAmount.dirty || minimumWagesAmount.touched)}">
+      
+    <div *ngIf="minimumWagesAmount.invalid && (minimumWagesAmount.dirty || minimumWagesAmount.touched)" class="labelfont">
+    
+      <div class="p-error" *ngIf="minimumWagesAmount.errors?.['required']">
+        Minimum Wages Amount is required.
+      </div>
+    </div>
+        </div>
+        </div>
+        <div class="float-right">
+          <p-button icon="pi pi-check"  label="Save"  Class="p-button-text p-button-sm p-button-success" styleClass="mr1"  type="submit" [disabled]="!wagesSettingForm.valid"></p-button>
+          <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancelwagesSettingData()" styleClass="p-button-secondary"></p-button>
+        </div>
+        </form>
+</p-dialog>
+  <!-- page end-->

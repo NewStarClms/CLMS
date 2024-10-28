@@ -1,0 +1,19 @@
+:host ::ng-deep  legend {
+    display: block;
+    width: 46% !important;
+    max-width: 100%;
+    padding: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.0rem;
+    line-height: inherit;
+    color: inherit;
+    white-space: normal;
+}
+.form-control-txtArea{
+    width:100% !important;
+    border:1px solid #808080;
+}
+.form-control-txtArea:focus{
+    width:100% !important;
+    border:1px solid #808081;
+}

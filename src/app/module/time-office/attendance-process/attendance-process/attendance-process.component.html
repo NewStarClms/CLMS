@@ -1,0 +1,136 @@
+
+<section class="card" *ngIf="maindetailDiv">
+    <div class="card-body">
+        <div class="form-group row">
+            <div class="col-lg-7">
+                <section class="card border">
+                    <div class="card-body">
+                        <h5>Attendance Detail</h5>
+                        <div class="form-group row">
+                            <div class="col-lg-7">
+                                <label class="labelfont">Month Year<span class="text-danger">*</span></label>
+                                <br/>
+                                <p-dropdown  [options]="monthList" [(ngModel)]= "month"  [required]="true" optionLabel="key" optionValue="value" 
+                                name="month" id="month" class="dropdwonPadding" (ngModelChange)="fngetData()">
+                                </p-dropdown>
+                                <p-dropdown  [options]="yearList" [(ngModel)]= "year"  [required]="true" optionLabel="key" optionValue="value" 
+                                name="year" id="year" class="dropdwonPadding">
+                                </p-dropdown>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="labelfont"><br/></label><br/>
+                                <p-button  type="button" (click)="fngetData()"   label="Get Data" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+                            </div>
+                        </div>         
+                    </div>
+                </section>
+                <section class="card border">
+                    <div class="card-body">
+                        <h5>Attendance Verification
+                        </h5>
+                        <div class="form-group row">
+                            <div class="col-lg-6" *ngFor="let list of verficationList;let j = index">
+                                <span class="ui-sortable-handle">{{list.massgaeText}}</span>
+                                <span class="ui-sortable-handle float-right" style="padding-left: 10px;line-height: 45px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(list.groupID, list.sequenceNo)" data-toggle="tooltip" data-original-title="(Click) For Download"> <i class="pi pi-download" style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                     <span class="ui-sortable-handle float-right" style="font-size: 0.8rem;line-height: 45px;"> {{list.countNo}}</span>
+                            </div>
+                        </div>       
+                    </div>
+                </section>
+                <section class="card border">
+                    <div class="card-body">
+                        <h5>Arrear Process</h5>
+                            <div class="form-group row">
+                                <div class="col-lg-4" *ngFor="let aalist of arrearList;let k = index">
+                                    <span class="ui-sortable-handle">{{aalist.massgaeText}}</span>
+                                    <span class="ui-sortable-handle float-right" style="padding-left: 10px;line-height: 45px;">
+                                        <a class="cursor-pointer" (click)="fnDownloadData(aalist.groupID, aalist.sequenceNo)" data-toggle="tooltip" data-original-title="(Click) For Download"> <i class="pi pi-download" style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                         <span class="ui-sortable-handle float-right" style="font-size: 0.8rem;line-height: 45px;"> {{aalist.countNo}}</span>
+                                </div>
+                            </div>
+                    </div>
+                </section>
+                
+            </div>
+            <div class="col-lg-5">
+                <section class="card border">
+                    <h5>
+                        <i class="pi pi-bell" style="font-size: 1rem"></i> Notification
+                    </h5>
+                        <div class="box-body">
+                            <ul class="todo-list ui-sortable" id="listnotification">
+                                    <li *ngFor="let item of notificationList;let i = index">
+                                        <span class="ui-sortable-handle"><i class="pi pi-user" style="font-size: 0.8rem;"></i></span>
+                                        <span class="ui-sortable-handle">{{item.massgaeText}}</span>
+                                        <span class="ui-sortable-handle float-right" style="padding-left: 10px;">
+                                            <a class="cursor-pointer" (click)="fnDownloadData(item.groupID, item.sequenceNo)" data-toggle="tooltip" data-original-title="(Click) For Download"> <i class="pi pi-download" style="font-size: 0.8rem"></i></a></span>
+                                             <span class="ui-sortable-handle float-right"> {{item.countNo}}</span>
+                                    </li>
+                            </ul>
+                        </div>
+                </section>
+            </div>
+         </div>
+    </div>
+</section>
+<section class="card " *ngIf="maindetailDiv">
+    <div class="card-body">
+        
+        <section class="card border">
+            <h5>Attendance Process</h5>
+            <div class="form-group row">
+                <div class="col-lg-3">
+                        <p-button  type="button" (click)="fnViewAttendaceProcessData('P')"   label="Process Completed" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+                    <span class="ui-sortable-handle float-right" style="padding-left: 10px;line-height: 45px;">
+                        <a class="cursor-pointer" (click)="fnDownloadData(3, 1)" data-toggle="tooltip" data-original-title="(Click) For Download"> <i class="pi pi-download" style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                         <span class="ui-sortable-handle float-right" style="font-size: 0.8rem;line-height: 45px;"> {{processCompletedCount}}</span>
+                </div>
+                <div class="col-lg-3">
+                    <p-button  type="button" (click)="fnViewAttendaceProcessData('U')"   label="Pending" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+                <span class="ui-sortable-handle float-right" style="padding-left: 10px;line-height: 45px;">
+                    <a class="cursor-pointer" (click)="fnDownloadData(3,2)" data-toggle="tooltip" data-original-title="(Click) For Download"> <i class="pi pi-download" style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                     <span class="ui-sortable-handle float-right" style="font-size: 0.8rem;line-height: 45px;">{{pendingCount}}</span>
+            </div>
+            <div class="col-lg-3">
+                <span  class="ui-sortable-handle">Total Employee</span>
+            <span class="ui-sortable-handle float-right" style="padding-left: 10px;line-height: 45px;">
+                <a class="cursor-pointer" (click)="fnDownloadData(3, 3)" data-toggle="tooltip" data-original-title="(Click) For Download"> <i class="pi pi-download" style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                 <span class="ui-sortable-handle float-right" style="font-size: 0.8rem;line-height: 45px;">{{totalEmployeeCount}}</span>
+        </div>
+            </div>
+        </section>
+    </div>
+</section>
+<!-- //*ngId="maindetaildiv" -->
+<section class="card" *ngIf="employeeListDetailDIv">
+    <div class="card-body">
+        <div class="form-group row">
+           <h5>Attendance Reprocess for the month {{month}}-{{year}}</h5>
+         </div>
+         <div class="form-group row">
+            <div class="col-lg-8">
+                <label class="labelfont">Remark </label>
+            <input pinput [(ngModel)]="requestRemark" class="form-control" type="text"
+               name="requestRemark" id="requestRemark">
+            </div>
+            <div class="float-right">
+                <p-button  type="button"   [label]="labelName" Class="p-button-text p-button-sm p-button-success" (click)="saveAttendanceProcess(actiontype)" styleClass="p-mr-btn"></p-button>
+                <!-- <p-button  type="button" *ngIf="deletebtn"  label="Delete" Class="p-button-text p-button-sm p-button-danger" (click)="deleteAttendanceProcess(actiontype)" styleClass="p-mr-btn p-button-danger"></p-button> -->
+                <p-button  class="p-button-sm "  label="Close" styleClass="p-button-secondary" (click)="Cloasepage()"></p-button>   
+            </div>
+         </div>
+         <app-grid-renderer
+        [gridRowData]="rowData"
+        [gridColData]="columnDefs"
+        (onCheckAllClicked)="checkUnCheckAllClicked($event)"
+        (onCheckRowClicked)="checkUnCheckRowClicked($event)"
+        (onCellClickEvent)="onCellClicked($event)">
+        </app-grid-renderer>
+    </div>
+</section>
+
+
+
+   
+    

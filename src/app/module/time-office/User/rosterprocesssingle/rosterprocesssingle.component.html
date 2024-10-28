@@ -1,0 +1,36 @@
+
+      <form #rosterProcessForm = "ngForm" name="form" >
+        <div class="form-group row">
+            <div class="col-md-4">
+                <label class="labelfont">Roster Flag <span class="text-danger">*</span></label>
+                <p-dropdown [options]="rosterProcessList" [(ngModel)]="rosterProcessInfo.processFlag" optionLabel="key" optionValue="value"
+                   #processFlag="ngModel" [required]="true"
+                  [ngClass]="{'is-invalid': processFlag.invalid && (processFlag.dirty || processFlag.touched)}" name="processFlag" id="processFlag"></p-dropdown>
+                  <div *ngIf="processFlag.invalid && (processFlag.dirty || processFlag.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="processFlag.errors?.['required']">
+                        Roster Flag is required.
+                    </div>
+               </div>
+            </div>
+            <div class="col-md-4">
+                <label class="labelfont">From Date </label>
+                    <input pinput class="form-control" type="text" autocomplete="off" name="fromDate" [(ngModel)]="rosterProcessInfo.fromDate"
+       id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker
+       [ngClass]="{'is-invalid': fromDate.invalid && (fromDate.dirty || fromDate.touched)}" #fromDate="ngModel">
+      
+            </div>
+            <div class="col-md-4">
+                <label class="labelfont">To Date </label>
+                <input pinput class="form-control" type="text" autocomplete="off" name="toDate" [(ngModel)]="rosterProcessInfo.toDate"
+                id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker
+                [ngClass]="{'is-invalid': toDate.invalid && (toDate.dirty || toDate.touched)}" #toDate="ngModel">
+               
+            </div>
+            </div>
+      <div class="float-right">
+          <p-button *ngIf="singleroster" type="button" (click)="SaveRosterProcessData()"  label="Roster Process" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" [disabled]="!rosterProcessForm.valid"></p-button>
+          <p-button *ngIf="multiroster" type="button" (click)="SaveRosterProcessMultiData()"  label="Roster Process" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" [disabled]="!rosterProcessForm.valid"></p-button>
+          <p-button  class="p-button-sm"  label="Cancel" styleClass="p-button-secondary" (click)="CancelrosterProcessForm()"></p-button>
+       
+      </div>
+      </form>

@@ -1,0 +1,136 @@
+<section class="card">
+  <header class="card-header">
+      <h2>User Group</h2>
+  </header>
+  <div class="group-right">
+    <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel" (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+    <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"class="p-button-rounded p-button-success"></button>
+    <button pButton pRipple type="button" icon="pi pi-filter" class="p-button-rounded p-button-warning"></button>
+  </div>
+  <div class="card-body">
+    <div *ngIf="rowData.length > 0">
+      <app-grid-renderer
+      [gridRowData]="rowData"
+      [gridColData]="columnDefs"
+      (onCellClickEvent)="onCellClicked($event)">
+      ></app-grid-renderer>
+    </div>
+  </div>
+</section>
+<!--add / update / delete modal  -->
+<p-dialog [header]="headerdialogName" [(visible)]="display" [modal]="true"
+[draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '60vw'}" >
+  <form #usergroupForm = "ngForm" (submit)="SaveUserGroupData()">
+    <div class="form-group row">
+      <div class="col-lg-6">
+        <label class="labelfont">User Group Type<span class="text-danger">*</span></label>
+        <p-dropdown  [options]="userGroupTypeList" [(ngModel)]= "userGroupInfo.userGroupTypeID" optionLabel="key" optionValue="value" class="" #userGroupTypeID="ngModel"
+        [ngClass]="{'is-invalid': userGroupTypeID.invalid && (userGroupTypeID.dirty || userGroupTypeID.touched)}"  name="userGroupTypeID" id="userGroupTypeID" >
+        </p-dropdown>
+        <div *ngIf="userGroupTypeID.invalid && (userGroupTypeID.dirty || userGroupTypeID.touched)"
+            class="labelfont">
+          <div  class="p-error" *ngIf="userGroupTypeID.errors?.['required']">
+            User Group Type is required.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="labelfont">User Group Name<span class="text-danger">*</span></label>
+        <input pinput
+        [(ngModel)]= "userGroupInfo.userGroupName"
+        class="form-control"
+        type="text"
+        name="userGroupName"
+        id="userGroupName" #userGroupName="ngModel"
+        [ngClass]="{'is-invalid': userGroupName.invalid && (userGroupName.dirty || userGroupName.touched)}" (keypress)="keyPressAlphanumeric($event)">
+        <div *ngIf="userGroupName.invalid && (userGroupName.dirty || userGroupName.touched)"
+          class="labelfont">
+            <div  class="p-error" *ngIf="userGroupName.errors?.['required']">
+              User Group Name is required.
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <!-- <div class="col-lg-6">
+        <label for="systemDefault">System Default<span class="text-danger">*</span></label>
+        <br/>
+        <input
+        [(ngModel)]= "userGroupInfo.systemDefault"
+        type="checkbox"
+        name="systemDefault"
+        id="systemDefault" #systemDefault="ngModel"
+        [ngClass]="{'is-invalid': systemDefault.invalid && (systemDefault.dirty || systemDefault.touched)}" >
+        <div *ngIf="systemDefault.invalid && (systemDefault.dirty || systemDefault.touched)"
+          class="labelfont">
+            <div  class="p-error" *ngIf="systemDefault.errors?.['required']">
+              User Group Name is required.
+            </div>
+          </div>
+      </div> -->
+      <div class="col-lg-6">
+        <label class="labelfont">Default ESS Group<span class="text-danger">*</span></label>
+        <br/>
+        <input
+        [(ngModel)]= "userGroupInfo.defaultESSGroup"
+        type="checkbox"
+        name="defaultESSGroup"
+        id="defaultESSGroup" #defaultESSGroup="ngModel"
+        [ngClass]="{'is-invalid': defaultESSGroup.invalid && (defaultESSGroup.dirty || defaultESSGroup.touched)}">
+        <div *ngIf="defaultESSGroup.invalid && (defaultESSGroup.dirty || defaultESSGroup.touched)"
+          class="labelfont">
+            <div  class="p-error" *ngIf="defaultESSGroup.errors?.['required']">
+              Default ESS Group is required.
+            </div>
+          </div>
+      </div>
+    </div>
+    <br/>
+    <div class="float-right">
+    <p-button icon="pi pi-check" type="submit"  [label]="labelName"  Class="p-button-text p-button-sm p-button-success" [disabled]="!usergroupForm.valid"></p-button>
+    <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancelUserGroupData()" styleClass="p-button-secondary"></p-button>
+    </div>
+    <br/>
+  </form>
+</p-dialog>
+<p-dialog header="Dashboard Setting" [(visible)]="dashboardSettingDisplay" [modal]="true"
+[draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '60vw'}" >
+
+  <form #usergroupDasboardSettingForm = "ngForm" (submit)="SaveDashboardSettingData()">
+    <input type="hidden" [(ngModel)]="userdashboardSettingInfo.userGroupID" name="groupId" />
+    <p-table [columns]="dashboardSettingListCol" [value]="dasboardSettingList" [scrollable]="true" scrollHeight="235px">
+      <ng-template pTemplate="header" let-columns>
+          <tr>
+              <th *ngFor="let col of columns">
+                  {{col.header}}
+              </th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex">
+          <tr>
+              <td *ngFor="let col of columns">
+                  <div *ngIf="col.icon; then textfield else changefield"></div>
+                  <ng-template #textfield>
+                    <input type="hidden" name="{{rowData.dashBoardSettingID+i}}" [(ngModel)]="rowData.dashBoardSettingID">
+                    <input type="checkbox" (change)="isAllSelected()" name="{{rowData.dashBoardSettingID+i}}" [(ngModel)]="rowData.active" [value]="rowData.dashBoardSettingID">
+                   
+                  </ng-template>
+                  <ng-template #changefield>
+                    {{rowData[col.field]}}
+                  </ng-template>
+              </td>
+          </tr>
+      </ng-template>
+  </p-table>
+    <br/>
+    <div class="float-right">
+    <p-button icon="pi pi-check" type="submit"  label="Save"  Class="p-button-text p-button-sm p-button-success" [disabled]="!usergroupDasboardSettingForm.valid"></p-button>
+    <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="CancelDashboardSettingData()" styleClass="p-button-secondary"></p-button>
+    </div>
+    <br/>
+  </form>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}"  rejectButtonStyleClass="p-button-text">
+
+</p-confirmDialog>
+<!-- page end-->

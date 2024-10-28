@@ -1,0 +1,54 @@
+<section class="card">
+    <header class="card-header">
+      <div class="group-left col-lg-12" style="float: left;">
+        <div class="col-lg-6">
+        <h2>Employee's Separation</h2>
+      </div>
+      </div>
+  </header>
+  <div class="card-body">
+    <div class="form-group row">
+      <div class="col-lg-3">
+          <label> Employee Status</label>
+        <p-dropdown  [options]="empStatusList" [(ngModel)]= "selectedStatus" optionLabel="key" optionValue="value" >
+        </p-dropdown>
+      </div>
+      <div class="col-lg-3">
+          <label> Search Date</label>
+        <p-dropdown  [options]="searchDateTypeList" [(ngModel)]= "selectedSearchDateType" optionLabel="key" optionValue="value" >
+        </p-dropdown>
+      </div>
+      <div class="col-lg-3">
+          <label> </label>
+        <input pinput class="form-control" type="text" autocomplete="off" name="searchDate" [(ngModel)]="searchDate"
+        id="searchDate" [bsConfig]="datepickerConfig" placeholder="DD-MMM-YYYY~DD-MMM-YYYY" autocomplete="off" bsDaterangepicker>
+      
+      </div>
+      <div class="col-lg-3">
+          <label></label>
+        <p-button label="Load List"  iconPos="right"  class="p-button-sm" (click)="loadEmployeeList();" ></p-button> 
+      </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-12 sal-grid"> 
+          <app-grid-renderer  
+          [gridRowData]="rowData"  
+          [gridColData]="columnDefs" 
+          (onCellClickEvent)="onCellClicked($event)">
+          </app-grid-renderer>
+        </div>
+     </div>
+  </div>
+</section>
+<p-dialog header="Employee Separation Details" [(visible)]="showSeparationPopup" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'" (onHide)="closePopUp(false)" position="top" [style]="{width: '80vw', height: '45vw'}">
+  <div *ngIf="employeeSeparationDetail!=null">
+     <app-separation-dialog [employeeSeparationDetail]="employeeSeparationDetail"></app-separation-dialog>
+  </div>
+</p-dialog>
+<p-dialog header="Employee Settlement Details" [(visible)]="showSettlementPopup" [modal]="true" [draggable]="false" [resizable]="false"
+  [transitionOptions]="'0ms'"  (onHide)="closePopUp(false)"position="top" [style]="{width: '80vw', height: '85vw'}">
+  <div *ngIf="employeeSettlementDetail!=null">
+     <app-settlement-dialog [employeeSettlementDetail]="employeeSettlementDetail" [selectedStatusID]="selectedStatus"></app-settlement-dialog>
+  </div>
+</p-dialog>

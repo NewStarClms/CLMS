@@ -1,0 +1,26 @@
+.dropdwonPadding{
+    float: left !important;
+    width: 16rem !important;
+    margin-right: 10vh;
+  }
+  .border{
+    border:1px solid;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .notificationDiv{
+    margin-left: -2rem !important;
+    float: left;
+  }
+  ul > li  {
+    text-decoration: none;
+    list-style: none;
+    
+  }
+  #listnotification{
+    padding: 0px !important;
+  }
+  .ui-sortable-handle{
+    padding-right: 5px !important;
+    font-size:12px !important;
+  }

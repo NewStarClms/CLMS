@@ -1,0 +1,286 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~ag-grid-community/src/styles/ag-grid.scss";
+@import "~ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin";
+
+// @import "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css";
+$theme-colors: (
+  "primary": #4682B4,
+  "danger": #ff4136
+);
+
+.float-left {
+  float: left !important;
+}
+.float-right {
+  float: right !important;
+}
+.daterangeClass{
+  width:100% !important;
+}
+.p-dropdown {
+  width: 100% !important;
+  border: 0px !important;
+  border-bottom: 1px solid #ccd4da !important;
+  margin-top: -6px !important;
+}
+.overflow{
+  overflow: auto !important;
+}
+.p-component {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: .8rem !important;
+  font-weight: normal;
+}
+
+.p-dropdown .p-focus {
+  border: 0px !important;
+  box-shadow: none !important;
+}
+
+p-dropdown:not(.p-disabled):hover {
+  border-color: none !important;
+}
+
+p-dropdown:not(.p-disabled) .p-focus {
+  border-color: none !important;
+  box-shadow: none !important;
+}
+
+h3.group-right {
+  text-align: right;
+}
+
+.container-fluid {
+  padding: 0px !important;
+}
+
+// p-table customize
+body {
+  margin: 0;
+  font-family: inherit;
+  font-size: 16px !important;
+  font-weight: 400;
+  color: #757575;
+  text-align: left;
+  background-color: #353538;
+}
+
+.p-datatable table {
+  border-collapse: collapse;
+  min-width: 100%;
+  table-layout: fixed;
+  line-height: 0.5 !important;
+  border: 1px solid lightgrey !important;
+}
+
+.trash-icon {
+  color: #fc544b;
+}
+
+.edit-icon {
+  color: #66bb6a;
+}
+
+.p-button {
+  padding: 0.08rem 1rem !important
+}
+.pr0{
+padding-right: 0px !important;
+}
+input.p-autocomplete-input.p-inputtext.p-component {
+  padding-left: 14px !important;
+}
+.background-green{
+  background-color:#66bb6a ;
+}
+.background-red{
+  background-color:rgb(255, 38, 0) ;
+}
+.background-orange{
+  background-color:orange;
+}
+.background-yellow{
+  background-color:#9b9b6c;
+}
+.background-blue{
+  background-color: #383E57 !important;
+}.background-pink
+{
+  background-color: #ed4981 !important;
+}
+.background-teal{
+  background-color: #009688 !important;
+}
+.background-aqua{
+  background-color: #2CE5D3 !important
+}
+.background-grey{
+  background-color:#777;
+}
+.white-text{
+  color:white !important;
+}
+.group-right {
+  display: flex;
+  flex-direction: row-reverse;
+  top: 0;
+  width: auto;
+  margin-bottom: -2.6rem;
+  margin-left: 0;
+  margin-right: 3vh;
+}
+
+.p-input-icon-left,
+.p-input-icon-right {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem !important;
+}
+
+td.unchecked {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.p-inputtext {
+  padding: 0 !important;
+}
+
+label {
+  margin: 0 !important;
+}
+
+.collapse .collapse-inner>li:hover {
+  background-color: #19B698;
+  width: 160px;
+}
+
+.sidebar.toggled .nav-item .collapse .collapse-inner {
+  background-color: #353538;
+}
+
+.sidebar.toggled .nav-item .collapse .collapse-inner>li:hover {
+  background-color: #19B698;
+}
+
+.sidebar.toggled .nav-item .collapse,
+.sidebar.toggled .nav-item .collapsing {
+  background-color: #353538;
+}
+
+.navbar-nav .sidebar .sidebar-light .accordion .toggled {
+  width: 16rem !important;
+}
+
+.sidebar.toggled .nav-item .nav-link[data-toggle=collapse].collapsed::after {
+  content: '\f105';
+  margin-top: -15px;
+}
+
+.sidebar .nav-item .collapse {
+  z-index: 1000 !important;
+}
+
+#collapseBootstrap .navbar-nav .sidebar .sidebar-light .accordion .toggled {
+  width: 16rem !important;
+}
+
+#collapseBootstrap {
+  // width: 20rem !important;
+}
+
+.navbar-nav .sidebar .sidebar-light .accordion .toggled .nav-item {
+  width: 16rem !important;
+}
+
+.navbar-nav .sidebar .sidebar-light .accordion .toggled .nav-item .nav-link .collapsed {
+  width: 16rem !important;
+}
+
+.p-datatable .p-datatable-thead>tr>th {
+  line-height: 1rem !important;
+}
+
+.p-datatable .p-datatable-thead>tr>td {
+  line-height: 1rem !important;
+}
+
+.uppercase {
+  text-transform: uppercase !important;
+}
+
+.p-button-success {
+  background: #19b698 !important;
+  border-color: #19b698 !important;
+}
+
+.p-tabPanel {
+  background-color: #ff4136;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.mm-top {
+  margin-top: 0px !important;
+}
+
+.labelfont {
+  font-family: Nunito, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji\  !important;
+  font-weight: 400 !important;
+  font-size: 13.6px !important
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important
+}
+
+:host ::ng-deep .p-button {
+  margin: 0 .5rem 0 0 !important
+}
+
+.bg-navbar,
+.sidebar-light .sidebar-brand {
+  background: linear-gradient(145deg, #4772d9, #5be0e0)
+}
+
+.sidebar-light .nav-item .nav-link:active,
+.sidebar-light .nav-item .nav-link:focus,
+.sidebar-light .nav-item .nav-link:hover {
+  color: #fff;
+  background: linear-gradient(145deg, #4772d9, #5be0e0)
+}
+
+.sidebar-light .nav-item .nav-link i {
+  color: #4386ac !important
+}
+
+.sidebar-light .sidebar-brand {
+  color: #fafafa;
+  background-color: #4d8db1 !important
+}
+
+.sidebar-light .nav-item.active .nav-link,
+.sidebar-light .sidebar-brand {
+  box-shadow: 0 3.375rem 3.4375rem #00000040, 0 -.75rem 1.875rem #0000001f, 0 .25rem .375rem #0000001f, 0 .75rem .8125rem #0000002b, 0 -.1875rem .3125rem #00000017
+}
+
+.sidebar-light .nav-item.active .nav-link {
+  color: #fff
+}
+
+.collapse .collapse-inner>li:hover {
+  background: linear-gradient(145deg, #4772d9, #5be0e0);
+  width: 154px
+}
+
+.sidebar .nav-item .collapse .collapse-inner .collapse-item:hover,
+.sidebar .nav-item .collapsing .collapse-inner .collapse-item:hover {
+  background: linear-gradient(145deg, #4772d9, #5be0e0);
+  transition: all .3s ease-in-out
+}

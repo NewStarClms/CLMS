@@ -1,0 +1,9 @@
+.text-white{
+    color:white;
+    padding:3px;
+    border-radius: 3px;
+}
+
+:host ::ng-deep .tableselectbutton  .p-ripple {
+    padding:12px !important;
+}

@@ -1,0 +1,117 @@
+<div class="form-group row">
+    <form #gatePassForm = "ngForm" name="form" (submit)="SaveGatePassData()">
+      <div class="form-group row">
+          <div class="col-lg-2">
+              <label class="labelfont">Attendance Date <span class="text-danger">*</span></label>
+              <input pinput [(ngModel)]="attendanceDate" class="form-control" type="text" autocomplete="off"
+                    name="attendanceDate" id="attendanceDate" (ngModelChange)="getattendanceadte($event)"
+                    [bsConfig]="datepickerConfig" placeholder="DD-MMM-YYYY" autocomplete="off" bsDatepicker
+                    style="margin-left: -11px;" (ngModelChange)="getCorrectDate()" [readonly]="disabledTxt">
+          </div>
+          <div class="col-lg-4">
+              <label class="labelfont">Start Time <span class="text-danger">*</span></label>
+                <br />
+                <div class="col-md-7" style="float: left !important;">
+                  <input pinput [(ngModel)]="startDate" class="form-control" type="text" autocomplete="off"
+                    name="startDate" id="startDate" 
+                    [bsConfig]="datepickerConfig" placeholder="DD-MMM-YYYY" autocomplete="off" bsDatepicker
+                    style="margin-left: -11px;" [readonly]="disabledTxt">
+                </div>
+      
+                <div class="col-md-5" style="float: left !important;">
+                  <input [(ngModel)]="starttimes" name="starttimes" autocomplete="off" append="" class="form-control"
+                    [popover]="popstartTimeTemplate" [outsideClick]="true" [readonly]="disabledTxt" placement="bottom" placeholder="HH:MM" />
+                  <ng-template #popstartTimeTemplate>
+                    <timepicker [(ngModel)]="starttimes" name="starttimes" [showMeridian]="false"
+                    (ngModelChange)="getstartdateTime($event)" [disabled]="disabledTxt"></timepicker>
+                  </ng-template>
+                </div>
+                <input pinput [(ngModel)]="gatepassInfo.startTime" class="form-control" type="text" autocomplete="off"
+                  name="startTime" hidden="true" id="startTime" #startTime="ngModel" [readonly]="disabledTxt">
+              
+          </div>
+          <div class="col-lg-2">
+            <label class="labelfont">Duration<span class="text-danger">*</span></label>
+            <input [(ngModel)]="duration" name="duration" autocomplete="off" append="" class="form-control"
+            [popover]="popendTimeTemplate" [outsideClick]="true" placement="bottom" [readonly]="disabledTxt"  placeholder="HH:MM" />
+          <ng-template #popendTimeTemplate>
+            <timepicker [(ngModel)]="duration" name="duration" [showMeridian]="false"
+              (ngModelChange)="getdurationTime($event)" [disabled]="disabledTxt"></timepicker>
+          </ng-template>
+        </div>
+          <div class="col-lg-4">
+              <label class="labelfont">End Time <span class="text-danger">*</span></label>
+                <br />
+                <div class="col-md-7" style="float: left !important;">
+                  <input pinput [(ngModel)]="endDate" class="form-control" type="text" autocomplete="off"
+                    name="endDate" id="endDate"  [readonly]="disabledTxt"
+                    [bsConfig]="datepickerConfig" placeholder="DD-MMM-YYYY" autocomplete="off" bsDatepicker
+                    style="margin-left: -11px;">
+                </div>
+      
+                <div class="col-md-5" style="float: left !important;">
+                  <input [(ngModel)]="endtime" name="endtime" autocomplete="off" append="" class="form-control"
+                    [popover]="popendTimeTemplate" [readonly]="disabledTxt" [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+                  <ng-template #popendTimeTemplate>
+                    <timepicker [(ngModel)]="endtime" name="endtime" [showMeridian]="false"
+                      (ngModelChange)="getenddateTime($event)" [disabled]="disabledTxt"></timepicker>
+                  </ng-template>
+                </div>
+                <input pinput [(ngModel)]="gatepassInfo.endTime" class="form-control" type="text" autocomplete="off"
+                  name="endTime" hidden="true" id="endTime" #endTime="ngModel" [readonly]="disabledTxt"
+                  [ngClass]="{'is-invalid': endTime.invalid && (endTime.dirty || endTime.touched)}">
+              
+          </div>
+        </div>
+        <div class="form-group row">  
+           <div class="col-md-4">
+              <label class="labelfont">Type<span class="text-danger">*</span></label>
+              <p-dropdown [options]="gatePassTypeList" [(ngModel)]="gatepassInfo.gatePassType" optionLabel="key" optionValue="value"
+                 #gatePassType="ngModel"  [required]="true" [disabled]="disabledTxt"
+                [ngClass]="{'is-invalid': gatePassType.invalid && (gatePassType.dirty || gatePassType.touched)}" name="gatePassType" id="gatePassType"></p-dropdown>
+                <div *ngIf="gatePassType.invalid && (gatePassType.dirty || gatePassType.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="gatePassType.errors?.['required']">
+                      Punch Type is required.
+                  </div>
+                </div>
+           </div>
+         
+            <div class="col-md-8">
+              <label class="labelfont">Remark <span class="text-danger">*</span></label>
+              <input pinput [(ngModel)]="gatepassInfo.requestRemark" class="form-control" type="text"
+                 name="requestRemark" id="requestRemark"
+                 #requestRemark="ngModel" required="true" [readonly]="disabledTxt"
+                [ngClass]="{'is-invalid': requestRemark.invalid && (requestRemark.dirty || requestRemark.touched)}">
+                <div *ngIf="requestRemark.invalid && (requestRemark.dirty || requestRemark.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="requestRemark.errors?.['required']">
+                      Remark is required.
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="float-right">
+            <p-button  type="submit" *ngIf="PostButton"  label="Save" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" [disabled]="!gatePassForm.valid"></p-button>
+            <p-button  class="p-button-sm "  label="Cancel" styleClass="p-button-secondary" (click)="closePopups()"></p-button>   
+        </div>
+    </form>
+  </div>
+<div class="form-group row">
+  <div class="col-lg-12">
+    <p-table [columns]="leaveattendanceListcol" [value]="leaveattendanceListUI" [scrollable]="true" scrollHeight="200px">
+      <ng-template pTemplate="header" let-columns>
+          <tr>
+              <th *ngFor="let col of columns">
+                  {{col.header}}
+              </th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-attDetail let-columns="columns">
+          <tr>
+              <td *ngFor="let col of columns">
+                  {{attDetail[col.field]}}
+              </td>
+          </tr>
+      </ng-template>
+  </p-table>
+  </div>
+</div>

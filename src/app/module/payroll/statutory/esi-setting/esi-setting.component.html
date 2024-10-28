@@ -1,0 +1,192 @@
+
+<section class="card">
+    <header class="card-header">
+       <h2>ESI Setting</h2>
+    </header>
+  </section>
+  <!--add / update / delete modal  -->
+  <div class="card">
+    <div class="card-body">
+      <form #ESIsettingForm = "ngForm" name="form" (submit)="saveESISetting()">
+        <p-accordion>
+          <p-accordionTab header="General" [selected]="true">
+            <div class="form-group row">
+                <div class="col-lg-2">
+                    <label class="labelfont">ESI On Gross Earning<span class="text-danger">*</span></label>
+                  <p-selectButton [options]="stateOptions"  [(ngModel)]="esiSettingInfo.esiOnGrossEarning" 
+                  optionLabel="label" optionValue="value" #esiOnGrossEarning="ngModel"
+                  [ngClass]="{'is-invalid': esiOnGrossEarning.invalid && (esiOnGrossEarning.dirty || esiOnGrossEarning.touched)}" 
+                  name="esiOnGrossEarning" id="esiOnGrossEarning" (ngModelChange)="getesiOnGrossEarning($event)"></p-selectButton>
+                    <div *ngIf="esiOnGrossEarning.invalid && (esiOnGrossEarning.dirty || esiOnGrossEarning.touched)" class="labelfont">
+            
+                      <div class="p-error" *ngIf="esiOnGrossEarning.errors?.['required']">
+                        ESI On Gross Earning is required.
+                      </div>
+                    </div>
+                </div>
+                  <div class="col-lg-2" *ngIf="esiOnGrossEarningtxt">
+                    <label class="labelfont">Limit<span class="text-danger">*</span></label>
+                    <input pinput [(ngModel)]="esiSettingInfo.esiOnGrossLimit" class="form-control" type="text"
+              autocomplete="off" required name="esiOnGrossLimit" (keypress)="keyPressNumbers($event)" id="esiOnGrossLimit"
+               #esiOnGrossLimit="ngModel" placeholder="Limit(Numberic)"
+              [ngClass]="{'is-invalid': esiOnGrossLimit.invalid && (esiOnGrossLimit.dirty || esiOnGrossLimit.touched)}">
+            <div *ngIf="esiOnGrossLimit.invalid && (esiOnGrossLimit.dirty || esiOnGrossLimit.touched)" class="labelfont">
+    
+              <div class="p-error" *ngIf="esiOnGrossLimit.errors?.['required']">
+                ESI On Gross Earning Limit is required.
+              </div>
+            </div>
+            </div>
+            <div class="col-lg-2">
+                <label class="labelfont">Min ESI Gross Limit<span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="esiSettingInfo.minimumESIGrossLimit" class="form-control" type="text"
+          autocomplete="off" required name="minimumESIGrossLimit" (keypress)="keyPressNumbers($event)" id="minimumESIGrossLimit"
+           #minimumESIGrossLimit="ngModel" placeholder="Limit(Numberic)"
+          [ngClass]="{'is-invalid': minimumESIGrossLimit.invalid && (minimumESIGrossLimit.dirty || minimumESIGrossLimit.touched)}">
+        <div *ngIf="minimumESIGrossLimit.invalid && (minimumESIGrossLimit.dirty || minimumESIGrossLimit.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="minimumESIGrossLimit.errors?.['required']">
+            PF On Gross Earning Limit is required.
+          </div>
+        </div>
+        </div>
+        <div class="col-lg-2">
+          <label class="labelfont">ESI On OT<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="esiSettingInfo.esiOnOT" 
+        optionLabel="label" optionValue="value" #esiOnOT="ngModel"
+        [ngClass]="{'is-invalid': esiOnOT.invalid && (esiOnOT.dirty || esiOnOT.touched)}" 
+        name="esiOnOT" id="esiOnOT" ></p-selectButton>
+          <div *ngIf="esiOnOT.invalid && (esiOnOT.dirty || esiOnOT.touched)" class="labelfont">
+  
+            <div class="p-error" *ngIf="esiOnOT.errors?.['required']">
+              ESI On OT is required.
+            </div>
+          </div>
+      </div>
+      <div class="col-lg-2">
+        <label class="labelfont">ESI Part Of CTC<span class="text-danger">*</span></label>
+      <p-selectButton [options]="stateOptions"  [(ngModel)]="esiSettingInfo.esiPartOfCTC" 
+      optionLabel="label" optionValue="value" #esiPartOfCTC="ngModel"
+      [ngClass]="{'is-invalid': esiPartOfCTC.invalid && (esiPartOfCTC.dirty || esiPartOfCTC.touched)}" 
+      name="esiPartOfCTC" id="esiPartOfCTC" ></p-selectButton>
+        <div *ngIf="esiPartOfCTC.invalid && (esiPartOfCTC.dirty || esiPartOfCTC.touched)" class="labelfont">
+
+          <div class="p-error" *ngIf="esiPartOfCTC.errors?.['required']">
+            ESI Part Of CTC is required.
+          </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+      <label class="labelfont">ESI Rounding<span class="text-danger">*</span></label>
+<p-dropdown [options]="employeeESIRoundsList" [(ngModel)]="esiSettingInfo.employeeESIRound" optionLabel="key" optionValue="value"
+class="" #employeeESIRound="ngModel" [required]="true"
+[ngClass]="{'is-invalid': employeeESIRound.invalid && (employeeESIRound.dirty || employeeESIRound.touched)}" name="employeeESIRound" id="employeeESIRound"></p-dropdown>
+<div *ngIf="employeeESIRound.invalid && (employeeESIRound.dirty || employeeESIRound.touched)" class="labelfont">
+
+<div class="p-error" *ngIf="employeeESIRound.errors?.['required']">
+  ESI Round is required.
+</div>
+</div>
+</div>
+            </div>
+           <div class="form-group row">
+            
+        <div class="col-lg-2">
+          <label class="labelfont">ESI Recovery On FNF<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="esiSettingInfo.esiRecoveryOnFNF" 
+        optionLabel="label" optionValue="value" #esiRecoveryOnFNF="ngModel"
+        [ngClass]="{'is-invalid': esiRecoveryOnFNF.invalid && (esiRecoveryOnFNF.dirty || esiRecoveryOnFNF.touched)}" 
+        name="esiRecoveryOnFNF" id="esiRecoveryOnFNF" ></p-selectButton>
+          <div *ngIf="esiRecoveryOnFNF.invalid && (esiRecoveryOnFNF.dirty || esiRecoveryOnFNF.touched)" class="labelfont">
+        
+            <div class="p-error" *ngIf="esiRecoveryOnFNF.errors?.['required']">
+              ESI Recovery On FNF is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <label class="labelfont">ESI On Arrear<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="esiSettingInfo.esiOnArrear" 
+        optionLabel="label" optionValue="value" #esiOnArrear="ngModel"
+        [ngClass]="{'is-invalid': esiOnArrear.invalid && (esiOnArrear.dirty || esiOnArrear.touched)}" 
+        name="esiOnArrear" id="esiOnArrear"></p-selectButton>
+          <div *ngIf="esiOnArrear.invalid && (esiOnArrear.dirty || esiOnArrear.touched)" class="labelfont">
+        
+            <div class="p-error" *ngIf="esiOnArrear.errors?.['required']">
+              ESI On Arrear is required.
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-3">
+          <label class="labelfont">Show on Challan With 0 ESI<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="esiSettingInfo.showOnChallanWithZeroESI" 
+        optionLabel="label" optionValue="value" #showOnChallanWithZeroESI="ngModel"
+        [ngClass]="{'is-invalid': showOnChallanWithZeroESI.invalid && (showOnChallanWithZeroESI.dirty || showOnChallanWithZeroESI.touched)}" 
+        name="showOnChallanWithZeroESI" id="showOnChallanWithZeroESI" ></p-selectButton>
+          <div *ngIf="showOnChallanWithZeroESI.invalid && (showOnChallanWithZeroESI.dirty || showOnChallanWithZeroESI.touched)" class="labelfont">
+        
+            <div class="p-error" *ngIf="showOnChallanWithZeroESI.errors?.['required']">
+              Challan With 0 ESI is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">OT ESI Inclue In Challan<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="esiSettingInfo.otesiInclueInChallan" 
+        optionLabel="label" optionValue="value" #otesiInclueInChallan="ngModel"
+        [ngClass]="{'is-invalid': otesiInclueInChallan.invalid && (otesiInclueInChallan.dirty || otesiInclueInChallan.touched)}" 
+        name="otesiInclueInChallan" id="otesiInclueInChallan" ></p-selectButton>
+          <div *ngIf="otesiInclueInChallan.invalid && (otesiInclueInChallan.dirty || otesiInclueInChallan.touched)" class="labelfont">
+        
+            <div class="p-error" *ngIf="otesiInclueInChallan.errors?.['required']">
+              OT ESI Inclue In Challan is required.
+            </div>
+          </div>
+        </div>
+        
+           </div>
+          
+          </p-accordionTab>
+          <p-accordionTab header="Contribution" [selected]="true">
+            <div class="form-group row">
+              <div class="col-lg-3">
+                <label class="labelfont">Employee ESI<span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="esiSettingInfo.employeeESI" class="form-control" type="text"
+              autocomplete="off" required name="employeeESI" (keypress)="keyPressNumbers($event)" id="employeeESI"
+              #employeeESI="ngModel"
+              [ngClass]="{'is-invalid': employeeESI.invalid && (employeeESI.dirty || employeeESI.touched)}">
+              <div *ngIf="employeeESI.invalid && (employeeESI.dirty || employeeESI.touched)" class="labelfont">
+              
+              <div class="p-error" *ngIf="employeeESI.errors?.['required']">
+              Employee ESI is required.
+              </div>
+              </div>
+              </div>
+              <div class="col-lg-3">
+                <label class="labelfont">Employer ESI<span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="esiSettingInfo.employerESI" class="form-control" type="text"
+              autocomplete="off" required name="employerESI" (keypress)="keyPressNumbers($event)" id="employerESI"
+              #employerESI="ngModel"
+              [ngClass]="{'is-invalid': employerESI.invalid && (employerESI.dirty || employerESI.touched)}">
+              <div *ngIf="employerESI.invalid && (employerESI.dirty || employerESI.touched)" class="labelfont">
+              
+              <div class="p-error" *ngIf="employerESI.errors?.['required']">
+              Employer ESI is required.
+              </div>
+              </div>
+              </div>
+            </div>
+          </p-accordionTab>
+         
+      </p-accordion>
+      <div class="form-group row pull-right p-mt-4">
+        <div class="col-sm-12">
+          <p-button icon="pi pi-check" type="submit"   label="Save" Class="p-button-text p-button-sm p-button-success" [disabled]="!ESIsettingForm.valid"></p-button>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- page end-->

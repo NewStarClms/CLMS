@@ -1,0 +1,20 @@
+.tile-card{
+    margin-top: 5px;
+    padding-bottom: 0px !important;
+    box-shadow: 0 1px 6px rgb(0 0 0 / 12%), 0 1px 4px rgb(0 0 0 / 24%);
+}
+.tile-card .card-body{
+    min-height: 335px;
+   
+}
+.top5{
+    margin-top: 10px!important;
+}
+:host ::ng-deep .p-datatable-resizable>.p-datatable-wrapper {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    height: 335px !important;
+}
+:host ::ng-deep .p-dropdown{
+    width:50% !important;
+}

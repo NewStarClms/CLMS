@@ -1,0 +1,34 @@
+<section class="card">
+    <div class="card-body">
+        <div class="form-group row">
+            <h5>{{pageTitle}}</h5>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-8">
+                <label class="labelfont">Remark</label>
+                <input pinput [(ngModel)]="requestRemark" class="form-control" type="text" name="requestRemark"
+                    id="requestRemark">
+            </div>
+            <div class="float-right">
+                <p-button type="button" [label]="processBtnName" Class="p-button-text p-button-sm p-button-success"
+                    (click)="processArrear(actiontype)" styleClass="p-mr-btn"></p-button>
+                <p-button type="button" *ngIf="deletebtn" [label]="labelDeleteName"
+                    Class="p-button-text p-button-sm p-button-danger" (click)="deleteArrear(actiontype)"
+                    styleClass="p-mr-btn p-button-danger"></p-button>
+                <p-button class="p-button-sm " label="Close" styleClass="p-button-secondary" (click)="closePage()">
+                </p-button>
+            </div>
+        </div>
+        <app-payroll-grid-rendere [gridRowData]="rowData" [gridColData]="columnDefs"
+            (onCheckAllClicked)="checkUnCheckAllClicked($event)" (onCheckRowClicked)="checkUnCheckRowClicked($event)"
+            (onCellClickEvent)="onCellClicked($event)">
+        </app-payroll-grid-rendere>
+    </div>
+</section>
+<p-dialog header="Arrear Details"  [(visible)]="displayArrearPopup" [modal]="true" id="displayArrear" [draggable]="false"
+    [resizable]="false" (onHide)="closeDailog()" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw',height:'60vw'}">
+    <app-arrear-summary *ngIf="arrearMonthYear && employeeId" [employeeID]="employeeId" [monthYear]="arrearMonthYear" (close)="closeDailog()"></app-arrear-summary>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
+
+</p-confirmDialog>

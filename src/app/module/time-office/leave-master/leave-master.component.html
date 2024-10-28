@@ -1,0 +1,581 @@
+<section class="card">
+    <header>
+        <div id="card-header-inner">
+            <p class="alignleft">Leave Master</p>
+            <p class="alignright">
+                <button pButton pRipple type="button" *ngIf="rowData.length > 0" icon="pi pi-file-excel"
+                    (click)="exportGridData()" class="p-button-rounded p-button-secondary"></button>
+                <button pButton pRipple type="button" icon="pi pi-plus" (click)="addNew()"
+                    class="p-button-rounded p-button-success"></button>
+            </p>
+            <div style="clear: both;"></div>
+
+        </div>
+    </header>
+    <div class="card-body">
+        <div>
+            <app-grid-renderer [gridRowData]="rowData" [gridColData]="columnDefs"
+                (onCellClickEvent)="onCellClicked($event)">
+            </app-grid-renderer>
+        </div>
+    </div>
+</section>
+<p-dialog [header]="headerdialogName" [(visible)]="display" [modal]="true" [draggable]="false" [resizable]="false"
+    [transitionOptions]="'0ms'" position="top-right" [style]="{width: '80vw' ,height:'50vw'}">
+    <form #leaveForm="ngForm" (submit)="SaveLeaveData(leaveForm)">
+        <div class="card">
+            <p-tabView>
+                <p-tabPanel header="Leave Detail">
+                    <div class="form-group row">
+                        <input pinput [(ngModel)]="leaveDetailsInfo.leaveID" class="form-control" type="text"
+                            autocomplete="off" name="leaveID" id="leaveID " hidden="true">
+                        <div class="col-md-4">
+                            <label class="labelfont">Leave Code <span class="text-danger">*</span></label>
+                            <input pinput [(ngModel)]="leaveDetailsInfo.leaveCode" class="form-control text-uppercase"
+                                type="text" autocomplete="off" required name="leaveCode"
+                                (keypress)="keyPressAlphanumeric($event)" id="leaveCode" maxlength="5"
+                                #leaveCode="ngModel"
+                                [ngClass]="{'is-invalid': leaveCode.invalid && (leaveCode.dirty || leaveCode.touched)}">
+                            <div *ngIf="leaveCode.invalid && (leaveCode.dirty || leaveCode.touched)" class="labelfont">
+
+                                <div class="p-error" *ngIf="leaveCode.errors?.['required']">
+                                    Leave Code is required.
+                                </div>
+                                <div class="p-error" *ngIf="leaveCode.errors?.['minlength']">
+                                    Leave Code must be at least 5 characters long.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="labelfont">Leave Name<span class="text-danger">*</span></label>
+                            <input pinput [(ngModel)]="leaveDetailsInfo.leaveName" class="form-control" maxlength="30"
+                                type="text" autocomplete="off" required name="leaveName" id="leaveName"
+                                #leaveName="ngModel"
+                                [ngClass]="{'is-invalid': leaveName.invalid && (leaveName.dirty || leaveName.touched)}">
+                            <div *ngIf="leaveName.invalid && (leaveName.dirty || leaveName.touched)" class="labelfont">
+
+                                <div class="p-error" *ngIf="leaveName.errors?.['required']">
+                                    Leave Name is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="labelfont"> Leave Type</label>
+                            <p-dropdown [options]="leaveTypeOption" [(ngModel)]="leaveDetailsInfo.leaveType"
+                                optionLabel="value" optionValue="key" class="" [filter]="true" filterBy="value"
+                                #leaveType="ngModel"
+                                [ngClass]="{'is-invalid': leaveType.invalid && (leaveType.dirty || leaveType.touched)}"
+                                name="leaveType" id="leaveType">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4">
+                            <label class="labelfont">Leave Mapped <span class="text-danger">*</span></label>
+                            <p-dropdown [options]="leaveMappedOption" [(ngModel)]="leaveMaaped"
+                                optionLabel="value" optionValue="key" class="" [filter]="true" filterBy="value"
+                                #leaveMapped="ngModel"
+                                [ngClass]="{'is-invalid': leaveMapped.invalid && (leaveMapped.dirty || leaveMapped.touched)}"
+                                name="leaveMapped" id="leaveMapped">
+                            </p-dropdown>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="labelfont">Leave Cycle<span class="text-danger">*</span></label>
+                            <p-dropdown [options]="leaveCycleOption" [(ngModel)]="leaveDetailsInfo.leaveCycle"
+                                optionLabel="value" optionValue="key" class="" [filter]="true" filterBy="value"
+                                #leaveCycle="ngModel"
+                                [ngClass]="{'is-invalid': leaveCycle.invalid && (leaveCycle.dirty || leaveCycle.touched)}"
+                                name="leaveCycle" id="leaveCycle">
+                            </p-dropdown>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="labelfont"> Gender Allowed</label>
+                            <p-dropdown [options]="genderOption" [(ngModel)]="leaveDetailsInfo.genderAllowed"
+                                optionLabel="value" optionValue="key" class="" [filter]="true" filterBy="value"
+                                #genderAllowed="ngModel"
+                                [ngClass]="{'is-invalid': genderAllowed.invalid && (leaveType.dirty || genderAllowed.touched)}"
+                                name="genderAllowed" id="genderAllowed">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4">
+                            <label class="labelfont">Carry Forward<span class="text-danger">*</span></label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.carryForward"
+                                optionLabel="label" optionValue="value" name="carryForward"></p-selectButton>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="labelfont"> Encashable</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.encashable"
+                                optionLabel="label" optionValue="value" name="encashable"></p-selectButton>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont lableMargin"> Accrual </label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.accrual"
+                                optionLabel="label" optionValue="value" name="accrual"></p-selectButton>
+                        </div>
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont lableMargin"> Carry Forward Limit Count </label>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.carryForwardLimit"
+                                name="carryForwardLimit" [minFractionDigits]="2"
+                                [showButtons]="true" placeholder="00.00" 
+                                mode="decimal" [min]="0" [max]="50"></p-inputNumber>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont lableMargin"> Balance After Encashable </label>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.balanceAfterEncashable"
+                                name="balanceAfterEncashable" [minFractionDigits]="2"
+                                [showButtons]="true" placeholder="00.00" mode="decimal" [min]="0" [max]="50"></p-inputNumber>
+                        </div> 
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont lableMargin"> Visible To Employee</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.visibleToEmployee"
+                                optionLabel="label" optionValue="value" name="visibleToEmployee"></p-selectButton>
+                        </div>
+                    </div>
+                </p-tabPanel>
+                <p-tabPanel header="Leave Limit">
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Applicable on Present</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.presentInclude"
+                                optionLabel="label" optionValue="value" name="presentInclude"></p-selectButton>
+                        </div>
+
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Half Day Leave Allow</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.halfDayAllowed"
+                                optionLabel="label" optionValue="value" name="halfDayAllowed"></p-selectButton>
+                        </div>
+
+                        <!-- <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Max Monthly Request Count</label>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.maxMonthlyRequestCount"
+                                name="maxMonthlyRequestCount" 
+                                spinnerMode="horizontal" [showButtons]="true"
+                                placeholder="Number" [min]="0" [max]="50"></p-inputNumber>
+                        </div> -->
+
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Max Monthly Request Count</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.maxMonthlyRequestCount"
+                                name="maxMonthlyRequestCount" 
+                                spinnerMode="horizontal" [showButtons]="true"
+                                placeholder="Number" [min]="0" [max]="50"></p-inputNumber>
+                        </div>
+
+
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Max Monthly Leave Value</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.maxMonthlyLeaveCount" name="maxMonthlyRequestCount"
+                                [minFractionDigits]="2" 
+                                [showButtons]="true" placeholder="00.00" mode="decimal" [min]="0" [max]="50">
+                            </p-inputNumber>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Max Quarterly Request Count</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.maxQuarterlyRequestCount"
+                                name="maxMonthlyLeaveCount"
+                                spinnerMode="horizontal" [showButtons]="true"
+                                placeholder="Number"  [min]="0" [max]="50"></p-inputNumber>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Max Quarterly Leave Value</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.maxQuarterlyLeaveCount"
+                                name="maxQuarterlyRequestCount" [minFractionDigits]="2"
+                                spinnerMode="horizontal" [showButtons]="true"
+                                placeholder="00.00" mode="decimal" [min]="0" [max]="50"></p-inputNumber>
+                        </div>
+
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Max HalfYearly Request Count</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.maxHalfYearlyRequestCount"
+                                name="maxQuarterlyRequestCount" 
+                                [showButtons]="true" placeholder="Number"  [min]="0" [max]="50"></p-inputNumber>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Max HalfYearly Leave Value</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.maxHalfYearlyLeaveCount"
+                                name="maxQuarterlyRequestCount" [minFractionDigits]="2"
+                                
+                                spinnerMode="horizontal" [showButtons]="true"
+                                placeholder="00.00" mode="decimal" [min]="0" [max]="50"></p-inputNumber>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Max Yearly Request Count</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.maxYearlyRequestCount" name="maxYearlyRequestCount"
+                                
+                                [showButtons]="true" placeholder="Number"  [min]="0" [max]="50">
+                            </p-inputNumber>
+                        </div>
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Max Yearly Leave Value</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.maxYearlyLeaveCount" name="maxYearlyLeaveCount"
+                                
+                                [showButtons]="true" placeholder="00.00" mode="decimal" [min]="0" [max]="50">
+                            </p-inputNumber>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Min Leave Per Request</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.minLeavePerRequest" name="minLeavePerRequest"
+                                
+                                [showButtons]="true" placeholder="Number" [min]="0" [max]="50">
+                            </p-inputNumber>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Max Leave Per Request</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.maxLeavePerRequest" name="maxLeavePerRequest"
+                                
+                                [showButtons]="true" placeholder="Number"  [min]="0" [max]="50">
+                            </p-inputNumber>
+                        </div>
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Negative Allowed</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.negativeAllowed"
+                                optionLabel="label" optionValue="value" name="negativeAllowed"></p-selectButton>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Negative Leave Limit</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.negativeLeaveLimit" name="negativeLeaveLimit"
+                                [minFractionDigits]="2" 
+                                [showButtons]="true" placeholder="00.00" mode="decimal" [min]="0" [max]="50">
+                            </p-inputNumber>
+                        </div>
+                    </div>
+                </p-tabPanel>
+                <p-tabPanel header="Applicable On">
+
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Weekly Off Include</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.woInclude"
+                                optionLabel="label" optionValue="value" name="woInclude"></p-selectButton>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Holiday Include</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.hoInclude"
+                                optionLabel="label" optionValue="value" name="hoInclude"></p-selectButton>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> National Holiday Include</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.nhoInclude"
+                                optionLabel="label" optionValue="value" name="nhoInclude"></p-selectButton>
+                        </div>
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Days For Weekly Off Include</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.daysForWOInclude" name="daysForWOInclude"
+                                [minFractionDigits]="2" 
+                                [showButtons]="true" placeholder="0" [min]="0" [max]="50">
+                            </p-inputNumber>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Days For Holiday Include</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.daysForHOInclude" name="daysForHOInclude"
+                                [minFractionDigits]="2" 
+                                [showButtons]="true" placeholder="0"  [min]="0" [max]="50">
+                            </p-inputNumber>
+                        </div>
+                       
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Document Required</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.docRequired"
+                                optionLabel="label" optionValue="value" name="docRequired"></p-selectButton>
+                        </div>
+                        
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Leave Request In Advance</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.leaveRequestInAdvance"
+                                optionLabel="label" optionValue="value" name="leaveRequestInAdvance"></p-selectButton>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Back Dated Leave Allow</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.backDatedLeaveAllowRM"
+                                optionLabel="label" optionValue="value" name="backDatedLeaveAllowRM"></p-selectButton>
+                        </div>
+
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Doc Required When Leave More Than</label>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.docRequiredWhenLeaveMoreThan"
+                                name="docRequiredWhenLeaveMoreThan" [minFractionDigits]="2"
+                                
+                                spinnerMode="horizontal" [showButtons]="true"
+                                placeholder="00" [min]="0" [max]="50"></p-inputNumber>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Leave Request Before Days</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.leaveRequestBeforeDays"
+                                name="leaveRequestBeforeDays" [minFractionDigits]="2"
+                                
+                                spinnerMode="horizontal" [showButtons]="true"
+                                placeholder="00"[min]="0" [max]="50"></p-inputNumber>
+                        </div>
+                        
+                        <div class="col-md-3" style="float: left !important;">
+                            <label class="labelfont">Back Days</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.backDays" name="backDays" [minFractionDigits]="2"
+                                
+                                spinnerMode="horizontal" [showButtons]="true"
+                                placeholder="00"  [min]="0" [max]="50"></p-inputNumber>
+                        </div>
+                    </div>
+                </p-tabPanel>
+                <p-tabPanel header="Leave Accrual" *ngIf="leaveDetailsInfo.accrual">
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Fixed</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.fixed"
+                                optionLabel="label" optionValue="value" name="fixed"></p-selectButton>
+                        </div>
+                        
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Accrual Type</label>
+                            <p-dropdown [options]="accrualTypeOption" [(ngModel)]="leaveDetailsInfo.accrualType"
+                                optionLabel="value" optionValue="key" class="" [filter]="true" filterBy="value"
+                                #accrualType="ngModel"
+                                [ngClass]="{'is-invalid': accrualType.invalid && (accrualType.dirty || accrualType.touched)}"
+                                name="accrualType" id="accrualType">
+                            </p-dropdown>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Include Joining Month If DOJ before Date</label>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.balanceAfterEncashable"
+                                name="balanceAfterEncashable"
+                                [showButtons]="true" placeholder="Number" [min]="0" [max]="50"></p-inputNumber>
+                        </div>
+                    </div>
+                    <div class="form-grpup row">
+                       
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Accrual On Each Accrual Days</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.accrualOnEachAccrualDays"
+                            optionLabel="label" optionValue="value" name="leaveNotClub"></p-selectButton>
+                        </div>
+
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Round Leave</label>
+                            <p-dropdown [options]="roundLeaveOption" [(ngModel)]="leaveDetailsInfo.roundLeave"
+                                optionLabel="value" optionValue="key" class="" [filter]="true" filterBy="value"
+                                #roundLeave="ngModel"
+                                [ngClass]="{'is-invalid': roundLeave.invalid && (roundLeave.dirty || roundLeave.touched)}"
+                                name="roundLeave" id="roundLeave">
+                            </p-dropdown>
+                        </div>
+
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Days On Accrual</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.daysOnAccrual"
+                                name="daysOnAccrual" 
+                                [showButtons]="true" placeholder="Number"  [min]="0" [max]="50"></p-inputNumber>
+                        </div>
+
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Accrual Day From Previous</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.accrualDayFromPrevious"
+                            optionLabel="label" optionValue="value" name="accrualDayFromPrevious"></p-selectButton>
+                        </div>
+                       
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Accrual Days Include </label>
+                            <p-multiSelect [options]="accrualIncludeDaysOption" 
+                            #accrualDaysInclude="ngModel" 
+                            placeholder="Please Select"
+                            [(ngModel)]="accrualIncludeDaysListed" 
+                            name="accrualIncludeDaysListed"
+                            optionLabel="value" optionValue="key"></p-multiSelect>
+
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Max Accrual Limit</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.maxAccrualLimit"
+                            name="maxAccrualLimit" [minFractionDigits]="2"
+                            [showButtons]="true" placeholder="Decimal" mode="decimal" [min]="0" [max]="50"></p-inputNumber>
+                            
+                        </div>
+                    </div>
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Accrual On Date</label>
+                            <p-dropdown [options]="accrualOnDateOption" [(ngModel)]="leaveDetailsInfo.accrualOnDate"
+                                optionLabel="value" optionValue="key" class="" [filter]="true" filterBy="value"
+                                #accrualOnDate="ngModel"
+                                [ngClass]="{'is-invalid': accrualOnDate.invalid && (accrualOnDate.dirty || accrualOnDate.touched)}"
+                                name="accrualOnDate" id="accrualOnDate">
+                            </p-dropdown>
+                        </div>
+                      
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Accrual On</label>
+                            <p-dropdown [options]="accrualOnOption" [(ngModel)]="leaveDetailsInfo.accrualOn"
+                                optionLabel="value" optionValue="key" class="" [filter]="true" filterBy="value"
+                                #accrualOn="ngModel"
+                                [ngClass]="{'is-invalid': accrualOn.invalid && (accrualOn.dirty || accrualOn.touched)}"
+                                name="accrualOn" id="accrualOn">
+                            </p-dropdown>
+                        </div>
+
+
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont"> Leave Accrued</label>
+                            <br>
+                            <p-inputNumber [(ngModel)]="leaveDetailsInfo.leaveAccrued"
+                            name="leaveAccrued" [minFractionDigits]="2"
+                            [showButtons]="true" placeholder="Decimal" mode="decimal" [min]="0" [max]="50"></p-inputNumber>
+                            
+                        </div>
+                    </div>
+                    
+                </p-tabPanel>
+
+                <p-tabPanel header="Extra Setup">
+                    <div class="form-grpup row">
+                        <div class="col-md-3" style="float: left !important;">
+                            <label class="labelfont"> Leave Not Club</label>
+                                <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.leaveNotClub"
+                                optionLabel="label" optionValue="value" name="leaveNotClub" (ngModelChange)="LeaveNotClubListShowHide(leaveDetailsInfo.leaveNotClub)"> </p-selectButton>
+
+                        </div>
+                        <div class="col-md-3" style="float: left !important;" *ngIf="leaveDetailsInfo.leaveNotClub">
+                            <label class="labelfont"> Leave Not Club List</label>
+                            <p-multiSelect [options]="leaveNotClubListOption" defaultLabel="--Please Select--"  [(ngModel)]="leaveNotClubListed"  name="leaveNotClubListed" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected"></p-multiSelect> 
+                               
+                        </div>
+                        
+                        <div class="col-md-3" style="float: left !important;">
+                            <label class="labelfont"> Leave Not Club(Only HalfDay)</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.leaveNotClubHalfDay"
+                                optionLabel="label" optionValue="value" name="leaveNotClubHalfDay" (ngModelChange)="LeaveNotClubOnlyHalfDayShowHide(leaveDetailsInfo.leaveNotClubHalfDay)"></p-selectButton>
+                        </div>
+                        <!-- <div class="col-md-3" style="float: left !important;" *ngIf="getLeaveNotClubOnlyHalfDay">
+                            <label class="labelfont"> Leave Not Club List(Only HalfDay)</label>
+                            <p-multiSelect [options]="leaveNotClubListHalfDayOption" [(ngModel)]="leaveNotClubListOnlyHalfDay" name="empStatusAllowList" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected" defaultLabel="--Please Select--"></p-multiSelect>
+
+                        </div> -->
+                        <div class="col-md-3" style="float: left !important;" *ngIf="leaveDetailsInfo.leaveNotClubHalfDay">
+                            <label class="labelfont"> Leave Not Club List(Only HalfDay)</label>
+                            <p-multiSelect [options]="leaveNotClubListOption" [(ngModel)]="leaveNotClubListOnlyHalfDay" name="leaveNotClubListOnlyHalfDay" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected" defaultLabel="--Please Select--"></p-multiSelect>
+
+                        </div>
+                    </div>
+                   
+                    <div class="form-grpup row">
+                        <div class="col-md-3" style="float: left !important;">
+                            <label class="labelfont"> Applicable On Employee Status</label>
+                            <p-selectButton [options]="stateOptions"
+                                [(ngModel)]="leaveDetailsInfo.applicableOnEmployeeStatus" optionLabel="label"
+                                optionValue="value" name="applicableOnEmployeeStatus" (ngModelChange)="EmpStatusAllowedShowHide(leaveDetailsInfo.applicableOnEmployeeStatus)"></p-selectButton>
+                        </div>
+
+                        <div class="col-md-3" style="float: left !important;" *ngIf="leaveDetailsInfo.applicableOnEmployeeStatus">
+                            <label class="labelfont">Employee Status Allowed</label>
+                            <p-multiSelect [options]="empStatusListOption" [(ngModel)]="empStatusAllowList" name="empStatusAllowList" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected" defaultLabel="--Please Select--"></p-multiSelect>
+                        </div>
+
+                        <div class="col-md-3" style="float: left !important;">
+                            <label class="labelfont">Applicable On Employee Type</label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="leaveDetailsInfo.applicableOnEmployeeType"
+                                optionLabel="label" optionValue="value" name="applicableOnEmployeeType" (ngModelChange)="EmpTypeAllowedShowHide(leaveDetailsInfo.applicableOnEmployeeType)"></p-selectButton>
+                        </div>
+
+                        <div class="col-md-3" style="float: left !important;" *ngIf="leaveDetailsInfo.applicableOnEmployeeType">
+                            <label class="labelfont"> Employee Type Allowed</label>
+                           <p-multiSelect [options]="empTypeListOption" [(ngModel)]="empTypeAllowedList" name="empTypeAllowedList" optionLabel="key" optionValue="value" selectedItemsLabel="{0} items selected" defaultLabel="--Please Select--"></p-multiSelect>
+                        </div>
+                    </div>
+
+                    <div class="form-grpup row">
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Minimum Work Hours For Leave</label>
+                            <input [(ngModel)]="leaveDetailsInfo.minmumWorkForLeave" name="minmumWorkForLeave"
+                                autocomplete="off" class="form-control" [popover]="minmumWorkForLeave"
+                                [outsideClick]="true" placement="bottom" placeholder="HH:MM" />
+                            <ng-template #minmumWorkForLeave>
+                                <timepicker [(ngModel)]="leaveDetailsInfo.minmumWorkForLeave" name="minmumWorkForLeave"
+                                    [showMeridian]="false"
+                                    (ngModelChange)="updateStateLocaly($event,UICONSTANT.LEAVE_MASTER_FIELD.Minimum_Work_Hours)">
+                                </timepicker>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Max Time Duration for Leave</label>
+                            <input [(ngModel)]="leaveDetailsInfo.maxTimeDuration" name="maxTimeDuration" autocomplete="off"
+                                class="form-control" [popover]="maxTimeDuration" [outsideClick]="true"
+                                placement="bottom" placeholder="HH:MM" />
+                            <ng-template #maxTimeDuration>
+                                <timepicker [(ngModel)]="leaveDetailsInfo.maxTimeDuration" name="maxTimeDuration"
+                                    [showMeridian]="false"
+                                    (ngModelChange)="updateStateLocaly($event,UICONSTANT.LEAVE_MASTER_FIELD.Max_Time_Duration)">
+                                </timepicker>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-4" style="float: left !important;">
+                            <label class="labelfont">Leave Credit New Joinee Rule <span class="text-danger">*</span></label>
+                            <p-dropdown [options]="leaveCreditNewJoineeRuleList" [(ngModel)]="leaveDetailsInfo.leaveCreditNewJoineeRuleID"
+                                optionLabel="key" optionValue="value" class="" 
+                                #leaveCreditNewJoineeRuleID="ngModel" [required]="true"
+                                [ngClass]="{'is-invalid': leaveCreditNewJoineeRuleID.invalid && (leaveCreditNewJoineeRuleID.dirty || leaveCreditNewJoineeRuleID.touched)}"
+                                name="leaveCreditNewJoineeRuleID" id="leaveCreditNewJoineeRuleID">
+                            </p-dropdown>
+                            <div *ngIf="leaveCode.invalid && (leaveCode.dirty || leaveCode.touched)" class="labelfont">
+
+                                <div class="p-error" *ngIf="leaveCode.errors?.['required']">
+                                    Leave Credit New Joinee Rule is required.
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
+            <div class="footer">
+                <div class="btnFooter">
+                    <p-button icon="pi pi-times" class="p-button-sm mr1" #closebutton data-dismiss="modal" label="Cancel"
+                    styleClass="p-button-secondary" (click)="cancelLeaveEditdiv()"></p-button>
+                <p-button icon="pi pi-check" [label]="labelName" Class="p-button-sm p-button-success"
+                    type="submit" [disabled]="!leaveForm.valid"></p-button>
+                </div>
+              </div>
+        </div>
+        <ng-template pTemplate="footer">
+            Note:- If You Change the shift you must update Roster
+        </ng-template>
+    </form>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text">
+</p-confirmDialog>

@@ -1,0 +1,70 @@
+
+      <form #backDataProcessForm = "ngForm" name="form" *ngIf="singlebackDataProcess" (submit)="SavebackDataProcessSingle()">
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label class="labelfont"> Date <span class="text-danger">*</span></label>
+                    <input pinput class="form-control" type="text" autocomplete="off" name="fromDate" [(ngModel)]="backDataProcessInfo.fromDate"
+       id="fromDate" [bsConfig]="datepickerConfig" [required]="true" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker  #fromDate="ngModel"
+       [ngClass]="{'is-invalid': fromDate.invalid && (fromDate.dirty || fromDate.touched)}" name="fromDate" id="fromDate">
+                  <div *ngIf="fromDate.invalid && (fromDate.dirty || fromDate.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="fromDate.errors?.['required']">
+                        Date is required.
+                    </div>
+               </div>
+      
+            </div>
+            <div class="col-md-6">
+                <label class="labelfont">With Raw Punch</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="backDataProcessInfo.withRawPunch"
+                optionLabel="label" optionValue="value"  [ngClass]="{'is-invalid': withRawPunch.invalid && (withRawPunch.dirty || withRawPunch.touched)}" 
+                name="withRawPunch" id="withRawPunch"  #withRawPunch="ngModel"></p-selectButton>
+            </div>
+            <!-- <div class="col-md-6">
+                <label class="labelfont">To Date </label>
+                <input pinput class="form-control" type="text" autocomplete="off" name="toDate" [(ngModel)]="backDataProcessInfo.toDate"
+                id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker
+                [ngClass]="{'is-invalid': toDate.invalid && (toDate.dirty || toDate.touched)}" #toDate="ngModel">
+               
+            </div> -->
+            </div>
+      <div class="float-right">
+          <p-button type="submit"   label="BackData Process" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" [disabled]="!backDataProcessForm.valid"></p-button>
+          
+          <p-button  class="p-button-sm"  label="Cancel" styleClass="p-button-secondary" (click)="CancelbackDataProcessForm()"></p-button>
+       
+      </div>
+      </form>
+      <form #backDataProcessForm = "ngForm" name="form"  *ngIf="multibackDataProcess " (submit)="SavebackDataProcessMulti()">
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label class="labelfont"> Date <span class="text-danger">*</span></label>
+                    <input pinput class="form-control" type="text" autocomplete="off" name="fromDate" [(ngModel)]="backDataProcessInfo.fromDate"
+       id="fromDate" [bsConfig]="datepickerConfig" [required]="true" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker  #fromDate="ngModel"
+       [ngClass]="{'is-invalid': fromDate.invalid && (fromDate.dirty || fromDate.touched)}" name="fromDate" id="fromDate">
+                  <div *ngIf="fromDate.invalid && (fromDate.dirty || fromDate.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="fromDate.errors?.['required']">
+                        Date is required.
+                    </div>
+               </div>
+      
+            </div>
+            <div class="col-md-6">
+                <label class="labelfont">With Raw Punch</label>
+                <p-selectButton [options]="stateOptions" [(ngModel)]="backDataProcessInfo.withRawPunch"
+                optionLabel="label" optionValue="value"  [ngClass]="{'is-invalid': withRawPunch.invalid && (withRawPunch.dirty || withRawPunch.touched)}" 
+                name="withRawPunch" id="withRawPunch"  #withRawPunch="ngModel"></p-selectButton>
+            </div>
+            <!-- <div class="col-md-6">
+                <label class="labelfont">To Date </label>
+                <input pinput class="form-control" type="text" autocomplete="off" name="toDate" [(ngModel)]="backDataProcessInfo.toDate"
+                id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker
+                [ngClass]="{'is-invalid': toDate.invalid && (toDate.dirty || toDate.touched)}" #toDate="ngModel">
+               
+            </div> -->
+            </div>
+      <div class="float-right">
+          <p-button  type="submit"  label="BackData Process" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" [disabled]="!backDataProcessForm.valid"></p-button>
+          <p-button  class="p-button-sm"  label="Cancel" styleClass="p-button-secondary" (click)="CancelbackDataProcessForm()"></p-button>
+       
+      </div>
+      </form>

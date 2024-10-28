@@ -1,0 +1,120 @@
+.labelfont{
+    font-family: Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+      font-weight: 400;
+      font-size: .85rem;
+  }
+  input:focus, textarea:focus, select:focus{border-top:none;border-left:none;border-right:none;}
+  :host ::ng-deep .p-button {
+    margin: 0 0rem 0 0;
+  }
+  
+  p {
+    margin: 0;
+  }
+  
+  .confirmation-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  :host ::ng-deep .p-dialog .p-button {
+    min-width: 6rem;
+  }
+  .datetypeDateinput{
+    width: 50%;
+    margin-right: 10px;
+   border: 1px solid #ced4da;
+    line-height: 2;
+    border-radius: 3px;
+    color:#75777a;
+  }
+  
+  .timetypeDateinput{
+    width: 40%;
+    margin-right: 2px;
+    border: 1px solid #ced4da;
+    line-height: 2;
+    border-radius: 3px;
+    color:#75777a
+  }
+  .datetypeinput{
+    width: 50%;
+    margin-right: 10px;
+   border: none;
+   border-bottom: 1px solid #ced4da;
+  }
+  .timetypeinput{
+    width: 40%;
+    margin-right: 2px;
+    border: none;
+    border-bottom: 1px solid #ced4da;
+  }
+
+  
+  @media(max-width:767px){
+    .divload-list{
+      top:20px !important;
+      left:20px !important;
+      margin-bottom: 20px !important;
+    }
+  }
+  @media(max-width:364px){
+    .divload-list{
+      top:20px !important;
+      left:20px !important;
+      margin-bottom: 20px !important;
+    }
+  }
+  @media(max-width:1200px){
+    .divload-list{
+      // top:20px !important;
+      left:20px !important;
+      margin-bottom: 20px !important;
+    }
+  }
+  label.labelInput {
+    margin-right: 1rem !important;
+  }
+  .divload-listsearch{
+    top:3px;
+  }
+  :host ::ng-deep .searchemployeebtn{
+    display: none;
+  }
+  // :host ::ng-deep {
+  //   padding-left:4px !important;
+  // }
+  :host ::ng-deep .searchboxdiv{
+    padding-left:4px !important;
+  }
+  :host ::ng-deep .ng-tns-c99-33 > .p-inputtext{
+    border:none !important;
+  }
+  :host ::ng-deep .ng-tns-c99-33 > .p-inputtext:focus-visible{
+    border:none !important;
+    border-color: #ced4da !important;
+  }
+  :host ::ng-deep .ng-tns-c99-33 > .p-calendar{
+    width:100% !important;
+  }
+  :host ::ng-deep .ng-tns-c99-33 > .p-calendar:focus{
+    width:100% !important;
+  }
+
+  .takephototimer{
+    position:absolute;
+   top:93px;
+    left:245px;
+    font-size: 120px;
+    font-weight: bold;
+    z-index:10;
+  }
+  :host ::ng-deep .setmargin{
+    margin-top: 6px !important;
+  }
+  
+  .card-header{
+    border-bottom: 1px solid #19b698;
+    margin-bottom: 20p
+  }

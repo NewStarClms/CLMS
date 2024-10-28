@@ -1,0 +1,413 @@
+
+      <section class="card">
+        <header class="card-header">
+        <h2>PF Setting</h2>
+        </header>
+        </section>
+        <!--add / update / delete modal  -->
+        <div class="card">
+        <div class="card-body">
+        <form #pfsettingForm = "ngForm" name="form" (submit)="savePFSetting()">
+        <p-accordion>
+        <p-accordionTab header="General" [selected]="true">
+        <div class="form-group row">
+        <div class="col-lg-3">
+        <label class="labelfont">PF On Gross Earning (Numeric)<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="pfSettingInfo.pfOnGrossEarning" 
+        optionLabel="label" optionValue="value" #pfOnGrossEarning="ngModel"
+        [ngClass]="{'is-invalid': pfOnGrossEarning.invalid && (pfOnGrossEarning.dirty || pfOnGrossEarning.touched)}" 
+        name="pfOnGrossEarning" id="pfOnGrossEarning" (ngModelChange)="getpfOnGrossEarning($event)"></p-selectButton>
+        <div *ngIf="pfOnGrossEarning.invalid && (pfOnGrossEarning.dirty || pfOnGrossEarning.touched)" class="labelfont">
+              
+        <div class="p-error" *ngIf="pfOnGrossEarning.errors?.['required']">
+        PF On Gross Earning is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-2" *ngIf="pfongrossearning">
+        <label class="labelfont">Limit<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.pfOnGrossLimit" class="form-control" type="text"
+        autocomplete="off" required name="pfOnGrossLimit" (keypress)="keyPressNumbers($event)" id="pfOnGrossLimit"
+        #pfOnGrossLimit="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': pfOnGrossLimit.invalid && (pfOnGrossLimit.dirty || pfOnGrossLimit.touched)}">
+        <div *ngIf="pfOnGrossLimit.invalid && (pfOnGrossLimit.dirty || pfOnGrossLimit.touched)" class="labelfont">
+      
+        <div class="p-error" *ngIf="pfOnGrossLimit.errors?.['required']">
+        PF On Gross Earning Limit is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+        <label class="labelfont">Prorate PF Gross On Paid Days<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="pfSettingInfo.proratePFGrossOnPaidDays" 
+        optionLabel="label" optionValue="value" #proratePFGrossOnPaidDays="ngModel"
+        [ngClass]="{'is-invalid': proratePFGrossOnPaidDays.invalid && (proratePFGrossOnPaidDays.dirty || proratePFGrossOnPaidDays.touched)}" 
+        name="proratePFGrossOnPaidDays" id="proratePFGrossOnPaidDays"></p-selectButton>
+        <div *ngIf="proratePFGrossOnPaidDays.invalid && (proratePFGrossOnPaidDays.dirty || proratePFGrossOnPaidDays.touched)" class="labelfont">
+          
+        <div class="p-error" *ngIf="proratePFGrossOnPaidDays.errors?.['required']">
+        Prorate PF Gross On Paid Days is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+        <label class="labelfont">Min PF Gross Limit (Numeric)<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.minimumPFGrossLimit" class="form-control" type="text"
+        autocomplete="off" required name="minimumPFGrossLimit" (keypress)="keyPressNumbers($event)" id="minimumPFGrossLimit"
+        #minimumPFGrossLimit="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': minimumPFGrossLimit.invalid && (minimumPFGrossLimit.dirty || minimumPFGrossLimit.touched)}">
+        <div *ngIf="minimumPFGrossLimit.invalid && (minimumPFGrossLimit.dirty || minimumPFGrossLimit.touched)" class="labelfont">
+    
+        <div class="p-error" *ngIf="minimumPFGrossLimit.errors?.['required']">
+        PF On Gross Earning Limit is required.
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="form-group row">
+        <div class="col-lg-2">
+        <label class="labelfont">PF Rounding<span class="text-danger">*</span></label>
+        <p-dropdown [options]="pfRoundingsList" [(ngModel)]="pfSettingInfo.pfRounding" optionLabel="key" optionValue="value"
+        class="" #pfRounding="ngModel" [required]="true"
+        [ngClass]="{'is-invalid': pfRounding.invalid && (pfRounding.dirty || pfRounding.touched)}" name="pfRounding" id="pfRounding"></p-dropdown>
+        <div *ngIf="pfRounding.invalid && (pfRounding.dirty || pfRounding.touched)" class="labelfont">
+      
+        <div class="p-error" *ngIf="pfRounding.errors?.['required']">
+        PF Round is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-2">
+        <label class="labelfont">PF On Arrear<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="pfSettingInfo.pfOnArrear" 
+        optionLabel="label" optionValue="value" #pfOnArrear="ngModel"
+        [ngClass]="{'is-invalid': pfOnArrear.invalid && (pfOnArrear.dirty || pfOnArrear.touched)}" 
+        name="pfOnArrear" id="pfOnArrear" ></p-selectButton>
+        <div *ngIf="pfOnArrear.invalid && (pfOnArrear.dirty || pfOnArrear.touched)" class="labelfont">
+              
+        <div class="p-error" *ngIf="pfOnArrear.errors?.['required']">
+        PF On Arrear is required.
+        </div>
+        </div>
+        </div>
+        <!-- <div class="col-lg-3" *ngIf="pfonarreartype">
+        <label class="labelfont">Type<span class="text-danger">*</span></label>
+        <p-dropdown [options]="pfOnArrearTypeList" [(ngModel)]="pfSettingInfo.pfOnArrearType" optionLabel="key" optionValue="value"
+        class="" #pfOnArrearType="ngModel" [required]="true"
+        [ngClass]="{'is-invalid': pfOnArrearType.invalid && (pfOnArrearType.dirty || pfOnArrearType.touched)}" name="pfOnArrearType" id="pfOnArrearType"></p-dropdown>
+        <div *ngIf="pfOnArrearType.invalid && (pfOnArrearType.dirty || pfOnArrearType.touched)" class="labelfont">
+      
+        <div class="p-error" *ngIf="pfOnArrearType.errors?.['required']">
+        Arrear Type is required.
+        </div>
+        </div>
+        </div> -->
+        <div class="col-lg-2">
+        <label class="labelfont">PF Part Of CTC<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="pfSettingInfo.pfPartOfCTC" 
+        optionLabel="label" optionValue="value" #pfPartOfCTC="ngModel"
+        [ngClass]="{'is-invalid': pfPartOfCTC.invalid && (pfPartOfCTC.dirty || pfPartOfCTC.touched)}" 
+        name="pfPartOfCTC" id="pfPartOfCTC"></p-selectButton>
+        <div *ngIf="pfPartOfCTC.invalid && (pfPartOfCTC.dirty || pfPartOfCTC.touched)" class="labelfont">
+          
+        <div class="p-error" *ngIf="pfPartOfCTC.errors?.['required']">
+        PF Part Of CTC is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+        <label class="labelfont">Show On Challan With 0 PF<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="pfSettingInfo.showOnChallanWithZeroPF" 
+        optionLabel="label" optionValue="value" #showOnChallanWithZeroPF="ngModel"
+        [ngClass]="{'is-invalid': showOnChallanWithZeroPF.invalid && (showOnChallanWithZeroPF.dirty || showOnChallanWithZeroPF.touched)}" 
+        name="showOnChallanWithZeroPF" id="showOnChallanWithZeroPF"></p-selectButton>
+        <div *ngIf="showOnChallanWithZeroPF.invalid && (showOnChallanWithZeroPF.dirty || showOnChallanWithZeroPF.touched)" class="labelfont">
+  
+        <div class="p-error" *ngIf="showOnChallanWithZeroPF.errors?.['required']">
+        Show On Challan With Zero PF is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-2">
+        <label class="labelfont">PF Recovery On FNF<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="pfSettingInfo.pfRecoveryOnFNF" 
+        optionLabel="label" optionValue="value" #pfRecoveryOnFNF="ngModel"
+        [ngClass]="{'is-invalid': pfRecoveryOnFNF.invalid && (pfRecoveryOnFNF.dirty || pfRecoveryOnFNF.touched)}" 
+        name="pfRecoveryOnFNF" id="pfRecoveryOnFNF"></p-selectButton>
+        <div *ngIf="pfRecoveryOnFNF.invalid && (pfRecoveryOnFNF.dirty || pfRecoveryOnFNF.touched)" class="labelfont">
+  
+        <div class="p-error" *ngIf="pfRecoveryOnFNF.errors?.['required']">
+        PF Recovery On FNF is required.
+        </div>
+        </div>
+        </div>
+        </div>
+        </p-accordionTab>
+        <p-accordionTab header="Employee PF Contribution" [selected]="true">
+        <div class="form-group row">
+        <div class="col-lg-4">
+        <label class="labelfont">Employee PF (%(Account No. 1))<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.employeePF" class="form-control" type="text"
+        autocomplete="off" required name="employeePF" (keypress)="keyPressNumbers($event)" id="employeePF"
+        #employeePF="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': employeePF.invalid && (employeePF.dirty || employeePF.touched)}">
+        <div *ngIf="employeePF.invalid && (employeePF.dirty || employeePF.touched)" class="labelfont">
+  
+        <div class="p-error" *ngIf="employeePF.errors?.['required']">
+        Employee PF is required.
+        </div>
+        </div>
+        </div>
+        </div>
+        </p-accordionTab>
+        <p-accordionTab header="Employer PF Contribution" [selected]="true">
+        <div class="form-group row">
+        <div class="col-lg-4">
+        <label class="labelfont">Pension Contribution Rate(B %(Account No. 10/EPS))<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.employerPFAcc10" class="form-control" type="text"
+        autocomplete="off" required name="employerPFAcc10" (keypress)="keyPressNumbers($event)" id="employerPFAcc10"
+        #employerPFAcc10="ngModel" placeholder="%(Account No. 10/EPS)"
+        [ngClass]="{'is-invalid': employerPFAcc10.invalid && (employerPFAcc10.dirty || employerPFAcc10.touched)}">
+        <div *ngIf="employerPFAcc10.invalid && (employerPFAcc10.dirty || employerPFAcc10.touched)" class="labelfont">
+        <div class="p-error" *ngIf="employerPFAcc10.errors?.['required']">
+        Pension Contribution Rate is required.
+        </div>
+        </div>
+        </div>
+        <!-- New Changes -->
+        <div class="col-lg-2">
+        <label class="labelfont">Pension Wage Limit<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="pfSettingInfo.proratePensionWageLimit" 
+        (ngModelChange)="showHideproratePensionWageLimit($event)" optionLabel="label" optionValue="value" #proratePensionWageLimit="ngModel"
+        [ngClass]="{'is-invalid': proratePensionWageLimit.invalid && (proratePensionWageLimit.dirty || proratePensionWageLimit.touched)}" 
+        name="proratePensionWageLimit" id="proratePensionWageLimit" ></p-selectButton>
+        <div *ngIf="proratePensionWageLimit.invalid && (proratePensionWageLimit.dirty || proratePensionWageLimit.touched)" class="labelfont">
+        
+        <div class="p-error" *ngIf="proratePensionWageLimit.errors?.['required']">
+        Pension Wage Limit is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-2" *ngIf="proratePensionWageLimitField">
+        <label class="labelfont">Limit<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.employerPFAcc10Limit" class="form-control" type="text"
+        autocomplete="off" required name="employerPFAcc10Limit" (keypress)="keyPressNumbers($event)" id="employerPFAcc10Limit"
+        #employerPFAcc10Limit="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': employerPFAcc10Limit.invalid && (employerPFAcc10Limit.dirty || employerPFAcc10Limit.touched)}">
+        <div *ngIf="employerPFAcc10Limit.invalid && (employerPFAcc10Limit.dirty || employerPFAcc10Limit.touched)" class="labelfont">
+  
+        <div class="p-error" *ngIf="employerPFAcc10Limit.errors?.['required']">
+        Limit is required.
+        </div>
+        </div>
+        </div>
+  
+                    <!-- End -->
+        <div class="col-lg-4">
+        <label class="labelfont">PF Contribution Rate((A-B) %(Account No. 1/EPF))<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.employerPFAcc1" class="form-control" type="text"
+        autocomplete="off" required name="employerPFAcc1" (keypress)="keyPressNumbers($event)" id="employerPFAcc1"
+        #employerPFAcc1="ngModel" placeholder="%(Account No. 1/EPF)"
+        [ngClass]="{'is-invalid': employerPFAcc1.invalid && (employerPFAcc1.dirty || employerPFAcc1.touched)}">
+        <div *ngIf="employerPFAcc1.invalid && (employerPFAcc1.dirty || employerPFAcc1.touched)" class="labelfont">
+  
+        <div class="p-error" *ngIf="employerPFAcc1.errors?.['required']">
+        PF Contribution Rate is required.
+        </div>
+        </div>
+        </div>
+               
+        </div>
+        <div class="form-group row">
+        <div class="col-lg-3">
+        <label class="labelfont">Pension Age Limit<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.pensionAgeLimit" class="form-control" type="text"
+        autocomplete="off" required name="pensionAgeLimit" (keypress)="keyPressNumbers($event)" id="pensionAgeLimit"
+        #pensionAgeLimit="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': pensionAgeLimit.invalid && (pensionAgeLimit.dirty || pensionAgeLimit.touched)}">
+        <div *ngIf="pensionAgeLimit.invalid && (pensionAgeLimit.dirty || pensionAgeLimit.touched)" class="labelfont">
+      
+        <div class="p-error" *ngIf="pensionAgeLimit.errors?.['required']">
+        Pension Age Limit is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+        <label class="labelfont">PF Admin Acc2(%(Account No. 2))<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.pfAdminAcc2" class="form-control" type="text"
+        autocomplete="off" required name="pfAdminAcc2" (keypress)="keyPressNumbers($event)" id="pfAdminAcc2"
+        #pfAdminAcc2="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': pfAdminAcc2.invalid && (pfAdminAcc2.dirty || pfAdminAcc2.touched)}">
+        <div *ngIf="pfAdminAcc2.invalid && (pfAdminAcc2.dirty || pfAdminAcc2.touched)" class="labelfont">
+      
+        <div class="p-error" *ngIf="pfAdminAcc2.errors?.['required']">
+        pfAdminAcc2 is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+        <label class="labelfont">PF Admin Acc2 Min Charge(Numeric)<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.pfAdminAcc2MinimumCharge" class="form-control" type="text"
+        autocomplete="off" required name="pfAdminAcc2MinimumCharge" (keypress)="keyPressNumbers($event)" id="pfAdminAcc2MinimumCharge"
+        #pfAdminAcc2MinimumCharge="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': pfAdminAcc2MinimumCharge.invalid && (pfAdminAcc2MinimumCharge.dirty || pfAdminAcc2MinimumCharge.touched)}">
+        <div *ngIf="pfAdminAcc2MinimumCharge.invalid && (pfAdminAcc2MinimumCharge.dirty || pfAdminAcc2MinimumCharge.touched)" class="labelfont">
+        <div class="p-error" *ngIf="pfAdminAcc2MinimumCharge.errors?.['required']">
+        PF Admin Acc2 Min Charge is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+        <label class="labelfont">EDLI Contribution(%(Account No. 21))<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.edliAcc21" class="form-control" type="text"
+        autocomplete="off" required name="edliAcc21" (keypress)="keyPressNumbers($event)" id="edliAcc21"
+        #edliAcc21="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': edliAcc21.invalid && (edliAcc21.dirty || edliAcc21.touched)}">
+        <div *ngIf="edliAcc21.invalid && (edliAcc21.dirty || edliAcc21.touched)" class="labelfont">
+  
+        <div class="p-error" *ngIf="edliAcc21.errors?.['required']">
+        EDLI Contribution is required.
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="form-group row">
+        <div class="col-lg-3">
+        <label class="labelfont">Min Monthly EDLI Charge(Numeric)<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.edliAcc21MinimumCharge" class="form-control" type="text"
+        autocomplete="off" required name="edliAcc21MinimumCharge" (keypress)="keyPressNumbers($event)" id="edliAcc21MinimumCharge"
+         #edliAcc21MinimumCharge="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': edliAcc21MinimumCharge.invalid && (edliAcc21MinimumCharge.dirty || edliAcc21MinimumCharge.touched)}">
+        <div *ngIf="edliAcc21MinimumCharge.invalid && (edliAcc21MinimumCharge.dirty || edliAcc21MinimumCharge.touched)" class="labelfont">
+        
+        <div class="p-error" *ngIf="edliAcc21MinimumCharge.errors?.['required']">
+          Min Monthly EDLI Charge is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+          <label class="labelfont">EDLI Admin Acc22(%(Account No. 22))<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.edliAdminAcc22" class="form-control" type="text"
+        autocomplete="off" required name="edliAdminAcc22" (keypress)="keyPressNumbers($event)" id="edliAdminAcc22"
+         #edliAdminAcc22="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': edliAdminAcc22.invalid && (edliAdminAcc22.dirty || edliAdminAcc22.touched)}">
+        <div *ngIf="edliAdminAcc22.invalid && (edliAdminAcc22.dirty || edliAdminAcc22.touched)" class="labelfont">
+        
+        <div class="p-error" *ngIf="edliAdminAcc22.errors?.['required']">
+          EDLI Admin Acc22 is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3">
+        <label class="labelfont">EDLI Admin Acc22 Min Charge<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.edliAdminAcc22MinimumCharge" class="form-control" type="text"
+        autocomplete="off" required name="edliAdminAcc22MinimumCharge" (keypress)="keyPressNumbers($event)" id="edliAdminAcc22MinimumCharge"
+         #edliAdminAcc22MinimumCharge="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': edliAdminAcc22MinimumCharge.invalid && (edliAdminAcc22MinimumCharge.dirty || edliAdminAcc22MinimumCharge.touched)}">
+        <div *ngIf="edliAdminAcc22MinimumCharge.invalid && (edliAdminAcc22MinimumCharge.dirty || edliAdminAcc22MinimumCharge.touched)" class="labelfont">
+        
+        <div class="p-error" *ngIf="edliAdminAcc22MinimumCharge.errors?.['required']">
+          EDLI Admin Acc22 Min Charge is required.
+        </div>
+        </div>
+        </div>
+        </div>
+        </p-accordionTab>
+        <p-accordionTab header="VPF" [selected]="true">
+        <div class="form-group row">
+        <div class="col-lg-2">
+        <label class="labelfont">VPF Allow<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="pfSettingInfo.vpfAllow" 
+        optionLabel="label" optionValue="value" #vpfAllow="ngModel"
+        [ngClass]="{'is-invalid': vpfAllow.invalid && (vpfAllow.dirty || vpfAllow.touched)}" 
+        name="vpfAllow" id="vpfAllow" (ngModelChange)="getvpfAllow($event)"></p-selectButton>
+        <div *ngIf="vpfAllow.invalid && (vpfAllow.dirty || vpfAllow.touched)" class="labelfont">
+              
+        <div class="p-error" *ngIf="vpfAllow.errors?.['required']">
+        VPF Allow is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3" *ngIf="vpfAllowfield">
+        <label class="labelfont">VPF On Gross Earning<span class="text-danger">*</span></label>
+        <p-selectButton [options]="stateOptions"  [(ngModel)]="pfSettingInfo.vpfOnGrossEarning" 
+        optionLabel="label" optionValue="value" #vpfOnGrossEarning="ngModel"
+        [ngClass]="{'is-invalid': vpfOnGrossEarning.invalid && (vpfOnGrossEarning.dirty || vpfOnGrossEarning.touched)}" 
+        name="vpfOnGrossEarning" id="vpfOnGrossEarning" (ngModelChange)="getvpfOnGrossEarning($event)"></p-selectButton>
+        <div *ngIf="vpfOnGrossEarning.invalid && (vpfOnGrossEarning.dirty || vpfOnGrossEarning.touched)" class="labelfont">
+              
+        <div class="p-error" *ngIf="vpfOnGrossEarning.errors?.['required']">
+        VPF On Gross Earning is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-2" *ngIf="vpfOnGrossEarningfield">
+        <label class="labelfont">VPF Gross Limit<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.vpfOnGrossLimit" class="form-control" type="text"
+        autocomplete="off" required name="vpfOnGrossLimit" (keypress)="keyPressNumbers($event)" id="vpfOnGrossLimit"
+         #vpfOnGrossLimit="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': vpfOnGrossLimit.invalid && (vpfOnGrossLimit.dirty || vpfOnGrossLimit.touched)}">
+        <div *ngIf="vpfOnGrossLimit.invalid && (vpfOnGrossLimit.dirty || vpfOnGrossLimit.touched)" class="labelfont">
+      
+        <div class="p-error" *ngIf="vpfOnGrossLimit.errors?.['required']">
+        VPF On Gross Earning Limit is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3" *ngIf="vpfAllowfield">
+        <label class="labelfont">VPF ON<span class="text-danger">*</span></label>
+        <p-dropdown [options]="vpfONList" [(ngModel)]="pfSettingInfo.vpfOn" optionLabel="key" optionValue="value"
+        class="" #vpfOn="ngModel" [required]="true"
+        [ngClass]="{'is-invalid': vpfOn.invalid && (vpfOn.dirty || vpfOn.touched)}" name="vpfOn" id="vpfOn"></p-dropdown>
+        <div *ngIf="vpfOn.invalid && (vpfOn.dirty || vpfOn.touched)" class="labelfont">
+                
+        <div class="p-error" *ngIf="vpfOn.errors?.['required']">
+        VPF ON is required.
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-2" *ngIf="vpfAllowfield">
+        <label class="labelfont">VPF On Value<span class="text-danger">*</span></label>
+        <input pinput [(ngModel)]="pfSettingInfo.vpfValue" class="form-control" type="text"
+        autocomplete="off" required name="vpfValue" (keypress)="keyPressNumbers($event)" id="vpfValue"
+        #vpfValue="ngModel" placeholder="Limit(Numberic)"
+        [ngClass]="{'is-invalid': vpfValue.invalid && (vpfValue.dirty || vpfValue.touched)}">
+        <div *ngIf="vpfValue.invalid && (vpfValue.dirty || vpfValue.touched)" class="labelfont">
+            
+        <div class="p-error" *ngIf="vpfValue.errors?.['required']">
+        VPF On Value is required.
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="form-group row" *ngIf="vpfAllowfield">
+        <div class="col-lg-3">
+        <label class="labelfont">VPF Rounding<span class="text-danger">*</span></label>
+        <p-dropdown [options]="pfRoundingsList" [(ngModel)]="pfSettingInfo.vpfRounding" optionLabel="key" optionValue="value"
+        class="" #vpfRounding="ngModel" [required]="true"
+        [ngClass]="{'is-invalid': vpfRounding.invalid && (vpfRounding.dirty || vpfRounding.touched)}" name="vpfRounding" id="vpfRounding"></p-dropdown>
+        <div *ngIf="vpfRounding.invalid && (vpfRounding.dirty || vpfRounding.touched)" class="labelfont">
+        <div class="p-error" *ngIf="vpfRounding.errors?.['required']">
+        VPF Rounding is required.
+        </div>
+        </div>
+        </div>
+        <!-- <div class="col-lg-9">
+        <label class="labelfont">Remark</label>
+        <input pinput [(ngModel)]="pfSettingInfo.remark" class="form-control" type="text"
+        autocomplete="off"  name="remark"  id="remark" #remark="ngModel"
+        [ngClass]="{'is-invalid': remark.invalid && (remark.dirty || remark.touched)}">
+        </div> -->
+        </div>
+        </p-accordionTab>
+        </p-accordion>
+        <div class="form-group row pull-right p-mt-4">
+        <div class="col-sm-12">
+        <p-button icon="pi pi-check" type="submit"   label="Save" Class="p-button-text p-button-sm p-button-success" [disabled]="!pfsettingForm.valid"></p-button>
+        </div>
+        </div>
+        </form>
+        </div>
+        </div>
+    
+    <!-- page end-->

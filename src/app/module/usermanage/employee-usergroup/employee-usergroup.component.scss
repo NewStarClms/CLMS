@@ -1,0 +1,8 @@
+input[type=checkbox]{
+    width: 50px !important;
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    line-height: 1.5 !important;
+    white-space: initial !important;
+    // padding: .5em !important;
+}

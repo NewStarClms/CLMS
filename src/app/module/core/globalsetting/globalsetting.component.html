@@ -1,0 +1,84 @@
+<section class="card">
+  <header class="card-header">
+    <h2>Global Setting</h2>
+  </header>
+</section>
+<!--add / update / delete modal  -->
+    <div class="card-body">
+      <p-table [columns]="cols" [value]="globalsetting" responsiveLayout="scroll" dataKey="globalSettingID">
+        <ng-template pTemplate="header" let-columns>
+          <!-- {{globalsetting |json}} -->
+          <tr>
+            <th *ngFor="let col of columns">
+              {{col.headerName}}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-globalsObj let-columns="columns" let-ri="rowIndex">
+            <tr>
+              <td>
+                <label class="labelfont">{{globalsObj.settingName}}</label>
+              </td>
+              <td>
+              
+                  <div *ngIf="globalsObj.settingName == 'Identifier'; then ouShow else prtShow"></div>
+                  <ng-template #ouShow>
+                    <span>{{  getNameOFValue(globalsObj.value1) }}</span>
+                  </ng-template>
+                  <ng-template #prtShow>
+                    <span>{{  getNameOFPRTValue(globalsObj.value1) }}</span>
+                  </ng-template>
+                
+              </td>
+              <td>
+                <span>{{  getNameOFValue(globalsObj.value2) }}</span>
+                 <!-- <ng-template>
+                vallue1
+                {{  getNameOFValue(globalsObj.value2) }}
+              </ng-template> -->
+            </td>
+              <td style="text-align:center">
+                <!-- {{globalsObj | json}} -->
+                <button  pButton pRipple type="button"  icon="pi pi-pencil" (click)="onRowEditInit(globalsObj)" class="p-button-rounded p-button-text"></button>
+                <!-- <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(globalsObj)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(globalsObj, ri)" class="p-button-rounded p-button-text p-button-danger"></button> -->
+            </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
+    <br />
+<!-- page end-->
+<p-dialog header="Edit Global Setting" [(visible)]="display" [modal]="true"
+[draggable]="false" [resizable]="false" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '50vw',height:'28vw'}" >
+  <form #globalSettingForm = "ngForm" (submit)="onRowEditSave()">
+    <div class="form-group row">
+      <div class="col-lg-6">
+        <label class="labelfont">Value 1</label>
+        <p-dropdown *ngIf="Value1_Identifire"  [options]="orgStateData" [(ngModel)]="globalSettingInfo.value1" optionLabel="key" optionValue="value" class="" #value1="ngModel"
+        [ngClass]="{'is-invalid': value1.invalid && (value1.dirty || value1.touched)}"  name="value1" id="value1" [required]="true" >
+        </p-dropdown>
+        <p-dropdown  *ngIf="Value2_Identifire" [options]="optionListObj" [(ngModel)]="globalSettingInfo.value1" optionLabel="key" optionValue="value" class="" #value1="ngModel"
+        [ngClass]="{'is-invalid': value1.invalid && (value1.dirty || value1.touched)}"  name="value1" id="value1" [required]="true" >
+        </p-dropdown>
+       
+        
+      </div>
+      <div class="col-lg-6">
+        <label class="labelfont" *ngIf="Value1_Identifire">Value 2</label>
+        <p-dropdown *ngIf="Value1_Identifire"  [options]="orgStateData" [(ngModel)]="globalSettingInfo.value2" optionLabel="key" optionValue="value" class="" #value2="ngModel"
+        [ngClass]="{'is-invalid': value2.invalid && (value2.dirty || value2.touched)}"  name="value2" id="value2" [required]="true" >
+        </p-dropdown>
+        <!-- <p-dropdown   [options]="optionynList" [(ngModel)]="globalSettingInfo.value1" optionLabel="key" optionValue="value" class="" #value1="ngModel"
+        [ngClass]="{'is-invalid': value1.invalid && (value1.dirty || value1.touched)}"  name="value1" id="value1" [required]="true" >
+        </p-dropdown> -->
+        
+      </div>
+    </div>
+    <br/>
+    <div class="float-right">
+      <p-button icon="pi pi-check" type="submit"  label="Update"  Class="p-button-text p-button-sm p-button-success" [disabled]="!globalSettingForm.valid"></p-button>
+      <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="onRowEditCancel()" styleClass="p-button-secondary"></p-button>
+    </div>
+  </form>
+</p-dialog>

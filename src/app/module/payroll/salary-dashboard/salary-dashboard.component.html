@@ -1,0 +1,331 @@
+<section class="card" *ngIf="maindetailDiv">
+    <div class="card-body">
+        <div class="form-group row">
+            <div class="col-lg-12">
+                <section class="card border">
+                    <div class="card-body">
+                        <h5>Salary Detail</h5>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="labelfont">Month Year<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-lg-6">
+                                <p-dropdown [options]="monthList" [(ngModel)]="month" [required]="true"
+                                    optionLabel="key" optionValue="value" name="month" id="month"
+                                    class="dropdwonPadding" (ngModelChange)="fngetData()">
+                                </p-dropdown>
+                                <p-dropdown [options]="yearList" [(ngModel)]="year" [required]="true" optionLabel="key"
+                                    optionValue="value" name="year" id="year" class="dropdwonPadding">
+                                </p-dropdown>
+                            <!-- </div>
+                            <div class="col-lg-3"> -->
+                                &nbsp;&nbsp;
+                                <p-button type="button" (click)="fngetData()" label="Get Data"
+                                    Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <section class="card border">
+                    <div class="card-body">
+                        <h5>Salary Verification
+                        </h5>
+                        <div class="row">
+                            <div class="col-lg-6" *ngFor="let list of verficationList;let j = index">
+                                <span class="ui-sortable-handle">{{list.massgaeText}}</span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="padding-left: 10px;line-height: 45px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(list.groupID, list.sequenceNo)"
+                                        data-toggle="tooltip" data-original-title="(Click) For Download"> <i
+                                            class="pi pi-download"
+                                            style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="font-size: 0.8rem;line-height: 45px;"> {{list.countNo}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="card border">
+                    <div class="card-body">
+                        <h5>Attendance Correction Arrear</h5>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <!-- (click)="fnViewsalaryProcessData('P','A')" -->
+                                <p-button type="button" label="Completed"
+                                    Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn p-button-success"
+                                    (click)="fnArrearProcess('P')"></p-button>
+                                <span class="ui-sortable-handle float-right"
+                                    style="padding-left: 10px;line-height: 45px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(2, 1)" data-toggle="tooltip"
+                                        data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                            style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="font-size: 0.8rem;line-height: 45px;"> {{aCompletedCount}}</span>
+                            </div>
+                            <div class="col-lg-4">
+                                <!-- (click)="fnViewsalaryProcessData('U','A')" -->
+                                <p-button type="button" label="Pending"
+                                    Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn "
+                                    (click)="fnArrearProcess('U')"></p-button>
+                                <span class="ui-sortable-handle float-right"
+                                    style="padding-left: 10px;line-height: 45px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(2,2)" data-toggle="tooltip"
+                                        data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                            style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="font-size: 0.8rem;line-height: 45px;">{{apendingCount}}</span>
+                            </div>
+                            <div class="col-lg-4">
+                                <span class="ui-sortable-handle">Total</span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="padding-left: 10px;line-height: 45px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(2, 3)" data-toggle="tooltip"
+                                        data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                            style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="font-size: 0.8rem;line-height: 45px;">{{atotalEmployeeCount}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="card border">
+                    <div class="card-body">
+                        <h5>Salary Process</h5>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <p-button type="button" (click)="fnViewsalaryProcessData('P','S')" label="Completed"
+                                    Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn p-button-success"></p-button>
+                                <span class="ui-sortable-handle float-right"
+                                    style="padding-left: 10px;line-height: 45px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(5, 1)" data-toggle="tooltip"
+                                        data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                            style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="font-size: 0.8rem;line-height: 45px;"> {{pCompletedCount}}</span>
+                            </div>
+                            <div class="col-lg-4">
+                                <p-button type="button" (click)="fnViewsalaryProcessData('U','S')" label="Pending"
+                                    Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+                                <span class="ui-sortable-handle float-right"
+                                    style="padding-left: 10px;line-height: 45px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(5,2)" data-toggle="tooltip"
+                                        data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                            style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="font-size: 0.8rem;line-height: 45px;">{{ppendingCount}}</span>
+                            </div>
+                            <div class="col-lg-4">
+                                <span class="ui-sortable-handle">Total</span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="padding-left: 10px;line-height: 45px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(5, 3)" data-toggle="tooltip"
+                                        data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                            style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="font-size: 0.8rem;line-height: 45px;">{{ptotalEmployeeCount}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="card border">
+                    <h5>Release salary</h5>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <!-- (click)="fnViewsalaryReleaseData('P','RS')" -->
+                            <p-button type="button" (click)="fnViewSalaryReleaseData('R','RS')"
+                                label="Payment Completed" Class="p-button-text p-button-sm p-button-success"
+                                styleClass="p-mr-btn p-button-success"></p-button>
+                            <span class="ui-sortable-handle float-right" style="padding-left: 5px;line-height: 45px;">
+                                <a class="cursor-pointer" (click)="fnDownloadData(6, 1)" data-toggle="tooltip"
+                                    data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                        style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                            <span class="ui-sortable-handle float-right" style="font-size: 0.8rem;line-height: 45px;">
+                                {{paymentCompletedCount}}</span>
+                        </div>
+                        <div class="col-lg-3">
+                            <p-button type="button" (click)="fnViewSalaryReleaseData('U','RS')" label="Ready to release"
+                                Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+                            <span class="ui-sortable-handle float-right" style="padding-left: 5px;line-height: 45px;">
+                                <a class="cursor-pointer" (click)="fnDownloadData(6,2)" data-toggle="tooltip"
+                                    data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                        style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                            <span class="ui-sortable-handle float-right"
+                                style="font-size: 0.8rem;line-height: 45px;">{{readytoreleaseCount}}</span>
+                        </div>
+                        <div class="col-lg-2">
+                            <p-button type="button" (click)="fnViewSalaryReleaseData('H','RS')" label="Hold"
+                                Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+                            <span class="ui-sortable-handle float-right" style="padding-left: 5px;line-height: 45px;">
+                                <a class="cursor-pointer" (click)="fnDownloadData(6,3)" data-toggle="tooltip"
+                                    data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                        style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                            <span class="ui-sortable-handle float-right"
+                                style="font-size: 0.8rem;line-height: 45px;">{{holdCount}}</span>
+                        </div>
+                        <div class="col-lg-3">
+                            <span class="ui-sortable-handle">Settlement</span>
+                            <span class="ui-sortable-handle float-right" style="padding-left: 5px;line-height: 45px;">
+                                <a class="cursor-pointer" (click)="fnDownloadData(6, 4)" data-toggle="tooltip"
+                                    data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                        style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                            <span class="ui-sortable-handle float-right"
+                                style="font-size: 0.8rem;line-height: 45px;">{{settlementCount}}</span>
+                        </div>
+                    </div>
+                </section>
+                <section class="card border">
+                    <div class="card-body">
+                        <h5>Publish salary</h5>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <!-- (click)="fnViewsalaryProcessData('P','R')" -->
+                                <p-button type="button" (click)="fnViewSalaryReleaseData('P','PS')" label="Completed"
+                                    Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn p-button-success"></p-button>
+                                <span class="ui-sortable-handle float-right"
+                                    style="padding-left: 10px;line-height: 45px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(7, 1)" data-toggle="tooltip"
+                                        data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                            style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="font-size: 0.8rem;line-height: 45px;"> {{pubCompletedCount}}</span>
+                            </div>
+                            <div class="col-lg-4">
+                                <!-- (click)="fnViewsalaryProcessData('U','R')"  -->
+                                <p-button type="button" (click)="fnViewSalaryReleaseData('N','PS')" label="Pending"
+                                    Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+                                <span class="ui-sortable-handle float-right"
+                                    style="padding-left: 10px;line-height: 45px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(7,2)" data-toggle="tooltip"
+                                        data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                            style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="font-size: 0.8rem;line-height: 45px;">{{pubpendingCount}}</span>
+                            </div>
+                            <div class="col-lg-4">
+                                <span class="ui-sortable-handle">Total</span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="padding-left: 10px;line-height: 45px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(7, 3)" data-toggle="tooltip"
+                                        data-original-title="(Click) For Download"> <i class="pi pi-download"
+                                            style="font-size: 0.8rem;line-height: 45px;"></i></a></span>
+                                <span class="ui-sortable-handle float-right"
+                                    style="font-size: 0.8rem;line-height: 45px;">{{pubtotalEmployeeCount}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-lg-4">
+                <section class="card border">
+                    <h5>
+                        <i class="pi pi-bell" style="font-size: 1rem"></i> Notification
+                    </h5>
+                    <div class="box-body">
+                        <ul class="todo-list ui-sortable" id="listnotification">
+                            <li *ngFor="let item of notificationList;let i = index">
+                                <span class="ui-sortable-handle"><i class="pi pi-user"
+                                        style="font-size: 0.8rem;"></i></span>
+                                <span class="ui-sortable-handle">{{item.massgaeText}}</span>
+                                <span class="ui-sortable-handle float-right" style="padding-left: 10px;">
+                                    <a class="cursor-pointer" (click)="fnDownloadData(item.groupID, item.sequenceNo)"
+                                        data-toggle="tooltip" data-original-title="(Click) For Download"> <i
+                                            class="pi pi-download" style="font-size: 0.8rem"></i></a></span>
+                                <span class="ui-sortable-handle float-right"> {{item.countNo}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- //*ngId="maindetaildiv" -->
+<section class="card" *ngIf="employeeListDetailprocessDIv">
+    <div class="card-body">
+        <div class="form-group row">
+            <h5>{{employeeListHeader}}</h5>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-8">
+                <label class="labelfont">Remark</label>
+                <input pinput [(ngModel)]="requestRemark" class="form-control" type="text" name="requestRemark"
+                    id="requestRemark">
+            </div>
+            <div class="float-right">
+                <p-button type="button" [label]="labelName" Class="p-button-text p-button-sm p-button-success"
+                    (click)="savesalaryProcess(actiontype)" styleClass="p-mr-btn"></p-button>
+                <p-button type="button" *ngIf="deletebtn" [label]="labeldeleteName"
+                    Class="p-button-text p-button-sm p-button-danger" (click)="deletesalaryProcess(actiontype)"
+                    styleClass="p-mr-btn p-button-danger"></p-button>
+                <p-button class="p-button-sm " label="Close" styleClass="p-button-secondary" (click)="Cloasepage()">
+                </p-button>
+            </div>
+        </div>
+        <app-payroll-grid-rendere [gridRowData]="rowData" [gridColData]="columnDefs"
+            (onCheckAllClicked)="checkUnCheckAllClicked($event)" (onCheckRowClicked)="checkUnCheckRowClicked($event)"
+            (onCellClickEvent)="onCellClicked($event)">
+        </app-payroll-grid-rendere>
+    </div>
+</section>
+<section class="card" *ngIf="employeeListDetailReleaseDiv">
+    <div class="card-body">
+        <div class="form-group row">
+            <h5>{{employeeListHeader}}</h5>
+        </div>
+        <div class="form-group row">
+            <div  class="col-lg-1">
+                <label class="labelfont">Remark </label>
+            </div>
+            <div class="col-lg-3">
+                
+                <input pinput [(ngModel)]="requestRemark" class="form-control" type="text" name="requestRemark"
+                    id="requestRemark">
+            </div>
+            <div class="col-lg-2" *ngIf="actiondropdown">
+                <label class="labelfont labelLeft">Action <span class="text-danger">*</span></label>
+                <p-dropdown [options]="releaseactionList" [(ngModel)]="releaseaction" [required]="true"
+                    optionLabel="key" optionValue="value" name="releaseaction" id="releaseaction"
+                    class="dropdwonPadding">
+                </p-dropdown>
+            </div>
+
+            <div class="col-lg-4" *ngIf="releasemonthyear">
+                <label class="labelfont labelLeft">Pay Month Year<span class="text-danger">*</span></label>
+                <p-dropdown [options]="monthList" [(ngModel)]="releaseMonth" [required]="true" optionLabel="key"
+                    optionValue="value" name="releaseMonth" id="releaseMonth" class="dropdwonPadding">
+                </p-dropdown>
+                <p-dropdown [options]="yearList" [(ngModel)]="releaseYear" [required]="true" optionLabel="key"
+                    optionValue="value" name="releaseYear" id="releaseYear" class="dropdwonPadding">
+                </p-dropdown>
+            </div>
+            <div class="float-right">
+                <p-button type="button" [label]="labelName" Class="p-button-text p-button-sm p-button-success"
+                    (click)="saveHoldReleasesalary(actiontype)" styleClass="p-mr-btn"></p-button>
+                <p-button type="button" *ngIf="deletebtn" [label]="labeldeleteName"
+                    Class="p-button-text p-button-sm p-button-danger" (click)="deletesalaryProcess(actiontype)"
+                    styleClass="p-mr-btn p-button-danger"></p-button>
+                <p-button class="p-button-sm " label="Close" styleClass="p-button-secondary" (click)="Cloasepage()">
+                </p-button>
+            </div>
+        </div>
+        <app-payroll-grid-rendere [gridRowData]="rowData" [gridColData]="columnDefs"
+            (onCheckAllClicked)="checkUnCheckAllClicked($event)" (onCheckRowClicked)="checkUnCheckRowClicked($event)"
+            (onCellClickEvent)="onCellClicked($event)">
+        </app-payroll-grid-rendere>
+    </div>
+</section>
+<div *ngIf="monthlySalaryDetaildiv">
+    <p-dialog header="Monthly Salary Detail" [(visible)]="monthlySalaryDetail" [modal]="true" [draggable]="false"
+        [resizable]="false" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '60vw',height:'40vw'}">
+        <app-view-salary-summary [employeeID]="employeeID" [monthYear]="monthYear" (close)="CloaseSalary()">
+        </app-view-salary-summary>
+    </p-dialog>
+</div>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text">
+
+</p-confirmDialog>

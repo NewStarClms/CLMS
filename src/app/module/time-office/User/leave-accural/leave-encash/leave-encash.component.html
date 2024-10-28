@@ -1,0 +1,67 @@
+<hr>
+<div class="form-group row">
+    <div class="col-md-4">
+        <h4>Leave Encashment</h4>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <label class="labelfont">Paid Status</label>  <br/>
+            <p-dropdown  [options]="paidStatusList" [(ngModel)]= "paidStatus"  [required]="true" optionLabel="key" optionValue="value" 
+            name="paidStatus" id="paidStatus">
+            </p-dropdown>
+    </div>
+    <div class="col-md-4">
+        <label class="labelfont">Leave Year</label>  <br/>
+            <p-dropdown  [options]="yearList" [(ngModel)]= "paidyear"  [required]="true" optionLabel="key" optionValue="value" 
+            name="paidyear" id="paidyear" class="dropdwonPadding">
+            </p-dropdown>
+    </div>
+    <div class="col-md-5">
+        <p-button type="button" (click)="getEncashRequestDetail()" label="Get Data"
+          Class="p-button-text p-button-sm p-button-success" styleClass="mr-2 ml-2"></p-button>
+          <p-button class="p-button-sm " #closebutton data-dismiss="modal" styleClass="mr-2 ml-2" label="Encash"
+           styleClass="p-button-secondary" (click)="saveencash()"></p-button>
+           <p-button icon="pi pi-times" class="p-button-sm " label="Cancel" (click)="CancelLevelproces()" styleClass="p-button-secondary mr-2 ml-2"></p-button>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-lg-12">
+        <app-grid-renderer
+        [gridRowData]="rowData"
+        [gridColData]="columnDefs"
+        (onCheckAllClicked)="checkUnCheckAllClicked($event)"
+        (onCheckRowClicked)="checkUnCheckRowClicked($event)"
+        (onCellClickEvent)="onCellClicked($event)">
+        </app-grid-renderer>
+    </div>
+</div>
+<p-dialog header="Leave Encash" (onHide)="CancelLevelprocess()" [(visible)]="leaveProcessdisplay" [modal]="true"
+[draggable]="false" [resizable]="false" [transitionOptions]="'0ms'"position="top-right" [style]="{width: '35vw',height:'30vw'}">
+  <form #leaveEncashRequestForm="ngForm" (submit)="saveleaveEncashRequest()">
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label class="labelfont">MonthYear</label>  <br/>
+                <p-dropdown  [options]="monthList" [(ngModel)]= "leavemonth"  [required]="true" optionLabel="key" optionValue="value" 
+                name="leavemonth" id="leavemonth" class="dropdwonPadding">
+                </p-dropdown>
+                <p-dropdown  [options]="yearList" [(ngModel)]= "leaveyear"  [required]="true" optionLabel="key" optionValue="value" 
+                name="leaveyear" id="leaveyear" class="dropdwonPadding">
+                </p-dropdown>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label class="labelfont">  Remarks</label>
+            <input pinput [(ngModel)]="requestRemark" class="form-control"
+                type="text" autocomplete="off"  name="requestRemark" id="requestRemark" >
+        </div>
+    </div>
+      <div class="float-right">
+        <p-button icon="pi pi-check"  label="Save"   Class="p-button-text p-button-sm p-button-success" [disabled]="!leaveEncashRequestForm.valid" styleClass="mr-2 ml-2" type="submit" ></p-button>
+        <p-button icon="pi pi-times" class="p-button-sm "   label="Cancel"  (click)="CancelLevelprocess()" styleClass="p-button-secondary mr-2 ml-2"></p-button>
+      </div>
+</form>
+</p-dialog>

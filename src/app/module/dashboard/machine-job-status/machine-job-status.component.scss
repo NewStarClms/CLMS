@@ -1,0 +1,27 @@
+.job-pending .p-progressbar-determinate,
+.job-completed .p-progressbar-determinate,
+.job-running .p-progressbar-determinate,
+.job-errored .p-progressbar-determinate{
+    height: 10px !important;
+}
+.job-pending .p-progressbar-label,
+.job-completed .p-progressbar-label,
+.job-running .p-progressbar-label,
+.job-errored .p-progressbar-label
+{
+    line-height:.5rem !important;
+    font-size: 10px !important;
+    color: white !important;
+}
+.job-errored .p-progressbar-value{
+    background-color: red;
+}
+.job-running .p-progressbar-value{
+    background-color: yellow;
+}
+.job-pending .p-progressbar-value{
+    background-color: gray;
+}
+.job-completed .p-progressbar-value{
+    background-color: green;
+}

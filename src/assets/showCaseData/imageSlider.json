@@ -1,0 +1,40 @@
+{
+    "data":[
+        {
+            "previewImageSrc": "../img/canteen.png",
+            "thumbnailImageSrc": "../img/canteen.png",
+            "alt": "Description for Image 1",
+            "title": "Title 1"
+        },
+        {
+            "previewImageSrc": "../img/LeaveManagement.png",
+            "thumbnailImageSrc": "../img/LeaveManagement.png",
+            "alt": "Description for Image 2",
+            "title": "Title 2"
+        },
+        {
+            "previewImageSrc": "../img/Payroll.png",
+            "thumbnailImageSrc": "../img/Payroll.png",
+            "alt": "Description for Image 3",
+            "title": "Title 3"
+        },
+        {
+            "previewImageSrc": "../img/TimeOffice.png",
+            "thumbnailImageSrc": "../img/TimeOffice.png",
+            "alt": "Description for Image 4",
+            "title": "Title 4"
+        },
+        {
+            "previewImageSrc": "../img/VisitorManagement.png",
+            "thumbnailImageSrc": "../img/VisitorManagement.png",
+            "alt": "Description for Image 5",
+            "title": "Title 5"
+        },
+        {
+            "previewImageSrc": "../img/WebDataCapture.png",
+            "thumbnailImageSrc": "../img/WebDataCapture.png",
+            "alt": "Description for Image 6",
+            "title": "Title 6"
+        }
+    ]
+}

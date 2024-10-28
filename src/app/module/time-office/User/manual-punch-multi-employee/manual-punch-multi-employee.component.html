@@ -1,0 +1,106 @@
+
+      <form #manualPunchForm = "ngForm" name="form" (submit)="SaveManualPunchMultiData()">
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label class="labelfont">From Date </label>
+                    <input pinput class="form-control" type="text" autocomplete="off" name="fromDate" [(ngModel)]="manualPunchInfo.fromDate"
+       id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker
+       [ngClass]="{'is-invalid': fromDate.invalid && (fromDate.dirty || fromDate.touched)}" #fromDate="ngModel">
+      
+            </div>
+            <div class="col-md-3">
+                <label class="labelfont">To Date </label>
+                <input pinput class="form-control" type="text" autocomplete="off" name="toDate" [(ngModel)]="manualPunchInfo.toDate"
+                id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker
+                [ngClass]="{'is-invalid': toDate.invalid && (toDate.dirty || toDate.touched)}" #toDate="ngModel">
+               
+            </div>
+            <div class="col-md-3">
+              <label class="labelfont">Punch Type <span class="text-danger">*</span></label>
+              <p-dropdown [options]="punchTypeList" [(ngModel)]="manualPunchInfo.punchType" optionLabel="key" optionValue="value"
+                 #punchType="ngModel"  [required]="true"
+                [ngClass]="{'is-invalid': punchType.invalid && (punchType.dirty || punchType.touched)}" name="punchType" id="punchType"></p-dropdown>
+                <div *ngIf="punchType.invalid && (punchType.dirty || punchType.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="punchType.errors?.['required']">
+                      Punch Type is required.
+                  </div>
+             </div>
+          </div>
+            <div class="col-md-3">
+                <label class="labelfont">Punch Time <span class="text-danger">*</span></label><br/>
+                <p-calendar [(ngModel)]="manualPunchInfo.punchTime" #punchTime="ngModel"
+                [ngClass]="{'is-invalid': punchTime.invalid && (punchTime.dirty || punchTime.touched)}" 
+                name="punchTime" id="punchTime" [required]="true"
+                [timeOnly]="true" inputId="timeonly" class="form-control"></p-calendar>
+                  <div *ngIf="punchTime.invalid && (punchTime.dirty || punchTime.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="punchTime.errors?.['required']">
+                      Punch Time is required.
+                    </div>
+                  </div>
+            </div>
+          </div>
+          <div class="form-group row">
+          <div class="col-md-3">
+              <label class="labelfont">Auto Minute <span class="text-danger">*</span></label>
+              <input pinput [(ngModel)]="manualPunchInfo.autoMinut" class="form-control" type="text"
+                 name="autoMinut" id="autoMinut" maxlength="5"
+                 #autoMinut="ngModel" (keypress)="keyPressNumeric($event)"
+                [ngClass]="{'is-invalid': autoMinut.invalid && (autoMinut.dirty || autoMinut.touched)}">
+                <div *ngIf="autoMinut.invalid && (autoMinut.dirty || autoMinut.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="autoMinut.errors?.['required']">
+                      Auto Minute is required.
+                  </div>
+             </div>
+            </div>
+            <div class="col-md-3">
+              <label class="labelfont">Weekly Off Include<span class="text-danger">*</span></label>
+            <p-selectButton [options]="stateOptions" [(ngModel)]="manualPunchInfo.weeklyOffInclue"
+             optionLabel="label" optionValue="value"  [ngClass]="{'is-invalid': weeklyOffInclue.invalid && (weeklyOffInclue.dirty || weeklyOffInclue.touched)}" 
+             name="weeklyOffInclue" id="weeklyOffInclue"  #weeklyOffInclue="ngModel"></p-selectButton>
+          </div>
+          <div class="col-md-3">
+            <label class="labelfont">Holiday Include<span class="text-danger">*</span></label>
+          <p-selectButton [options]="stateOptions" [(ngModel)]="manualPunchInfo.holidayInclude"
+           optionLabel="label" optionValue="value"  [ngClass]="{'is-invalid': holidayInclude.invalid && (holidayInclude.dirty || holidayInclude.touched)}" 
+           name="holidayInclude" id="holidayInclude"  #holidayInclude="ngModel"></p-selectButton>
+        </div>
+        <div class="col-md-3">
+          <label class="labelfont">InOut <span class="text-danger">*</span></label>
+          <p-dropdown [options]="inOutList" [(ngModel)]="manualPunchInfo.inOut" optionLabel="key" optionValue="value"
+             #inOut="ngModel" [required]="true"
+            [ngClass]="{'is-invalid': inOut.invalid && (inOut.dirty || inOut.touched)}" name="inOut" id="inOut"></p-dropdown>
+            <div *ngIf="inOut.invalid && (inOut.dirty || inOut.touched)" class="labelfont">
+              <div class="p-error" *ngIf="inOut.errors?.['required']">
+                  In Out is required.
+              </div>
+         </div>
+      </div>
+          </div>
+          <div class="form-group row">  
+          <div class="col-md-3">
+            <label class="labelfont">Machine ID <span class="text-danger">*</span></label>
+            <input pinput [(ngModel)]="manualPunchInfo.machineID" class="form-control" type="text"
+               name="machineID" id="machineID"
+               #machineID="ngModel"
+              [ngClass]="{'is-invalid': machineID.invalid && (machineID.dirty || machineID.touched)}">
+              
+          </div>
+            <div class="col-md-9">
+                <label class="labelfont">Reason <span class="text-danger">*</span></label>
+                <input pinput [(ngModel)]="manualPunchInfo.reason" class="form-control" type="text"
+                   name="reason" id="reason"
+                   #reason="ngModel" required="true"
+                  [ngClass]="{'is-invalid': reason.invalid && (reason.dirty || reason.touched)}">
+                  <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="labelfont">
+                    <div class="p-error" *ngIf="reason.errors?.['required']">
+                        Reason is required.
+                    </div>
+               </div>
+              </div>
+          </div>
+      <div class="float-right">
+          <p-button  type="submit"   label="Punch Post" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn" [disabled]="!manualPunchForm.valid"></p-button>
+          <p-button icon="pi pi-times" class="p-button-sm "  label="Cancel" styleClass="p-button-secondary" (click)="CancelmanualPunch()"></p-button>
+       
+      </div>
+      </form>

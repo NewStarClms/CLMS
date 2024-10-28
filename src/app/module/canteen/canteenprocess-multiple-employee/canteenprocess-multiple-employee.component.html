@@ -1,0 +1,20 @@
+<form #canteenProcessSingle = "ngForm" name="form" (submit)="CanteenProcessMultiple()">
+    <div class="form-group row">
+        <div class="col-md-6">
+        <label class="labelfont">From Date <span class="text-danger">*</span></label>
+        <input pinput class="form-control" type="text" autocomplete="off" name="fromDate" [(ngModel)]="canteenprocessmultipleInfo.fromDate"
+        id="fromDate" [bsConfig]="datepickerConfig" [required]="true" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker  #fromDate="ngModel" name="fromDate" id="fromDate">
+        </div>
+      
+        <div class="col-md-6">
+        <label class="labelfont">To Date </label>
+        <input pinput class="form-control" type="text" autocomplete="off" name="toDate" [(ngModel)]="canteenprocessmultipleInfo.toDate"
+        id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY" autocomplete="off" bsDatepicker #toDate="ngModel">
+        </div>
+        </div>
+
+      <div class="float-right">
+      <p-button type="submit" label="Canteen Process" Class="p-button-text p-button-sm p-button-success" styleClass="p-mr-btn"></p-button>
+      <p-button  class="p-button-sm"  label="Cancel" styleClass="p-button-secondary" (click)="cancel()"></p-button>
+      </div>
+</form>

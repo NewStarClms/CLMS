@@ -1,0 +1,110 @@
+
+<section class="card">
+    <header class="card-header">
+        <h2>Server Setup</h2>
+    </header>
+    <div class="card-body">
+        <p-accordion>
+            <p-accordionTab header="Mail Server" [selected]="isMailTabSelected">
+                <form #mailserverForm="ngForm" name="form" (submit)="saveMailserverData()">
+                    <div class="form-group row">
+                        <div class="col-lg-4">
+                            <label class="labelfont"> Display Name</label>
+                            <input pInputText [(ngModel)]="mailInfo.displayName" class="form-control shadow-none" 
+                                type="text" autocomplete="off"  #displayName="ngModel"
+                                [ngClass]="{'is-invalid': displayName.invalid && (displayName.dirty || displayName.touched)}" name="displayName" id="displayName">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="labelfont"> Sender Mail </label>
+                            <input pInputText [(ngModel)]="mailInfo.senderMail" class="form-control shadow-none" 
+                                type="text" autocomplete="off"  #senderMail="ngModel"
+                                [ngClass]="{'is-invalid': senderMail.invalid && (senderMail.dirty || senderMail.touched)}" name="senderMail" id="senderMail">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="labelfont"> Password </label>
+                            <input pInputText [(ngModel)]="mailInfo.password" class="form-control shadow-none" 
+                                type="password" autocomplete="off"  #password="ngModel"
+                                [ngClass]="{'is-invalid': password.invalid && (password.dirty || password.touched)}" name="password" id="password">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="labelfont"> Mail Server Info </label>
+                            <input pInputText [(ngModel)]="mailInfo.mailServerInfo" class="form-control shadow-none" 
+                                type="text" autocomplete="off"  #mailServerInfo="ngModel"
+                                [ngClass]="{'is-invalid': mailServerInfo.invalid && (mailServerInfo.dirty || mailServerInfo.touched)}" name="mailServerInfo" id="mailServerInfo">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="labelfont"> Port No </label>
+                            <input pInputText [(ngModel)]="mailInfo.portNo" class="form-control shadow-none" 
+                                type="text" autocomplete="off"  #portNo="ngModel"
+                                [ngClass]="{'is-invalid': portNo.invalid && (portNo.dirty || portNo.touched)}" name="portNo" id="portNo">
+                        </div>
+                         <div class="col-lg-4">
+                            <label class="labelfont"> Server Type </label>
+                            <input pInputText [(ngModel)]="mailInfo.serverType" class="form-control shadow-none" 
+                                type="text" autocomplete="off"  #serverType="ngModel"
+                                [ngClass]="{'is-invalid': serverType.invalid && (serverType.dirty || serverType.touched)}" name="serverType" id="serverType">
+        
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label class="labelfont">Enable SSL </label>
+                            <p-selectButton [options]="stateOptions" [(ngModel)]="mailInfo.enableSSL" optionLabel="label" optionValue="value" name="enableSSL"></p-selectButton>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="float-right">
+                            <p-button icon="pi pi-check" type="submit" label="Submit" Class="p-button-text p-button-sm p-button-success"
+                            [disabled]="!mailserverForm.valid"></p-button>
+                    </div>
+                    </div>
+                    <div class="form-group row"></div>
+                    <div class="form-group row"></div>
+                </form>
+            </p-accordionTab>
+            <p-accordionTab header="SMS Server" [selected]="isSmsTabSelected">
+                <form #smsServerForm="ngForm" (submit)="savesmsServerData()">
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label class="labelfont"> Sms Api</label>
+                            <input pInputText [(ngModel)]="smsServerInfo.smsApi" class="form-control shadow-none"
+                                type="text" autocomplete="off" #smsApi="ngModel"
+                                [ngClass]="{'is-invalid': smsApi.invalid && (smsApi.dirty || smsApi.touched)}" name="smsApi" id="smsApi">
+                           
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="labelfont">Sender ID</label>
+                            <input pInputText [(ngModel)]="smsServerInfo.senderID" class="form-control shadow-none" 
+                                type="text" autocomplete="off"  #senderID="ngModel"
+                                [ngClass]="{'is-invalid': senderID.invalid && (senderID.dirty || senderID.touched)}" name="senderID" id="senderID">
+                           
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label class="labelfont">SMS User Name </label>
+                            <input pInputText [(ngModel)]="smsServerInfo.smsUserName" class="form-control shadow-none" type="text" autocomplete="off"
+                                name="smsUserName"   id="smsUserName" #smsUserName="ngModel" autocomplete="off"
+                                [ngClass]="{'is-invalid': smsUserName.invalid && (smsUserName.dirty || smsUserName.touched)}">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="labelfont">SMS User Password</label>
+                            <input pInputText [(ngModel)]="smsServerInfo.userPassword" class="form-control shadow-none" type="Password" autocomplete="off"
+                                name="userPassword" id="userPassword"   #userPassword="ngModel"   autocomplete="off"
+                                [ngClass]="{'is-invalid': userPassword.invalid && (userPassword.dirty || userPassword.touched)}">
+                        </div>
+                        </div>
+                    <div class="float-right">
+                        <p-button  type="submit" label="Submit" Class="p-button-text p-button-sm p-button-success"
+                           [disabled]="!smsServerForm.valid"></p-button>
+                    </div>
+                    <div class="form-group row"></div>
+                    <div class="form-group row"></div>
+                </form>
+            </p-accordionTab>
+        </p-accordion>
+     
+    </div> 
+
+
+</section>
