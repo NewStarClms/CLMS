@@ -54,13 +54,13 @@ export class ActionPayrollComponent implements OnInit {
   public showEmployeeDepDesiName:string;
   public menuAction: any ={
     Single: {
-      LoanEntry: 161,
-      PaidDays: 162,
-      VariableSalary: 163
+      LoanEntry: 220,
+      PaidDays: 224,
+      VariableSalary: 225
     },
     Multiple: {
-      EncashPayment: 164,
-      Bonus: 165
+      EncashPayment: 226,
+      Bonus: 229
     }
   }
 
@@ -93,14 +93,12 @@ export class ActionPayrollComponent implements OnInit {
        var attendanceMenuID= Number(this.activatedRoute.snapshot.params.id);
         response.currentMenuItemsList.menuItems?.forEach(root => {
            root.childs.forEach(child => {
-             child.childs.forEach(sub=>{
-              if(sub.menuId==attendanceMenuID){
-                this.menuItems=sub.childs;
-                sub.childs.forEach(element => {
+              if(child.menuId==attendanceMenuID){
+                this.menuItems=child.childs;
+                child.childs.forEach(element => {
                   this.menuRights.push(...element.menuRights);
                 });
               }
-            });
                 
            });
          
@@ -112,7 +110,7 @@ export class ActionPayrollComponent implements OnInit {
   onChange(menuID) {
     //this.actiontype = e.target.value;
     this.showAttendanceMenu=true;
-    this.showingSingleEmployeeAction= menuID==190? true: false;
+    this.showingSingleEmployeeAction= menuID==223? true: false;
     this.currentMenuRights= this.menuRights.filter(m=>m.menuID==menuID && m.menuRightTypeID==3);
     if (this.showingSingleEmployeeAction) {
       this.authenticationService.setGlobalFilterVisibility(false);

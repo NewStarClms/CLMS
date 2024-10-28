@@ -65,7 +65,7 @@ export class LeaveEncashComponent implements OnInit {
     this.leaveEncashInfo.leaveYear=Number(this.paidyear);
     let selectedEmployeeIDs = this.selectedEmployees.map(e=>e.employeeID);
     let selectedleaveIds = this.selectedEmployees.map(e=>e.leaveID);
-    let selectedecashs = this.selectedEmployees.map(e=>e.encash);
+    let selectedecashs = this.selectedEmployees.map(e=>e.balance);
     let daaa=[];
     for (let index = 0; index < selectedEmployeeIDs.length; index++) {
       var leaveEncashdt={} as LeaveEncashesTimeoffice;

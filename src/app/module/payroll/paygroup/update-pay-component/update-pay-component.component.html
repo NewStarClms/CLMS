@@ -219,7 +219,7 @@
   </p-tabPanel>
   <p-tabPanel header="Extra Settings">
 
-    <div class="col-md-4" *ngIf="this.payheadCurrentData.payHeadID===12">
+    <div class="col-md-4" *ngIf="isLeaveEncash">
         <label class="labelfont">Leave Code</label>
         <p-dropdown  [options]="leaveTypeList" [(ngModel)]="selectPayHeadInfo.leaveID" optionLabel="leaveName" optionValue="leaveID" (ngModelChange)="fnupdateOption($event)"
         name="leaveID" id="leaveID">

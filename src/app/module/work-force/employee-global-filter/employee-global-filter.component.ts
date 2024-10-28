@@ -47,7 +47,6 @@ export class EmployeeGlobalFilterComponent implements OnInit {
   public employeeStatus:any[];
   
   @Output() filterAppliedEvent = new EventEmitter<any>();
-  @Output() cancelGlobalFilter = new EventEmitter<boolean>();
   constructor(
     private router: Router,
     private _store: Store<any>,
@@ -250,7 +249,6 @@ export class EmployeeGlobalFilterComponent implements OnInit {
    this.appSearchService.saveGlobalEmployeeFilter(this.globalEmployeeFilterInfo);
    localStorage.setItem('lStorageData','1' );
    this.filterAppliedEvent.emit();
-   this.cancelGlobalFilter.emit(false);
   }
   clearFilter(){
     this.appSearchService.deleteCellFromRemote();
@@ -270,6 +268,5 @@ export class EmployeeGlobalFilterComponent implements OnInit {
     this.employeeType=[];
     this.employeeStatus=[];
     this.filterAppliedEvent.emit();
-    this.cancelGlobalFilter.emit(false);
   }
 }

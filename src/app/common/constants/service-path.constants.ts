@@ -50,7 +50,7 @@ export const PATH = {
     FETCH_SHIFTMAPPING_DATA: '/AttendancePolicy/shiftMapping/',
     FETCH_EMPLOYEE_USERGROUP:'/EmployeeUserGroup/Mapping/',
     UPSERT_EMPLOYEE_USERGROUP:'/EmployeeUserGroup/',
-    FETCH_MENU_ITEMS:'/UserGroup/GetMenuItems?id=6',
+    FETCH_MENU_ITEMS:'/UserGroup/GetMenuItems',
     FETCH_ATTENDANCE_POLICY_MASTER:'/AttendancePolicy',
     FETCH_EMPLOYEES_OUSTATUS: '/EmployeeUserGroup/OUMapping/',
     FETCH_EMPLOYEE_OU: '/EmployeeUserGroup/UserOUMapping/',

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UI_CONSTANT } from 'src/app/common/constants/ui-constants';
+import { AppCoreCommonService } from 'src/app/services/app.core-common.services';
 import { SalarySlipService } from 'src/app/services/salary-slip.service';
 import { User } from 'src/app/store/model/login.model';
 
@@ -22,7 +23,8 @@ export class SalarySlipComponent implements OnInit {
   userInfo:User = {} as User;
   empID: number;
   constructor(
-    private salaryslipService:SalarySlipService
+    private salaryslipService:SalarySlipService,
+    private coreService: AppCoreCommonService
   ) { 
     this._currentUserSubject = new BehaviorSubject<User>(this.getUserFromLocalStorage());
         this.currentUser = this._currentUserSubject.asObservable();
@@ -31,8 +33,9 @@ export class SalarySlipComponent implements OnInit {
   ngOnInit(): void {
     const currentyear = new Date().getFullYear();
     this.year=currentyear.toString();
-    this.month = (new Date()).toLocaleString('default', { month: 'short' });
-    this.months= this.month-1;
+   // this.month = (new Date()).toLocaleString('default', { month: 'short' });
+    this.month = this.coreService.getDefaultMonthForReport();
+    this.months= this.month;
     this.maindetailDiv=true;
     this.currentUser.subscribe(res=>{
       if(res){

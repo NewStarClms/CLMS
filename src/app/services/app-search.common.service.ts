@@ -115,7 +115,6 @@ export class AppSearchCommonService {
   
      }
 
-
      getPagingQueryString(pager : PageInfo){
        const defaultPager: PageInfo= {
         pageNumber:1,
@@ -129,22 +128,5 @@ export class AppSearchCommonService {
       }
       return `?searchKeyword=${pager.searchKeyword}&pageNumber=${pager.pageNumber}&pageSize=${pager.pageSize}&orderBy=${pager.orderBy}&orderDirection=${pager.orderDirection}`;
      
-     }
-
-     deleteCellFromRemoteTemp(){
-      const serviceConf = new ServiceConfig();
-      serviceConf.method = HttpMethod.DELETE;
-      serviceConf.path = PATH.FETCH_GLOBAL_EMPLOYEE_FILTER+'/Clear';
-      serviceConf.requestHeader = {};
-      this.remoteService.httpServiceRequest(serviceConf)?.subscribe(response =>{
-        if (response.messageType === 0) {
-         // this.notificationService.showSuccess(response.message, UI_CONSTANT.SEVERITY.SUCCESS);
-        }
-        else {
-          this.notificationService.showError(response.message, UI_CONSTANT.SEVERITY.ERROR);
-        }
-        return response;
-      });
-  
      }
 }
