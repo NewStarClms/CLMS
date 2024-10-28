@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FileImportComponent } from './file-import/file-import.component';
 
 const routes: Routes = [
-  { path :'import-file/:importModuleID',component:FileImportComponent  },
+  { path :'import-file',component:FileImportComponent  },
 ];
 
 @NgModule({

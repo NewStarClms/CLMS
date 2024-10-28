@@ -21,8 +21,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-import { EmployeeGlobalFilterComponent } from '../work-force/work-force.module';
-import { WorkForceModule } from '../work-force/work-force.module';
 
 
 @NgModule({
@@ -47,11 +45,7 @@ import { WorkForceModule } from '../work-force/work-force.module';
     InputNumberModule,
     BsDatepickerModule,
     AutoCompleteModule,
-    ConfirmDialogModule,
-    WorkForceModule
-  ],
-  exports:[
-    EmployeeGlobalFilterComponent
+    ConfirmDialogModule
   ],
   // providers:[ArrayFilterPipe,ArraySortPipe]
 

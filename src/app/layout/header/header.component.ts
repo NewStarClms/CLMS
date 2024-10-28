@@ -15,7 +15,6 @@ import {MenuItem, PrimeIcons} from 'primeng/api';
 import { EmployeeDashboardSetting, MachineJobProgress } from 'src/app/store/model/employee-dashboard-setting.model';
 import { EmployeeDashboardSettingService } from 'src/app/services/employee-dashboard-setting.service';
 import { UserAttendanceDetailService } from 'src/app/services/user-attendance-detail.service';
-import { GuestVisitorService } from 'src/app/services/guest-visitor.service';
 
 @Component({
   selector: 'app-header',
@@ -42,7 +41,6 @@ export class HeaderComponent implements OnInit {
   public hideMachineStatus=false;
   raiseEventToLoadJobData: Subject<void> = new Subject<void>();
   public IsAccessRight:boolean;
-  routeParams: any;
 
 
   public requestbyessdiv:boolean=false;
@@ -66,7 +64,6 @@ export class HeaderComponent implements OnInit {
     private changePasswordService: ChangePasswordServiceService,
     private employeeDashboardSettingService: EmployeeDashboardSettingService,
     private attendanceDetailService:UserAttendanceDetailService,
-    private guestService: GuestVisitorService
   ) { 
     this.filtertypevale=localStorage.getItem('lStorageData');
     this._currentUserSubject = new BehaviorSubject<User>(this.getUserFromLocalStorage());
@@ -95,7 +92,6 @@ export class HeaderComponent implements OnInit {
     }
     this._store.select(selectUserMenuItems).subscribe(response=>{
       if (response && response.menuItemsList) {
-          this.menuItems=response?.currentMenuItemsList.menuItems;
           this.usergroupMenu=response.menuItemsList;
           //console.log('menuItemsList===',this.usergroupMenu)
           this.isSetupAllowed = (this.usergroupMenu.filter(c=> c.menuTypeID === 1)[0].menuItems.length>0)?true:false;
@@ -110,8 +106,8 @@ export class HeaderComponent implements OnInit {
         // console.log(response)
         this.menuItems =response?.currentMenuItemsList.menuItems;
         const requestMenu:Menu = this.menuItems.find(x=> x.childs.find(y=>y.menuId === Number(47)));
-        this.reqMenuList = requestMenu?.childs.filter(z=> z.menuId === Number(47))[0].childs;
-        if(this.reqMenuList?.filter(x=>x.menuId==237).length>0 || this.reqMenuList?.filter(x=>x.menuId==238).length>0 )
+        this.reqMenuList = requestMenu.childs.filter(z=> z.menuId === Number(47))[0].childs;
+        if(this.reqMenuList.filter(x=>x.menuId==237).length>0 || this.reqMenuList.filter(x=>x.menuId==238).length>0 )
         {
           this.visible=true;
         }
@@ -119,13 +115,6 @@ export class HeaderComponent implements OnInit {
           this.visible=false;
         }
     }
-    this.routeParams = {Header:true, footer:true, sidebar:true};
-    this.guestService.getParamsData().subscribe(data =>{
-      if(data){
-        //console.log('routeParams', data);
-        this.routeParams = data;
-      } 
-    });
   });
 // End    
 
@@ -244,8 +233,5 @@ export class HeaderComponent implements OnInit {
   {
     this.attendanceDetailService.setRequestByEssPopupVisibility(false);
     this.requestbyessdiv=false;
-  }
-  public loadDefaultMenu(){
-    this.usergroupService.updateCurrentMenu(this.usergroupMenu[1]);
   }
 }

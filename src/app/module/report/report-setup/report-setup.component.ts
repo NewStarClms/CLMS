@@ -1,19 +1,17 @@
-import { Component, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectReportSetupState } from '../../../store/app.state';
 import { ReportModel, ReportDetailsEntities, ReportColumnDetails, ReportGenerateModel } from '../../../store/model/report.model';
 import { AppUtil } from '../../../common/app-util';
 import { UI_CONSTANT } from '../../../common/constants/ui-constants';
 import { ReportsService } from '../../../services/reports.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
 import { AuthService } from 'src/app/services/authentication.service';
 import { ConfirmationService } from 'primeng/api';
 import { AppCoreCommonService } from 'src/app/services/app.core-common.services';
-import { EmployeeGlobalFilterComponent } from '../../work-force/work-force.module';
-import { AppSearchCommonService } from 'src/app/services/app-search.common.service';
-import { GlobalEmployeeFilter } from 'src/app/store/model/globalemployeefilter.model';
+
 @Component({
   selector: 'app-report-setup',
   templateUrl: './report-setup.component.html',
@@ -40,7 +38,6 @@ export class ReportSetupComponent implements OnInit {
   toDate = new Date();
   defaultIndex = 0;
   reportGeneratPayload:ReportGenerateModel = {} as ReportGenerateModel;
-  
   reportDownLoadInfo = {
     fileType:'',
     toMonth:"",
@@ -63,34 +60,20 @@ export class ReportSetupComponent implements OnInit {
   monthList : Array<any>= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
   yearList:Array<Number> = AppUtil.generateArrayOfYears();
   reportTypeID: number;
-  reportModuleID: number;
-  reportName: string;
-
-  public filtertypevale:string='';
-  public visibles:boolean=false; 
-  public appliedfilter:boolean=true;
-  @ViewChild(EmployeeGlobalFilterComponent) private employeeGlobalFilter:EmployeeGlobalFilterComponent;
-  public globalEmployeeFilterInfo : GlobalEmployeeFilter= {} as GlobalEmployeeFilter;
-  public headerVarible:string;
   constructor(
     private _store:Store<any>,
     private reportService:ReportsService,
     private router: Router,
     private authenticationService:AuthService,
     private confirmationService: ConfirmationService,
-    private coreService: AppCoreCommonService,
-    private activatedRoute: ActivatedRoute,
-    private appSearchService: AppSearchCommonService,
+    private coreService: AppCoreCommonService
   ) { 
-    this.filtertypevale=localStorage.getItem('lStorageData');
     this.datepickerConfig = Object.assign({},{ containerClass:'theme-default',
     adaptivePosition:true,
     dateInputFormat:'DD-MMM-YYYY'});
   }
-  
-  ngOnInit() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.reportModuleID=this.activatedRoute.snapshot.params.reportModuleID;
+
+  ngOnInit(): void {
     this.authenticationService.setGlobalFilterVisibility(true);
     this.reportService.getVisiblity().subscribe(res=>{
       this.displaySettings = res;
@@ -99,10 +82,8 @@ export class ReportSetupComponent implements OnInit {
       if(res && res.reportList){
       this.reportSetupList = AppUtil.deepCopy(res.reportList);
       // this.reportModuleList= this.reportSetupList.map( ({reportModuleID, reportModuleName}) => ({reportModuleID, reportModuleName}) );
-      var currentModule=this.reportSetupList.filter(rpt=>rpt.reportModuleID==this.reportModuleID)[0];
-      this.reportName = currentModule?.reportModuleName;
-      this.reportService.setActiveModule(currentModule);
-      this.selectedModule  = this.reportModuleID;
+      this.reportService.setActiveModule(this.reportSetupList[0]);
+      this.selectedModule  = this.reportSetupList[0].reportModuleID;
       }
     });
     
@@ -204,55 +185,31 @@ export class ReportSetupComponent implements OnInit {
       // this.reportDownLoadInfo.toYear =this.toDate.getFullYear()-1;
     }
     if(currentReportEntity.generateType === 'B')
-     {
-       this.fileTypeList = this.fileTypeConstList.filter(i=> i.key != 'P');
-     }
+    {
+      this.fileTypeList = this.fileTypeConstList.filter(i=> i.key != 'P');
+    }
     else if(currentReportEntity.generateType === 'E')
-     {
-       this.fileTypeList = this.fileTypeConstList.filter(i=> i.key === 'E');
-     }
+    {
+      this.fileTypeList = this.fileTypeConstList.filter(i=> i.key === 'E');
+    }
     else if(currentReportEntity.generateType === 'H')
-     {
-       this.fileTypeList = this.fileTypeConstList.filter(i=> i.key === 'H');
-     }
+    {
+      this.fileTypeList = this.fileTypeConstList.filter(i=> i.key === 'H');
+    }
     else if(currentReportEntity.generateType === 'P')
-     {
-       this.fileTypeList = this.fileTypeConstList.filter(i=> i.key != 'E');
-     }
+    {
+      this.fileTypeList = this.fileTypeConstList.filter(i=> i.key != 'E');
+    }
     else
-     {
-       this.fileTypeList = AppUtil.deepCopy(this.fileTypeConstList);
-     }
-    
+    {
+      this.fileTypeList = AppUtil.deepCopy(this.fileTypeConstList);
+    }
     this.reportDownLoadInfo.fileType = this.fileTypeList[0]?.key;
-    this.appSearchService.deleteCellFromRemoteTemp();
-    localStorage.setItem('lStorageData','0' );
-    this.headerVarible="repotSetup";
-    this.appliedfilter=false;
     this.displaySettings = true;
-    this.employeeGlobalFilter.employee=[];
-    this.employeeGlobalFilter.organization=[];
-    this.employeeGlobalFilter.company=[];
-    this.employeeGlobalFilter.branch=[];
-    this.employeeGlobalFilter.contractor=[];
-    this.employeeGlobalFilter.category=[];
-    this.employeeGlobalFilter.department=[];
-    this.employeeGlobalFilter.subDepartment=[];
-    this.employeeGlobalFilter.designation=[];
-    this.employeeGlobalFilter.level=[];
-    this.employeeGlobalFilter.section=[];
-    this.employeeGlobalFilter.grade=[];
-    this.employeeGlobalFilter.employeeType=[];
-    this.employeeGlobalFilter.employeeStatus=[];
-
   }
   cancel(){
     this.displaySettings= false;
   }
-  cancelGlobalFiltter(){
-   this.visibles=false;
-  }
-
   getDate(event, action) {
     
     if(action === 'toDate'){
@@ -325,24 +282,13 @@ export class ReportSetupComponent implements OnInit {
             }
         }
     });
+
+
+
    }
     
     //End
-    displayGlobalFilter(){
-      this.visibles=true;
-    }
-    openDioalog(){
-    }
+  
 
-    onGetFilterDetail(){
-      this.filtertypevale=localStorage.getItem('lStorageData');
-      console.log(this.filtertypevale)
-      if(this.filtertypevale == '1'){
-      
-        this.appliedfilter=true;
-      }else{
-        this.appliedfilter=false;
-      }
-    }
   
 }

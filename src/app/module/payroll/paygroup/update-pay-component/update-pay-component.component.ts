@@ -102,7 +102,7 @@ export class UpdatePayComponentComponent implements OnInit {
     this.setDefaultPayHeadData(e);
     const tempPayhead = this.payHeadList.filter(x=> x.value === e)[0];
     console.log('tempPayhead',tempPayhead);
-    if(e === 8){
+    if( this.payheadCurrentData.payHeadID=== 8){
       this.isLoanPayHead = true;
     } else{
     this.isLoanPayHead = false;

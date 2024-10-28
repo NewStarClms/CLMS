@@ -159,8 +159,8 @@ export class CanteenPolicyService {
         headerName: "",
         minWidth: 0,
         editable: false,
-        deleteAllow: this.userGroupService.isMenuAccessable(UI_CONSTANT.MenuAccessLable.CanteenPolicy, UI_CONSTANT.ACTIONS.DELETE),
-        editAllow: this.userGroupService.isMenuAccessable(UI_CONSTANT.MenuAccessLable.CanteenPolicy, UI_CONSTANT.ACTIONS.UPDATE),
+        deleteAllow: this.userGroupService.isMenuAccessable(UI_CONSTANT.MenuAccessLable.Leave_Master, UI_CONSTANT.ACTIONS.DELETE),
+        editAllow: this.userGroupService.isMenuAccessable(UI_CONSTANT.MenuAccessLable.Leave_Master, UI_CONSTANT.ACTIONS.UPDATE),
         colId: "action",
         policyMapping: false,
         policyOuMap:true

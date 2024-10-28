@@ -493,7 +493,7 @@
       </p-tabPanel>
   </p-tabView>
   <div class="footer">
-      <div class="btnFooter" *ngIf="!allDisabledField">
+      <div class="btnFooter">
         <p-button icon="pi pi-times" *ngIf="selectedMappedShift.includes(policy.value)" class="p-button-sm mr1" #closebutton data-dismiss="modal" label="Delete Mapping"
         styleClass="p-button-danger" (click)="deleteLeaveMapping(leavePolicyID,leaveDetails.leaveID)"></p-button>
       <p-button icon="pi pi-check" *ngIf="!allDisabledField" [label]="labelName" Class="p-button-sm p-button-success"

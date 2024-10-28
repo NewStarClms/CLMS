@@ -294,9 +294,9 @@ export class UserGroupService {
 
   public isMenuAccessable(menuName: string, action: string): boolean {
     this.menuAccess = JSON.parse(localStorage.getItem("userMenuAccess"));
-    const menuRights = this.menuAccess?.filter(i=>i.menuName.trim().toLowerCase() === menuName.trim().toLowerCase())[0]?.menuRights;
+    const menuRights = this.menuAccess?.filter(i=>i.menuName.trim().toLowerCase() === menuName.trim().toLowerCase())[0].menuRights;
     const selectedArr = menuRights?.filter(i => i.displayName.toLowerCase()=== action.toLowerCase());
-    this.isAllowed = !selectedArr || (selectedArr.length === 0)?false:selectedArr[0]?.selected;
+    this.isAllowed = (selectedArr.length === 0)?false:selectedArr[0]?.selected;
     return this.isAllowed;
 
   }

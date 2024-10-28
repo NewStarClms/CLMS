@@ -10,9 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { EmployeeGlobalFilterComponent } from '../work-force/work-force.module';
-import { WorkForceModule } from '../work-force/work-force.module';
-import { DialogModule } from 'primeng/dialog';
+
 
 @NgModule({
   declarations: [
@@ -27,12 +25,7 @@ import { DialogModule } from 'primeng/dialog';
     InputTextModule,
     FileUploadModule,
     TableModule,
-    BsDatepickerModule,
-    WorkForceModule,
-    DialogModule,
-  ],
-  exports:[
-    EmployeeGlobalFilterComponent
+    BsDatepickerModule
   ]
 })
 export class DataImportModule { }

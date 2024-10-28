@@ -12,8 +12,6 @@ import { PayGroupModel } from 'src/app/store/model/pay-component.model';
 import { PayGroupService } from '../../../services/pay-group.service';
 import { AuthService } from 'src/app/services/authentication.service';
 import { AppCoreCommonService } from 'src/app/services/app.core-common.services';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AppSearchCommonService } from 'src/app/services/app-search.common.service';
 type AOA = any[][];
 @Component({
   selector: 'app-file-import',
@@ -59,22 +57,13 @@ export class FileImportComponent implements OnInit {
   public datepickerConfig: Partial<BsDatepickerConfig>;;
   public shiftDaterange: string;
   public paygroupID: number;
-  public importName: string;
-  public visibles:boolean=false;
-  public filtertypevale:string='';
-  public appliedfilter:boolean=false;
-  public visibleAppliedfilter:boolean=false;
-  public insertUpdateActionID:string;
   constructor(
     private importService: ImportService,
     private notificationService: NotificationService,
     private attendanceService: UserAttendanceDetailService,
     private payGroupService: PayGroupService,
     private authenticationService:AuthService,
-    private coreService: AppCoreCommonService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private appSearchService: AppSearchCommonService,
+    private coreService: AppCoreCommonService
   ) {
     this.datepickerConfig = Object.assign({}, {
       containerClass: 'theme-default',
@@ -86,9 +75,7 @@ export class FileImportComponent implements OnInit {
 
   ngOnInit(): void {
  
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    let importModuleID=this.activatedRoute.snapshot.params.importModuleID;
-    this.fileTemplateObj.moduleId=Number(importModuleID);
+
     this.validateNote = [];
     this.years = this.attendanceService.fetchYears();
     this.months = this.attendanceService.fetchMonths();
@@ -105,7 +92,6 @@ export class FileImportComponent implements OnInit {
         this.importMasterData.map(x => {
           this.moduleListOption.push({ key: x.importModuleName, value: x.importModuleID });
         });
-        this.fngetMappedimport(Number(importModuleID));
       }
     });
     this.payGroupService.getPayGroupList().subscribe(res => {
@@ -122,7 +108,6 @@ export class FileImportComponent implements OnInit {
     this.fileTemplateObj.importId=null;
     this.importListOption = [];
     const moduleData: ImportModuleModel = this.importMasterData.filter(x => x.importModuleID === e)[0];
-    this.importName=moduleData?.importModuleName;
     moduleData.importModuleMasters.map(y => {
       this.importListOption.push({ key: y.importName, value: y.importID });
     });
@@ -156,32 +141,7 @@ export class FileImportComponent implements OnInit {
     // this.leaveAccType = this.accrualTypeOption[0].key;
     // }
     console.log('actionListOption', this.actionListOption);
-
-    if((this.fileTemplateObj.importId==12 || this.fileTemplateObj.importId==13 || this.fileTemplateObj.importId==14 || this.fileTemplateObj.importId==15 || this.fileTemplateObj.importId==16) && this.fileTemplateObj.action=="U"){
-      this.visibleAppliedfilter=true;
-   }else if((this.fileTemplateObj.importId==17 || this.fileTemplateObj.importId==18 || this.fileTemplateObj.importId==20 || this.fileTemplateObj.importId==21 || this.fileTemplateObj.importId==22 || this.fileTemplateObj.importId==23) && this.fileTemplateObj.action=="U") {
-    this.visibleAppliedfilter=true;
-   }else if(this.fileTemplateObj.importId==28 && this.fileTemplateObj.action=="U"){
-    this.visibleAppliedfilter=true;
-   }
-    else{
-      this.visibleAppliedfilter=false;
-    }
-
   }
-
-  fnInsertUpdateAction(e){
-    let params=e;
-    this.insertUpdateActionID=params;
-    if(this.insertUpdateActionID=="U"){
-      this.visibleAppliedfilter=true;
-    }else{
-      this.appSearchService.deleteCellFromRemoteTemp();
-      this.appliedfilter=false;
-      this.visibleAppliedfilter=false;
-    }
-   }
-
   downloadTemplate() {
     var frmDate= new Date(Number(this.year),Number(this.month)-1,1);
     var toDate= new Date(Number(this.yearTo),Number(this.monthTo)-1,1);
@@ -313,23 +273,4 @@ export class FileImportComponent implements OnInit {
     };
     reader.readAsBinaryString(target.files[0]);
   }
-
-  displayGlobalFilter(){
-    this.visibles=true;
-   }
- 
-   cancelGlobalFiltter(){
-     this.visibles=false;
-   }
- 
-   onGetFilterDetail(){
-     this.filtertypevale=localStorage.getItem('lStorageData');
-     console.log(this.filtertypevale)
-     if(this.filtertypevale == '1'){
-       this.appliedfilter=true;
-     }else{
-       this.appliedfilter=false;
-     }
-   }
-
 }
