@@ -3,103 +3,37 @@
 </header>
 <form #employeeForm="ngForm" (submit)="SaveEmployeeData(employeeForm)">
 <div class="card-body">
- 
     <p-tabView>
       <p-tabPanel header="Official" tooltip="official">
         <div class="form-group row">
           <div class="col-lg-3">
             <input pinput [(ngModel)]="employeeInfo.employeeID" class="form-control" type="text" name="employeeID"
               id="employeeID" hidden="true">
-            <label class="labelfont">Profile Image</label>
+            <label class="labelfont labelCenter" style="text-align:center;">Profile Image</label>
             <div *ngIf="filePath && filePath !== ''">
-              <img [src]="filePath" style="width: 120px; height: 120px;margin-bottom: 10px;"><br />
+              <img [src]="filePath" style="width: 120px; height: 120px;margin-bottom: 10px;margin-left: 74px;"><br />
             </div>
             <input name="profileImagePath" id="profileImagePath" type="file" id="profileImagePath" class="form-control"
               (change)="handleFileInput($event,'profile')" style="display: none;" />
             <label class="btn btn-primary" for="profileImagePath"
-              style="margin-left: 7px !important;margin-top: 6px !important;" title="Select Profile Image"><i
+              style="margin-left: 76px !important;margin-top: 6px !important;" title="Select Profile Image"><i
                 class="pi pi-upload" style="font-size: 1rem"></i></label> OR
-            <label class="btn btn-success" style="margin-left: 7px !important;margin-top: 6px !important;"
+            <label class="btn btn-success" style="margin-left: 5px !important;margin-top: 6px !important;"
               (click)="fnOpenCameraPhoto()" title="Take Profile Photo From Camera"><i class="pi pi-camera"
                 style="font-size: 1rem"></i></label>
             <br /> <br /> <br />
-            <label class="labelfont">Signature Image</label>
+            <label class="labelfont labelCenter" style="text-align:center;">Signature Image</label>
             <div *ngIf="signfilePath && signfilePath !== ''">
-              <img [src]="signfilePath" style="width: 120px; height: 120px;margin-bottom: 10px;"><br />
+              <img [src]="signfilePath" style="width: 120px; height: 120px;margin-bottom: 10px;margin-left: 74px;"><br />
             </div>
             <input name="signatureImagePath" id="signatureImagePath" type="file" id="signatureImagePath"
               class="form-control" (change)="handleFileInput($event, 'signature')" style="display: none;" />
-            <label class="btn btn-primary" for="signatureImagePath" style="margin-left: 7px !important;"
+            <label class="btn btn-primary" for="signatureImagePath" style="margin-left: -12px !important;width: 318px;"
               title="Select Signature Image"><i class="pi pi-upload" style="font-size: 1rem"></i></label>
           </div>
+
           <div class="col-lg-9">
-            <div class="form-group row">
-              <div class="col-md-3" style="float: left !important;">
-                <label class="labelfont lableMargin"> User Login</label>
-                <p-selectButton [options]="stateOptions" [(ngModel)]="employeeInfo.userLogin" optionLabel="label"
-                  optionValue="value" name="userLogin"></p-selectButton>
-              </div>
-              <div class="col-md-3" style="float: left !important;">
-                <label class="labelfont lableMargin"> Mobile Login</label>
-                <p-selectButton [options]="stateOptions" [(ngModel)]="employeeInfo.mobileLogin" optionLabel="label"
-                  optionValue="value" name="userLogin"></p-selectButton>
-              </div>
-              <div class="col-md-3" *ngIf="this.employeeInfo.employeeStatusID===3">
-                <label class="lableMargin label">InActive Employee</label>
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col-md-4" style="float: left !important;">
-                <label class="labelfont lableMargin"> Reporting Manager</label>
-                <p-autoComplete
-                [(ngModel)]="reportingManagers"
-                [suggestions]="ReportingManageremployeeSerchList"
-                (completeMethod)="reportingsearchData($event)"
-                [forceSelection]="true"
-                field="key"
-                [minLength]="2"
-                class="auto-serch"
-                placeholder="Search Employee" [multiple]="false"
-                name="reportingManager"
-                id="reportingManager"
-                (onSelect)="filterEmployeeDetail($event)"
-                (onUnselect)="reportingunSelectEmployee($event)"
-                >
-              </p-autoComplete>
-                <!-- <app-search-autocomplete  (onSearchEvent)="filterEmployeeDetail($event)"></app-search-autocomplete> -->
-              </div>
-              <div class="col-md-4" style="float: left !important;">
-                <label class="labelfont lableMargin"> Functional Manager</label>
-                <p-autoComplete
-                [(ngModel)]="funtionalManagers"
-                [suggestions]="functionalManageremployeeSerchList"
-                (completeMethod)="functionalsearchData($event)"
-                [forceSelection]="true"
-                field="key"
-                [minLength]="2"
-                class="auto-serch"
-                placeholder="Search Employee" [multiple]="false"
-                name="funtionalManager"
-                id="funtionalManager"
-                (onSelect)="filterFunctionManagerDetail($event)"
-                (onUnselect)="functinalunSelectEmployee($event)"
-                >
-              </p-autoComplete>
-                <!-- <app-search-autocomplete  (onSearchEvent)="filterFunctionManagerDetail($event)"></app-search-autocomplete> -->
-              </div>
-              <div class="col-md-4">
-                <label class="labelfont">SNR Number<span class="text-danger">*</span></label>
-                <input pinput [(ngModel)]="employeeInfo.snrNumber" class="form-control" type="text"
-                  name="snrNumber" id="snrNumber" #snrNumber="ngModel"
-                  [ngClass]="{'is-invalid': snrNumber.invalid && (snrNumber.dirty || snrNumber.touched)}">
-                <div *ngIf="snrNumber.invalid && (snrNumber.dirty || snrNumber.touched)" class="labelfont">
-                  <div class="p-error" *ngIf="snrNumber.errors?.['required']">
-                    SNR Number is required.
-                  </div>
-                </div>
-              </div>
-              
-            </div>
+          
             <div class="form-group row">
               <div class="col-md-4">
                 <label class="labelfont">Employee Name <span class="text-danger">*</span></label>
@@ -190,7 +124,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4" *ngIf="panelHide">
                 <label class="labelfont">Contractor<span class="text-danger">*</span></label>
                 <p-dropdown [options]="contList" [(ngModel)]="employeeInfo.contractorID" optionLabel="contName"
                   optionValue="contID" class="" #contractorID="ngModel"
@@ -217,24 +151,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="form-group row">
-              
-              <div class="col-md-4">
-                <label class="labelfont">Sub Department<span class="text-danger">*</span></label>
-                <p-dropdown [options]="subdeptList" [(ngModel)]="employeeInfo.subDepartmentID" optionLabel="subdeptName"
-                  optionValue="subdeptID" [disabled]="getSubDeptState()" #subDepartmentID="ngModel"
-                  [ngClass]="{'is-invalid': subDepartmentID.invalid && (subDepartmentID.dirty || subDepartmentID.touched)}"
-                  name="subDepartmentID" id="subDepartmentID" [required]="true">
-                </p-dropdown>
-                <div *ngIf="subDepartmentID.invalid && (subDepartmentID.dirty || subDepartmentID.touched)"
-                  class="labelfont">
-
-                  <div class="p-error" *ngIf="subDepartmentID.errors?.['required']">
-                    Sub Department is required.
-                  </div>
-                </div>
-              </div>
               <div class="col-md-4">
                 <label class="labelfont">Designation<span class="text-danger">*</span></label>
                 <p-dropdown [options]="desList" [(ngModel)]="employeeInfo.designationID" optionLabel="desName"
@@ -248,6 +164,41 @@
                   </div>
                 </div>
               </div>
+
+            </div>
+            <div class="form-group row">
+              
+              <div class="col-md-4">
+                <label class="labelfont">Category<span class="text-danger">*</span></label>
+                <p-dropdown [options]="catList" [(ngModel)]="employeeInfo.categoryID" optionLabel="catName"
+                  optionValue="catID" class="" #categoryID="ngModel"
+                  [ngClass]="{'is-invalid': categoryID.invalid && (categoryID.dirty || categoryID.touched)}"
+                  name="categoryID" id="categoryID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="categoryID.invalid && (categoryID.dirty || categoryID.touched)" class="labelfont">
+                  <div class="p-error" *ngIf="categoryID.errors?.['required']">
+                    Category is required.
+                  </div>
+                </div>
+              </div>
+ 
+ 
+              <!-- <div class="col-md-4">
+                <label class="labelfont">Sub Department<span class="text-danger">*</span></label>
+                <p-dropdown [options]="subdeptList" [(ngModel)]="employeeInfo.subDepartmentID" optionLabel="subdeptName"
+                  optionValue="subdeptID" [disabled]="getSubDeptState()" #subDepartmentID="ngModel"
+                  [ngClass]="{'is-invalid': subDepartmentID.invalid && (subDepartmentID.dirty || subDepartmentID.touched)}"
+                  name="subDepartmentID" id="subDepartmentID" [required]="true">
+                </p-dropdown>
+                <div *ngIf="subDepartmentID.invalid && (subDepartmentID.dirty || subDepartmentID.touched)"
+                  class="labelfont">
+
+                  <div class="p-error" *ngIf="subDepartmentID.errors?.['required']">
+                    Sub Department is required.
+                  </div>
+                </div>
+              </div> -->
+           
               <div class="col-md-4">
                 <label class="labelfont">Grade<span class="text-danger">*</span></label>
                 <p-dropdown [options]="gradeList" [(ngModel)]="employeeInfo.gradeID" optionLabel="gradeName"
@@ -265,7 +216,7 @@
             </div>
             
             <div class="form-group row">
-              <div class="col-md-4">
+              <div class="col-md-4" *ngIf="panelHide">
                 <label class="labelfont">Level<span class="text-danger">*</span></label>
                 <p-dropdown [options]="levelList" [(ngModel)]="employeeInfo.levelID" optionLabel="levelName"
                   optionValue="levelID" class="" #levelID="ngModel"
@@ -279,20 +230,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
-                <label class="labelfont">Category<span class="text-danger">*</span></label>
-                <p-dropdown [options]="catList" [(ngModel)]="employeeInfo.categoryID" optionLabel="catName"
-                  optionValue="catID" class="" #categoryID="ngModel"
-                  [ngClass]="{'is-invalid': categoryID.invalid && (categoryID.dirty || categoryID.touched)}"
-                  name="categoryID" id="categoryID" [required]="true">
-                </p-dropdown>
-                <div *ngIf="categoryID.invalid && (categoryID.dirty || categoryID.touched)" class="labelfont">
-
-                  <div class="p-error" *ngIf="categoryID.errors?.['required']">
-                    Category is required.
-                  </div>
-                </div>
-              </div>
+         
               <div class="col-md-4">
                 <label class="labelfont">Branch<span class="text-danger">*</span></label>
                 <p-dropdown [options]="branchList" [(ngModel)]="employeeInfo.branchID" optionLabel="branchName"
@@ -306,9 +244,7 @@
                   </div>
                 </div>
               </div>
-            </div>
-            
-            <div class="form-group row">
+
               <div class="col-md-4">
                 <label class="labelfont">Employee Skill Type<span class="text-danger">*</span></label>
                 <p-dropdown [options]="empSkillList" [(ngModel)]="employeeInfo.employeeSkillTypeID"
@@ -318,13 +254,27 @@
                 </p-dropdown>
                 <div *ngIf="employeeSkillTypeID.invalid && (employeeSkillTypeID.dirty || employeeSkillTypeID.touched)"
                   class="labelfont">
-
+  
                   <div class="p-error" *ngIf="employeeSkillTypeID.errors?.['required']">
                     Employee Skill Type is required.
                   </div>
                 </div>
               </div>
+  
               <div class="col-md-4">
+                <label class="labelfont">Confirmation Date</label>
+                <input pinput [(ngModel)]="employeeInfo.confirmationDate" class="form-control" type="text"
+                  name="confirmationDate" id="confirmationDate" autocomplete="off" [bsConfig]="datepickerConfig"
+                  placeholder="DD-MM-YYYY" bsDatepicker>
+              </div>
+              
+
+            </div>
+
+          
+            <div class="form-group row">
+           
+              <!-- <div class="col-md-4" *ngIf="panelHide">
                 <label class="labelfont">Organization<span class="text-danger">*</span></label>
                 <p-dropdown [options]="orgList" [(ngModel)]="employeeInfo.organizationID" optionLabel="orgName"
                   optionValue="orgID" class="" #organizationID="ngModel"
@@ -338,9 +288,9 @@
                     Organization is required.
                   </div>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="col-md-4">
+              <div class="col-md-4" *ngIf="panelHide">
                 <label class="labelfont">Section</label>
                 <p-dropdown [options]="secionList" [(ngModel)]="employeeInfo.sectionID" optionLabel="sectionName"
                   optionValue="sectionID" class="" #sectionID="ngModel"
@@ -356,12 +306,7 @@
               </div>
             </div>
             <div class="form-group row">
-              <div class="col-md-4">
-                <label class="labelfont">Confirmation Date</label>
-                <input pinput [(ngModel)]="employeeInfo.confirmationDate" class="form-control" type="text"
-                  name="confirmationDate" id="confirmationDate" autocomplete="off" [bsConfig]="datepickerConfig"
-                  placeholder="DD-MM-YYYY" bsDatepicker>
-              </div>
+         
               <div class="col-md-4" *ngIf="divResignationDetail">
                 <label class="labelfont">Resignation Date</label>
                 <input pinput [(ngModel)]="employeeInfo.resignationDate" class="form-control" type="text"
@@ -388,17 +333,15 @@
                   name="leavingReason" id="leavingReason" #leavingReason="ngModel"
                   [ngClass]="{'is-invalid': leavingReason.invalid && (leavingReason.dirty || leavingReason.touched)}">
               </div>
-              <div class="col-md-4">
+              <!-- <div class="col-md-4">
                 <label class="labelfont">Black Listed</label>
                 <p-selectButton [options]="stateOptions" [(ngModel)]="employeeInfo.blacklisted" optionLabel="label"
                   optionValue="value" name="blacklisted"
                   id="blacklisted"
                   #blacklisted="ngModel" (click)="showHideBlackListDetail()"
                   [ngClass]="{'is-invalid': blacklisted.invalid && (blacklisted.dirty || blacklisted.touched)}"></p-selectButton>
-                <!-- <input [(ngModel)]="employeeInfo.blacklisted" type="checkbox" name="blacklisted" id="blacklisted"
-                  #blacklisted="ngModel"
-                  [ngClass]="{'is-invalid': blacklisted.invalid && (blacklisted.dirty || blacklisted.touched)}"> -->
-              </div>
+              
+              </div> -->
               <div class="col-md-4" *ngIf="divBlackListed">
                 <label class="labelfont">Blacklist Date</label>
                 <input pinput [(ngModel)]="employeeInfo.blacklistDate" class="form-control" type="text"
@@ -507,7 +450,7 @@
       </p-tabPanel>
       <p-tabPanel header="Personal" tooltip="Personal">
         <div class="form-group row">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <label class="labelfont">Email</label>
             <input pinput [(ngModel)]="employeeInfo.emailID" class="form-control" type="text" name="emailID"
               id="emailID" #emailID="ngModel"
@@ -519,7 +462,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-3">
             <label class="labelfont">Contact No.</label>
             <input pinput [(ngModel)]="employeeInfo.mobileNo" class="form-control" type="text" name="mobileNo"
               id="mobileNo" #mobileNo="ngModel"
@@ -531,9 +474,8 @@
                 </div>
               </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-md-6">
+
+          <div class="col-md-3">
             <label class="labelfont">Date Of Birth<span class="text-danger">*</span></label>
             <input pinput [(ngModel)]="employeeInfo.dateOfBirth" class="form-control" type="text" name="dateOfBirth"
               id="dateOfBirth" autocomplete="off" required [bsConfig]="datepickerConfig" placeholder="DD-MM-YYYY"
@@ -545,38 +487,27 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-3">
             <label class="labelfont">Domicile</label>
             <input pinput [(ngModel)]="employeeInfo.domicile" class="form-control" type="text" name="domicile"
               id="domicile" #domicile="ngModel"
               [ngClass]="{'is-invalid': domicile.invalid && (domicile.dirty || domicile.touched)}">
           </div>
+
         </div>
-        <div class="form-group row">
+      
+        <!-- <div class="form-group row">
           <div class="col-md-6">
             <h4>Current Address</h4>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-3">
             <h4>Permanent Address</h4>
           </div>
         </div>
+         -->
+      
         <div class="form-group row">
-          <div class="col-md-6">
-            <label class="labelfont">Current Address</label>
-            <input pinput [(ngModel)]="employeeInfo.currentAddress" class="form-control" type="text"
-              name="currentAddress" id="currentAddress" #currentAddress="ngModel"
-              [ngClass]="{'is-invalid': currentAddress.invalid && (currentAddress.dirty || currentAddress.touched)}">
-          </div>
-          <div class="col-lg-6">
-            <label class="labelfont">Permanent Address</label>
-            <input pinput [(ngModel)]="employeeInfo.permanentAddress" class="form-control" type="text"
-              name="permanentAddress" id="permanentAddress" #permanentAddress="ngModel"
-              [ngClass]="{'is-invalid': permanentAddress.invalid && (permanentAddress.dirty || permanentAddress.touched)}">
-          </div>
-
-        </div>
-        <div class="form-group row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label class="labelfont">Current Country <span class="text-danger">*</span></label>
             <p-dropdown [options]="countryList" [(ngModel)]="employeeInfo.currentCountryID" optionLabel="countryName"
               optionValue="countryID" class="" #currentCountryID="ngModel"
@@ -590,7 +521,38 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+
+          <div class="col-md-4">
+            <label class="labelfont">Current State <span class="text-danger">*</span></label>
+            <p-dropdown [options]="stateList" [(ngModel)]="employeeInfo.currentStateID" optionLabel="stateName"
+              optionValue="stateID" (ngModelChange)="fillCurrentCityDDL()" class="" #currentStateID="ngModel"
+              [ngClass]="{'is-invalid': currentStateID.invalid && (currentStateID.dirty || currentStateID.touched)}"
+              name="currentStateID" id="currentStateID" [required]="true">
+            </p-dropdown>
+            <div *ngIf="currentStateID.invalid && (currentStateID.dirty || currentStateID.touched)" class="labelfont">
+              <div class="p-error" *ngIf="currentStateID.errors?.['required']">
+                Current State is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label class="labelfont">Current City <span class="text-danger">*</span></label>
+            <p-dropdown [options]="currentcityList" [(ngModel)]="employeeInfo.currentCityID" optionLabel="cityName"
+              optionValue="cityID" class="" #currentCityID="ngModel"
+              [ngClass]="{'is-invalid': currentCityID.invalid && (currentCityID.dirty || currentCityID.touched)}"
+              [disabled]="getCurrentState()" name="currentCityID" id="currentCityID" [required]="true">
+            </p-dropdown>
+            <div *ngIf="currentCityID.invalid && (currentCityID.dirty || currentCityID.touched)" class="labelfont">
+              <div class="p-error" *ngIf="currentCityID.errors?.['required']">
+                Current City is required.
+              </div>
+            </div>
+          </div>
+       
+        </div>
+        <div class="form-group row">
+       
+          <div class="col-md-4">
             <label class="labelfont">Permanent Country <span class="text-danger">*</span></label>
             <p-dropdown [options]="countryList" [(ngModel)]="employeeInfo.permanentCountryID" optionLabel="countryName"
               optionValue="countryID" class="" #permanentCountryID="ngModel"
@@ -604,22 +566,8 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-md-6">
-            <label class="labelfont">Current State <span class="text-danger">*</span></label>
-            <p-dropdown [options]="stateList" [(ngModel)]="employeeInfo.currentStateID" optionLabel="stateName"
-              optionValue="stateID" (ngModelChange)="fillCurrentCityDDL()" class="" #currentStateID="ngModel"
-              [ngClass]="{'is-invalid': currentStateID.invalid && (currentStateID.dirty || currentStateID.touched)}"
-              name="currentStateID" id="currentStateID" [required]="true">
-            </p-dropdown>
-            <div *ngIf="currentStateID.invalid && (currentStateID.dirty || currentStateID.touched)" class="labelfont">
-              <div class="p-error" *ngIf="currentStateID.errors?.['required']">
-                Current State is required.
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
+
+          <div class="col-md-4">
             <label class="labelfont">Permanent State <span class="text-danger">*</span></label>
             <p-dropdown [options]="stateList" [(ngModel)]="employeeInfo.permanentStateID" optionLabel="stateName"
               optionValue="stateID" (ngModelChange)="fillPermanentCityDDL()" class="" #permanentStateID="ngModel"
@@ -633,22 +581,8 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-md-6">
-            <label class="labelfont">Current City <span class="text-danger">*</span></label>
-            <p-dropdown [options]="currentcityList" [(ngModel)]="employeeInfo.currentCityID" optionLabel="cityName"
-              optionValue="cityID" class="" #currentCityID="ngModel"
-              [ngClass]="{'is-invalid': currentCityID.invalid && (currentCityID.dirty || currentCityID.touched)}"
-              [disabled]="getCurrentState()" name="currentCityID" id="currentCityID" [required]="true">
-            </p-dropdown>
-            <div *ngIf="currentCityID.invalid && (currentCityID.dirty || currentCityID.touched)" class="labelfont">
-              <div class="p-error" *ngIf="currentCityID.errors?.['required']">
-                Current City is required.
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
+
+          <div class="col-md-4">
             <label class="labelfont">Permanent City <span class="text-danger">*</span></label>
             <p-dropdown [options]="percityList" [(ngModel)]="employeeInfo.permanentCityID" optionLabel="cityName"
               optionValue="cityID" class="" #permanentCityID="ngModel"
@@ -662,9 +596,19 @@
               </div>
             </div>
           </div>
+
         </div>
+      
         <div class="form-group row">
-          <div class="col-md-6">
+
+          <div class="col-md-3">
+            <label class="labelfont">Current Address</label>
+            <input pinput [(ngModel)]="employeeInfo.currentAddress" class="form-control" type="text"
+              name="currentAddress" id="currentAddress" #currentAddress="ngModel"
+              [ngClass]="{'is-invalid': currentAddress.invalid && (currentAddress.dirty || currentAddress.touched)}">
+          </div>
+
+          <div class="col-md-3">
             <label class="labelfont">Current Pincode</label>
             <input pinput [(ngModel)]="employeeInfo.currentZip" class="form-control text-uppercase"
               (keypress)="keyPressNumeric($event)" type="text" autocomplete="off" maxlength="6" minlength="6"
@@ -679,7 +623,15 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+
+          <div class="col-lg-3">
+            <label class="labelfont">Permanent Address</label>
+            <input pinput [(ngModel)]="employeeInfo.permanentAddress" class="form-control" type="text"
+              name="permanentAddress" id="permanentAddress" #permanentAddress="ngModel"
+              [ngClass]="{'is-invalid': permanentAddress.invalid && (permanentAddress.dirty || permanentAddress.touched)}">
+          </div>
+
+          <div class="col-md-3">
             <label class="labelfont">Permanent Pincode</label>
             <input pinput [(ngModel)]="employeeInfo.permanentZip" class="form-control text-uppercase"
               (keypress)="keyPressNumeric($event)" type="text" autocomplete="off" maxlength="6" minlength="6"
@@ -819,7 +771,7 @@
           </div>
         </div>
       </p-tabPanel>
-      <p-tabPanel header="Miscellaneous" rightIcon="pi pi-star-fill" tooltip="Miscellaneous">
+      <p-tabPanel header="Miscellaneous" rightIcon="pi pi-star-fill" tooltip="Miscellaneous" *ngIf="panelHide">
         <div class="form-group row">
           <div class="col-md-4">
             <label class="labelfont">Emergency Contact Person</label>
@@ -854,7 +806,7 @@
           </div>
         </div>
       </p-tabPanel>
-      <p-tabPanel header="Other Detail" tooltip="Other Detail">
+      <p-tabPanel header="Other Detail" tooltip="Other Detail" *ngIf="panelHide">
         <div class="form-group row">
           <div class="col-md-4">
             <label class="labelfont">Probation Period</label>
@@ -899,7 +851,7 @@
 
         </div>
       </p-tabPanel>
-      <p-tabPanel header="Biometric Detail" rightIcon="pi pi-star-fill" tooltip="Biometric Detail">
+      <p-tabPanel header="Biometric Detail" rightIcon="pi pi-star-fill" tooltip="Biometric Detail" *ngIf="panelHide">
         <div class="form-group row">
           <div class="col-md-4" style="float: left !important;">
             <label class="labelfont lableMargin"> Device Punch</label>

@@ -1,22 +1,38 @@
-:host ::ng-deep .fc-header-toolbar {
-    display: flex;
-    flex-wrap: wrap;
+.content {
+	padding: 2rem 0 2.7rem 0;
+}
+img {
+    width: 100% !important;
+    height: 79vh;
 }
 
-.card-header{
-    margin-bottom: 0 !important;
-}
+ 
 
-:host ::ng-deep .mb-4, .my-4 {
-    margin-bottom: 0.5rem!important;
-   
+:host ::ng-deep .p-galleria-thumbnail-wrapper{
+    display: none;
 }
-:host ::ng-deep .h-100{
-    background-color: red;
-    // padding:15px;
-    margin-left:3px;
-    color:white;
+.sliderImagediv{
+     margin-top:-50px;
+    // margin-left:-45px;
 }
-:host ::ng-deep .fc-daygrid-dot-event .fc-event-title {
-    font-size: 10px !important;
+.imagesSize{
+   // width: 700px;
+    width: 100vw;
+    height:79vh;
+   // border-top: 3px solid rgb(62, 142, 142);
+   // box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+@media(max-width:767px) {
+    .sliderImagediv{
+        margin-top:0px;
+        margin-left:0px;
+    }
+    .imagesSize{
+        width: 390px;
+        height:390px;
+    } 
+}
+.col-md-8{
+    margin-top: 12vw !important;
+    margin-left: 12vw !important;
 }

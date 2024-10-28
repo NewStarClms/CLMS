@@ -899,7 +899,7 @@
       </div>
       </div>
       </p-tabPanel>
-      <p-tabPanel header="COFF"  rightIcon="pi pi-star-fill" tooltip="COF">
+      <p-tabPanel header="COFF"  rightIcon="pi pi-star-fill" tooltip="COF" *ngIf="visible">
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="labelfont">Allow COFF<span class="text-danger">*</span></label>
@@ -1115,7 +1115,7 @@
           </div>
         </div>
       </p-tabPanel>
-      <p-tabPanel header="Gate Pass"  tooltip="Gate Pass">
+      <p-tabPanel header="Gate Pass"  tooltip="Gate Pass" *ngIf="visible">
             <div class="form-group row">
                 <div class="col-lg-3">
                     <label class="labelfont">Gate Pass Count In Day<span class="text-danger">*</span></label>

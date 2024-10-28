@@ -1,8 +1,8 @@
 {
-    "appURL": "https://154.61.75.86/api",
+    "appURL": "https://154.61.75.86:8185/api",
     "domainInfo":{
         "domainType": 3,
-        "clientCode": "STARLINK"
+        "clientCode": "NINJA"
     },
     "guestLogin":{
         "userID":"str001",

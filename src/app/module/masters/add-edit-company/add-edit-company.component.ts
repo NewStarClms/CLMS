@@ -98,6 +98,7 @@ getState(){
 }
 SaveCompanyData(companyForm:NgForm){
 console.log(this.companyInfo);
+this.companyInfo.organizationID=3068;
 if(this.companyInfo.companyID!=null){
   console.log("edit");
   this.companyService.updateStateOfCell(this.companyInfo);
@@ -141,4 +142,6 @@ handleFileInput(event) {
      }
    });
 }
+
+
 }

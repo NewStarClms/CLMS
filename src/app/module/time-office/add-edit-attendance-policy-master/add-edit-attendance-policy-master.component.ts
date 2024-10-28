@@ -74,7 +74,8 @@ public headerdialogName:string="Add Policy Master";
   public hdnbonusSlabCount:number=0;
   public addbtndisabled:boolean;
   public numberOfPhotoList: Array<{ key: string; value: number}>=UI_CONSTANT.NUMBEROFPHOTO;
-
+  public visible:boolean=false;
+  
   constructor(private attendancePolicyMasterService:AttendancePolicyMasterService,
     private activatedRoute:ActivatedRoute,
     private _store: Store<any>,

@@ -1692,7 +1692,7 @@ div.sticky {
     position: fixed;
       bottom: 0px;
       display: flex;
-      width: 85%;
+      /* width: 85%; */
       flex-direction: row-reverse;
       background-color: lightgray;
       padding-right: 4vh;

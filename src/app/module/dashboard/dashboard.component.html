@@ -1,31 +1,55 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 col-sm-6 col-xs-6 bootCols">
-       <!-- <app-employee-attendance></app-employee-attendance> -->
-       <ng-template #tile1></ng-template>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-6 bootCols">
-      <!-- <app-employee-leave></app-employee-leave> -->
-      <ng-template #tile2></ng-template>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 col-sm-6 col-xs-6 bootCols">
-      <!-- <app-employee-holiday></app-employee-holiday> -->
-      <ng-template #tile3></ng-template>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-6 bootCols">
-      <!-- <app-employee-visitor-status></app-employee-visitor-status> -->
-      <ng-template #tile4></ng-template>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 col-sm-6 col-xs-6 bootCols">
-      <!-- <app-employee-holiday></app-employee-holiday> -->
-      <ng-template #tile5></ng-template>
-    </div>
-    <div class="col-md-6 col-sm-6 col-xs-6 bootCols">
-      <ng-template #tile6></ng-template>
-    </div>
-  </div>
-</div>
+<!-- <img [src]="images1"  width="100%" height="500">
+
+
+<img [src]="images2"  width="100%" height="500">
+
+<img [src]="images3"  width="100%" height="500"> -->
+<!-- 
+<div clss="sliderImagediv"> -->
+  <!-- <img src="assets/img/login-bg.svg" alt="Image" class="img-fluid" data-pagespeed-url-hash="3023428066" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"> -->
+  
+  <!-- <p-galleria [value]="images" panelWidth="400" panelHeight="220"
+  [autoPlay]="true" [circular]="true">
+      <ng-template pTemplate="item" let-item>
+              <img [src]="item.source" class="imagesSize"/>
+      </ng-template>
+  </p-galleria> -->
+<!-- </div> -->
+
+<p-carousel 
+[value]="images" 
+[numVisible]="1" 
+[numScroll]="1" 
+[circular]="true" 
+[responsiveOptions]="responsiveOptions" 
+[autoplayInterval]=3000>
+    <ng-template let-item pTemplate="item">
+            <div class="border-1 surface-border border-round">
+                <div>
+                    <div class="relative mx-auto">
+                        <img 
+                            [src]="item.source" 
+                            class="w-full border-round" />
+                        <!-- <p-tag 
+                            [value]="item.source" 
+                            [severity]="getSeverity(product.inventoryStatus)" 
+                            class="absolute" 
+                            [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" /> -->
+                    </div>
+                </div>
+                <!-- <div class="mb-3 font-medium">
+                    {{ product.name }}
+                </div>
+                <div class="flex justify-content-between align-items-center">
+                <div class="mt-0 font-semibold text-xl">
+                    {{ '$' + product.price }}
+                </div>
+                    <span>
+                        <p-button icon="pi pi-heart" severity="secondary" [outlined]="true" />
+                        <p-button icon="pi pi-shopping-cart" styleClass="ml-2" />
+                    </span>
+                </div> -->
+            </div>
+    </ng-template>
+</p-carousel>
+

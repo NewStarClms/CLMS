@@ -26,7 +26,8 @@ export class ShiftMasterComponent implements OnInit {
   myDate: Date;
   timepickerVisible = false;
   mytime: Date;
-
+  public visible=false;
+  
   bsConfig = {
     containerClass: 'theme-dark-blue',
     showWeekNumbers: false,
