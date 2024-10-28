@@ -27,6 +27,10 @@ import { AuthService } from 'src/app/services/authentication.service';
 import { MachineJobStatusComponent } from './machine-job-status/machine-job-status.component';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { EmployeeBirthdayStatusComponent } from './employee-birthday-status/employee-birthday-status.component';
+import { CarouselModule } from 'primeng/carousel';
+import { TagModule } from 'primeng/tag';
+import { GalleriaModule } from 'primeng/galleria';
+
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -48,6 +52,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NgTippyModule,
     DialogModule,
     ProgressBarModule,
+    CarouselModule,
+    TagModule,
+    GalleriaModule
   ],
   declarations: [
     DashboardComponent,

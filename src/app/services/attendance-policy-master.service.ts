@@ -230,11 +230,20 @@ export class AttendancePolicyMasterService {
           minWidth: 0,
           editable: false,
           colId: "action",
-          deleteAllow: this.userGroupService.isMenuAccessable(UI_CONSTANT.MenuAccessLable.Attendance_Policy, UI_CONSTANT.ACTIONS.DELETE),
-          editAllow: this.userGroupService.isMenuAccessable(UI_CONSTANT.MenuAccessLable.Attendance_Policy, UI_CONSTANT.ACTIONS.UPDATE),
+          deleteAllow: true,
+          editAllow: true,
           policyMapping:true,
           policyOuMap:true
+          //headerName: "",
+          //minWidth: 0,
+          //editable: false,
+          //colId: "action",
+          // deleteAllow: this.userGroupService.isMenuAccessable(UI_CONSTANT.MenuAccessLable.Attendance_Policy, UI_CONSTANT.ACTIONS.DELETE),
+          // editAllow: this.userGroupService.isMenuAccessable(UI_CONSTANT.MenuAccessLable.Attendance_Policy, UI_CONSTANT.ACTIONS.UPDATE),
+          //policyMapping:true,
+          //policyOuMap:true
         }
+        
       ]
       return columnDefs;
 

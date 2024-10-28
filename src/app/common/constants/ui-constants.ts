@@ -682,7 +682,7 @@ static PUNCHINSHIFT=[
 static HOLIDAY_TYPE =[
   {key:'Normal',value:'D'},
   {key:'National',value:'N'},
-  {key:'Optional',value:'R'},
+  // {key:'Optional',value:'R'},
 ]
 static REPORT_CATEGORY = [
   {

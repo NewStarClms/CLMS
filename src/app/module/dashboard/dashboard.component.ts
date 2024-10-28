@@ -28,12 +28,24 @@ export class DashboardComponent implements OnInit {
    employeeDashboardSettings:Array<EmployeeDashboardSetting>=[];
    tilesCollection: Array<any>=[];
 
+   public images1:string;
+   public images2:string;
+   public images3:string;
+   public images: any[] = [];
+   public responsiveOptions: any[] | undefined;
 
   constructor(private authenticationService: AuthService, private router: Router,
     private componentFactoryResolver: ComponentFactoryResolver,
     private changeDetectorRef: ChangeDetectorRef,
     private _store: Store<any>) 
-    {}
+    {
+      this.images.push({ source: './../../../assets/img/Time-Management-1.jpg' });
+      this.images.push({ source: './../../../assets/img/Time-management-2.jpg' });
+      this.images.push({ source: './../../../assets/img/Time-Management-3.jpg' });
+      this.images.push({ source: './../../../assets/img/Time-Management-4.jpg' });
+      this.images.push({ source: './../../../assets/img/Time-Management-5.jpg' });
+      this.images;
+    }
 
   ngOnInit(): void {
     this.authenticationService.setGlobalFilterVisibility(true);
@@ -44,6 +56,13 @@ export class DashboardComponent implements OnInit {
             this.createDashboardTiles();
         }
       });
+
+      this.images.push({ source: './../../../assets/img/Time-Management-1.jpg' });
+      this.images.push({ source: './../../../assets/img/Time-management-2.jpg' });
+      this.images.push({ source: './../../../assets/img/Time-Management-3.jpg' });
+      this.images.push({ source: './../../../assets/img/Time-Management-4.jpg' });
+      this.images.push({ source: './../../../assets/img/Time-Management-5.jpg' });
+      this.images;
   }
 
   ngAfterViewInit(){

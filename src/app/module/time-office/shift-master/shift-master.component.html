@@ -337,7 +337,7 @@
             </div>
             </div>
         </p-tabPanel>
-        <p-tabPanel header="Shift Allowance">
+        <p-tabPanel header="Shift Allowance" *ngIf="visible">
           <div class="form-grpup row">
             <div class="col-md-4" style="float: left !important;">
               <label class="labelfont"> Shift Allowance Applicable  {{ shiftInfo.shiftAllowanceApplicable }}</label>

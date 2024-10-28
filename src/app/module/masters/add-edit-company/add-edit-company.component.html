@@ -3,6 +3,8 @@
      <h2>{{headerdialogName}}</h2>
   </header>
 </section>
+
+
 <!--add / update / delete modal  -->
 <div class="card">
   <div class="card-body">
@@ -11,7 +13,7 @@
         <p-accordionTab header="Company Information" [selected]=true>
           <div class="form-group row">
             <input pinput [(ngModel)]= "companyInfo.companyID" class="form-control" type="text" autocomplete="off" name="companyID" id="companyID" hidden="true">
-            <div class="col-lg-4">
+            <!-- <div class="col-lg-4">
               <label class="labelfont">Organization <span class="text-danger">*</span></label>
               <p-dropdown  [options]="orgList" optionLabel="organizationName" optionValue="organizationID" [(ngModel)]= "companyInfo.organizationID"   class=" shadow-none" #organizationID="ngModel"
               [ngClass]="{'is-invalid': organizationID.invalid && (organizationID.dirty || organizationID.touched)}"  name="organizationID" id="organizationID">
@@ -22,7 +24,7 @@
                   Organization is required.
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="col-lg-4">
               <label class="labelfont">Company Code <span class="text-danger">*</span></label>
               <input pinput [(ngModel)]= "companyInfo.companyCode" class="form-control text-uppercase" (keypress)="keyPressAlphanumeric($event)" type="text" autocomplete="off" maxlength ="5" minlength="1" required name="companyCode" id="companyCode"  #companyCode="ngModel"

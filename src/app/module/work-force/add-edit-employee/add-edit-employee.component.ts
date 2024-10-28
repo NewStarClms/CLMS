@@ -100,6 +100,7 @@ export class AddEditEmployeeComponent implements OnInit {
   public isActive:boolean=false;
   public color:string;
   public border:string;
+  public panelHide:boolean=false;
 
   constructor(private employeeService: EmployeeService,
     private activatedRoute: ActivatedRoute,
@@ -453,7 +454,30 @@ export class AddEditEmployeeComponent implements OnInit {
     });
   }
   SaveEmployeeData(employeeForm) {
+
+
+    this.employeeInfo.organizationID=3068;
+    this.employeeInfo.subDepartmentID=1058;
+    this.employeeInfo.contractorID=1;
+    this.employeeInfo.dispensaryID=1;
+    this.employeeInfo.levelID=1;
+    this.employeeInfo.sectionID=1;
+
+
+    let dispensaryID=this.employeeInfo.dispensaryID;
+    let organizationID= this.employeeInfo.organizationID;
+    let contractorID= this.employeeInfo.contractorID;
+    let levelID=this.employeeInfo.levelID;
+    let sectionID=this.employeeInfo.sectionID;
+    let subDepartmentID=this.employeeInfo.subDepartmentID;
     let temEmployeeInfo = AppUtil.deepCopy(this.employeeInfo);
+    temEmployeeInfo.dispensaryID=dispensaryID;
+    temEmployeeInfo.organizationID=organizationID;
+    temEmployeeInfo.contractorID=contractorID;
+    temEmployeeInfo.levelID=levelID;
+    temEmployeeInfo.sectionID=sectionID;
+    temEmployeeInfo.subDepartmentID=subDepartmentID;
+    
     console.log(temEmployeeInfo);
     temEmployeeInfo.joiningDate = moment(this.employeeInfo.joiningDate, UI_CONSTANT.SHORT_DATE_FORMAT).format("YYYY-MM-DDTHH:mm:ss");
     if (temEmployeeInfo.confirmationDate != null) {
