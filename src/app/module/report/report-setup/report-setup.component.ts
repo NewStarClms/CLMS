@@ -234,11 +234,12 @@ export class ReportSetupComponent implements OnInit {
     this.reportGeneratPayload.toDate = this.reportDownLoadInfo.todate;
     }
     else{
-      let fromDT=this.reportDownLoadInfo.fromYear.toString()+'-'+ (this.monthList.indexOf(this.reportDownLoadInfo.fromMonth)+1) +'-'+'01';
+    //  let fromDT=this.reportDownLoadInfo.fromYear.toString()+'-'+ (this.monthList.indexOf(this.reportDownLoadInfo.fromMonth)+1) +'-'+'01';
+      let fromDT=this.reportDownLoadInfo.toYear.toString()+'-'+ (this.monthList.indexOf(this.reportDownLoadInfo.fromMonth)+1) +'-'+'01';
       this.reportGeneratPayload.fromDate= moment(fromDT).format(this.acceptFormate);
       if(this.showByToMonthYear){
        // let toDT=this.reportDownLoadInfo.toYear.toString()+'-'+ (this.monthList.indexOf(this.reportDownLoadInfo.toMonth)+1) +'-'+(new Date(this.reportDownLoadInfo.toYear, this.monthList.indexOf(this.reportDownLoadInfo.toMonth)+1, 0)).getDate();
-        let toDT=this.reportDownLoadInfo.fromYear.toString()+'-'+ (this.monthList.indexOf(this.reportDownLoadInfo.toMonth)+1) +'-'+(new Date(this.reportDownLoadInfo.toYear, this.monthList.indexOf(this.reportDownLoadInfo.toMonth)+1, 0)).getDate();
+        let toDT=this.reportDownLoadInfo.toYear.toString()+'-'+ (this.monthList.indexOf(this.reportDownLoadInfo.toMonth)+1) +'-'+(new Date(this.reportDownLoadInfo.toYear, this.monthList.indexOf(this.reportDownLoadInfo.toMonth)+1, 0)).getDate();
         this.reportGeneratPayload.toDate=moment(toDT).format(this.acceptFormate);
       }
     }
