@@ -85,25 +85,25 @@ export class AttendanceDetailComponent implements OnInit {
   public essrequestmultiplediv:boolean=false;
   public menuAction: any ={
     Single: {
-      ManualPunch: 85,
-      AttendanceLock: 86,
-      RosterProcess: 87,
-      ShiftUpdate: 88,
-      Verification: 89,
-      LateEarlyDeduction : 90,
-      BackDataProcess: 91,
-      GatePass: 92,
-      LeavePost: 93
+      ManualPunch: 158,
+      AttendanceLock: 159,
+      RosterProcess: 160,
+      ShiftUpdate: 161,
+      Verification: 162,
+      LateEarlyDeduction : 163,
+      BackDataProcess: 164,
+      GatePass: 165,
+      LeavePost: 166
     },
     Multiple: {
-      ESSRequest: 97,
-      ManualPunch: 98,
-      AttendanceLock: 99,
-      RosterProcess: 100,
-      ShiftUpdate: 101,
-      Verification: 102,
-      LateEarlyDeduction: 103,
-      BackDataProcess: 104
+      ESSRequest: 393,
+      ManualPunch: 394,
+      AttendanceLock: 395,
+      RosterProcess: 396,
+      ShiftUpdate: 397,
+      Verification: 398,
+      LateEarlyDeduction: 399,
+      BackDataProcess: 400
     }
   }
 
@@ -185,14 +185,13 @@ export class AttendanceDetailComponent implements OnInit {
        var attendanceMenuID= Number(this.activatedRoute.snapshot.params.id);
         response.currentMenuItemsList.menuItems?.forEach(root => {
            root.childs.forEach(child => {
-             child.childs.forEach(sub => {
-              if(sub.menuId==attendanceMenuID){
-                this.menuItems=sub.childs;
-                sub.childs.forEach(element => {
+              if(child.menuId==attendanceMenuID){
+                this.menuItems=child.childs;
+                child.childs.forEach(element => {
                   this.menuRights.push(...element.menuRights);
                 });
               }
-            }); 
+                
            });
          
        });
@@ -202,7 +201,7 @@ export class AttendanceDetailComponent implements OnInit {
   onChange(menuID) {
    
    // this.actiontype = e.target.value;
-    this.showingSingleEmployeeAction= menuID==50? true: false;
+    this.showingSingleEmployeeAction= menuID==219? true: false;
     this.currentMenuRights= this.menuRights.filter(m=>m.menuID==menuID && m.menuRightTypeID==3);
     if(this.currentMenuRights){
       this.attendanceMenu=true;

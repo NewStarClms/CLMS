@@ -238,12 +238,12 @@ export class EssRequestComponent implements OnInit {
       var date = new Date();
       var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
       var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-      const fromDate= this.fromDate?moment(firstDay).format('DD-MMM-YYYY'):null;
-      const toDate= this.toDate?moment(lastDay).format('DD-MMM-YYYY'):null;
+    //  const fromDate= this.fromDate?moment(firstDay).format('DD-MMM-YYYY'):null;
+    //  const toDate= this.toDate?moment(lastDay).format('DD-MMM-YYYY'):null;
+
+      const fromDate = moment(this.fromDate).format("DD-MMM-YYYY");
+      const toDate = moment(this.toDate).format("DD-MMM-YYYY")
       //End
-   // const fromDate =this.fromDate? moment(this.fromDate, UI_CONSTANT.LONG_DATE_FORMAT).format("MM-DD-YYYY"):null;
-   // const toDate =this.toDate? moment(this.toDate, UI_CONSTANT.LONG_DATE_FORMAT).format("MM-DD-YYYY"): null;
-    //this.workflowID=this.workflowObj.workFlowID;
     this.userAttendanceDetailService.fetchESSRequestDataForAdmin(this.selectedRequestType,this.selectedStatus, fromDate,toDate);
   }
   closeFlowPopup(event){

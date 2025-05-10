@@ -5,7 +5,7 @@ import { AppUtil } from 'src/app/common/app-util';
 import { Store } from '@ngrx/store';
 import { currentUserMenuItems, requestState, selectLeaveMasterState } from 'src/app/store/app.state';
 import { Menu } from 'src/app/store/model/usermanage.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { RequestFlowService } from 'src/app/services/request-flow.service';
 import { RequestDetailEntity, RequestFlowModel, requestLeve } from 'src/app/store/model/request.model';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -64,17 +64,15 @@ export class RequestDashboardComponent implements OnInit {
   public gatepassRequestDiv:boolean=false;
   public requestStatus:string;
   public addNewBtn:boolean=true;
-
+  //New  Changes
   public flowHeaderName:string;
-  public requestFlowID: number;
-
+  //End
 
   constructor(
     private confirmationService: ConfirmationService,
     private _store: Store<any>,
     private activatedRoute:ActivatedRoute,
-    private requestService: RequestFlowService,
-    private router: Router,
+    private requestService: RequestFlowService
   ) { 
     this._currentUserSubject = new BehaviorSubject<User>(this.getUserFromLocalStorage());
         this.currentUser = this._currentUserSubject.asObservable();
@@ -89,10 +87,6 @@ export class RequestDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.router.routeReuseStrategy.shouldReuseRoute=()=>false;
-    this.requestFlowID = this.activatedRoute.snapshot.params.id;
-
     this.requestService.setflowVisibility(false);
     this.requestService.setPunchRequestVisiblity(false);
     const date = new Date(), y = date.getFullYear(), m = date.getMonth();
@@ -131,7 +125,6 @@ export class RequestDashboardComponent implements OnInit {
         this.leaveDetail.map(x=>{
           this.leaveTypeList.push({key:x.leaveName,value:x.leaveCode});
         })
-        this.getDetail(null);
       }
     });
     this._store.select(currentUserMenuItems).subscribe(response=>{
@@ -154,72 +147,49 @@ export class RequestDashboardComponent implements OnInit {
   addNew(){
     this.transactionID=0;
     console.log(this.selectedMenu);
-    if(this.selectedMenu==3){
-      this.flowHeaderName='Gate Pass Request Flow Detail';
+    if(this.selectedMenu===132){
+        //New Changes
+        this.flowHeaderName='Gate Pass Request Flow Detail';
+        //End
       this.gatepassRequestDiv=true;
       this.PostButton=true;
-      this.disabledTxt=false;
-      this.displayGatePass=true;
-    //  this.requestService.setGatePassVisibility(true);
+          this.disabledTxt=false;
+          this.displayGatePass=true;
+      //this.requestService.setGatePassVisibility(true);
     }
-    else if(this.selectedMenu==1){
+    else if(this.selectedMenu===77){
+       // New Changes
        this.flowHeaderName='Leave Request Flow Detail';
        this.PostButton=true;
+       //End
        this.leaveRequestDiv=true;
        this.disabledTxt=false;
        this.displayLeaveRequest=true;
-     //  this.requestService.setLeaveRequestVisiblity(true);
+       //this.requestService.setLeaveRequestVisiblity(true);
     }
-    else if(this.selectedMenu==5){
+    else if(this.selectedMenu===79){
+
+      // New Changes
       this.flowHeaderName='Punch Regularization Request Flow Detail';
+      //End
       this.PostButton=true;
       this.disabledTxt=false;
       this.requestService.setPunchRequestVisiblity(true);
     }
-
   }
   getDetail(menu:Menu){
-    var menuID= menu? menu.menuId : this.requestFlowID;
     const fDate = moment(new Date(this.fromDate), UI_CONSTANT.LONG_DATE_FORMAT).format(UI_CONSTANT.SHORT_DATE_FORMAT);
     const tDate = moment(new Date(this.toDate), UI_CONSTANT.LONG_DATE_FORMAT).format(UI_CONSTANT.SHORT_DATE_FORMAT);
-    const reqType = this.requestType.filter(x=> x.ID.includes(menuID))[0];
-  
-    if(menuID==1 && reqType==undefined){
-      this.workflowID=1;
-    }
-    else if(menuID==2 && reqType==undefined)
-    {
-      this.workflowID=2;
-    }
-    else if(menuID==3 && reqType==undefined){
-      this.workflowID=3;
-    }
-    else if(menuID==4 && reqType==undefined){
-      this.workflowID=4;
-    }
-
-    else if(menuID==5 && reqType==undefined){
-      this.workflowID=5;
-    }
-    else if(menuID==6 && reqType==undefined){
-      this.workflowID=6;
-    }
-    else if(menuID==7 && reqType==undefined){
-      this.workflowID=7;
-    }
-    else{
-      this.workflowID=reqType.value;
-    }
-
-   // this.workflowID= reqType.value;
-    this.selectedMenu= menuID;
+    const reqType = this.requestType.filter(x=> x.ID.includes(menu.menuId))[0];
+    this.workflowID= reqType.value;
+    this.selectedMenu= menu.menuId;
     this.selectedStatus = UI_CONSTANT.REQUESTSTATUS.slice(0,1);
     const statusArr= this.selectedStatus.map(x=>x.value);
     const reqStatus = statusArr.join('~');
-  // this.workflowID=this.selectedMenu;
+    //this.workflowID=this.selectedMenu;
     console.log(this.selectedMenu);
     this.requestService.fetchRequestData(this.workflowID,reqStatus,fDate,tDate);
-    if(this.selectedMenu==2 || this.selectedMenu==4 || this.selectedMenu==6){
+    if(this.selectedMenu==78 || this.selectedMenu==133 || this.selectedMenu==80){
       this.addNewBtn=false;
     }else{
       this.addNewBtn=true;
@@ -229,9 +199,22 @@ export class RequestDashboardComponent implements OnInit {
     // Handle click event for action cells
     if (params.column.colId === UI_CONSTANT.ACTIONS.ACTION && params.event.path[1].dataset.action) {
       let action = params.event.path[1].dataset.action;
+  
       if (action === UI_CONSTANT.ACTIONS.REQUESTEDIT) {
-        if(this.selectedMenu===63){
-          this.flowHeaderName='Leave Request Flow Detail';
+        // console.log(params.data)
+        if(this.selectedMenu===132){
+          console.log(params.data);
+          this.gatepassRequestDiv=true;
+          this.requestID = params.data.requestID;
+          this.transactionID=params.data.transactionID;
+          this.workflowID=params.data.workFlowID;
+          this.requestStatus=params.data.requestStatus;
+          this.PostButton=false;
+      this.disabledTxt=true;
+      this.displayGatePass=true;
+          //this.requestService.setGatePassVisibility(true);
+        }
+        else if(this.selectedMenu===77){
           this.leaveRequestDiv=true;
           this.requestID = params.data.requestID;
           this.transactionID=params.data.transactionID;
@@ -243,8 +226,8 @@ export class RequestDashboardComponent implements OnInit {
           this.displayLeaveRequest=true;
          // this.requestService.setLeaveRequestVisiblity(true);
         }
-        else if(this.selectedMenu===64){
-          this.flowHeaderName='Leave Request Flow Detail';
+        else if(this.selectedMenu===78){
+          //New Changes
           this.leaveRequestDiv=true;
           this.requestID = params.data.requestID;
           this.transactionID=params.data.transactionID;
@@ -254,10 +237,12 @@ export class RequestDashboardComponent implements OnInit {
           this.PostButton=false;
           this.disabledTxt=true;
           this.displayLeaveRequest=true;
+        //End
+         
+          // this.requestService.setDisplayVisibility(true);
         }
-        else  if(this.selectedMenu===65){
+        else if(this.selectedMenu === 133){
           console.log(params.data);
-          this.flowHeaderName='Gate Pass Request Flow Detail';
           this.gatepassRequestDiv=true;
           this.requestID = params.data.requestID;
           this.transactionID=params.data.transactionID;
@@ -266,45 +251,27 @@ export class RequestDashboardComponent implements OnInit {
           this.PostButton=false;
           this.disabledTxt=true;
           this.displayGatePass=true;
-          //this.requestService.setGatePassVisibility(true);
         }
-
-        else  if(this.selectedMenu===66){
+        else if(this.selectedMenu === 80){
           console.log(params.data);
-          this.flowHeaderName='Gate Pass Request Flow Detail';
-          this.gatepassRequestDiv=true;
           this.requestID = params.data.requestID;
           this.transactionID=params.data.transactionID;
           this.workflowID=params.data.workFlowID;
           this.requestStatus=params.data.requestStatus;
           this.PostButton=false;
           this.disabledTxt=true;
-          this.displayGatePass=true;
-          //this.requestService.setGatePassVisibility(true);
-        }
-
-        else if(this.selectedMenu ===67){
-          this.requestID = params.data.requestID;
-          this.transactionID=params.data.transactionID;
-          this.workflowID=params.data.workFlowID;
-          this.requestStatus=params.data.requestStatus;
-          this.PostButton=false;
-          this.disabledTxt=true;
-          this.flowHeaderName='Punch Regularization Request Flow Detail';
           this.requestService.setPunchRequestVisiblity(true);
         }
-      
-        else if(this.selectedMenu ===68){
+        else if(this.selectedMenu === 79){
+          console.log(params.data);
           this.requestID = params.data.requestID;
           this.transactionID=params.data.transactionID;
           this.workflowID=params.data.workFlowID;
           this.requestStatus=params.data.requestStatus;
           this.PostButton=false;
           this.disabledTxt=true;
-          this.flowHeaderName='Punch Regularization Request Flow Detail';
           this.requestService.setPunchRequestVisiblity(true);
         }
-       
       }
   
       if (action === UI_CONSTANT.ACTIONS.DELETE) {
@@ -341,20 +308,22 @@ export class RequestDashboardComponent implements OnInit {
           this.workFlowList = data.requestDetails.sort((a, b) => a.levelNumber - b.levelNumber);
          }
         });
-     
+        // console.log('requestFlow',params);
       }
       if (action === UI_CONSTANT.ACTIONS.REQUESTINFO) {
         // params.api.stopEditing(false);
         this.requestService.setDisplayVisibility(true);
+        // console.log('requestinfo',params);
       }
       if (action === UI_CONSTANT.ACTIONS.CANCEL) {
-          params.api.stopEditing(true);
+        params.api.stopEditing(true);
       }
       if (action === UI_CONSTANT.ACTIONS.ADD_REMARK) {
-          this.remarkDisplay = true;
-          this.selectRequestInfo = params.data;
-          this.labelName = (params.data.cancelRequestID === 1)?'Cancel':'Undo';
-          console.log(params,'----',this.selectRequestInfo);
+        this.remarkDisplay = true;
+        this.selectRequestInfo = params.data;
+
+        this.labelName = (params.data.cancelRequestID === 1)?'Cancel':'Undo';
+        console.log(params,'----',this.selectRequestInfo);
     }
     }
   }

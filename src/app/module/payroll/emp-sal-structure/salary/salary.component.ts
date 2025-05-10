@@ -90,24 +90,50 @@ export class SalaryComponent implements OnInit {
         }
         else this.empSalary.approvedDate =null;
       }
+    // New Changes Date - 02/05/2024
+     let tempAmount= this.empSalary.grossBenefitComponents.map(item => Number(item.amount)).reduce((prev, next) => prev + next);
+     let totalDeduction = Number(this.empSalary.employeePF) + Number(this.empSalary.employeeESI) + Number(this.empSalary.employeeLWF);
+     this.empSalary.grossSalary=tempAmount;
+     this.empSalary.netInHandSalary=Number(this.empSalary.grossSalary) - Number(totalDeduction);
+     // End
     });
   }
 
   calculateGrossSalary(event){
     if(this.empSalary.grossBenefitComponents){
       this.empSalary.grossSalary=this.empSalary.grossBenefitComponents.map(item => Number(item.amount)).reduce((prev, next) => prev + next);
+      // New Changes Date - 02/05/2024
+      let totalDeduction = Number(this.empSalary.employeePF) + Number(this.empSalary.employeeESI) + Number(this.empSalary.employeeLWF);
+      this.empSalary.netInHandSalary=this.empSalary.grossSalary - totalDeduction;
+     // End
     }
   }
 
   calculateNetInHandSalary(event){
-    if(this.empSalary.grossBenefitComponents){
-      let grossSalary=this.empSalary.grossBenefitComponents.map(item => Number(item.amount)).reduce((prev, next) => prev + next);
+     // New Changes Date - 02/05/2024
+    // if(this.empSalary.grossBenefitComponents){
+    //   let grossSalary=this.empSalary.grossBenefitComponents.map(item => Number(item.amount)).reduce((prev, next) => prev + next);
+    //   let totalDeduction = Number(this.empSalary.employeePF) + Number(this.empSalary.employeeESI) + Number(this.empSalary.employeeLWF);
+    //   if(this.empSalary.recurringDeductionComponents){
+    //     totalDeduction = totalDeduction + this.empSalary.recurringDeductionComponents.map(item => Number(item.amount)).reduce((prev, next) => prev + next);
+    //   }
+    //   this.empSalary.netInHandSalary = grossSalary - totalDeduction;
+    // }
+  //End
+      // New Changes Date - 02/05/2024
+      let grossSalary=this.empSalary.grossSalary;
       let totalDeduction = Number(this.empSalary.employeePF) + Number(this.empSalary.employeeESI) + Number(this.empSalary.employeeLWF);
       if(this.empSalary.recurringDeductionComponents){
         totalDeduction = totalDeduction + this.empSalary.recurringDeductionComponents.map(item => Number(item.amount)).reduce((prev, next) => prev + next);
       }
-      this.empSalary.netInHandSalary = grossSalary - totalDeduction;
-    }
+      if(totalDeduction>0)
+      {
+        this.empSalary.netInHandSalary = grossSalary - totalDeduction;
+      }
+      else{
+        this.empSalary.netInHandSalary=grossSalary;
+      }
+      //End 
   }
   
   keyPressNumbers(event) {

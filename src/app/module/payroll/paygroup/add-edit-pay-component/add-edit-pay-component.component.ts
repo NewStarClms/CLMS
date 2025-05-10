@@ -112,6 +112,9 @@ export class AddEditPayComponentComponent implements OnInit {
     if(this.payheadCurrentData.payHeadID===8){
       this.isLoanPayHead = true;
     }
+    else{
+      this.isLoanPayHead = false;
+    }
 
     //New Changes
     if( this.payheadCurrentData.payHeadID===12){

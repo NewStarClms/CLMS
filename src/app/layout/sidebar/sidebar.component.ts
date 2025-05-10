@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UI_CONSTANT } from 'src/app/common/constants/ui-constants';
@@ -14,8 +14,7 @@ import { Menu, UserGroup, UserGroupMenuType } from 'src/app/store/model/usermana
 export class SidebarComponent implements OnInit {
 
   public navbarCollapsed = true;
- // public menuItems: Array<Menu>= [];
-  @Input() menuItems: Array<Menu>= [];
+  public menuItems: Array<Menu>= [];
   public usergroupMenu: Array<UserGroupMenuType> =[];
   constructor(private _store: Store<UserGroup>, private usergroupService: UserGroupService,
     public route: Router) {
@@ -35,9 +34,9 @@ export class SidebarComponent implements OnInit {
       }
     });
 
-    // this._store.select(currentUserMenuItems).subscribe(response=>{
-    //   this.menuItems =response?.currentMenuItemsList.menuItems;
-    // });
+    this._store.select(currentUserMenuItems).subscribe(response=>{
+      this.menuItems =response?.currentMenuItemsList.menuItems;
+    });
     console.log('menu',this.menuItems);
   }
   public loadDefaultMenu(){
@@ -45,11 +44,6 @@ export class SidebarComponent implements OnInit {
   }
   isRequestMenu(menuName){
     return menuName.toLowerCase() === 'request';
-  }
-
-  public hasValidSubMenu(menuItms){
-    var menuItemToRender= menuItms?.filter(ch=>ch.selected===true);
-    return menuItemToRender?.length>0;
   }
 
 }

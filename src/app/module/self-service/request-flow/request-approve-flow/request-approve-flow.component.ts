@@ -5,7 +5,7 @@ import { AppUtil } from 'src/app/common/app-util';
 import { Store } from '@ngrx/store';
 import { currentUserMenuItems, requestApproveState } from 'src/app/store/app.state';
 import { Menu } from 'src/app/store/model/usermanage.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { RequestFlowService } from 'src/app/services/request-flow.service';
 import { RequestApproveModel, RequestDetailEntity, RequestFlowModel, RequestPostPayload } from 'src/app/store/model/request.model';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -70,17 +70,13 @@ export class RequestApproveFlowComponent implements OnInit {
   public displayGatePass:boolean;
   public displayPunchRequest=false;
   public PunchRequestDiv=false;
-  public requestFlowID: number;
-  public MenuItemssId:any;
-  public MenuItemss:{key:string,value:number}[]=UI_CONSTANT.LEAVE_APPROVED;
 
   constructor(
     private confirmationService: ConfirmationService,
     private _store: Store<any>,
     private activatedRoute:ActivatedRoute,
     private requestService: RequestFlowService,
-    private notificationService: NotificationService,
-    private router:Router,
+    private notificationService: NotificationService
   ) { 
     this._currentUserSubject = new BehaviorSubject<User>(this.getUserFromLocalStorage());
         this.currentUser = this._currentUserSubject.asObservable();
@@ -95,9 +91,6 @@ export class RequestApproveFlowComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.router.routeReuseStrategy.shouldReuseRoute=()=>false;
-    this.requestFlowID = this.activatedRoute.snapshot.params.id;
     this.requestService.setPunchRequestVisiblity(false);
     const date = new Date(), y = date.getFullYear(), m = date.getMonth();
     this.fromDate = moment(new Date(y, m, 1), UI_CONSTANT.LONG_DATE_FORMAT).format(UI_CONSTANT.SHORT_DATE_FORMAT);
@@ -161,17 +154,16 @@ export class RequestApproveFlowComponent implements OnInit {
     }
   }
   getDetail(menu:Menu){
- //  var menuID= menu? menu.menuId : this.requestFlowID;
- const fDate = moment(new Date(this.fromDate), UI_CONSTANT.LONG_DATE_FORMAT).format(UI_CONSTANT.SHORT_DATE_FORMAT);
- const tDate = moment(new Date(this.toDate), UI_CONSTANT.LONG_DATE_FORMAT).format(UI_CONSTANT.SHORT_DATE_FORMAT);
-// const reqType = this.requestType.filter(x=> x.ID.includes(menu.menuId))[0];
- this.workflowID=1;
- this.MenuItemssId=menu;
-// this.selectedMenu=menu.menuId;
- this.selectedStatus = UI_CONSTANT.REQUESTSTATUS.slice(0,2);
- const statusArr= this.selectedStatus.map(x=>x.value);
- const reqStatus = statusArr.join('~');
- this.requestService.fetchRequestApproveData(this.MenuItemssId,reqStatus,fDate,tDate);
+    const fDate = moment(new Date(this.fromDate), UI_CONSTANT.LONG_DATE_FORMAT).format(UI_CONSTANT.SHORT_DATE_FORMAT);
+    const tDate = moment(new Date(this.toDate), UI_CONSTANT.LONG_DATE_FORMAT).format(UI_CONSTANT.SHORT_DATE_FORMAT);
+    const reqType = this.requestType.filter(x=> x.ID.includes(menu.menuId))[0];
+    this.workflowID= reqType.value;
+    this.selectedMenu=menu.menuId;
+    this.selectedStatus = UI_CONSTANT.REQUESTSTATUS.slice(0,2);
+    const statusArr= this.selectedStatus.map(x=>x.value);
+    const reqStatus = statusArr.join('~');
+ 
+    this.requestService.fetchRequestApproveData(this.workflowID,reqStatus,fDate,tDate);
   }
   onCellClicked(params) {
     // Handle click event for action cells

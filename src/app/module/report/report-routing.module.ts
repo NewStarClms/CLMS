@@ -4,7 +4,7 @@ import { ReportSetupComponent } from './report-setup/report-setup.component';
 import { ReportConfigurationComponent } from './report-configuration/report-configuration.component';
 
 const routes: Routes = [
-    { path :'report-setup/:reportModuleID',component:ReportSetupComponent  },
+    { path :'report-setup',component:ReportSetupComponent  },
     { path :'report-detail/:reportId/:reportTypeId/:reportModuleID', component:ReportConfigurationComponent }
 ];
 

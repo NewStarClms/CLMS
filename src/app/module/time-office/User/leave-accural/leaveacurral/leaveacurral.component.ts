@@ -59,18 +59,18 @@ export class LeaveacurralComponent implements OnInit {
   public showEmployeeDepDesiName:string;
   public menuAction: any ={
     Single: {
-      Accural: 202,
-      CarryForward: 203,
-      COFProcess: 204,
-      Encashment: 205,
-      OpaningBalance: 206
+      Accural: 205,
+      CarryForward: 206,
+      COFProcess: 207,
+      Encashment: 208,
+      OpaningBalance: 209
     },
     Multiple: {
-      Accural: 209,
-      CarryForward: 210,
-      COFProcess: 211,
-      Encashment: 212,
-      OpaningBalance: 213
+      Accural: 401,
+      CarryForward: 402,
+      COFProcess: 403,
+      Encashment: 404,
+      OpaningBalance: 405
     }
   }
   public coffProcessDiv:boolean=false;
@@ -106,14 +106,12 @@ export class LeaveacurralComponent implements OnInit {
        var attendanceMenuID= Number(this.activatedRoute.snapshot.params.id);
         response.currentMenuItemsList.menuItems?.forEach(root => {
            root.childs.forEach(child => {
-             child.childs.forEach(sub=>{
-              if(sub.menuId==attendanceMenuID){
-                this.menuItems=sub.childs;
-                sub.childs.forEach(element => {
+              if(child.menuId==attendanceMenuID){
+                this.menuItems=child.childs;
+                child.childs.forEach(element => {
                   this.menuRights.push(...element.menuRights);
                 });
               }
-            });
                 
            });
          
@@ -134,7 +132,7 @@ export class LeaveacurralComponent implements OnInit {
     if(this.currentMenuRights){
       this.attendanceMenu=true;
     }
-    if(menuID==48){
+    if(menuID==221){
       // this.single=true;
       // this.multiple=false;
       //this.singlemultiDiv=e.target.value;

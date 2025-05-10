@@ -1,263 +1,167 @@
-<section class="card">
-  <header class="card-header">
-    <h2>Generate Report For : {{reportName}}</h2>
-  </header>
 <div class="mx-2">
-  <button pButton type="button" label="Add New" icon="pi pi-plus" class="p-button-success" (click)="addNew()" ></button>
-  <!-- <button pButton type="button" label="Back" class="p-button-link" (click)="goBack()"></button> -->
-</div>
-<div id="report-contents" class="clsSlidebar report-content-area d-flex align-items-start">
-  <!-- <div id="slidebarmenu">
-    <div style="position: static" class="ps ps--active-y" ng-reflect-disabled="false">
-      <div class="ps-content">
-        <ul *ngFor="let report of reportSetupList; let itemIndex = index">
-          <li class="" (click)="getReportDetail(report)">
-            <a [ngClass]="{ active: selectedModule === report.reportModuleID }">
-              <div class="d-flex">
-                <span class="card-title-length">{{
-                  report.reportModuleName
-                }}</span>
-                ><span class="m-l-5"></span>
-              </div>
-              <span class="report-no"
-                >{{ report.reportDetailsEntities.length }} reports</span
-              >
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div> -->
-  <div id="reportscontent" class="card-body content-text w-100" *ngIf="reportDetailsEntities.length > 0">
-    <p-tabView (onChange)="handleChange($event)" [(activeIndex)]="defaultIndex">
-      <p-tabPanel header="{{ cat.key }}" *ngFor="let cat of UICONSTANT.REPORT_CATEGORY">
-        <div class="report-card-wrapper">
-          <div class="report-card-wrapper-inner row">
-            <div class="report-card" *ngFor=" let entities of displayReportDetailsEntities; let i = index">
-              <div class="report-card-inner">
-                <span class="cls-betareport"></span>
-                <div class="bg-header d-flex align-items-center justify-content-between">
-                  <h3 tooltipposition="top" class="m-0 bg-color" ng-reflect-tooltip-position="top" ng-reflect-text="Acknowledgement report">
-                    {{ entities.reportName }}
-                  </h3>
-                  <div class="text-right">
-                    <i class="fas fa-edit my-2" style="color: #ffffff; font-size: 13px; margin-right: 6px" (click)="performEdit(entities)"></i>
-                    <i *ngIf="!entities.defaultReport" class="fas fa-trash cursor-pointer" (click)="deleteReported(entities)"
-                      style=" color: #ffffff; font-size: 12.5px; margin-right: 6px;"></i>
-                    <i class="fa fa-thumb-tack pin-tack"></i>
-                  </div>
-                </div>
-                <!-- <a  target="_blank" class="db" ng-reflect-target="_blank" href=""> -->
-                <p class="m-0 m-0 px-3 py-2 cursor-pointer" (click)="downloadPopup(entities)">
-                  {{ entities.description }}
-                </p>
-                <!-- </a> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </p-tabPanel>
-    </p-tabView>
-  </div>
-</div>
-</section>
-<p-dialog header="Report Download Filter" [(visible)]="displaySettings" [modal]="true" id="divGatePass" [draggable]="false" [resizable]="false" [transitionOptions]="'0ms'" position="top-right" [style]="{ width: '60vw', height: '38vw' }">
-  <form #reportDForm="ngForm" (submit)="downloadReport()">
-    <div class="form-group row" *ngIf="showByDate">
-      <div class="col-md-4">
-        <label class="labelfont"> From Date: </label>
-        <span class="p-input-icon-right mr-3">
-          <i class="pi pi-calendar"></i>
-          <input pinput [(ngModel)]="fromDate" class="form-control" type="text" autocomplete="off" name="fromDate" id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD/MM/YYYY"
-            autocomplete="off" (ngModelChange)="getDate($event, 'fromDate')" bsDatepicker style="margin-left: -11px"/>
-         </span>
-      </div>
-      <div class="col-md-4">
-        <label class="labelfont"> To Date: </label>
-        <br>
-          <span class="p-input-icon-right mr-3">
-            <i class="pi pi-calendar"></i>
-            <input pinput [(ngModel)]="toDate" class="form-control" type="text" autocomplete="off" name="toDate" id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MMM-YYYY"
-              autocomplete="off" (ngModelChange)="getDate($event, 'toDate')" bsDatepicker/>
-          </span>
-      </div>
-      <!-- <div class="col-md-4"> -->
-        <!-- <span *ngIf="appliedfilter" class="dot"></span> -->
-        <!-- <p-button
-        icon="pi pi-times"
-        class="p-button-sm"
-        #closebutton
-        data-dismiss="modal"
-        label="Filter"
-        (click)="displayGlobalFilter()"
-        styleClass="p-button-secondary"
-      ></p-button> -->
-        <ul class="nav-item dropdown no-arrow">
-          <span *ngIf="appliedfilter" class="dot"></span>
-          <a class="nav-link dropdown-toggle" href="#" id="globalfilter" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false" (click)="displayGlobalFilter()">
-            <i class="fas fa-filter fa-fw"></i>
-            <!-- <i class='fas fa-filter fa-border fa-2x'></i> -->
-          </a>
-        </ul>
-        
-      <!-- </div> -->
-    </div>
-    <div class="form-group row" *ngIf="showByFromMonthYear">
-      <div class="col-md-4">
-        <label class="labelfont">
-          {{ showByToMonthYear ? "From Month/Year:" : "Month/Year:" }}
-        </label>
-      </div>
-      <div class="col-md-3">
-        <p-dropdown [options]="monthList" [(ngModel)]="reportDownLoadInfo.fromMonth" placeholder="Month" appendTo="body" class="form-control1" [filter]="false" style="width: 10px"
-          filterBy="key" name="fromMonth" id="fromMonth">
-        </p-dropdown>
-      </div>
-      <div class="col-md-3">
-        <p-dropdown [options]="yearList" [(ngModel)]="reportDownLoadInfo.toYear" placeholder="Year" class="form-control1" [filter]="false" filterBy="key" appendTo="body"
-          #toYear="ngModel" name="toYear" id="toYear">
-        </p-dropdown>
-      </div>
-    </div>
+  <button pButton type="button" label="Add New" icon="pi pi-plus" class="p-button-success"(click)="addNew()" ></button>
+<!-- <button pButton type="button" label="Back" class="p-button-link" (click)="goBack()"></button> -->
+   </div>
+   <div id="report-contents" class="clsSlidebar report-content-area d-flex align-items-start ">
+   <div id="slidebarmenu">
+   <div style="position: static;" class="ps ps--active-y" ng-reflect-disabled="false">
+   <div class="ps-content">
+    <ul *ngFor="let report of reportSetupList;let itemIndex=index;">
+    <li class="" (click)="getReportDetail(report)">
+    <a [ngClass]="{'active': (selectedModule === report.reportModuleID)}">
+    <div class="d-flex" >
+   <span class="card-title-length"
+   >{{report.reportModuleName}}</span><span class="m-l-5"
+   ></span></div>
+   <span class="report-no">{{ report.reportDetailsEntities.length}} reports</span>
+   </a>
+   </li>
+   </ul>
+   </div>
+   </div>
+   </div>
+   <div id="reportscontent" class="content-text w-100" *ngIf="reportDetailsEntities.length > 0">
+   <p-tabView (onChange)="handleChange($event)" [(activeIndex)]="defaultIndex">
+   <p-tabPanel header="{{cat.key}}" *ngFor="let cat of UICONSTANT.REPORT_CATEGORY">
+   <div class="report-card-wrapper ">
+   <div class="report-card-wrapper-inner row">
+   <div class="report-card " *ngFor="let entities of displayReportDetailsEntities ;let i=index;">
+   <div class="report-card-inner"><span  class="cls-betareport"></span>
+   <div class="bg-header d-flex align-items-center justify-content-between">
+   <h3 tooltipposition="top" class="m-0 bg-color" ng-reflect-tooltip-position="top"
+   ng-reflect-text="Acknowledgement report">{{ entities.reportName}}
+   </h3>
+   <div  class="text-right">
+   <i class="fas fa-edit my-2 " style="color: #FFFFFF; font-size: 13px; margin-right: 6px;" (click)="performEdit(entities)"></i>
+   <i *ngIf="!entities.defaultReport" class="fas fa-trash cursor-pointer" (click)="deleteReported(entities)" style="color: #FFFFFF; font-size: 12.5px; margin-right: 6px;"></i>
+   <i class="fa fa-thumb-tack pin-tack"></i></div>
+   </div>
+   <!-- <a  target="_blank" class="db" ng-reflect-target="_blank" href=""> -->
+   <p  class="m-0 m-0 px-3 py-2 cursor-pointer " (click)="downloadPopup(entities)" >{{ entities.description}}</p>
+   <!-- </a> -->
+   </div>
+   </div>
+   </div>
+   </div>
+   </p-tabPanel>
+   </p-tabView>
+   </div>
+   </div>
 
-    <div class="form-group row" *ngIf="showByToMonthYear">
-      <div class="col-md-4">
-        <label class="labelfont"> To Month/Year: </label>
-      </div>
-      <div class="col-md-3">
-        <p-dropdown [options]="monthList" [(ngModel)]="reportDownLoadInfo.toMonth" placeholder="Month" appendTo="body" class="form-control1" [filter]="false" filterBy="key" #toMonth="ngModel" name="toMonth" id="toMonth">
-        </p-dropdown>
-      </div>
-      <div class="col-md-3">
-        <p-dropdown [options]="yearList" [(ngModel)]="reportDownLoadInfo.toYear" placeholder="Year" class="form-control1" [filter]="false" filterBy="key" appendTo="body" #toYear="ngModel" name="toYear" id="toYear">
-        </p-dropdown>
-      </div>
-    </div>
-    <div class="form-group row">
-      <div class="col-md-6">
-        <label class="labelfont">FileType</label>
-        <p-dropdown [options]="fileTypeList" [(ngModel)]="reportDownLoadInfo.fileType" placeholder="Please select" appendTo="body" optionLabel="value"
-         optionValue="key" class="form-control1" [filter]="false" filterBy="key" #fileType="ngModel" name="fileType" id="fileType">
-        </p-dropdown>
-      </div>
-      <div class="col-md-6">
-        <label class="labelfont">Report Header</label>
-        <p-selectButton  [options]="stateOptions"  [(ngModel)]="reportDownLoadInfo.reportHeader"  optionLabel="label"  optionValue="value"  name="visibleToAll"
-        ></p-selectButton>
-      </div>
-      
-    </div>
-    <div class="form-group row" *ngIf="reportTypeID === 14 || reportTypeID === 13">
-      <div class="col-md-6">
-        <label class="labelfont">Continuous Days</label>
-        <input
-          pinput
-          [(ngModel)]="reportDownLoadInfo.extraValue1"
-          name="extraValue1"
-          placeholder="Decimal"
-          class="form-control"
-          mode="decimal"
-          [min]="0"
-          [max]="50"
-        />
-      </div>
-      <div class="col-md-6">
-        <label class="labelfont">Include </label>
-        <p-multiSelect
-          [options]="includesList"
-          [(ngModel)]="reportDownLoadInfo.extraValue3"
-          name="extraValue3"
-          defaultLabel="Please Select"
-          optionLabel="value"
-          optionValue="key"
-          display="chip"
-        ></p-multiSelect>
-      </div>
-    </div>
-    <div
-      class="form-group row"
-      *ngIf="reportTypeID === 16 || reportTypeID === 15"
-    >
-      <div class="col-md-6">
-        <label class="labelfont">Continuous Days</label>
-        <input
-          pinput
-          [(ngModel)]="reportDownLoadInfo.extraValue1"
-          name="extraValue1"
-          placeholder="Decimal"
-          mode="decimal"
-          class="form-control"
-          [min]="0"
-          [max]="50"
-        />
-      </div>
-      <div class="col-md-6">
-        <label class="labelfont">Minuts</label>
-        <input
-          pinput
-          [(ngModel)]="reportDownLoadInfo.extraValue2"
-          name="extraValue2"
-          class="form-control"
-          type="number"
-          autocomplete="off"
-        />
-      </div>
-    </div>
-    <div class="form-group row" *ngIf="reportTypeID === 18">
-      <div class="col-md-6">
-        <label class="labelfont">Minimum Working Minuts</label>
-        <input
-          pinput
-          [(ngModel)]="reportDownLoadInfo.extraValue1"
-          class="form-control"
-          name="extraValue1"
-          type="number"
-          autocomplete="off"
-        />
-      </div>
-      <div class="col-md-6">
-        <label class="labelfont">Late/Early Minuts</label>
-        <input
-          pinput
-          [(ngModel)]="reportDownLoadInfo.extraValue2"
-          name="extraValue2"
-          class="form-control"
-          type="number"
-          autocomplete="off"
-        />
-      </div>
-    </div>
-    <div class="float-right mx-4 my-4">
-      <p-button
-        icon="pi pi-check"
-        type="submit"
-        label="Download"
-        class="mx-2 p-button-text p-button-sm p-button-primary"
-      ></p-button>
-      <p-button
-        icon="pi pi-times"
-        class="p-button-sm"
-        #closebutton
-        data-dismiss="modal"
-        label="Cancel"
-        (click)="cancel()"
-        styleClass="p-button-secondary"
-      ></p-button>
-    </div>
-  </form>
-</p-dialog>
+   <p-dialog header="Report Download Filter" [(visible)]="displaySettings" [modal]="true" id="divGatePass" [draggable]="false"
+   [resizable]="false" [transitionOptions]="'0ms'" position="top-right" [style]="{width: '60vw',height:'38vw'}">
+   <form #reportDForm="ngForm" (submit)="downloadReport()">
+   <div class="form-group row" *ngIf="showByDate">
+   <div class="col-md-6">
+   <label class="labelfont"> From Date: </label>
+   <span class="p-input-icon-right mr-3 ">
+   <i class="pi pi-calendar"></i>
+   <input pinput [(ngModel)]="fromDate" class="form-control"  type="text" autocomplete="off"
+   name="fromDate" id="fromDate" [bsConfig]="datepickerConfig" placeholder="DD/MM/YYYY" autocomplete="off" 
+   (ngModelChange)="getDate($event,'fromDate')" bsDatepicker style="margin-left: -11px;">  
+   </span> 
+   </div>
+   <div class="col-md-6">
+   <label class="labelfont"> To Date: </label>
+   <span>
+   <span class="p-input-icon-right mr-3">
+   <i class="pi pi-calendar"></i>
+   <input pinput [(ngModel)]="toDate" class="form-control" type="text" autocomplete="off" name="toDate"
+   id="toDate" [bsConfig]="datepickerConfig" placeholder="DD-MMM-YYYY" autocomplete="off" (ngModelChange)="getDate($event,'toDate')" bsDatepicker>
+   </span> 
+   </span>
+   </div>
+   </div>
+   <div class="form-group row" *ngIf="showByFromMonthYear">
+   <div class="col-md-4">
+   <label class="labelfont"> {{showByToMonthYear?"From Month/Year:" : "Month/Year:"}}  </label>
+   </div>
+   <div class="col-md-3">
+   <p-dropdown [options]="monthList" [(ngModel)]="reportDownLoadInfo.fromMonth" placeholder="Month"
+   appendTo="body"  class="form-control1" [filter]="false" style="width: 10px;"  filterBy="key"  name="fromMonth" id="fromMonth">
+   </p-dropdown>
+   </div>
+   <div class="col-md-3">
+   <p-dropdown [options]="yearList" [(ngModel)]="reportDownLoadInfo.toYear" placeholder="Year" class="form-control1" [filter]="false"  filterBy="key"
+   appendTo="body"  #toYear="ngModel"
+   name="toYear" id="toYear">
+   </p-dropdown>
+   </div>
+   </div>
 
-<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{ width: '40vw' }" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
-</p-confirmDialog>
- <!-- <app-employee-global-filter></app-employee-global-filter>  -->
- <p-dialog header="Filter Employee" [(visible)]="visibles" [modal]="true" [draggable]="false" [resizable]="true" position="top-right" [style]="{width: '65vw'}">
-  <div class="card-body no-padding-left">
-    <div class="form-group row no-padding-left">
-      <div class="col-lg-12 no-padding-left">
-        <input type="hidden" id="filtervalue" [value]="filtertypevale">
-        <app-employee-global-filter (filterAppliedEvent)="onGetFilterDetail()" (cancelGlobalFilter)="cancelGlobalFiltter()"></app-employee-global-filter>
-      </div>
-    </div>
-  </div>
-</p-dialog> 
+   <div class="form-group row" *ngIf="showByToMonthYear">
+   <div class="col-md-4">
+   <label class="labelfont"> To Month/Year: </label>
+   </div>
+   <div class="col-md-3">
+   <p-dropdown [options]="monthList" [(ngModel)]="reportDownLoadInfo.toMonth" placeholder="Month"
+   appendTo="body" class="form-control1" [filter]="false"  filterBy="key"
+   #toMonth="ngModel"
+   name="toMonth" id="toMonth">
+   </p-dropdown>
+   </div>
+   <div class="col-md-3">
+   <p-dropdown [options]="yearList" [(ngModel)]="reportDownLoadInfo.toYear" placeholder="Year" class="form-control1" [filter]="false"  filterBy="key"
+   appendTo="body"  #toYear="ngModel"
+   name="toYear" id="toYear">
+   </p-dropdown>
+   </div>
+   
+   </div>
+   <div class="form-group row">
+   <div class="col-md-6">
+   <label class="labelfont">FileType</label>
+   <p-dropdown [options]="fileTypeList" [(ngModel)]="reportDownLoadInfo.fileType" placeholder="Please select"
+   appendTo="body" optionLabel="value" optionValue="key" class="form-control1" [filter]="false"  filterBy="key"
+   #fileType="ngModel"
+   name="fileType" id="fileType">
+   </p-dropdown>
+   </div>
+   <div class="col-md-6">
+   <label class="labelfont">Report Header</label>
+   <p-selectButton [options]="stateOptions" [(ngModel)]="reportDownLoadInfo.reportHeader" optionLabel="label" optionValue="value" name="visibleToAll"></p-selectButton>
+   </div>
+   </div>
+   <div class="form-group row" *ngIf="reportTypeID=== 14 || reportTypeID=== 13">
+   <div class="col-md-6">
+   <label class="labelfont">Continuous Days</label>
+   <input pinput [(ngModel)]="reportDownLoadInfo.extraValue1"
+   name="extraValue1"  placeholder="Decimal" class="form-control"  mode="decimal" [min]="0" [max]="50">
+   </div>
+   <div class="col-md-6">
+   <label class="labelfont">Include </label>
+   <p-multiSelect [options]="includesList" [(ngModel)]="reportDownLoadInfo.extraValue3" name="extraValue3"  defaultLabel="Please Select" optionLabel="value" optionValue="key" display="chip"></p-multiSelect>
+   </div>
+   </div>
+   <div  class="form-group row" *ngIf="reportTypeID=== 16 || reportTypeID=== 15">
+   <div class="col-md-6">
+   <label class="labelfont">Continuous Days</label>
+   <input pinput [(ngModel)]="reportDownLoadInfo.extraValue1"
+   name="extraValue1" 
+   placeholder="Decimal" mode="decimal"  class="form-control"  [min]="0" [max]="50">
+   </div>
+   <div class="col-md-6">
+   <label class="labelfont">Minuts</label>
+   <input pinput [(ngModel)]="reportDownLoadInfo.extraValue2" name="extraValue2" class="form-control" type="number" autocomplete="off"  >
+   </div>
+   </div>
+   <div class="form-group row" *ngIf="reportTypeID=== 18">
+   <div class="col-md-6">
+   <label class="labelfont">Minimum Working Minuts</label>
+   <input pinput [(ngModel)]="reportDownLoadInfo.extraValue1" class="form-control" name="extraValue1"  type="number" autocomplete="off"  >
+   </div>
+   <div class="col-md-6">
+   <label class="labelfont">Late/Early Minuts</label>
+   <input pinput [(ngModel)]="reportDownLoadInfo.extraValue2" name="extraValue2" class="form-control" type="number" autocomplete="off"  >
+   </div>
+   </div>
+   <div class="float-right mx-4 my-4">
+   <p-button icon="pi pi-check" type="submit"  label="Download"  class=" mx-2 p-button-text p-button-sm p-button-primary" ></p-button>
+   <p-button icon="pi pi-times" class="p-button-sm "  #closebutton data-dismiss="modal" label="Cancel"  (click)="cancel()" styleClass="p-button-secondary"></p-button>
+   </div> 
+   </form>
+   </p-dialog>
+
+   <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width: '40vw'}" [baseZIndex]="10000"
+   rejectButtonStyleClass="p-button-text">
+   </p-confirmDialog> 

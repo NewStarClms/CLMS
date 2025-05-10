@@ -1,18 +1,11 @@
 <!-- TopBar -->
 <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
-  <!-- <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+  <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
     <i class="fa fa-bars"></i>
   </button>
   <button id="Attpunch" class="btn btn-link mr-3 shadow-1" (click)="PostPunch()" *ngIf="visible">
     Attendance Punch
-   </button> -->
-   <a  routerLink="dashboard"  class="navbar-brand d-flex align-items-center justify-content-center" (click)="loadDefaultMenu();">
-    <h2  style="color: #19B698;font-weight: 900;">
-     <!-- <img  src="/assets/img/logo.png" style="width: 140px;"> -->
-     <img  src="/assets/img/logo-b.png" style="width: 140px; height: 80px;">
-    </h2>
-   </a>
-   <app-sidebar *ngIf="currentUser && routeParams?.sidebar"  [menuItems]="menuItems" class="navbar-nav mr-auto"></app-sidebar>
+   </button>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item dropdown no-arrow " *ngIf="isReportAllowed" >
       <a class="nav-link dropdown-toggle" id="setting" role="button" data-toggle="dropdown"

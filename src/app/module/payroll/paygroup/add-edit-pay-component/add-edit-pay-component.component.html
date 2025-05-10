@@ -180,7 +180,7 @@
     <p-tabPanel header="Extra Settings">
 
         <div class="form-group row">
-            <div class="col-md-4" *ngIf="this.payheadCurrentData.payHeadID===12">
+            <div class="col-md-4" *ngIf="isLeaveEncash">
             <label class="labelfont">Leave Code</label>
             <p-dropdown  [options]="leaveTypeList" [(ngModel)]="payCommInfo.leaveID" optionLabel="leaveName" optionValue="leaveID" (ngModelChange)="fnupdateOption($event)"
             name="leaveID" id="leaveID">
@@ -188,7 +188,7 @@
             </div> 
             </div>
 
-        <div class="form-group row" *ngIf="this.payheadCurrentData.payHeadID===8">
+        <div class="form-group row" *ngIf="isLoanPayHead">
             <div class="col-md-3">
                 <label class="labelfont"> Interest Type</label>
                 <p-dropdown [options]="interestTypeOption" [(ngModel)]="payCommInfo.interestType"

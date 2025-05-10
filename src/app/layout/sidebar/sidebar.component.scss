@@ -1,162 +1,28 @@
-
-// .dropdown-submenu {
-//     position: relative;
+// .sidebar .nav-item .nav-link i {
+//     // font-size: 0.7rem !important;
+//     margin-right: 1.25rem !important;
 // }
-// .nav-link{
-//     height: auto !important;
-//     padding: 0px 10px !important;
+// .navbar-nav .sidebar .nav-item .nav-link i {
+//     font-size: 0.7rem !important;
+//     margin-right: 1.25rem !important;
+//     margin-left: 1.25rem!important;
 // }
-// // .dropdown-submenu:first-child>.dropdown-menu{
-// //     top: 0%;
-// //     left: 100%;
-// // }
-// // .dropdown-submenu ~ .dropdown-submenu>.dropdown-menu{
-// //     top: 0%;
-// //     left: 100%;
-// // }
-
-
-// .dropdown-submenu>.dropdown-menu {
-//     top: 100%;
-//     left: 100%;
-//     margin-top: -6px;
-//     margin-left: -1px;
-//     -webkit-border-radius: 0 6px 6px 6px;
-//     -moz-border-radius: 0 6px 6px;
-//     border-radius: 0 6px 6px 6px;
+// .sidebar{
+//     min-height: 1vh !important;
 // }
-
-// .dropdown-submenu:hover>.dropdown-menu {
-//     display: block;
+// .pi-size-icon{
+//     font-size: 1.5rem !important;
+//     color: #fff !important;
 // }
-// .dropdown-submenu:hover>a:after{
-//     display: block;
-//     content: " ";
-//     float: right;
-//     width: 0;
-//     height: 0;
-//     border-color: transparent;
-//     border-style: solid;
-//     border-width: 5px 0 5px 5px;
-//     border-left-color: #ccc;
+// .p-slidemenu-backward{
+//     position: inherit !important;
+//     top:1px !important;
 // }
+.sidebar-body-menu li a{
+color:white;
+text-decoration: none;
+}
 
-// .dropdown-submenu:hover>a:after {
-//     border-left-color: #fff;
-// }
-
-// .dropdown-submenu.pull-left {
-//     float: none;
-// }
-
-// .dropdown-submenu.pull-left>.dropdown-menu {
-//     left: -100%;
-//     margin-left: 10px;
-//     -webkit-border-radius: 6px 0 6px 6px;
-//     -moz-border-radius: 6px 0 6px 6px;
-//     border-radius: 6px 0 6px 6px;
-// }
-
-// .dropdown-menu{
-//     background: linear-gradient(145deg, #4772d9, #5be0e0);
-//     background-image: linear-gradient(145deg, rgb(71, 114, 217), rgb(91, 224, 224));
-//     background-position-x: initial;
-//     background-position-y: initial;
-//     background-size: initial;
-//     background-repeat-x: initial;
-//     background-repeat-y: initial;
-//     background-attachment: initial;
-//     background-origin: initial;
-//     background-clip: initial;
-//     background-color: initial;
-// }
-// .topbar .nav-item .nav-link{
-//   height: auto !important;
-// }
-
-
-*{
-    padding:0;
-    margin:-3px;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    }
-  .navbar{
-    top: 0;
-    left: 0;
-    width: 113%;
-    height: 100%;
-    height: 50px;
-    // background: #3E8DA8;
-    // box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    z-index: 99;
-    //background: linear-gradient(145deg, #4772d9, #5be0e0);
-  }
-  
-  
-  
-   ul{
-  list-style-type:none;
-  }
-  
-   ul li{
-  float:left;
-  width:120px;
-  font-size:15px;
-  line-height:50px;
-  text-align:left;
-  margin-left: 10px;
-  position:relative;
-  // border-left: 1px solid #fff;
-  
-  // float: left;
-  // width: 221px;
-  // font-size: 15px;
-  // line-height: 36px;
-  // text-align: center;
-  // position: relative;
-  // border-left: 1px solid #fff;
-  
-  }
-  
-  .sub-menu li 
-  {
-   //width: 190px;
-   width: 225px;
-   padding-bottom: -20px;
-  }
-  
-  
-   ul li a{
-  text-decoration:none;
-  color:#fff;
-  display:block;
-  width: auto;
-  }
-  
-  .navbar ul li a:hover{
-    //background: linear-gradient(145deg, #4772d9, #5be0e0);
-   // box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  
-  }
-  
-  .navbar ul ul{
-  // background: #3E8DA8;
-  background: linear-gradient(145deg, #4772d9, #5be0e0);
-  border-top: 2px solid #fff;
-  position:absolute;
-  display:none;
-  }
-  .navbar ul ul ul{
-  left:100%;
-  top:0px;
-  }
-  .navbar ul li:hover >ul{
-  display:block;
-  margin-top: 3px;
-  border-top: 3px solid aqua;
-  border-bottom: 3px solid aqua;
-  background: linear-gradient(145deg, #4772d9, #5be0e0);
-  }
-  
-  
+.noChild{
+    margin-left: 19px!important;
+}

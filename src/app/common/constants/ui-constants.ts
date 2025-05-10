@@ -256,48 +256,16 @@ export class UI_CONSTANT {
     {key:"Admin Approve", value:7},
     // {key:"Admin Request", value:8},
   ];
-  // static REQUEST_MENU = [
-  //   {key:"Leave Request", value:1,ID: [77,128]},
-  //   {key:"Leave Cancel", value:2, ID: [78,129]},
-  //   {key:"Gate Pass Request", value:3, ID: [134,132]},
-  //   {key:"Gate Pass Cancel Request", value:4, ID: [133,135]},
-  //   {key:"Punch Regularization", value:5,ID: [79,130]},
-  //   {key:"Punch Regularization Cancel", value:6,ID: [80,131]},
-  //   {key:"Attendance Punch", value:7,ID: [237,238]},
-  //   {key:"Attendance Punch Cancel", value:8,ID: []},
-  // ];
-  
-  // static RequestType={
-  //   LeaveRequest:1,
-  //   LeaveCancel:2,
-  //   GatePassRequest:3,
-  //   GatePassCancel:4,
-  //   PunchRegularization:5, 
-  //   PunchCancel:6
-  // };
-
-
   static REQUEST_MENU = [
-    {key:"Request", value:1,ID: [63]},
-    {key:"Cancel", value:2, ID: [64]},
-    {key:"Gate Pass Request", value:3, ID: [65]},
-    {key:"Gate Pass Cancel Request", value:4, ID: [66]},
-    {key:"Punch Regularization", value:5,ID: [67]},
-    {key:"Punch Regularization Cancel", value:6,ID: [68]},
-    {key:"Attendance Punch", value:7,ID: [69]},
-    {key:"Attendance Punch Cancel", value:8,ID: [70]},
+    {key:"Leave Request", value:1,ID: [77,128]},
+    {key:"Leave Cancel", value:2, ID: [78,129]},
+    {key:"Gate Pass Request", value:3, ID: [134,132]},
+    {key:"Gate Pass Cancel Request", value:4, ID: [133,135]},
+    {key:"Punch Regularization", value:5,ID: [79,130]},
+    {key:"Punch Regularization Cancel", value:6,ID: [80,131]},
+    {key:"Attendance Punch", value:7,ID: [237,238]},
+    {key:"Attendance Punch Cancel", value:8,ID: []},
   ];
-
-  static LEAVE_APPROVED=[
-    {key:"All Leave",value:0},
-    {key:"Leave Request",value:1},
-    {key:"Leave Cancel",value:2},
-    {key:"Gate Pass Request",value:3},
-    {key:"Gate Pass Cancel",value:4},
-    {key:"MissPunch Regularization",value:5},
-    {key:"MissPunch Regularization Cancel",value:6},
-    {key:"Mark Punch (With Location)",value:7},
-   ]
   
   static RequestType={
     LeaveRequest:1,
@@ -305,9 +273,7 @@ export class UI_CONSTANT {
     GatePassRequest:3,
     GatePassCancel:4,
     PunchRegularization:5, 
-    PunchCancel:6,
-    AttendancePunch:7,
-    AttendancePunchCancel:8
+    PunchCancel:6
   };
 
   static ACTIONS = {
@@ -339,12 +305,12 @@ export class UI_CONSTANT {
   };
 
   static MenuAccessLable = {
-    Organization:"OG",
+    Organization:"Organization",
     Company: "Company",
     Branch: "Branch",
     Contractor:"Contractor",
     Department: "Department",
-    SubDepartment: "Sub Department",
+    SubDepartment: "SubDepartment",
     Category: "Category",
     Designation:"Designation",
     Grade:"Grade",
@@ -352,23 +318,23 @@ export class UI_CONSTANT {
     Section:"Section",
     Bank:"Bank",
     BankBranch:"BankBranch",
-    BusinessType:"Business Type",
-    NatureOfWork:"Nature Of Work",
-    Dispensary:"ESI Dispensary",
-    DocumentType:"Document",
+    BusinessType:"BusinessType",
+    NatureOfWork:"NatureOfWork",
+    Dispensary:"Dispensary",
+    DocumentType:"DocumentType",
     Qualification:"Qualification",
-    AutoCodeSeries:"Auto Emp. Code",
+    AutoCodeSeries:"Auto Code Series",
     GlobalSetting:"GlobalSetting",
-    GateMaster:"Gate",
-    ItemType:"Item",
-    VisitorArea:"Visitor Area",
-    VisitorType:"Visistor Type",
-    VisitPurpose:"Visit Purpose",
+    GateMaster:"GateMaster",
+    ItemType:"ItemType",
+    VisitorArea:"VisitorArea",
+    VisitorType:"VisitorType",
+    VisitPurpose:"VisitPurpose",
     GeneralSetting:"General Setting",
     Attendance_Policy:"Attendance Policy",
     Shift_Master:"Shift Master",
     Employee_Alert: "Employee Alert",
-    Leave_Master:"Master",
+    Leave_Master:"Leave Master",
     Leave_Policy:"Leave Policy",
     Manage: "Manage",
     Map_Organization:"Map Organization",
@@ -383,7 +349,7 @@ export class UI_CONSTANT {
     FinancialYear:"Financial Year",
     MachineMaster:"Machine Master",
     ItemMaster:"Item Master",
-    CanteenPolicy:"Policy"
+    CanteenPolicy:"Canteen Policy"
   }
   static COUNTRY = [
     {

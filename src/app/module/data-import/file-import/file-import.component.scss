@@ -1,131 +1,49 @@
 .p-button.p-button-link:enabled:focus {
-  box-shadow:none !important
+    box-shadow:none !important
 }
 .p-button.p-button-link{
-  font-size: 11px !important;
-  font-weight: bold !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
 }
 :host ::ng-deep .p-fileupload-files {
-  display: none !important;
+    display: none !important;
 }
 :host ::ng-deep .p-fileupload-content {
-  display: none !important;
+    display: none !important;
 }
 .card {
-  line-height: 1.8 !important;
+    line-height: 1.8 !important;
 }
 .tableFixHead {
-  overflow-y: auto;
-  height: 50vh!important;
-  overflow-x: auto;
-  
-}
-.tableFixHead thead th {
-  position: sticky;
-  top: 0;
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  font-size: 11px;
-  line-height: 1.1;
-}
-.fileTitle{
-  margin: 2px 2px 2px 11px;
-}
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-th,
-td {
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  font-size: 11px;
-  line-height: 1.1;
-}
-th {
-  background: #eee;
-}
-
-.dot {
-  height: 10px;
-  width: 10px;
-  background-color: red;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  top: -22px;
-  right: 24px;
-  list-style-type: block;
-  margin-right: -1px !important;
-}
-
-.nav-link {
-  display: block; 
-  padding: 0.5rem 1rem; 
-  font-size: 25px;
-//  background: linear-gradient(145deg, #4772d9, #5be0e0);
-  margin-top: -20px;
-}
-
-.nav-link[_ngcontent-png-c281] {
- display: block;
- padding: 0.5rem 1rem;
- font-size: 25px;
- 
- margin-top: -31px;
-}
-
-.fa-border{
- color: linear-gradient(145deg, #5b85e6, #5be0e0);
-}
-
-.fa-border {
-// background: -webkit-gradient(linear, left top, left bottom, from(#f00), to(#333));
-// -webkit-background-clip: text;
-// -webkit-text-fill-color: transparent;
-background: -webkit-gradient(linear, left top, left bottom, from(#4772d9), to(#5be0e0));
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}
-
-
-.fa-filter {
-// background: -webkit-gradient(linear, left top, left bottom, from(#f00), to(#333));
-// -webkit-background-clip: text;
-// -webkit-text-fill-color: transparent;
-background: -webkit-gradient(linear, left top, left bottom, from(#4772d9), to(#5be0e0));
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}
-.fa-fw
-{
-font-size: 40px;
-}
-// .fa-border {
-// 	// background: -webkit-gradient(linear, left top, left bottom, from(#f00), to(#333));
-// 	// -webkit-background-clip: text;
-// 	// -webkit-text-fill-color: transparent;
-//   background: -webkit-gradient(linear, left top, left bottom, from(#4772d9), to(#5be0e0));
-// 	-webkit-background-clip: text;
-// 	-webkit-text-fill-color: transparent;
-// }
-
-
-//.fa-border {
-//  margin-top: 14px;
-//  border: 0.08em solid #eee;
-//  border-radius: 17px;
-//  padding: 0.2em 0.25em 0.15em;
-//}
-
-// .fa-2x {
-//   font-size: 40px;
-// }
-
-.fa-border {
-/* border: 0.08em solid #eee; */
-border-radius: 0.1em;
-padding: 0.2em 0.25em 0.15em;
-}
+    overflow-y: auto;
+    height: 50vh!important;
+    overflow-x: auto;
+    
+  }
+  .tableFixHead thead th {
+    position: sticky;
+    top: 0;
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    font-size: 11px;
+    line-height: 1.1;
+  }
+  .fileTitle{
+    margin: 2px 2px 2px 11px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th,
+  td {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    font-size: 11px;
+    line-height: 1.1;
+  }
+  th {
+    background: #eee;
+  }
